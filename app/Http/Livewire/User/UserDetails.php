@@ -8,6 +8,6 @@ class UserDetails extends Component
 {
     public function render()
     {
-        return view('livewire.user.user-details');
+        return view('livewire.user.user-details')->extends('layouts.app');
     }
 }

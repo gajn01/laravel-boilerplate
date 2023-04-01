@@ -152,7 +152,7 @@
             <livewire:component.food-form :data="$food" :lcm="$lcm">
         </div>
 
-        {{-- Food Forms --}}
+        {{-- production Forms --}}
         <div class="tab-pane fade show " id="production" role="tabpanel" aria-labelledby="production-tab">
             <div class="row g-4 mb-4">
                 <div class="col-12 col-lg-6">
@@ -196,10 +196,10 @@
             <livewire:component.production-form :data="$production" :lcm="$lcm">
         </div>
 
-        {{-- Food Forms --}}
+        {{-- clean Forms --}}
         <div class="tab-pane fade show " id="clean" role="tabpanel" aria-labelledby="clean-tab">
-            <div class="row g-12 mb-4">
-                <div class="col-12 col-lg-12">
+            <div class="row g-3 mb-4">
+                <div class="col-12 col-lg-6">
                     <div class="app-card app-card-chart h-100 shadow-sm">
                         <div class="app-card-header p-3">
                             <div class="row justify-content-between align-items-center">
@@ -223,7 +223,7 @@
             <livewire:component.clean-form :data="$clean">
         </div>
 
-        {{-- Food Forms --}}
+        {{-- document Forms --}}
         <div class="tab-pane fade show " id="document" role="tabpanel" aria-labelledby="document-tab">
             <div class="row g-12 mb-4">
                 <div class="col-12 col-lg-12">
@@ -249,7 +249,8 @@
 
             <livewire:component.document-form :data="$document">
         </div>
-        {{-- Food Forms --}}
+
+        {{-- people Forms --}}
         <div class="tab-pane fade show " id="people" role="tabpanel" aria-labelledby="people-tab">
             <div class="row g-12 mb-4">
                 <div class="col-12 col-lg-12">

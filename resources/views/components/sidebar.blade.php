@@ -37,7 +37,7 @@
                     <!--//nav-link-->
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="docs.html">
+                    <a class="nav-link {{ Request::routeIs('user') ? 'active' : '' }}" href="{{ url('user') }}">
                         <span class="nav-icon">
                             <svg viewBox="0 0 16 16" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
                                 <path
