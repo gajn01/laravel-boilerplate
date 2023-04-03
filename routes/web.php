@@ -11,6 +11,7 @@ use App\Http\Livewire\Store\ExecutiveSummary;
 
 /* User */
 use App\Http\Livewire\User\User;
+use App\Http\Livewire\User\UserDetails;
 
 
 /*
@@ -37,3 +38,5 @@ Route::get('/store/form/{store_name?}/summary',ExecutiveSummary::class)->name('f
 
 /* User */
 Route::get('/user',User::class)->name('user');
+Route::get('/user/details/{user_id?}',UserDetails::class)->name('details');
+

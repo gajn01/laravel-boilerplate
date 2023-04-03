@@ -1,3 +1,5 @@
+@section('title', 'Mary Grace Restaurant Operation System / Audit Forms')
+
 <div class="container-xl">
     <nav aria-label="breadcrumb">
         <ol class="breadcrumb">
