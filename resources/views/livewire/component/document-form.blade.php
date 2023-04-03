@@ -1,3 +1,24 @@
+<div class="row g-12 mb-4">
+    <div class="col-12 col-lg-12">
+        <div class="app-card app-card-chart h-100 shadow-sm">
+            <div class="app-card-header p-3">
+                <div class="row justify-content-between align-items-center">
+                    <div class="col-auto">
+                        <h4 class="app-card-title">Overall Score</h4>
+                    </div>
+                    <!--//col-->
+                </div>
+                <!--//row-->
+            </div>
+            <div class="app-card-body p-3 p-lg-4">
+                <x-overall :data="$data" />
+            </div>
+            <!--//app-card-body-->
+        </div>
+        <!--//app-card-->
+    </div>
+    <!--//col-->
+</div>
 <div wire:ignore class="app-card app-card-orders-table shadow-sm mb-5">
     <div class="app-card-header p-3">
         <div class="row justify-content-between align-items-center">

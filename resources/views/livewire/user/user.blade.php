@@ -3,7 +3,7 @@
 <div class="container-xl">
     <nav aria-label="breadcrumb">
         <ol class="breadcrumb">
-            <li class="breadcrumb-item active">Store</li>
+            <li class="breadcrumb-item active">User</li>
         </ol>
     </nav>
     <div class="page-utilities mb-3">
@@ -16,15 +16,6 @@
                             d="M3.9 54.9C10.5 40.9 24.5 32 40 32H472c15.5 0 29.5 8.9 36.1 22.9s4.6 30.5-5.2 42.5L320 320.9V448c0 12.1-6.8 23.2-17.7 28.6s-23.8 4.3-33.5-3l-64-48c-8.1-6-12.8-15.5-12.8-25.6V320.9L9 97.3C-.7 85.4-2.8 68.8 3.9 54.9z" />
                     </svg>
                 </a>
-                {{--  <select class="form-select w-auto">
-                    <option selected="" value="option-1">All</option>
-                    <option value="option-2">Text file</option>
-                    <option value="option-3">Image</option>
-                    <option value="option-4">Spreadsheet</option>
-                    <option value="option-5">Presentation</option>
-                    <option value="option-6">Zip file</option>
-
-                </select> --}}
             </div>
             <div class="col-auto">
                 <form class="docs-search-form row gx-1 align-items-center">

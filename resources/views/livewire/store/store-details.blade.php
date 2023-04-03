@@ -106,7 +106,7 @@
                         </div><!--//col-->
                         <div class="col-auto">
                             <div class="card-header-action col ">
-                                <a class="btn-sm app-btn-secondary" href="#">Assign Auditor</a>
+                                <a class="btn-sm app-btn-secondary" href="#" data-bs-toggle="modal" data-bs-target="#assignModal" >Assign Auditor</a>
                             </div><!--//card-header-actions-->
                         </div><!--//col-->
                     </div><!--//row-->
@@ -133,7 +133,7 @@
                                 <td class="cell">April 23 2023</td>
                                 <td class="cell">Juan Miguel</td>
                                 <td class="cell">
-                                    <a href="" data-toggle="tooltip" data-placement="top" title="Update">
+                                    <a href="#" data-bs-toggle="modal" data-bs-target="#assignModal" data-toggle="tooltip" data-placement="top" title="Update">
                                         <svg class="icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Pro 6.4.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2023 Fonticons, Inc. --><path d="M362.7 19.3L314.3 67.7 444.3 197.7l48.4-48.4c25-25 25-65.5 0-90.5L453.3 19.3c-25-25-65.5-25-90.5 0zm-71 71L58.6 323.5c-10.4 10.4-18 23.3-22.2 37.4L1 481.2C-1.5 489.7 .8 498.8 7 505s15.3 8.5 23.7 6.1l120.3-35.4c14.1-4.2 27-11.8 37.4-22.2L421.7 220.3 291.7 90.3z"/></svg>
                                     </a>
                                 </td>
@@ -188,5 +188,38 @@
         <!--//app-card-body-->
     </div>
 
+    <!-- if you want to close by clicking outside the modal, delete the last endpoint:data-bs-backdrop and data-bs-keyboard -->
+    <div class="modal fade" id="assignModal" tabindex="-1" data-bs-backdrop="static" data-bs-keyboard="false" role="dialog" aria-labelledby="modalTitleId" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-scrollable modal-dialog-centered modal-md" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="modalTitleId">Assign Auditor</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+
+                    <div class="mb-3">
+                        <label for="" class="form-label">Auditor</label>
+                        <select class="form-select form-select-md" name="" id="">
+                            <option selected hidden>Select one</option>
+                            <option value="">New Delhi</option>
+                            <option value="">Istanbul</option>
+                            <option value="">Jakarta</option>
+                        </select>
+                    </div>
+
+                    <div class="mb-3">
+                      <label for="" class="form-label">Date of Audit</label>
+                      <input type="date"
+                        class="form-control" name="" id="" aria-describedby="helpId" placeholder="">
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-primary">Save</button>
+                </div>
+            </div>
+        </div>
+    </div>
 
 </div>

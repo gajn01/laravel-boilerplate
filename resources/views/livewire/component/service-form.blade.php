@@ -1,3 +1,76 @@
+<div class="row g-4 mb-4">
+    <div class="col-12 col-lg-6">
+        <div class="app-card app-card-chart h-100 shadow-sm">
+            <div class="app-card-header p-3">
+                <div class="row justify-content-between align-items-center">
+                    <div class="col-auto">
+                        <h4 class="app-card-title">Overall Score</h4>
+                    </div>
+                    <!--//col-->
+                </div>
+                <!--//row-->
+            </div>
+            <div class="app-card-body p-3 p-lg-4">
+                <table class="table app-table-hover mb-0 text-left">
+                    <thead>
+                        <tr>
+                            <th class="cell">Category</th>
+                            <th class="cell">%</th>
+                            <th class="cell">Score</th>
+                            <th class="cell">% Score</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach ($data as $item)
+                            <tr>
+                                <td class="core_name_total"><a href="#speed">Speed And Accuracy</a> </td>
+                                <td><span>20%</span></td>
+                                <td><span>0</span></td>
+                                <td><span>0</span></td>
+                            </tr>
+                            @foreach ($item['data_items'] as $sub)
+                                <tr>
+                                    <td class="core_name_total"><a
+                                            href="#{{ $sub['name'] }}">{{ $sub['name'] }}</a> </td>
+                                    <td>{{ $sub['total_percentage'] }}</td>
+                                    <td>{{ $sub['score'] }}</td>
+                                    <td>{{ $sub['score'] }}</td>
+                                </tr>
+                            @endforeach
+                            <tr>
+                                <td></td>
+                                <td>{{ $item['overall_score'] }}</td>
+                                <td>{{ $item['score'] }}</td>
+                                <td>{{ $item['total_percentage'] }}</td>
+                            </tr>
+                        @endforeach
+                    </tbody>
+                </table>
+
+            </div>
+            <!--//app-card-body-->
+        </div>
+        <!--//app-card-->
+    </div>
+    <!--//col-->
+    <div class="col-12 col-lg-6">
+        <div class="app-card app-card-chart h-100 shadow-sm">
+            <div class="app-card-header p-3">
+                <div class="row justify-content-between align-items-center">
+                    <div class="col-auto">
+                        <h4 class="app-card-title">Issues</h4>
+                    </div>
+                </div>
+            </div>
+            <div class="app-card-body p-3 p-lg-4">
+                <x-service-issue />
+            </div>
+            <!--//app-card-body-->
+        </div>
+        <!--//app-card-->
+    </div>
+    <!--//col-->
+</div>
 <div wire:ignore class="app-card app-card-orders-table shadow-sm mb-5">
     <div class="app-card-header p-3">
         <div class="row justify-content-between align-items-center">
