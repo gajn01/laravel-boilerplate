@@ -8,6 +8,7 @@ use Livewire\Component;
 class Sanitary extends Component
 {
     public $sanitary_list = [];
+    public $sanitary_id;
     public $title;
     public $code;
     public $showModal = true;
@@ -18,16 +19,8 @@ class Sanitary extends Component
     }
     public function mount()
     {
-        $this->sanitary_list = SanitaryModel::all()->map(function ($sanitary) {
-            return [
-                'id' => $sanitary->id,
-                'title' => $sanitary->title,
-                'code' => $sanitary->code,
-            ];
-        })->toArray();
+        $this->sanitary_list = SanitaryModel::all(['id', 'title', 'code'])->toArray();
     }
-
-
 
     public function onSave(){
         $this->validate([
@@ -41,16 +34,36 @@ class Sanitary extends Component
         $sanitary->title = $this->title;
         $sanitary->code = $this->code;
         $sanitary->save();
-        $this->sanitary_list = SanitaryModel::all()->map(function ($sanitary) {
-            return [
-                'id' => $sanitary->id,
-                'title' => $sanitary->title,
-                'code' => $sanitary->code,
-            ];
-        })->toArray();
+        $this->sanitary_list = SanitaryModel::all(['id', 'title', 'code'])->toArray();
         session()->flash('message', 'Sanitary item saved successfully!');
         $this->emit('saved');
+        $this->reset();
         return redirect()->route('sanitary');
     }
-}
+    public function getSanitaryId($sanitary_id)
+    {
+        $sanitary = SanitaryModel::find($sanitary_id);
+        $this->title = $sanitary->title;
+        $this->code = $sanitary->code;
+        $this->sanitary_id = $sanitary_id;
+    }
 
+    public function onDeleteSanitary($sanitary_id){
+        $sanitary = SanitaryModel::find($sanitary_id);
+        $sanitary->delete();
+        $this->sanitary_list = SanitaryModel::all(['id', 'title', 'code'])->toArray();
+        session()->flash('message', 'Sanitary item deleted successfully!');
+        $this->emit('saved');
+        return redirect()->route('sanitary');
+
+    }
+
+
+    public function reset(...$properties){
+
+        $this->title = '';
+        $this->code = '';
+        $this->sanitary_id = '';
+        $this->resetValidation();
+    }
+}

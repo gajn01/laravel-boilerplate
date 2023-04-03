@@ -1,3 +1,4 @@
+
 'use strict';
 
 /* ===== Enable Bootstrap Popover (on element  ====== */
@@ -90,6 +91,7 @@ searchMobileTrigger.addEventListener('click', () => {
 	}
 
 });
+
 
 
 
