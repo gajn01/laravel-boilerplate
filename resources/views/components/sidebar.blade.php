@@ -95,11 +95,11 @@
                             <!--//submenu-arrow-->
                         </a>
                         <!--//nav-link-->
-                        <div id="submenu-3" class="collapse submenu submenu-3" data-bs-parent="#menu-accordion">
+                        <div id="submenu-3" class="collapse submenu submenu-3 {{ Request::routeIs('settings') || Request::routeIs('sanitary') || Request::routeIs('category') ? 'show' : '' }}" data-bs-parent="#menu-accordion">
                             <ul class="submenu-list list-unstyled">
-                                <li class="submenu-item"><a class="submenu-link" href="login.html">Category</a></li>
-                                <li class="submenu-item"><a class="submenu-link" href="signup.html">Store</a></li>
-                                <li class="submenu-item"><a class="submenu-link" href="reset-password.html">Sanitary Defect</a></li>
+                                <li class="submenu-item "><a class="submenu-link {{ Request::routeIs('category') ? 'active' : '' }}" href="{{ url('settings/category') }}">Category</a></li>
+                                <li class="submenu-item"><a class="submenu-link {{ Request::routeIs('settings') ? 'active' : '' }}" href="{{ url('settings/store-settings') }}">Store</a></li>
+                                <li class="submenu-item"><a class="submenu-link {{Request::routeIs('sanitary')  ? 'active' : '' }}" href="{{ url('settings/sanitary') }}">Sanitary Defect</a></li>
                             </ul>
                         </div>
                     </li>

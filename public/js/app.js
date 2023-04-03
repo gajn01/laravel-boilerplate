@@ -89,8 +89,7 @@ searchMobileTrigger.addEventListener('click', () => {
 		searchMobileTriggerIcon.classList.add('fa-search');
 	}
 
-
-
 });
+
 
 

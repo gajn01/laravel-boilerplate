@@ -13,22 +13,16 @@ use App\Http\Livewire\Store\ExecutiveSummary;
 use App\Http\Livewire\User\User;
 use App\Http\Livewire\User\UserDetails;
 
+/* Settings */
+use App\Http\Livewire\Settings\Category;
+use App\Http\Livewire\Settings\Sanitary;
+use App\Http\Livewire\Settings\StoreSettings;
 
-/*
-|--------------------------------------------------------------------------
-| Web Routes
-|--------------------------------------------------------------------------
-|
-| Here is where you can register web routes for your application. These
-| routes are loaded by the RouteServiceProvider and all of them will
-| be assigned to the "web" middleware group. Make something great!
-|
-*/
+
 
 /* Dashboard */
 Route::get('/',Dashboard::class)->name('dashboard');
 Route::get('/dashboard',Dashboard::class)->name('dashboard');
-
 
 /* Audit */
 Route::get('/store',Store::class)->name('store');
@@ -40,3 +34,7 @@ Route::get('/store/form/{store_name?}/summary',ExecutiveSummary::class)->name('f
 Route::get('/user',User::class)->name('user');
 Route::get('/user/details/{user_id?}',UserDetails::class)->name('details');
 
+/* Settings */
+Route::get('/settings/store-settings',StoreSettings::class)->name('settings');
+Route::get('/settings/category',Category::class)->name('category');
+Route::get('/settings/sanitary',Sanitary::class)->name('sanitary');
