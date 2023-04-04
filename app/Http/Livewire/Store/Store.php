@@ -19,7 +19,5 @@ class Store extends Component
     }
     public function mount(){
         $this->store_list = StoreModel::all(['id','code', 'name', 'type', 'store_head', 'area'])->toArray();
-
-
     }
 }

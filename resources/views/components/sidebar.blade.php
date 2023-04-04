@@ -74,7 +74,7 @@
                 <ul class="app-menu footer-menu list-unstyled">
                     <!--//nav-item-->
                     <li class="nav-item has-submenu">
-                        <a class="nav-link submenu-toggle" href="#" data-bs-toggle="collapse"
+                        <a class="nav-link submenu-toggle {{ Request::routeIs('settings') || Request::routeIs('sanitary') || Request::routeIs('category') ? 'active' : '' }}" href="#" data-bs-toggle="collapse"
                             data-bs-target="#submenu-3" aria-expanded="false" aria-controls="submenu-3">
                             <span class="nav-icon">
                                 <svg viewBox="0 0 16 16" class="bi bi-columns-gap" fill="currentColor"

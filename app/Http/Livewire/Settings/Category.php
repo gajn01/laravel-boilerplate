@@ -3,6 +3,7 @@
 namespace App\Http\Livewire\Settings;
 
 use Livewire\Component;
+use App\Models\Category as CategoryModel;
 
 class Category extends Component
 {
@@ -14,26 +15,6 @@ class Category extends Component
     }
     public function mount()
     {
-        $this->category_list=[
-            [
-                'id' => 1,
-                'name' => 'Food',
-            ],[
-                'id' => 2,
-                'name' => 'Service',
-            ],[
-                'id' => 3,
-                'name' => 'Production Process',
-            ],[
-                'id' => 4,
-                'name' => 'Cleanliness and Condition',
-            ],[
-                'id' => 5,
-                'name' => 'Document',
-            ],[
-                'id' => 5,
-                'name' => 'People',
-            ]
-        ];
+        $this->category_list = CategoryModel::all(['id','name', 'type'])->toArray();
     }
 }
