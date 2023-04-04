@@ -99,7 +99,7 @@
                             <ul class="submenu-list list-unstyled">
                                 <li class="submenu-item "><a class="submenu-link {{ Request::routeIs('category') ? 'active' : '' }}" href="{{ url('settings/category') }}">Category</a></li>
                                 <li class="submenu-item"><a class="submenu-link {{ Request::routeIs('settings') ? 'active' : '' }}" href="{{ url('settings/store-settings') }}">Store</a></li>
-                                <li class="submenu-item"><a class="submenu-link {{Request::routeIs('sanitary')  ? 'active' : '' }}" href="{{ url('settings/sanitary') }}">Sanitary Defect</a></li>
+                                <li class="submenu-item"><a class="submenu-link {{Request::routeIs('sanitary')  ? 'active' : '' }}" href="{{ url('settings/sanitary') }}">Sanitation Defect</a></li>
                             </ul>
                         </div>
                     </li>

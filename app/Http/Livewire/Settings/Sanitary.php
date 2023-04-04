@@ -46,10 +46,6 @@ class Sanitary extends Component
             [
                 'title' => 'required',
                 'code' => 'required',
-            ],
-            [
-                'title.required' => 'The title field is required.',
-                'code.required' => 'The code field is required.',
             ]
         );
 
@@ -65,7 +61,7 @@ class Sanitary extends Component
         $this->reset();
         $this->sanitary_list = SanitaryModel::all(['id', 'title', 'code'])->toArray();
         $this->onAlert(false, 'Success', 'Sanitation defect saved successfully!', 'success');
-        $this->dispatchBrowserEvent('remove-modal');
+        $this->dispatchBrowserEvent('remove-modal',['modalName' => '#sanitaryModal']);
         $this->emit('saved');
     }
     public function onDelete($sanitary_id)
@@ -75,7 +71,8 @@ class Sanitary extends Component
         $this->sanitary_list = SanitaryModel::all(['id', 'title', 'code'])->toArray();
         $this->emit('saved');
     }
-    public function onSearch(){
+    public function onSearch()
+    {
         $searchTerm = '%' . $this->searchTerm . '%';
         $this->sanitary_list = SanitaryModel::where('title', 'like', $searchTerm)
             ->orWhere('code', 'like', $searchTerm)

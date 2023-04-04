@@ -106,12 +106,12 @@ function showConfirm(event) {
     })
         .then((willDelete) => {
             if (willDelete) {
-                swal("Success", "Sanitation defect successfully deleted", "success", { timer: 1500, button: false });
+                swal("Success", "Successfully deleted", "success", { timer: 1500, button: false });
                 Livewire.emit('alert-sent', event.detail.data);
             }
         });
 }
 window.addEventListener('remove-modal', event => {
-    $('#sanitaryModal').modal('hide');
+    $(event.detail.modalName).modal('hide');
 });
 
