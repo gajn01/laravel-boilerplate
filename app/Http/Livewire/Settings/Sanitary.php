@@ -13,7 +13,7 @@ class Sanitary extends Component
     public $sanitary_id;
     public $title;
     public $code;
-    public $is_save = true;
+    public $searchTerm;
     public $modalTitle;
     public $modalButtonText;
 
@@ -68,12 +68,19 @@ class Sanitary extends Component
         $this->dispatchBrowserEvent('remove-modal');
         $this->emit('saved');
     }
-    public function onDeleteSanitary($sanitary_id)
+    public function onDelete($sanitary_id)
     {
         $sanitary = SanitaryModel::find($sanitary_id);
         $sanitary->delete();
         $this->sanitary_list = SanitaryModel::all(['id', 'title', 'code'])->toArray();
         $this->emit('saved');
+    }
+    public function onSearch(){
+        $searchTerm = '%' . $this->searchTerm . '%';
+        $this->sanitary_list = SanitaryModel::where('title', 'like', $searchTerm)
+            ->orWhere('code', 'like', $searchTerm)
+            ->get(['id', 'title', 'code'])
+            ->toArray();
     }
     public function onAlert($is_confirm = false, $title = null, $message = null, $type = null, $data = null)
     {
@@ -94,6 +101,6 @@ class Sanitary extends Component
     }
     public function onAlertSent($data)
     {
-        $this->onDeleteSanitary($data);
+        $this->onDelete($data);
     }
 }
