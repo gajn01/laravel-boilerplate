@@ -62,7 +62,7 @@
                                 <td class="cell">{{ $user['email'] }}</td>
                                 <td class="cell">{{ $user['status'] }}</td>
                                 <td class="cell">
-                                    <a href="{{ route('details', ['user_id' => $user['id']]) }}">
+                                    <a href="{{ route('information', ['user_id' => $user['id']]) }}">
                                         <svg class="icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512">
                                             <!--! Font Awesome Pro 6.3.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2023 Fonticons, Inc. -->
                                             <path

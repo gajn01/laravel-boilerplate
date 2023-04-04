@@ -7,6 +7,7 @@ use App\Models\Store as StoreModel;
 
 class StoreSettings extends Component
 {
+    protected $listeners = ['alert-sent' => 'onAlertSent'];
     public $store_list = [];
     public $store_id;
     public $name;
@@ -28,6 +29,17 @@ class StoreSettings extends Component
         return view('livewire.settings.store-settings')->extends('layouts.app');
     }
 
+
+    public function onSearch()
+    {
+        $this->store_list = StoreModel::where('code', 'like', '%'.$this->searchTerm.'%')
+            ->orWhere('name', 'like', '%'.$this->searchTerm.'%')
+            ->orWhere('store_head', 'like', '%'.$this->searchTerm.'%')
+            ->orWhere('area', 'like', '%'.$this->searchTerm.'%')
+            ->orWhere('type', $this->searchTerm)
+            ->get(['id', 'code', 'name', 'type', 'store_head', 'area'])
+            ->toArray();
+    }
     public function showModal($store_id = null)
     {
         if ($store_id) {
@@ -77,6 +89,13 @@ class StoreSettings extends Component
 
     }
 
+    public function onDelete($store_id)
+    {
+        $store = StoreModel::find($store_id);
+        $store->delete();
+        $this->store_list = StoreModel::all(['id','code', 'name', 'type', 'store_head', 'area'])->toArray();
+        $this->emit('saved');
+    }
     public function onAlert($is_confirm = false, $title = null, $message = null, $type = null, $data = null)
     {
         $alert = $is_confirm ? 'confirm-alert' : 'show-alert';

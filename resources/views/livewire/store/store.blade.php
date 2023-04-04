@@ -53,8 +53,8 @@
                         <tr>
                             <th class="cell">Store Code</th>
                             <th class="cell">Store Name</th>
-                            <th class="cell">Wave1</th>
-                            <th class="cell">Wave2</th>
+                          {{--   <th class="cell">Wave1</th>
+                            <th class="cell">Wave2</th> --}}
                             <th class="cell">Action</th>
                         </tr>
                     </thead>
@@ -63,8 +63,8 @@
                             <tr>
                                 <td class="cell">{{ $store['code'] }}</td>
                                 <td class="cell">{{ $store['name'] }}</td>
-                                <td class="cell">{{ $store['wave1'] }}</td>
-                                <td class="cell">{{ $store['wave2'] }}</td>
+                               {{--  <td class="cell">{{ $store['wave1'] }}</td>
+                                <td class="cell">{{ $store['wave2'] }}</td> --}}
                                 <td class="cell">
                                     <a href="{{ route('details', ['store_name' => $store['name']]) }}">
                                         <svg class="icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512">

@@ -32,7 +32,7 @@ Route::get('/store/form/{store_name?}/summary',ExecutiveSummary::class)->name('f
 
 /* User */
 Route::get('/user',User::class)->name('user');
-Route::get('/user/details/{user_id?}',UserDetails::class)->name('details');
+Route::get('/user/information/{user_id?}',UserDetails::class)->name('information');
 
 /* Settings */
 Route::get('/settings/store-settings',StoreSettings::class)->name('settings');

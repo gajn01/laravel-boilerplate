@@ -20,7 +20,7 @@
                 <form class="docs-search-form row gx-1 align-items-center">
                     <div class="col-auto">
                         <input type="text" id="search-docs" name="searchdocs" class="form-control search-docs"
-                            placeholder="Search">
+                        wire:model.debounce.500ms="searchTerm" wire:keyup="onSearch" placeholder="Search">
                     </div>
                     {{--   <div class="col-auto">
                         <a class="btn app-btn-primary" href="#" wire:click="test">Search</a>
@@ -72,7 +72,7 @@
                                             </svg>
                                         </a>
                                         <a href="#"
-                                            wire:click="onAlert(true,'Confirm','Are you sure you want to delete this sanitation defect?','warning',{{ $store['id'] }})">
+                                            wire:click="onAlert(true,'Confirm','Are you sure you want to delete this store record?','warning',{{ $store['id'] }})">
                                             <svg class="icon" xmlns="http://www.w3.org/2000/svg"
                                                 viewBox="0 0 448 512">
                                                 <!--! Font Awesome Pro 6.4.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2023 Fonticons, Inc. -->
