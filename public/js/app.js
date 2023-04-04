@@ -89,28 +89,28 @@ searchMobileTrigger.addEventListener('click', () => {
         searchMobileTriggerIcon.classList.remove('fa-times');
         searchMobileTriggerIcon.classList.add('fa-search');
     }
-
 });
 
-window.addEventListener('show-alert', event => {
+window.addEventListener('show-alert', showAlert);
+window.addEventListener('confirm-alert', showConfirm);
+function showAlert(event) {
     swal(event.detail.title, event.detail.message, event.detail.type, { timer: 1500, button: false });
-});
-window.addEventListener('confirm-alert', event => {
+}
+function showConfirm(event) {
     swal({
-        title:event.detail.title,
+        title: event.detail.title,
         text: event.detail.message,
-        icon:  event.detail.type,
+        icon: event.detail.type,
         buttons: true,
         dangerMode: true,
-      })
-      .then((willDelete) => {
-        if (willDelete) {
-            swal("Success", "Sanitation defect successfully deleted", "success", { timer: 2000, button: false });
-            Livewire.emit('alert-sent', event.detail.data);
-        }
-      });
-});
-
+    })
+        .then((willDelete) => {
+            if (willDelete) {
+                swal("Success", "Sanitation defect successfully deleted", "success", { timer: 1500, button: false });
+                Livewire.emit('alert-sent', event.detail.data);
+            }
+        });
+}
 window.addEventListener('remove-modal', event => {
     $('#sanitaryModal').modal('hide');
 });

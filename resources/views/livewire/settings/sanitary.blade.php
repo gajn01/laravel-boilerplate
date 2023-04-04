@@ -28,7 +28,7 @@
             <!--//col-->
             <div class="col-auto">
                 <div class="col-auto">
-                    <a class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#sanitaryModal">Add</a>
+                    <a class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#sanitaryModal" wire:click="showModal">Add</a>
                 </div>
             </div>
         </div>
@@ -55,7 +55,7 @@
                                     <td class="cell">{{ $sanitary['code'] }}</td>
                                     <td class="cell">
                                         <a href="#" data-bs-toggle="modal" data-bs-target="#sanitaryModal"
-                                            wire:click="getSanitaryId({{ $sanitary['id'] }})"><svg class="icon"
+                                            wire:click="showModal({{ $sanitary['id'] }})"><svg class="icon"
                                                 xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512">
                                                 <!--! Font Awesome Pro 6.3.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2023 Fonticons, Inc. -->
                                                 <path
@@ -168,7 +168,7 @@
             <div class="modal-content">
                 <div class="modal-header">
                     <h5 class="modal-title" id="">
-                        Add Sanitary
+                        {{$modalTitle}}
                     </h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"
                         wire:click="reset"></button>
@@ -196,8 +196,7 @@
                     </form>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                    <button type="button" class="btn btn-primary" wire:click="onSave">Save</button>
+                    <button type="button" class="btn btn-primary" wire:click="onSave">{{$modalButtonText}}</button>
                 </div>
             </div>
         </div>

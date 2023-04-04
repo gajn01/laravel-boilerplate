@@ -1,17 +1,35 @@
 <?php
 
 namespace App\Http\Livewire\Settings;
+
 use App\Models\SanitaryModel;
 
 use Livewire\Component;
 
 class Sanitary extends Component
 {
+    protected $listeners = ['alert-sent' => 'onAlertSent'];
     public $sanitary_list = [];
     public $sanitary_id;
     public $title;
     public $code;
     public $is_save = true;
+    public $modalTitle;
+    public $modalButtonText;
+
+    public function showModal($sanitary_id = null)
+    {
+        if ($sanitary_id) {
+            $sanitary = SanitaryModel::findOrFail($sanitary_id);
+            $this->title = $sanitary->title;
+            $this->code = $sanitary->code;
+        }
+        $this->resetValidation();
+        $this->sanitary_id = $sanitary_id;
+        $this->modalTitle = $this->sanitary_id ? 'Edit Sanitation Defect' : 'Add Sanitation Defect';
+        $this->modalButtonText = $this->sanitary_id ? 'Update' : 'Add';
+        $this->dispatchBrowserEvent('show-item-form');
+    }
 
     public function render()
     {
@@ -22,43 +40,42 @@ class Sanitary extends Component
         $this->sanitary_list = SanitaryModel::all(['id', 'title', 'code'])->toArray();
     }
 
-    public function onSave(){
-        $this->validate([
-            'title' => 'required',
-            'code' => 'required',
-        ], [
-            'title.required' => 'The title field is required.',
-            'code.required' => 'The code field is required.',
-        ]);
-        $sanitary = new SanitaryModel();
+    public function onSave()
+    {
+        $this->validate(
+            [
+                'title' => 'required',
+                'code' => 'required',
+            ],
+            [
+                'title.required' => 'The title field is required.',
+                'code.required' => 'The code field is required.',
+            ]
+        );
+
+        if ($this->sanitary_id) {
+            $sanitary = SanitaryModel::findOrFail($this->sanitary_id);
+        } else {
+            $sanitary = new SanitaryModel();
+        }
         $sanitary->title = $this->title;
         $sanitary->code = $this->code;
         $sanitary->save();
+
         $this->reset();
         $this->sanitary_list = SanitaryModel::all(['id', 'title', 'code'])->toArray();
-        $this->onAlert(false,'Success','Sanitation defect saved successfully!','success');
+        $this->onAlert(false, 'Success', 'Sanitation defect saved successfully!', 'success');
         $this->dispatchBrowserEvent('remove-modal');
         $this->emit('saved');
     }
-    public function getSanitaryId($sanitary_id)
+    public function onDeleteSanitary($sanitary_id)
     {
-        $sanitary = SanitaryModel::find($sanitary_id);
-        $this->title = $sanitary->title;
-        $this->code = $sanitary->code;
-        $this->sanitary_id = $sanitary_id;
-        $this->is_save = false;
-    }
-
-    public function onDeleteSanitary($sanitary_id){
-        /* $this->onAlert(true,'Confirm','Are you sure you want to delete this sanitation defect?','warning',$sanitary_id); */
         $sanitary = SanitaryModel::find($sanitary_id);
         $sanitary->delete();
         $this->sanitary_list = SanitaryModel::all(['id', 'title', 'code'])->toArray();
         $this->emit('saved');
-        return redirect()->route('sanitary');
-
     }
-    public function onAlert($is_confirm = false ,$title = null,$message = null,$type = null,$data=null)
+    public function onAlert($is_confirm = false, $title = null, $message = null, $type = null, $data = null)
     {
         $alert = $is_confirm ? 'confirm-alert' : 'show-alert';
         $this->dispatchBrowserEvent($alert, [
@@ -66,20 +83,15 @@ class Sanitary extends Component
             'message' => $message,
             'type' => $type,
             'data' => $data
-
         ]);
     }
-
-    public function reset(...$properties){
-
+    public function reset(...$properties)
+    {
         $this->title = '';
         $this->code = '';
         $this->sanitary_id = '';
         $this->resetValidation();
     }
-
-    protected $listeners = ['alert-sent' => 'onAlertSent'];
-
     public function onAlertSent($data)
     {
         $this->onDeleteSanitary($data);
