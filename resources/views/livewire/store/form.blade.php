@@ -42,6 +42,44 @@
 
         {{-- Food Forms --}}
         <div class="tab-pane fade show " id="food" role="tabpanel" aria-labelledby="food-tab">
+            <div class="row g-4 mb-4">
+                <div class="col-12 col-lg-6">
+                    <div class="app-card app-card-chart h-100 shadow-sm">
+                        <div class="app-card-header p-3">
+                            <div class="row justify-content-between align-items-center">
+                                <div class="col-auto">
+                                    <h4 class="app-card-title">Overall Score</h4>
+                                </div>
+                                <!--//col-->
+                            </div>
+                            <!--//row-->
+                        </div>
+                        <div class="app-card-body p-3 p-lg-4">
+                            <x-overall :data="$food" />
+                        </div>
+                        <!--//app-card-body-->
+                    </div>
+                    <!--//app-card-->
+                </div>
+                <!--//col-->
+                <div class="col-12 col-lg-6">
+                    <div class="app-card app-card-chart h-100 shadow-sm">
+                        <div class="app-card-header p-3">
+                            <div class="row justify-content-between align-items-center">
+                                <div class="col-auto">
+                                    <h4 class="app-card-title">Issues</h4>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="app-card-body p-3 p-lg-4">
+                            <x-issue />
+                        </div>
+                        <!--//app-card-body-->
+                    </div>
+                    <!--//app-card-->
+                </div>
+                <!--//col-->
+            </div>
 
             <livewire:component.food-form :data="$food" :lcm="$lcm">
         </div>
@@ -58,8 +96,6 @@
 
         {{-- document Forms --}}
         <div class="tab-pane fade show " id="document" role="tabpanel" aria-labelledby="document-tab">
-
-
             <livewire:component.document-form :data="$document">
         </div>
 

@@ -1,5 +1,5 @@
 <div class="row g-3 mb-4">
-    <div class="col-12 col-lg-6">
+    <div class="col-12 col-lg-12">
         <div class="app-card app-card-chart h-100 shadow-sm">
             <div class="app-card-header p-3">
                 <div class="row justify-content-between align-items-center">
@@ -46,56 +46,52 @@
                 </thead>
                 <tbody>
                     @foreach ($data as $item)
-                    @foreach ($item['data_items'] as $item_name)
-                        <tr id="{{ $item_name['name'] }}">
-                            <td colspan="8" class="product-name">
-                                <p class="m-0">{{ $item_name['name'] }}</p>
-                            </td>
-                        </tr>
-                        @foreach ($item_name['sub_category'] as $sub)
-                            @if ($sub['name'])
-                                <tr>
-                                    <td class="product-sub-category " colspan="8">
-                                        <p>{{ $sub['name'] }}</p>
-                                    </td>
-                                </tr>
-                            @endif
-                            @foreach ($sub['label'] as $item)
-                                <tr>
-                                    <td class="product-audit">
-                                        <p>{{ $item['name'] }}</p>
-                                    </td>
-                                    <td>
-                                        <input type="text" class="form-control " disabled
-                                            name="bp" id="bp" placeholder=""
-                                            value="{{ $item['bp'] }}">
-                                    </td>
-                                    <td>
-                                        <input type="text" class="form-control " name="points"
-                                            id="points" value="{{ $item['points'] }}">
-                                    </td>
-                                    <td>
-                                        <input type="text" class="form-control " name="points"
-                                            id="points">
-                                    </td>
-                                    <td>
-                                        <input type="text" class="form-control " disabled
-                                            name="bp" id="bp" placeholder=""
-                                            value="{{ $item['bp'] }}">
-                                    </td>
-                                    <td>
-                                        <input type="text" class="form-control " name="points"
-                                            id="points" value="{{ $item['points'] }}">
-                                    </td>
-                                    <td>
-                                        <input type="text" class="form-control " name="points"
-                                            id="points">
-                                    </td>
-                                </tr>
+                        @foreach ($item['data_items'] as $item_name)
+                            <tr id="{{ $item_name['name'] }}">
+                                <td colspan="8" class="product-name">
+                                    <p class="m-0">{{ $item_name['name'] }}</p>
+                                </td>
+                            </tr>
+                            @foreach ($item_name['sub_category'] as $sub)
+                                @if ($sub['name'])
+                                    <tr>
+                                        <td class="product-sub-category " colspan="8">
+                                            <p>{{ $sub['name'] }}</p>
+                                        </td>
+                                    </tr>
+                                @endif
+                                @foreach ($sub['label'] as $item)
+                                    <tr>
+                                        <td class="product-audit">
+                                            <p>{{ $item['name'] }}</p>
+                                        </td>
+                                        <td>
+                                            <input type="text" class="form-control " disabled name="bp"
+                                                id="bp" placeholder="" value="{{ $item['bp'] }}">
+                                        </td>
+                                        <td>
+                                            <input type="text" class="form-control " name="points" id="points"
+                                                value="{{ $item['points'] }}">
+                                        </td>
+                                        <td>
+                                            <input type="text" class="form-control " name="points" id="points">
+                                        </td>
+                                        <td>
+                                            <input type="text" class="form-control " disabled name="bp"
+                                                id="bp" placeholder="" value="{{ $item['bp'] }}">
+                                        </td>
+                                        <td>
+                                            <input type="text" class="form-control " name="points" id="points"
+                                                value="{{ $item['points'] }}">
+                                        </td>
+                                        <td>
+                                            <input type="text" class="form-control " name="points" id="points">
+                                        </td>
+                                    </tr>
+                                @endforeach
                             @endforeach
                         @endforeach
                     @endforeach
-                @endforeach
                 </tbody>
             </table>
         </div>
