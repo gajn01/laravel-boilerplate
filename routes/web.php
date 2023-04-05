@@ -15,6 +15,7 @@ use App\Http\Livewire\User\UserDetails;
 
 /* Settings */
 use App\Http\Livewire\Settings\Category;
+use App\Http\Livewire\Settings\CategoryDetails;
 use App\Http\Livewire\Settings\Sanitary;
 use App\Http\Livewire\Settings\StoreSettings;
 
@@ -37,4 +38,6 @@ Route::get('/user/information/{user_id?}',UserDetails::class)->name('information
 /* Settings */
 Route::get('/settings/store-settings',StoreSettings::class)->name('settings');
 Route::get('/settings/category',Category::class)->name('category');
+Route::get('/settings/category/details/{category_id?}',CategoryDetails::class)->name('category-details');
+
 Route::get('/settings/sanitary',Sanitary::class)->name('sanitary');

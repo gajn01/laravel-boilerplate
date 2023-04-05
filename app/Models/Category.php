@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class Category extends Model
 {
-    protected $fillable = ['name', 'type'];
+    protected $fillable = ['id','name', 'type'];
 
     public function subCategories()
     {
@@ -17,7 +17,7 @@ class Category extends Model
 
 class SubCategory extends Model
 {
-    protected $fillable = ['name', 'base_point', 'point', 'remarks', 'is_subcategory', 'file', 'category_id'];
+    protected $fillable = ['id','name', 'base_point', 'point', 'remarks', 'is_subcategory', 'file', 'category_id'];
 
     public function category()
     {
@@ -32,7 +32,7 @@ class SubCategory extends Model
 
 class SubSubCategory extends Model
 {
-    protected $fillable = ['name', 'base_point', 'point', 'remarks', 'file', 'sub_category_id'];
+    protected $fillable = ['id','name', 'base_point', 'point', 'remarks', 'file', 'sub_category_id'];
 
     public function subCategory()
     {
