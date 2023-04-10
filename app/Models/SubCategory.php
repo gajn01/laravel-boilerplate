@@ -16,12 +16,6 @@ class SubCategory extends Model
         return $this->belongsTo(Category::class);
     }
 
-    public function subSubCategories()
-    {
-        return $this->hasMany(SubCategoryLabel::class);
-    }
-
-
     public function labels()
     {
         return $this->hasMany(SubCategoryLabelModel::class, 'sub_category_id');

@@ -14,6 +14,8 @@ return new class extends Migration
         Schema::create('sub_category_labels', function (Blueprint $table) {
             $table->id();
             $table->string('name');
+            $table->integer('bp');
+            $table->boolean('is_all_nothing')->default(false);
             $table->foreignId('sub_category_id')->constrained('categories')->onDelete('cascade');
             $table->timestamps();
         });

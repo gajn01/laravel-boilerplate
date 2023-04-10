@@ -5,8 +5,6 @@ namespace App\Http\Livewire\Settings;
 use Livewire\Component;
 use App\Models\Category as CategoryModel;
 use App\Models\SubCategory as SubCategoryModel;
-use App\Models\SubCategoryLabel as SubCategoryLabelModel;
-
 
 class Category extends Component
 {
@@ -23,66 +21,6 @@ class Category extends Component
     public function mount()
     {
         $this->category_list = CategoryModel::all(['id', 'name', 'type'])->toArray();
-
-        $categories = CategoryModel::select(
-            'categories.*',
-            'sub_categories.name AS sub_category_name',
-            'sub_categories.id AS sub_category_id',
-            'sub_category_labels.name AS label_name',
-            'sub_category_labels.id AS label_id'
-        )
-            ->join('sub_categories', 'sub_categories.category_id', '=', 'categories.id')
-            ->join('sub_category_labels', 'sub_category_labels.sub_category_id', '=', 'sub_categories.id')
-            ->where('categories.id', 2)
-            ->get()->toArray();
-
-     /*    $this->test = [
-            [
-                'data_items' => [
-                    collect(SubCategoryModel::where('category_id', 2)->get())->map(function ($item) {
-                        return [
-                            'id' => $item['id'],
-                            'name' => $item['name'],
-                            'audit_label' => [
-                                collect(SubCategoryLabelModel::where('sub_category_id', $item['id'])->get())->map(function ($item) {
-                                                return [
-                                                    'id' => $item['id'],
-                                                    'name' => $item['name'],
-                                                    'points' => '',
-                                                    'remarks' => '',
-                                                ];
-                                            })
-
-                            ]
-                        ];
-                    }),
-
-                ],
-            ]
-        ]; */
-
-        $subCategories = SubCategoryModel::where('category_id', 2)->with('labels')->get();
-
-            $this->test = [
-                [
-                    'data_items' => $subCategories->map(function ($subCategory) {
-                        return [
-                            'id' => $subCategory->id,
-                            'name' => $subCategory->name,
-                            'audit_label' => $subCategory->labels->map(function ($label) {
-                                return [
-                                    'id' => $label->id,
-                                    'name' => $label->name,
-                                    'points' => '',
-                                    'remarks' => '',
-                                ];
-                            })
-                        ];
-                    })
-                ]
-            ];
-
-
 
     }
 

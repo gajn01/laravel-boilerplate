@@ -147,29 +147,6 @@
     </div>
 
 
-
-
-    @foreach ($test as $item)
-        @foreach ($item['data_items'] as $dataItem)
-            <h2>{{ $dataItem['name'] }}</h2>
-            <ul>
-                @foreach ($dataItem['audit_label'] as $auditLabel)
-                    <li>{{ $auditLabel['name'] }} - Points: {{ $auditLabel['points'] }} - Remarks:
-                        {{ $auditLabel['remarks'] }}</li>
-                @endforeach
-            </ul>
-        @endforeach
-    @endforeach
-
-
-
-
-
-
-
-
-
-
     <div wire:ignore class="modal fade" id="category_modal" tabindex="-1" data-bs-backdrop="static"
         data-bs-keyboard="false" role="dialog" aria-labelledby="modalTitleId" aria-hidden="true">
         <div class="modal-dialog modal-dialog-scrollable modal-dialog-centered modal-md" role="document">

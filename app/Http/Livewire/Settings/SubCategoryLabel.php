@@ -16,8 +16,8 @@ class SubCategoryLabel extends Component
     public $label_list =[];
     public $label_id;
     public $name;
-
-
+    public $is_all_nothing = false;
+    public $bp;
 
     public $searchTerm;
     public $modalTitle;
@@ -48,6 +48,8 @@ class SubCategoryLabel extends Component
         if ($label_id) {
             $label = SubCategoryLabelModel::findOrFail($label_id);
             $this->name  = $label->name;
+            $this->bp = $label->bp;
+            $this->is_all_nothing = $label->is_all_nothing;
         }
         $this->resetValidation();
         $this->label_id = $label_id;
@@ -65,6 +67,9 @@ class SubCategoryLabel extends Component
         }
         $label->name = $this->name;
         $label->sub_category_id = $this->sub_category_id;
+        $label->is_all_nothing = $this->is_all_nothing;
+        $label->bp = $this->bp;
+
         $label->save();
         $this->reset();
         $this->label_list = SubCategoryLabelModel::where('sub_category_id', $this->sub_category_id)->get()->toArray();
