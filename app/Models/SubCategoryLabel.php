@@ -14,4 +14,5 @@ class SubCategoryLabel extends Model
     {
         return $this->belongsTo(SubCategory::class);
     }
+
 }
