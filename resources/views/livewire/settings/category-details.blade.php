@@ -43,12 +43,13 @@
                         </tr>
                     </thead>
                     <tbody>
+
                         @if ($sub_category_list)
                             @foreach ($sub_category_list as $sub_category)
                                 <tr>
                                     <td class="cell">{{ $sub_category['name'] }}</td>
                                     <td class="cell">
-                                        <a href="{{ route('sub-category-label', ['category_id' => $category_id, 'sub_category_id' => $sub_category['id']], 'labels') }}">
+                                        <a href="{{ route('sub-category-label', [$category_id, $sub_category['id']]) }}">
                                             <svg class="icon" xmlns="http://www.w3.org/2000/svg"
                                                 viewBox="0 0 576 512">
                                                 <!--! Font Awesome Pro 6.3.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2023 Fonticons, Inc. -->

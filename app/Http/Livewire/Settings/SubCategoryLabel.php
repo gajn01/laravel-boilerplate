@@ -13,11 +13,12 @@ class SubCategoryLabel extends Component
     public $category_id;
     public $sub_category_id;
     public $sub_category_name;
-    public $label_list =[];
+    public $label_list = [];
     public $label_id;
     public $name;
     public $is_all_nothing = false;
     public $bp;
+    public $is_sub = false;
 
     public $searchTerm;
     public $modalTitle;
@@ -33,11 +34,12 @@ class SubCategoryLabel extends Component
         $this->category_id = $category_id;
         $this->sub_category_id = $sub_category_id;
 
-        $category = CategoryModel::findOrFail($category_id);
-        $category->type = $this->category_name;
+        $category = CategoryModel::where('id', $category_id)->first();
+        $this->category_name = $category->name;
 
         $sub_category = SubCategoryModel::findOrFail($sub_category_id);
         $this->sub_category_name = $sub_category->name;
+        $this->is_sub = $sub_category->is_sub;
 
         $this->label_list = SubCategoryLabelModel::where('sub_category_id', $sub_category_id)->get()->toArray();
     }
@@ -47,7 +49,7 @@ class SubCategoryLabel extends Component
     {
         if ($label_id) {
             $label = SubCategoryLabelModel::findOrFail($label_id);
-            $this->name  = $label->name;
+            $this->name = $label->name;
             $this->bp = $label->bp;
             $this->is_all_nothing = $label->is_all_nothing;
         }
@@ -67,19 +69,22 @@ class SubCategoryLabel extends Component
         }
         $label->name = $this->name;
         $label->sub_category_id = $this->sub_category_id;
-        $label->is_all_nothing = $this->is_all_nothing;
-        $label->bp = $this->bp;
-
+        if ($this->is_sub == 0) {
+            $label->is_all_nothing = $this->is_all_nothing;
+            $label->bp = $this->bp;
+        } else {
+            $label->is_all_nothing = 0;
+            $label->bp = 0;
+        }
         $label->save();
         $this->reset();
         $this->label_list = SubCategoryLabelModel::where('sub_category_id', $this->sub_category_id)->get()->toArray();
 
         $this->onAlert(false, 'Success', 'Label saved successfully!', 'success');
-        $this->dispatchBrowserEvent('remove-modal',['modalName' => '#label_modal']);
+        $this->dispatchBrowserEvent('remove-modal', ['modalName' => '#label_modal']);
         $this->emit('saved');
 
     }
-
 
     public function onAlert($is_confirm = false, $title = null, $message = null, $type = null, $data = null)
     {
@@ -95,6 +100,8 @@ class SubCategoryLabel extends Component
     {
         $this->name = '';
         $this->label_id = '';
+        $this->is_all_nothing = false;
+        $this->bp = '';
         $this->resetValidation();
     }
     public function onAlertSent($data)

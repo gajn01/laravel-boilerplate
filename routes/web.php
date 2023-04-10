@@ -1,6 +1,10 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+
+
+
+/* Dashboard */
 use App\Http\Livewire\Dashboard\Dashboard;
 
 /* Store */
@@ -17,10 +21,12 @@ use App\Http\Livewire\User\UserDetails;
 use App\Http\Livewire\Settings\Category;
 use App\Http\Livewire\Settings\CategoryDetails;
 use App\Http\Livewire\Settings\SubCategoryLabel;
+use App\Http\Livewire\Settings\SubSubCategoryLabel;
 use App\Http\Livewire\Settings\Sanitary;
 use App\Http\Livewire\Settings\StoreSettings;
 
 
+// $controller_path = 'App\Http\Livewire';
 
 /* Dashboard */
 Route::get('/',Dashboard::class)->name('dashboard');
@@ -41,6 +47,8 @@ Route::get('/settings/store-settings',StoreSettings::class)->name('settings');
 Route::get('/settings/category',Category::class)->name('category');
 Route::get('/settings/category/details/{category_id?}',CategoryDetails::class)->name('category-details');
 Route::get('/settings/category/details/{category_id?}/label/{sub_category_id?}',SubCategoryLabel::class)->name('sub-category-label');
+Route::get('/settings/category/details/{category_id?}/label/{sub_category_id?}/sub-category/{sub_sub_category_id?}',SubSubCategoryLabel::class)->name('sub-sub-category-label');
+
 
 
 Route::get('/settings/sanitary',Sanitary::class)->name('sanitary');

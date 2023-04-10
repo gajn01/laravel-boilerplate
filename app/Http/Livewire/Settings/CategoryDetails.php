@@ -11,7 +11,6 @@ class CategoryDetails extends Component
 {
     public $category_id;
     public $category_name;
-    public $category_type;
     public $sub_category_list;
     public $sub_category_id;
     public $sub_category_name;
@@ -40,9 +39,9 @@ class CategoryDetails extends Component
     public function mount($category_id = null)
     {
         $this->category_id = $category_id;
-        $category = CategoryModel::find($category_id);
-        $category->name = $this->category_name;
-        $category->type = $this->category_type;
+
+        $category = CategoryModel::where('id', $category_id)->first();
+        $this->category_name = $category->name;
 
         $this->sub_category_list = SubCategoryModel::where('category_id', $category_id)->get()->toArray();
     }
@@ -59,7 +58,7 @@ class CategoryDetails extends Component
         $sub_category->save();
 
         $this->reset();
-        $this->sub_category_list = SubCategoryModel::all(['id','name'])->toArray();
+        $this->sub_category_list = SubCategoryModel::where('category_id', $this->category_id)->get()->toArray();
         $this->onAlert(false, 'Success', 'Sub Category saved successfully!', 'success');
         $this->dispatchBrowserEvent('remove-modal',['modalName' => '#sub_category_label_modal']);
         $this->emit('saved');
