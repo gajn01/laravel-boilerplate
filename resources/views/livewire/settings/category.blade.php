@@ -14,17 +14,17 @@
                         <input type="text" id="search-docs" name="searchdocs" class="form-control search-docs"
                             placeholder="Search">
                     </div>
-                    <div class="col-auto">
+                  {{--   <div class="col-auto">
                         <a class="btn app-btn-primary" href="#" wire:click="test">Search</a>
-                    </div>
+                    </div> --}}
                 </form>
             </div>
             <!--//col-->
-        {{--     <div class="col-auto">
+            <div class="col-auto">
                 <div class="col-auto">
-                    <a class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#store_modal">Create</a>
+                    <a class="btn app-btn-primary"  data-bs-toggle="modal" data-bs-target="#category_modal">Create</a>
                 </div>
-            </div> --}}
+            </div>
         </div>
         <!--//row-->
     </div>
@@ -55,7 +55,7 @@
                             @endforeach
                         @else
                             <tr>
-                                <td colspan="2" >
+                                <td colspan="3" >
                                     <p class="text-center m-0">
                                         No data found.
                                     </p>
@@ -140,43 +140,26 @@
 
         </div>
     </div>
-    <div wire:ignore class="modal fade" id="store_modal" tabindex="-1" data-bs-backdrop="static" data-bs-keyboard="false" role="dialog" aria-labelledby="modalTitleId" aria-hidden="true">
+    <div wire:ignore class="modal fade" id="category_modal" tabindex="-1" data-bs-backdrop="static" data-bs-keyboard="false" role="dialog" aria-labelledby="modalTitleId" aria-hidden="true">
         <div class="modal-dialog modal-dialog-scrollable modal-dialog-centered modal-md" role="document">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="">Add Store</h5>
+                    <h5 class="modal-title" id="">Add Category</h5>
                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
                     <form wire:submit.prevent="onSave">
                         @csrf
                         <div class="mb-3">
-                            <label for="name" class="form-label">Store Name</label>
+                            <label for="name" class="form-label">Name</label>
                             <input type="text" class="form-control" wire:model="name" id="name" aria-describedby="helpId" placeholder="">
                         </div>
                         <div class="mb-3">
-                            <label for="code" class="form-label">Store Code</label>
-                            <input type="text" class="form-control" wire:model="code" id="code" aria-describedby="helpId" placeholder="">
-                        </div>
-                        <div class="mb-3">
-                            <label for="code" class="form-label">Store Head</label>
-                            <input type="text" class="form-control" wire:model="store_head" id="code" aria-describedby="helpId" placeholder="">
-                        </div>
-                        <div class="mb-3">
-                            <label for="type" class="form-label">Store Type</label>
+                            <label for="type" class="form-label">Type</label>
                             <select class="form-select form-select-md" wire:model="type" id="type">
                                 <option selected hidden>Select one</option>
                                 <option value="1">Cafe</option>
                                 <option value="0">Kiosk</option>
-                            </select>
-                        </div>
-                        <div class="mb-3">
-                            <label for="area" class="form-label">Store Area</label>
-                            <select class="form-select form-select-md" wire:model="area" id="area">
-                                <option selected hidden>Select one</option>
-                                <option value="MFO">MFO</option>
-                                <option value="South">South</option>
-                                <option value="North">North</option>
                             </select>
                         </div>
                     </form>
