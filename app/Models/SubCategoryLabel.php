@@ -8,9 +8,9 @@ use Illuminate\Database\Eloquent\Model;
 class SubCategoryLabel extends Model
 {
     use HasFactory;
-    protected $table = 'sub_categories_label';
 
-    protected $fillable = ['id', 'name', 'sub_category_id','bp','is_all_nothing'];
+    protected $table = 'sub_categories_label';
+    protected $fillable = ['id', 'name', 'sub_category_id', 'bp', 'is_all_nothing'];
 
     public function subCategory()
     {
@@ -19,13 +19,6 @@ class SubCategoryLabel extends Model
 
     public function subSubCategoryLabels()
     {
-        return $this->hasMany(SubSubCategoryLabel::class, 'sub_sub_category_id');
+        return $this->hasMany(SubSubCategoryLabel::class);
     }
-
-    public function subSubCategories()
-{
-    return $this->hasMany(SubSubCategoryLabel::class, 'sub_category_id');
-}
-
-
 }

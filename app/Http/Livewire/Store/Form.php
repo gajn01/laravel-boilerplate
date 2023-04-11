@@ -46,10 +46,12 @@ class Form extends Component
 
 
         $food_list = SubCategoryModel::with([
-            'labels' => function ($query) {
+            'subCategoryLabels' => function ($query) {
                 $query->select('id', 'name', 'is_all_nothing', 'bp', 'sub_category_id');
-            }
+            },
+            'category',
         ])->where('category_id', 2)->get();
+
         $this->food = [
             [
                 'data_items' => $food_list->map(function ($subCategory) {
@@ -59,15 +61,15 @@ class Form extends Component
                         'overall_score' => '100%',
                         'score' => '20',
                         'total_percentage' => '100%',
-                        'sub_category' => $subCategory->labels->map(function ($label) {
-                                    return [
-                                        'id' => $label->id,
-                                        'name' => $label->name,
-                                        'bp' => $label->is_all_nothing == 0 ? $label->bp : $label->bp . '*',
-                                        'points' => '',
-                                        'remarks' => '',
-                                    ];
-                                })
+                        'sub_category' => $subCategory->subCategoryLabels->map(function ($label) {
+                            return [
+                                'id' => $label->id,
+                                'name' => $label->name,
+                                'bp' => $label->is_all_nothing == 0 ? $label->bp : $label->bp . '*',
+                                'points' => '',
+                                'remarks' => '',
+                            ];
+                        })
                     ];
                 }),
                 'overall_score' => '100%',
@@ -76,8 +78,9 @@ class Form extends Component
             ]
         ];
 
+
         $production_list = SubCategoryModel::with([
-            'labels' => function ($query) {
+            'subCategoryLabels' => function ($query) {
                 $query->select('id', 'name', 'is_all_nothing', 'bp', 'sub_category_id');
             },
         ])->where('category_id', 3)->get();
@@ -90,7 +93,7 @@ class Form extends Component
                         'overall_score' => '100%',
                         'score' => '20',
                         'total_percentage' => '100%',
-                        'sub_category' => $subCategory->labels->map(function ($label) {
+                        'sub_category' => $subCategory->subCategoryLabels->map(function ($label) {
                             return [
                                 'id' => $label->id,
                                 'name' => $label->name,

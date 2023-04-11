@@ -4,13 +4,11 @@
     <nav aria-label="breadcrumb">
         <ol class="breadcrumb">
             <li class="breadcrumb-item "><a href="{{ route('category') }}">Category</a></li>
-            <li class="breadcrumb-item "><a href="{{ route('category') }}">{{ $category_name }}</a></li>
-            <li class="breadcrumb-item ">{{ $sub_category_name }}</li>
+            <li class="breadcrumb-item"><a href="{{ route('category-details', [$category_id]) }}">{{ $category_name }}</a></li>
+            <li class="breadcrumb-item"><a href="{{ route('sub-category-label', ['category_id' => $category_id, 'sub_category_id' => $sub_category_id]) }}">{{ $sub_category_name }}</a></li>
             <li class="breadcrumb-item active">{{ $sub_sub_category_name }}</li>
-
         </ol>
     </nav>
-
 
     <div class="page-utilities mb-3">
         <div class="row g-2 justify-content-start justify-content-md-end align-items-center">

@@ -1,15 +1,8 @@
 <?php
-
 namespace App\Http\Livewire\Settings;
-
-
 use Illuminate\Support\Facades\DB;
 use Livewire\Component;
-use App\Models\Category as CategoryModel;
-use App\Models\SubCategory as SubCategoryModel;
-use App\Models\SubCategoryLabel as SubCategoryLabelModel;
 use App\Models\SubSubCategoryLabel as SubSubCategoryLabelModel;
-
 class SubSubCategoryLabel extends Component
 {
     protected $listeners = ['alert-sent' => 'onAlertSent'];
@@ -55,7 +48,6 @@ class SubSubCategoryLabel extends Component
         $this->sub_category_name = $data[0]->sub_category_name;
         $this->sub_sub_category_name = $data[0]->sub_sub_category_name;
         $this->label_list = json_decode(json_encode($data->toArray()), true);
-
     }
     public function showModal($label_id = null)
     {
