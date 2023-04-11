@@ -16,21 +16,17 @@ class Sanitary extends Component
     public $searchTerm;
     public $modalTitle;
     public $modalButtonText;
-
     public function showModal($sanitary_id = null)
     {
-        if ($sanitary_id) {
-            $sanitary = SanitaryModel::findOrFail($sanitary_id);
-            $this->title = $sanitary->title;
-            $this->code = $sanitary->code;
-        }
+        $sanitary = SanitaryModel::find($sanitary_id);
+        $this->title =  optional($sanitary)->title;
+        $this->code =  optional($sanitary)->code;
         $this->resetValidation();
         $this->sanitary_id = $sanitary_id;
         $this->modalTitle = $this->sanitary_id ? 'Edit Sanitation Defect' : 'Add Sanitation Defect';
         $this->modalButtonText = $this->sanitary_id ? 'Update' : 'Add';
         $this->dispatchBrowserEvent('show-item-form');
     }
-
     public function render()
     {
         return view('livewire.settings.sanitary')->extends('layouts.app');
@@ -39,7 +35,6 @@ class Sanitary extends Component
     {
         $this->sanitary_list = SanitaryModel::all(['id', 'title', 'code'])->toArray();
     }
-
     public function onSave()
     {
         $this->validate(
@@ -48,20 +43,17 @@ class Sanitary extends Component
                 'code' => 'required',
             ]
         );
-
-        if ($this->sanitary_id) {
-            $sanitary = SanitaryModel::findOrFail($this->sanitary_id);
-        } else {
-            $sanitary = new SanitaryModel();
-        }
-        $sanitary->title = $this->title;
-        $sanitary->code = $this->code;
-        $sanitary->save();
-
+        SanitaryModel::updateOrCreate(
+            ['id' => $this->sanitary_id ?? null],
+            [
+                'title' => strip_tags($this->title),
+                'code' => strip_tags($this->code),
+            ]
+        );
         $this->reset();
         $this->sanitary_list = SanitaryModel::all(['id', 'title', 'code'])->toArray();
         $this->onAlert(false, 'Success', 'Sanitation defect saved successfully!', 'success');
-        $this->dispatchBrowserEvent('remove-modal',['modalName' => '#sanitaryModal']);
+        $this->dispatchBrowserEvent('remove-modal', ['modalName' => '#sanitaryModal']);
         $this->emit('saved');
     }
     public function onDelete($sanitary_id)
