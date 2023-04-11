@@ -30,7 +30,7 @@
                                     <h6 class="card-title product-name">{{ $dataItem['name'] }}</h6>
                                 </td>
                             </tr>
-                            @foreach ($dataItem['audit_label'] as $auditLabel)
+                            @foreach ($dataItem['sub_category'] as $auditLabel)
                                 <tr>
                                     <td class="product-audit">
                                         <p>{{ $auditLabel['name'] }}</p>
@@ -42,13 +42,13 @@
                                     </td>
                                     <td>
                                         <input type="text" class="form-control text-center"
-                                            wire:model="data.{{ $loop->parent->parent->index }}.data_items.{{ $loop->parent->index }}.audit_label.{{ $loop->index }}.points"
+                                            wire:model="data.{{ $loop->parent->parent->index }}.data_items.{{ $loop->parent->index }}.sub_category.{{ $loop->index }}.points"
                                             name="points{{ $auditLabel['name'] }}" id="points"
                                             value="{{ $auditLabel['points'] }}">
                                     </td>
                                     <td>
                                         <input type="text" class="form-control"
-                                            wire:model="data.{{ $loop->parent->parent->index }}.data_items.{{ $loop->parent->index }}.audit_label.{{ $loop->index }}.remarks"
+                                            wire:model="data.{{ $loop->parent->parent->index }}.data_items.{{ $loop->parent->index }}.sub_category.{{ $loop->index }}.remarks"
                                             name="remarks{{ $auditLabel['name'] }}" id="remarks"
                                             value="{{ $auditLabel['remarks'] }}">
                                     </td>
