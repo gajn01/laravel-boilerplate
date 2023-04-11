@@ -20,7 +20,6 @@ class SubSubCategoryLabel extends Component
     public $sub_sub_category_name;
     public $sub_sub_category_id;
     public $label_list = [];
-
     public $label_id;
     public $name;
     public $is_all_nothing = false;
@@ -28,7 +27,6 @@ class SubSubCategoryLabel extends Component
     public $searchTerm;
     public $modalTitle;
     public $modalButtonText;
-
     public function render()
     {
         return view('livewire.settings.sub-sub-category-label')->extends('layouts.app');
@@ -38,7 +36,6 @@ class SubSubCategoryLabel extends Component
         $this->category_id = $category_id;
         $this->sub_category_id = $sub_category_id;
         $this->sub_sub_category_id = $sub_sub_category_id;
-
         $data = DB::table('categories')
             ->join('sub_categories', 'categories.id', '=', 'sub_categories.category_id')
             ->join('sub_categories_label', 'sub_categories.id', '=', 'sub_categories_label.sub_category_id')
@@ -72,7 +69,6 @@ class SubSubCategoryLabel extends Component
         $this->modalButtonText = $label_id ? 'Update' : 'Add';
         $this->dispatchBrowserEvent('show-item-form');
     }
-
     public function onSave()
     {
         $labelData = [
@@ -93,7 +89,15 @@ class SubSubCategoryLabel extends Component
         $this->dispatchBrowserEvent('remove-modal', ['modalName' => '#sub_category_label_modal']);
         $this->emit('saved');
     }
-
+    public function onSearch()
+    {
+        $query = SubSubCategoryLabelModel::select('id', 'name', 'sub_sub_category_id', 'is_all_nothing', 'bp')
+            ->where('sub_sub_category_id', $this->sub_sub_category_id);
+        if ($this->searchTerm) {
+            $query->where('name', 'like', '%' . $this->searchTerm . '%');
+        }
+        $this->label_list = $query->get(['id', 'name', 'sub_sub_category_id', 'is_all_nothing', 'bp'])->toArray();
+    }
     public function onDelete($id)
     {
         $store = SubSubCategoryLabelModel::find($id);
@@ -103,7 +107,6 @@ class SubSubCategoryLabel extends Component
         }));
         $this->emit('saved');
     }
-
     public function onAlert($is_confirm = false, $title = null, $message = null, $type = null, $data = null)
     {
         $alert = $is_confirm ? 'confirm-alert' : 'show-alert';

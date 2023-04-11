@@ -20,7 +20,7 @@
                 <form class="docs-search-form row gx-1 align-items-center">
                     <div class="col-auto">
                         <input type="text" id="search-docs" name="searchdocs" class="form-control search-docs"
-                        wire:model.debounce.500ms="searchTerm" wire:keyup="onSearch" placeholder="Search">
+                            wire:model.debounce.500ms="searchTerm" wire:keyup="onSearch" placeholder="Search">
                     </div>
                     {{--   <div class="col-auto">
                         <a class="btn app-btn-primary" href="#" wire:click="test">Search</a>
@@ -152,7 +152,8 @@
             <div class="modal-content">
                 <div class="modal-header">
                     <h5 class="modal-title" id=""> {{ $modalTitle }}</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" wire:click="reset"></button>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"
+                        wire:click="reset"></button>
                 </div>
                 <div class="modal-body">
                     <form wire:submit.prevent="onSave">
@@ -211,7 +212,7 @@
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-primary"
-                    wire:click="onSave">{{ $modalButtonText }}</button>
+                        wire:click="onSave">{{ $modalButtonText }}</button>
                 </div>
             </div>
         </div>
