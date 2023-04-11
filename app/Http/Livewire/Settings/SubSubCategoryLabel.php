@@ -1,8 +1,10 @@
 <?php
 namespace App\Http\Livewire\Settings;
+
 use Illuminate\Support\Facades\DB;
 use Livewire\Component;
 use App\Models\SubSubCategoryLabel as SubSubCategoryLabelModel;
+
 class SubSubCategoryLabel extends Component
 {
     protected $listeners = ['alert-sent' => 'onAlertSent'];
@@ -29,10 +31,9 @@ class SubSubCategoryLabel extends Component
         $this->category_id = $category_id;
         $this->sub_category_id = $sub_category_id;
         $this->sub_sub_category_id = $sub_sub_category_id;
-        $data = DB::table('categories')
-            ->join('sub_categories', 'categories.id', '=', 'sub_categories.category_id')
-            ->join('sub_categories_label', 'sub_categories.id', '=', 'sub_categories_label.sub_category_id')
-            ->join('sub_sub_categories', 'sub_categories_label.id', '=', 'sub_sub_categories.sub_sub_category_id')
+        $data = SubSubCategoryLabelModel::join('sub_categories_label', 'sub_categories_label.id', '=', 'sub_sub_categories.sub_sub_category_id')
+            ->join('sub_categories', 'sub_categories.id', '=', 'sub_categories_label.sub_category_id')
+            ->join('categories', 'categories.id', '=', 'sub_categories.category_id')
             ->select(
                 'categories.name as category_name',
                 'sub_categories.name as sub_category_name',
@@ -41,13 +42,14 @@ class SubSubCategoryLabel extends Component
             )
             ->where('categories.id', '=', $category_id)
             ->where('sub_categories.id', '=', $sub_category_id)
-            ->where('sub_categories_label.id', '=', $sub_sub_category_id)
             ->get();
 
-        $this->category_name = $data[0]->category_name;
-        $this->sub_category_name = $data[0]->sub_category_name;
-        $this->sub_sub_category_name = $data[0]->sub_sub_category_name;
-        $this->label_list = json_decode(json_encode($data->toArray()), true);
+        if ($data->isNotEmpty()) {
+            $this->category_name = $data[0]->category_name ?? '';
+            $this->sub_category_name = $data[0]->sub_category_name ?? '';
+            $this->sub_sub_category_name = $data[0]->sub_sub_category_name ?? '';
+        }
+        $this->label_list = SubSubCategoryLabelModel::where('sub_sub_category_id', $sub_sub_category_id)->get()->toArray();
     }
     public function showModal($label_id = null)
     {

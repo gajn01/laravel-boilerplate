@@ -59,7 +59,7 @@ class SubCategoryLabel extends Component
     }
     public function onSave()
     {
-        $label = SubCategoryLabelModel::updateOrCreate(
+        SubCategoryLabelModel::updateOrCreate(
             ['id' => $this->label_id],
             [
                 'name' => $this->name,
