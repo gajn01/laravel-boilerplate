@@ -94,7 +94,7 @@ searchMobileTrigger.addEventListener('click', () => {
 window.addEventListener('show-alert', showAlert);
 window.addEventListener('confirm-alert', showConfirm);
 function showAlert(event) {
-    swal(event.detail.title, event.detail.message, event.detail.type, { timer: 1500, button: false });
+    swal(event.detail.title, event.detail.message, event.detail.type, { timer: 1000, button: false });
 }
 function showConfirm(event) {
     swal({
@@ -106,7 +106,7 @@ function showConfirm(event) {
     })
         .then((willDelete) => {
             if (willDelete) {
-                swal("Success", "Successfully deleted", "success", { timer: 1500, button: false });
+                swal("Success", "Successfully deleted", "success", { timer: 1000, button: false });
                 Livewire.emit('alert-sent', event.detail.data);
             }
         });

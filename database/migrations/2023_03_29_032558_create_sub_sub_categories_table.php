@@ -14,11 +14,9 @@ return new class extends Migration
         Schema::create('sub_sub_categories', function (Blueprint $table) {
             $table->id();
             $table->string('name');
-            $table->integer('base_point');
-            $table->integer('point');
-            $table->string('remarks');
-            $table->string('file');
-            $table->foreignId('sub_category_id')->constrained('sub_categories')->onDelete('cascade');
+            $table->integer('bp');
+            $table->boolean('is_all_nothing')->default(false);
+            $table->foreignId('sub_sub_category_id');
             $table->timestamps();
         });
     }

@@ -6,9 +6,6 @@
             <li class="breadcrumb-item "><a href="{{ route('category') }}">Category</a></li>
             <li class="breadcrumb-item active">{{ $category_name }}</li>
             <li class="breadcrumb-item active">{{ $sub_category_name }}</li>
-
-
-
         </ol>
     </nav>
 
@@ -42,7 +39,7 @@
                 <table class="table app-table-hover mb-0 text-left">
                     <thead>
                         <tr>
-                            <th class="cell">Sub Label</th>
+                            <th class="cell">Name</th>
                             <th class="cell">Action</th>
                         </tr>
                     </thead>
