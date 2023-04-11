@@ -1,10 +1,7 @@
 <?php
-
 namespace App\Http\Livewire\Settings;
-
 use Livewire\Component;
 use App\Models\Store as StoreModel;
-
 class StoreSettings extends Component
 {
     protected $listeners = ['alert-sent' => 'onAlertSent'];
@@ -18,18 +15,14 @@ class StoreSettings extends Component
     public $searchTerm;
     public $modalTitle;
     public $modalButtonText;
-
     public function mount()
     {
         $this->store_list = StoreModel::all(['id','code', 'name', 'type', 'store_head', 'area'])->toArray();
     }
-
     public function render()
     {
         return view('livewire.settings.store-settings')->extends('layouts.app');
     }
-
-
     public function onSearch()
     {
         $this->store_list = StoreModel::where('code', 'like', '%'.$this->searchTerm.'%')
@@ -42,21 +35,20 @@ class StoreSettings extends Component
     }
     public function showModal($store_id = null)
     {
-        if ($store_id) {
-            $store = StoreModel::findOrFail($store_id);
-            $this->name = $store->name;
-            $this->code = $store->code;
-            $this->type = $store->type;
-            $this->area = $store->area;
-            $this->store_head = $store->store_head;
-        }
+        $store = StoreModel::find($store_id);
+        $this->name =  optional($store)->name;
+        $this->code =  optional($store)->code;
+        $this->type =  optional($store)->type;
+        $this->area =  optional($store)->area;
+        $this->store_head =  optional($store)->store_head;
+
+        $this->resetValidation();
         $this->resetValidation();
         $this->store_id = $store_id;
         $this->modalTitle = $this->store_id ? 'Edit Store' : 'Add Store';
         $this->modalButtonText = $this->store_id ? 'Update' : 'Add';
         $this->dispatchBrowserEvent('show-item-form');
     }
-
     public function onSave()
     {
         $this->validate(
@@ -68,27 +60,22 @@ class StoreSettings extends Component
                 'area' => 'required|in:MFO,South,North',
             ]
         );
-
-        if ($this->store_id) {
-            $store = StoreModel::findOrFail($this->store_id);
-        } else {
-            $store = new StoreModel();
-        }
-        $store->name = $this->name;
-        $store->code = $this->code;
-        $store->store_head = $this->store_head;
-        $store->type = $this->type;
-        $store->area = $this->area;
-        $store->save();
-
+        StoreModel::updateOrCreate(
+            ['id' => $this->store_id ?? null],
+            [
+                'name' => strip_tags($this->name),
+                'code' => strip_tags($this->code),
+                'store_head' => strip_tags($this->store_head),
+                'type' => strip_tags($this->type),
+                'area' => strip_tags($this->area),
+            ]
+        );
         $this->reset();
         $this->store_list = StoreModel::all(['id','code', 'name', 'type', 'store_head', 'area'])->toArray();
         $this->onAlert(false, 'Success', 'Store saved successfully!', 'success');
         $this->dispatchBrowserEvent('remove-modal',['modalName' => '#store_modal']);
         $this->emit('saved');
-
     }
-
     public function onDelete($store_id)
     {
         $store = StoreModel::find($store_id);
