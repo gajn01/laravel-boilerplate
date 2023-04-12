@@ -36,62 +36,51 @@
                 <thead>
                     <tr>
                         <td class="w-25"></td>
-                        <td class="audit-points">CLN BS </td>
-                        <td class="audit-points">Score</td>
+                        <td class="audit-points">BP</td>
+                        <td class="audit-points">Points</td>
                         <td>Remarks</td>
-                        <td class="audit-points">CON BS </td>
-                        <td class="audit-points">Score</td>
-                        <td>Remarks</td>
+
                     </tr>
                 </thead>
                 <tbody>
                     @foreach ($data as $item)
-                        @foreach ($item['data_items'] as $item_name)
-                            <tr id="{{ $item_name['name'] }}">
-                                <td colspan="8" class="product-name">
-                                    <p class="m-0">{{ $item_name['name'] }}</p>
-                                </td>
-                            </tr>
-                            @foreach ($item_name['sub_category'] as $sub)
-                                @if ($sub['name'])
-                                    <tr>
-                                        <td class="product-sub-category " colspan="8">
-                                            <p>{{ $sub['name'] }}</p>
-                                        </td>
-                                    </tr>
-                                @endif
-                                @foreach ($sub['label'] as $item)
-                                    <tr>
-                                        <td class="product-audit">
-                                            <p>{{ $item['name'] }}</p>
-                                        </td>
-                                        <td>
-                                            <input type="text" class="form-control " disabled name="bp"
-                                                id="bp" placeholder="" value="{{ $item['bp'] }}">
-                                        </td>
-                                        <td>
-                                            <input type="text" class="form-control " name="points" id="points"
-                                                value="{{ $item['points'] }}">
-                                        </td>
-                                        <td>
-                                            <input type="text" class="form-control " name="points" id="points">
-                                        </td>
-                                        <td>
-                                            <input type="text" class="form-control " disabled name="bp"
-                                                id="bp" placeholder="" value="{{ $item['bp'] }}">
-                                        </td>
-                                        <td>
-                                            <input type="text" class="form-control " name="points" id="points"
-                                                value="{{ $item['points'] }}">
-                                        </td>
-                                        <td>
-                                            <input type="text" class="form-control " name="points" id="points">
-                                        </td>
-                                    </tr>
-                                @endforeach
+                    @foreach ($item['data_items'] as $item_name)
+                        <tr id="{{ $item_name['name'] }}">
+                            <td colspan="4">
+                                <h6 class="card-title product-name">{{ $item_name['name'] }}</h6>
+                            </td>
+                        </tr>
+                        @foreach ($item_name['sub_category'] as $sub)
+                            @if ($sub['name'])
+                                <tr>
+                                    <td class="product-sub-category " colspan="4">
+                                        <p>{{ $sub['name'] }}</p>
+                                    </td>
+                                </tr>
+                            @endif
+                            @foreach ($sub['label'] as $item)
+                                <tr>
+                                    <td class="product-audit">
+                                        <p>{{ $item['name'] }}</p>
+                                    </td>
+                                    <td>
+                                        <input type="text" class="form-control  text-center" disabled
+                                            name="bp" id="bp" placeholder=""
+                                            value="{{ $item['bp'] }}">
+                                    </td>
+                                    <td>
+                                        <input type="text" class="form-control  text-center" name="points"
+                                            id="points" value="{{ $item['points'] }}">
+                                    </td>
+                                    <td>
+                                        <input type="text" class="form-control" name="remarks{{ $item['name'] }}"
+                                            id="remarks" value="{{ $item['remarks'] }}">
+                                    </td>
+                                </tr>
                             @endforeach
                         @endforeach
                     @endforeach
+                @endforeach
                 </tbody>
             </table>
         </div>

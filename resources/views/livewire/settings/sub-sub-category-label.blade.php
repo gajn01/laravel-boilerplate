@@ -4,8 +4,11 @@
     <nav aria-label="breadcrumb">
         <ol class="breadcrumb">
             <li class="breadcrumb-item "><a href="{{ route('category') }}">Category</a></li>
-            <li class="breadcrumb-item"><a href="{{ route('category-details', [$category_id]) }}">{{ $category_name }}</a></li>
-            <li class="breadcrumb-item"><a href="{{ route('sub-category-label', ['category_id' => $category_id, 'sub_category_id' => $sub_category_id]) }}">{{ $sub_category_name }}</a></li>
+            <li class="breadcrumb-item"><a href="{{ route('category-details', [$category_id]) }}">{{ $category_name }}</a>
+            </li>
+            <li class="breadcrumb-item"><a
+                    href="{{ route('sub-category-label', ['category_id' => $category_id, 'sub_category_id' => $sub_category_id]) }}">{{ $sub_category_name }}</a>
+            </li>
             <li class="breadcrumb-item active">{{ $sub_sub_category_name }}</li>
         </ol>
     </nav>
@@ -151,15 +154,58 @@
                             <label for="name" class="form-label">Name</label>
                             <input type="text" class="form-control" wire:model="name" id="name">
                         </div>
+
                         <div class="mb-3">
                             <label for="name" class="form-label">Base Points</label>
                             <input type="number" class="form-control" wire:model="bp" id="bp">
+                            <div class="form-check form-switch">
+                                <input class="form-check-input" type="checkbox" id="toggle-switch"
+                                    wire:model="is_all_nothing">
+                                <label class="form-check-label" for="toggle-switch">All Or Nothing</label>
+                            </div>
                         </div>
-                        <div class="form-check form-switch">
-                            <input class="form-check-input" type="checkbox" id="toggle-switch"
-                                wire:model="is_all_nothing">
-                            <label class="form-check-label" for="toggle-switch">All Or Nothing</label>
-                        </div>
+                    {{--     @if ($category_id != 4)
+                            <div class="mb-3">
+                                <label for="name" class="form-label">Base Points</label>
+                                <input type="number" class="form-control" wire:model="bp" id="bp">
+                                <div class="form-check form-switch">
+                                    <input class="form-check-input" type="checkbox" id="toggle-switch"
+                                        wire:model="is_all_nothing">
+                                    <label class="form-check-label" for="toggle-switch">All Or Nothing</label>
+                                </div>
+                            </div>
+                        @else
+                            <div class="mb-1">
+                                <label for="name" class="form-label">Base Points</label>
+                            </div>
+                            <div class="row">
+                                <div class="col-sm-6 col-6">
+                                    <label for="name" class="form-label">Cleanliness</label>
+                                    <input type="number" class="form-control" wire:model="cln_bp" id="cln_bp">
+                                    <div class="form-check form-switch">
+                                        <input class="form-check-input" type="checkbox" id="toggle-switch"
+                                            wire:model="cln_is_all">
+                                        <label class="form-check-label" for="toggle-switch">All Or Nothing</label>
+                                    </div>
+
+                                </div>
+                                <div class="col-sm-6 col-6">
+                                    <label for="name" class="form-label">Condition</label>
+
+                                    <input type="number" class="form-control" wire:model="con_bp" id="con_bp">
+                                    <div class="form-check form-switch">
+                                        <input class="form-check-input" type="checkbox" id="toggle-switch"
+                                            wire:model="con_is_all">
+                                        <label class="form-check-label" for="toggle-switch">All Or Nothing</label>
+                                    </div>
+                                </div>
+                            </div>
+                        @endif
+ --}}
+
+
+
+
 
                     </form>
                 </div>

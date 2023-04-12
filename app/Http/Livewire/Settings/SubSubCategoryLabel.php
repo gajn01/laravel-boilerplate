@@ -22,6 +22,11 @@ class SubSubCategoryLabel extends Component
     public $searchTerm;
     public $modalTitle;
     public $modalButtonText;
+
+    public $cln_bp;
+    public $cln_is_all;
+    public $con_bp;
+    public $con_is_all;
     public function render()
     {
         return view('livewire.settings.sub-sub-category-label')->extends('layouts.app');
