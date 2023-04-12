@@ -1,16 +1,10 @@
 <?php
-
 namespace App\Http\Livewire\Store;
-
 use Livewire\Component;
 use App\Models\SubCategory as SubCategoryModel;
 use App\Models\SubSubCategoryLabel as SubSubCategoryLabelModel;
-
-
-
 class Form extends Component
 {
-
     public $store_name;
     /* Audit Category */
     public $food = [];
@@ -19,7 +13,6 @@ class Form extends Component
     public $clean = [];
     public $document = [];
     public $people = [];
-
     public $lslp = [];
     public $lcm = [
         [
@@ -43,15 +36,12 @@ class Form extends Component
     public function mount($store_name = null)
     {
         $this->store_name = $store_name;
-
-
         $food_list = SubCategoryModel::with([
             'subCategoryLabels' => function ($query) {
                 $query->select('id', 'name', 'is_all_nothing', 'bp', 'sub_category_id');
             },
             'category',
         ])->where('category_id', 2)->get();
-
         $this->food = [
             [
                 'data_items' => $food_list->map(function ($subCategory) {
@@ -77,8 +67,6 @@ class Form extends Component
                 'total_percentage' => '100%',
             ]
         ];
-
-
         $production_list = SubCategoryModel::with([
             'subCategoryLabels' => function ($query) {
                 $query->select('id', 'name', 'is_all_nothing', 'bp', 'sub_category_id');
@@ -115,8 +103,6 @@ class Form extends Component
                 'total_percentage' => '100%',
             ]
         ];
-
-
         $this->service = [
             [
                 'data_items' => [

@@ -1,10 +1,8 @@
 <?php
 namespace App\Http\Livewire\Settings;
-
 use Livewire\Component;
 use App\Models\Category as CategoryModel;
 use App\Models\SubCategory as SubCategoryModel;
-
 class CategoryDetails extends Component
 {
     protected $listeners = ['alert-sent' => 'onAlertSent'];
@@ -25,7 +23,7 @@ class CategoryDetails extends Component
     {
         $sub_category = SubCategoryModel::find($sub_category_id);
         $this->sub_category_name = optional($sub_category)->name;
-        $this->is_sub = optional($sub_category)->is_sub;
+        $this->is_sub = optional($sub_category)->is_sub ?? 0;
         $this->resetValidation();
         $this->sub_category_id = $sub_category_id;
         $this->modalTitle = $this->sub_category_id ? 'Edit Sub Category' : 'Add Sub Category';
@@ -45,19 +43,21 @@ class CategoryDetails extends Component
             'sub_category_name' => 'required|max:255',
         ]);
         $sub_category_name = strip_tags($this->sub_category_name);
+        $is_sub = strip_tags($this->is_sub);
         SubCategoryModel::updateOrCreate(
             ['id' => $this->sub_category_id ?? null],
             [
                 'name' => $sub_category_name,
                 'category_id' => $this->category_id,
-                'is_sub' => $this->is_sub,
+                'is_sub' => intval($is_sub ?? 0),
             ]
         );
         $this->reset();
         $this->sub_category_list = SubCategoryModel::where('category_id', $this->category_id)->get()->toArray();
-        $this->onAlert(false, 'Success', 'Sub Category saved successfully!', 'success');
+        $this->onAlert(false, 'Success', 'Sub category saved successfully!', 'success');
         $this->dispatchBrowserEvent('remove-modal', ['modalName' => '#sub_category_label_modal']);
         $this->emit('saved');
+
     }
     public function onSearch()
     {

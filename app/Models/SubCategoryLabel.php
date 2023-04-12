@@ -21,4 +21,8 @@ class SubCategoryLabel extends Model
     {
         return $this->hasMany(SubSubCategoryLabel::class);
     }
+    public function labels()
+    {
+        return $this->hasMany(SubSubCategoryLabel::class);
+    }
 }
