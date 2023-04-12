@@ -34,14 +34,14 @@
             role="tab" aria-controls="people" aria-selected="false">People</a>
     </nav>
 
-    <div class="tab-content" id="audit-form-tab-content">
+    <div class="tab-content" id="audit-form-tab-content"  wire:ignore>
         {{-- Service Forms --}}
         <div class="tab-pane fade show active" id="service" role="tabpanel" aria-labelledby="service-tab">
             <livewire:component.service-form :data="$service" :lcm="$lcm">
         </div>
 
         {{-- Food Forms --}}
-        <div class="tab-pane fade show " id="food" role="tabpanel" aria-labelledby="food-tab">
+        <div class="tab-pane fade show "  id="food" role="tabpanel" aria-labelledby="food-tab">
             <div class="row g-4 mb-4">
                 <div class="col-12 col-lg-6">
                     <div class="app-card app-card-chart h-100 shadow-sm">
@@ -81,7 +81,7 @@
                 <!--//col-->
             </div>
 
-            <livewire:component.food-form :data="$food" :lcm="$lcm">
+            <livewire:component.food-form  :lcm="$lcm">
         </div>
 
         {{-- production Forms --}}

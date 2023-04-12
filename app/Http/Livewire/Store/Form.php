@@ -8,6 +8,8 @@ class Form extends Component
     public $store_name;
     /* Audit Category */
     public $food = [];
+    public $data;
+
     public $production = [];
     public $service = [];
     public $clean = [];
@@ -88,6 +90,7 @@ class Form extends Component
                                 'bp' => $label->is_all_nothing == 0 ? $label->bp : $label->bp . '*',
                                 'points' => '',
                                 'remarks' => '',
+                                'tag' => '',
                             ];
                         })
                     ];
@@ -241,7 +244,5 @@ class Form extends Component
                 'total_percentage' => '100%',
             ]
         ];
-
     }
-
 }
