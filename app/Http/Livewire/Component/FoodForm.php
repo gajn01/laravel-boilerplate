@@ -3,8 +3,8 @@
 namespace App\Http\Livewire\Component;
 
 use Livewire\Component;
-use App\Models\Category as CategoryModel;
 use App\Models\SubCategory as SubCategoryModel;
+use App\Models\DropdownMenu as DropdownMenuModel;
 
 
 
@@ -25,7 +25,7 @@ class FoodForm extends Component
 
         $food_list = SubCategoryModel::with([
             'subCategoryLabels' => function ($query) {
-                $query->select('id', 'name', 'is_all_nothing', 'bp', 'sub_category_id');
+                $query->select('id', 'name', 'is_all_nothing', 'bp', 'sub_category_id', 'dropdown_id');
             },
             'category',
         ])->where('category_id', 2)->get();
@@ -48,9 +48,7 @@ class FoodForm extends Component
                                         'points' => '',
                                         'remarks' => '',
                                         'tag' => '',
-                                        'dropdown'=> [
-                                             SubCategoryModel::where('category_id', 1)->get()->toArray()
-                                        ]
+                                        'dropdown'=> DropdownMenuModel::where('dropdown_id', $label->dropdown_id)->get()->toArray()
                                     ];
                                 })
                     ];

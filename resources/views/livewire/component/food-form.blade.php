@@ -52,27 +52,26 @@
                                             value="{{ $auditLabel['remarks'] }}">
                                     </td>
                                     <td>
-                                        <input type="text" class="form-control" list="search1_list"
-                                            wire:model.debounce.500ms="food.{{ $loop->parent->parent->index }}.data_items.{{ $loop->parent->index }}.sub_category.{{ $loop->index }}.tag"
-                                            wire:keyup="onSearchDropdown"
-                                            name="tag{{ $auditLabel['name'] }}" id="tag"
-                                            value="{{ $auditLabel['tag'] }}">
-                                        @if (!empty($search1_results))
+                                        {{--  @if (!empty($search1_results))
                                             <datalist id="search1_list">
                                                 @foreach ($search1_results as $result)
                                                     <option value="{{ $result['name'] }}">
                                                 @endforeach
                                             </datalist>
-                                        @endif
-                                     {{--    <select class="form-control"
-                                            wire:model="food.{{ $loop->parent->parent->index }}.data_items.{{ $loop->parent->index }}.sub_category.{{ $loop->index }}.tag"
-                                            name="tag{{ $auditLabel['name'] }}" id="tag">
-                                            <option value="">Select a category</option>
-                                                @foreach ($search1_results as $result)
-                                                    <option value="{{ $result['name'] }}">{{ $result['name'] }}
-                                                    </option>
+                                        @endif --}}
+                                        @if (!empty($auditLabel['dropdown']))
+                                            <select class="form-select form-select-md"
+                                                wire:model="food.{{ $loop->parent->parent->index }}.data_items.{{ $loop->parent->index }}.sub_category.{{ $loop->index }}.tag"
+                                                name="tag{{ $auditLabel['name'] }}" id="tag">
+                                                <option value="0">Select a tag</option>
+                                                @foreach ($auditLabel['dropdown'] as $result)
+                                                    @if (isset($result['name']))
+                                                        <option value="{{ $result['id'] }}">{{ $result['name'] }}
+                                                        </option>
+                                                    @endif
                                                 @endforeach
-                                        </select> --}}
+                                            </select>
+                                        @endif
 
                                     </td>
                                 </tr>
