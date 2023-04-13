@@ -24,6 +24,8 @@ use App\Http\Livewire\Settings\SubCategoryLabel;
 use App\Http\Livewire\Settings\SubSubCategoryLabel;
 use App\Http\Livewire\Settings\Sanitary;
 use App\Http\Livewire\Settings\StoreSettings;
+use App\Http\Livewire\Settings\Dropdown;
+use App\Http\Livewire\Settings\DropdownMenu;
 
 
 // $controller_path = 'App\Http\Livewire';
@@ -48,7 +50,8 @@ Route::get('/settings/category',Category::class)->name('category');
 Route::get('/settings/category/details/{category_id?}',CategoryDetails::class)->name('category-details');
 Route::get('/settings/category/details/{category_id?}/label/{sub_category_id?}',SubCategoryLabel::class)->name('sub-category-label');
 Route::get('/settings/category/details/{category_id?}/label/{sub_category_id?}/sub-category/{sub_sub_category_id?}',SubSubCategoryLabel::class)->name('sub-sub-category-label');
-
-
-
 Route::get('/settings/sanitary',Sanitary::class)->name('sanitary');
+Route::get('/settings/dropdown',Dropdown::class)->name('dropdown');
+Route::get('/settings/dropdown/{dropdown_id?}',DropdownMenu::class)->name('dropdown-menu');
+
+
