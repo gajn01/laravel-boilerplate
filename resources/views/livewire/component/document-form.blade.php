@@ -40,7 +40,6 @@
                         <th class="cell audit-points">Score</th>
                         <th class="cell">Remarks</th>
                         <th class="cell">Deviation</th>
-
                     </tr>
                 </thead>
                 <tbody>

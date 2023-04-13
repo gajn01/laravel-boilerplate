@@ -14,7 +14,11 @@ return new class extends Migration
         Schema::create('dropdown_menu', function (Blueprint $table) {
             $table->id();
             $table->string('name');
-            $table->foreign('dropdown_id');
+            $table->unsignedBigInteger('dropdown_id');
+            $table->foreign('dropdown_id')
+                  ->references('id')
+                  ->on('dropdown')
+                  ->onDelete('cascade');
             $table->timestamps();
         });
     }

@@ -205,7 +205,7 @@
                                     <td>
                                         <input type="text" class="form-control text-center" disabled
                                             name="bp{{ $auditLabel['name'] }}" id="bp" placeholder=""
-                                            value="{{ $auditLabel['bp'] }}">
+                                            value="{{ $auditLabel['is_all_nothing'] }}">
                                     </td>
                                     <td>
                                         <input type="text" class="form-control text-center"

@@ -55,7 +55,6 @@ class StoreSettings extends Component
             [
                 'name' => 'required|max:255',
                 'code' => 'required' ,
-                'store_head' => 'required|max:255',
                 'type' => 'required|in:0,1',
                 'area' => 'required|in:MFO,South,North',
             ]

@@ -59,7 +59,6 @@
                                         </td>
                                     </tr>
                                 @endif
-
                                 @foreach ($sub_category['label'] as $auditLabel)
                                     <tr>
                                         <td class="product-audit">
