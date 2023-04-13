@@ -16,6 +16,7 @@ class Sanitary extends Component
     public $searchTerm;
     public $modalTitle;
     public $modalButtonText;
+    public $limit = 10;
     public function showModal($sanitary_id = null)
     {
         $sanitary = SanitaryModel::find($sanitary_id);
@@ -27,14 +28,43 @@ class Sanitary extends Component
         $this->modalButtonText = $this->sanitary_id ? 'Update' : 'Add';
         $this->dispatchBrowserEvent('show-item-form');
     }
+
+
     public function render()
+    {
+        $sanitary = SanitaryModel::select('id', 'title', 'code')->paginate($this->limit);
+        $this->sanitary_list = $sanitary->toArray();
+        return view('livewire.settings.sanitary', ['sanitary_list' => $sanitary])->extends('layouts.app');
+    }
+
+    public function onSearch()
+    {
+        $searchTerm = '%' . $this->searchTerm . '%';
+        $sanitary = SanitaryModel::where('title', 'like', $searchTerm)
+            ->orWhere('code', 'like', $searchTerm)
+            ->paginate($this->limit);
+
+        $this->sanitary_list = $sanitary->toArray();
+        $this->render();
+    }
+
+/*     public function render()
     {
         return view('livewire.settings.sanitary')->extends('layouts.app');
     }
     public function mount()
     {
-        $this->sanitary_list = SanitaryModel::all(['id', 'title', 'code'])->toArray();
+        $sanitary = SanitaryModel::select('id', 'title', 'code')->paginate($this->limit);
+        $this->sanitary_list = $sanitary->toArray();
     }
+    public function onSearch()
+    {
+        $searchTerm = '%' . $this->searchTerm . '%';
+        $this->sanitary_list = SanitaryModel::where('title', 'like', $searchTerm)
+            ->orWhere('code', 'like', $searchTerm)
+            ->get(['id', 'title', 'code'])
+            ->toArray();
+    } */
     public function onSave()
     {
         $this->validate(
@@ -63,14 +93,7 @@ class Sanitary extends Component
         $this->sanitary_list = SanitaryModel::all(['id', 'title', 'code'])->toArray();
         $this->emit('saved');
     }
-    public function onSearch()
-    {
-        $searchTerm = '%' . $this->searchTerm . '%';
-        $this->sanitary_list = SanitaryModel::where('title', 'like', $searchTerm)
-            ->orWhere('code', 'like', $searchTerm)
-            ->get(['id', 'title', 'code'])
-            ->toArray();
-    }
+
     public function onAlert($is_confirm = false, $title = null, $message = null, $type = null, $data = null)
     {
         $alert = $is_confirm ? 'confirm-alert' : 'show-alert';

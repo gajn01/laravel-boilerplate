@@ -11,8 +11,8 @@
             <div class="col-auto">
                 <form class="docs-search-form row gx-1 align-items-center">
                     <div class="col-auto">
-                        <input type="text" id="search-docs" name="searchdocs" class="form-control search-docs"
-                            wire:model.debounce.500ms="searchTerm" wire:keyup="onSearch" placeholder="Search">
+                            <input type="text" id="search-docs" name="searchdocs" class="form-control search-docs" wire:model.debounce.500ms="searchTerm" wire:keyup="onSearch" placeholder="Search">
+
                     </div>
                     {{--  <div class="col-auto">
                         <a class="btn app-btn-primary" href="#" wire:click="onSearch">Search</a>
@@ -44,7 +44,7 @@
                     </thead>
                     <tbody>
                         @if ($sanitary_list)
-                            @foreach ($sanitary_list as $sanitary)
+                            @foreach ($sanitary_list['data'] as $sanitary)
                                 <tr>
                                     <td class="cell">{{ $sanitary['title'] }}</td>
                                     <td class="cell">{{ $sanitary['code'] }}</td>
@@ -79,7 +79,9 @@
                                     </p>
                                 </td>
                             </tr>
+
                         @endif
+
                     </tbody>
                 </table>
             </div>
@@ -98,7 +100,7 @@
                         <label for="limit">Display</label>
                     </div>
                     <div class="col-auto">
-                        <select class="form-select-sm w-auto" id="limit">
+                        <select class="form-select-sm w-auto" id="limit" wire:model="limit" wire:change="">
                             <option selected value="10">10</option>
                             <option value="20">20</option>
                             <option value="50">50</option>
@@ -115,6 +117,7 @@
             <!--//table-utilities-->
         </div>
         <div class="col-sm-12 col-md-6">
+
             <nav class="app-pagination">
                 <ul class="pagination justify-content-center">
                     <li class="page-item disabled">
