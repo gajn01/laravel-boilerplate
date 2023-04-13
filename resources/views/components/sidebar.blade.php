@@ -74,7 +74,7 @@
                 <ul class="app-menu footer-menu list-unstyled">
                     <!--//nav-item-->
                     <li class="nav-item has-submenu">
-                        <a class="nav-link submenu-toggle {{ Request::routeIs('settings') || Request::routeIs('sanitary') || Request::routeIs('category') ? 'active' : '' }}" href="#" data-bs-toggle="collapse"
+                        <a class="nav-link submenu-toggle {{  Request::routeIs('dropdown') || Request::is('dropdown/menu*') || Request::routeIs('settings') || Request::routeIs('sanitary') || Request::routeIs('category') ? 'active' : '' }}" href="#" data-bs-toggle="collapse"
                             data-bs-target="#submenu-3" aria-expanded="false" aria-controls="submenu-3">
                             <span class="nav-icon">
                                 <svg viewBox="0 0 16 16" class="bi bi-columns-gap" fill="currentColor"
@@ -96,12 +96,12 @@
                             <!--//submenu-arrow-->
                         </a>
                         <!--//nav-link-->
-                        <div id="submenu-3" class="collapse submenu submenu-3 {{ Request::routeIs('dropdown') || Request::routeIs('settings') || Request::routeIs('sanitary') || Request::routeIs('category') ? 'show' : '' }}" data-bs-parent="#menu-accordion">
+                        <div id="submenu-3" class="collapse submenu submenu-3 {{ Request::routeIs('dropdown') || Request::routeIs('dropdown/menu*') || Request::routeIs('settings') || Request::routeIs('sanitary') || Request::routeIs('category') ? 'show' : '' }}" data-bs-parent="#menu-accordion">
                             <ul class="submenu-list list-unstyled">
                                 <li class="submenu-item "><a class="submenu-link {{ Request::routeIs('category') ? 'active' : '' }}" href="{{ url('settings/category') }}">Category</a></li>
                                 <li class="submenu-item"><a class="submenu-link {{ Request::routeIs('settings') ? 'active' : '' }}" href="{{ url('settings/store-settings') }}">Store</a></li>
                                 <li class="submenu-item"><a class="submenu-link {{Request::routeIs('sanitary')  ? 'active' : '' }}" href="{{ url('settings/sanitary') }}">Sanitation Defect</a></li>
-                                <li class="submenu-item"><a class="submenu-link {{Request::routeIs('dropdown')  ? 'active' : '' }}" href="{{ url('settings/dropdown') }}">Dropdown</a></li>
+                                <li class="submenu-item"><a class="submenu-link {{Request::routeIs('dropdown') || Request::is('dropdown/menu*')   ? 'active' : '' }}" href="{{ url('settings/dropdown') }}">Dropdown</a></li>
 
                             </ul>
                         </div>

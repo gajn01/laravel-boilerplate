@@ -17,6 +17,7 @@ return new class extends Migration
             $table->integer('bp');
             $table->boolean('is_all_nothing')->default(false);
             $table->foreignId('sub_category_id');
+            $table->foreignId('dropdown_id')->nullable();
             $table->timestamps();
         });
     }

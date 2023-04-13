@@ -10,7 +10,7 @@ class SubSubCategoryLabel extends Model
     use HasFactory;
     protected $table = 'sub_sub_categories';
 
-    protected $fillable = ['id', 'name', 'sub_sub_category_id', 'bp', 'is_all_nothing'];
+    protected $fillable = ['id', 'name', 'sub_sub_category_id', 'bp', 'is_all_nothing','dropdown_id'];
 
     public function subCategory()
     {

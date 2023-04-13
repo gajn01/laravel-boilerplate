@@ -52,6 +52,6 @@ Route::get('/settings/category/details/{category_id?}/label/{sub_category_id?}',
 Route::get('/settings/category/details/{category_id?}/label/{sub_category_id?}/sub-category/{sub_sub_category_id?}',SubSubCategoryLabel::class)->name('sub-sub-category-label');
 Route::get('/settings/sanitary',Sanitary::class)->name('sanitary');
 Route::get('/settings/dropdown',Dropdown::class)->name('dropdown');
-Route::get('/settings/dropdown/{dropdown_id?}',DropdownMenu::class)->name('dropdown-menu');
+Route::get('/settings/dropdown/menu/{dropdown_id?}',DropdownMenu::class)->name('dropdown-menu');
 
 
