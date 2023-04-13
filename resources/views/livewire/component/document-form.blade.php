@@ -39,43 +39,65 @@
                         <th class="cell audit-points">Base Score</th>
                         <th class="cell audit-points">Score</th>
                         <th class="cell">Remarks</th>
+                        <th class="cell">Deviation</th>
+
                     </tr>
                 </thead>
                 <tbody>
                     @foreach ($data as $item)
-                        @foreach ($item['data_items'] as $item_name)
-                            <tr id="{{ $item_name['name'] }}">
-                                <td colspan="4">
-                                    <h6 class="card-title product-name">{{ $item_name['name'] }}</h6>
+                        @foreach ($item['data_items'] as $dataItem)
+                            <tr id="{{ $dataItem['name'] }}">
+                                <td colspan="5">
+                                    <h6 class="card-title product-name">{{ $dataItem['name'] }}</h6>
                                 </td>
                             </tr>
-                            @foreach ($item_name['sub_category'] as $sub)
-                                @if ($sub['name'])
+                            @foreach ($dataItem['sub_category'] as $sub_category)
+                                @if ($sub_category['name'])
                                     <tr>
-                                        <td class="product-sub-category " colspan="4">
-                                            <p>{{ $sub['name'] }}</p>
+                                        <td class="product-sub-category " colspan="5">
+                                            <p>{{ $sub_category['name'] }}</p>
                                         </td>
                                     </tr>
                                 @endif
-                                @foreach ($sub['label'] as $item)
+
+                                @foreach ($sub_category['label'] as $auditLabel)
                                     <tr>
                                         <td class="product-audit">
-                                            <p>{{ $item['name'] }}</p>
+                                            <p>{{ $auditLabel['name'] }}</p>
                                         </td>
                                         <td>
-                                            <input type="text" class="form-control  text-center" disabled
-                                                name="bp" id="bp" placeholder=""
-                                                value="{{ $item['bp'] }}">
+                                            <input type="text" class="form-control text-center" disabled
+                                                name="bp{{ $auditLabel['name'] }}" id="bp" placeholder=""
+                                                value="{{ $auditLabel['is_all_nothing'] }}">
                                         </td>
                                         <td>
-                                            <input type="text" class="form-control  text-center" name="points"
-                                                id="points" value="{{ $item['points'] }}">
+                                            <input type="text" class="form-control text-center"
+                                                wire:model="data.{{ $loop->parent->parent->index }}.data_items.{{ $loop->parent->index }}.sub_category.{{ $loop->index }}.points"
+                                                name="points{{ $auditLabel['name'] }}" id="points"
+                                                wire:keydown="onUpdateBP({{ $auditLabel['id'] }}, $event.target.value)"
+                                                value="{{ $auditLabel['points'] }}">
                                         </td>
                                         <td>
-                                            <input type="text" class="form-control" name="remarks{{ $item['name'] }}"
-                                                id="remarks" value="{{ $item['remarks'] }}">
+                                            <input type="text" class="form-control"
+                                                wire:model="data.{{ $loop->parent->parent->index }}.data_items.{{ $loop->parent->index }}.sub_category.{{ $loop->index }}.remarks"
+                                                name="remarks{{ $auditLabel['name'] }}" id="remarks"
+                                                value="{{ $auditLabel['remarks'] }}">
                                         </td>
-                                    </tr>
+                                        <td>
+                                            @if (!empty($auditLabel['dropdown']))
+                                                <select class="form-select form-select-md"
+                                                    wire:model="data.{{ $loop->parent->parent->index }}.data_items.{{ $loop->parent->index }}.sub_category.{{ $loop->index }}.tag"
+                                                    name="tag{{ $auditLabel['name'] }}" id="tag">
+                                                    <option value="0">Select a deviation</option>
+                                                    @foreach ($auditLabel['dropdown'] as $result)
+                                                        @if (isset($result['name']))
+                                                            <option value="{{ $result['id'] }}">{{ $result['name'] }}
+                                                            </option>
+                                                        @endif
+                                                    @endforeach
+                                                </select>
+                                            @endif
+                                        </td>
                                 @endforeach
                             @endforeach
                         @endforeach

@@ -6,6 +6,7 @@ use Livewire\Component;
 use App\Models\Category as CategoryModel;
 use App\Models\SubCategory as SubCategoryModel;
 use App\Models\SubCategoryLabel as SubCategoryLabelModel;
+use App\Models\Dropdown as DropdownModel;
 
 class SubCategoryLabel extends Component
 {
@@ -20,6 +21,8 @@ class SubCategoryLabel extends Component
     public $is_all_nothing = false;
     public $bp;
     public $is_sub = false;
+    public $dropdown_list = [];
+    public $dropdown_id;
     public $searchTerm;
     public $modalTitle;
     public $modalButtonText;
@@ -48,6 +51,7 @@ class SubCategoryLabel extends Component
             $this->sub_category_name = SubCategoryModel::where('id', $sub_category_id)->value('name');
             $this->is_sub = SubCategoryModel::where('id', $sub_category_id)->value('is_sub');
         }
+        $this->dropdown_list = DropdownModel::get()->toArray();
     }
     public function showModal($label_id = null)
     {
@@ -55,6 +59,7 @@ class SubCategoryLabel extends Component
         $this->name = optional($label)->name;
         $this->bp = optional($label)->bp;
         $this->is_all_nothing = optional($label)->is_all_nothing ?? false;
+        $this->dropdown_id = optional($label)->dropdown_id;
         $this->resetValidation();
         $this->label_id = $label_id;
         $this->modalTitle = $label_id ? 'Edit Label' : 'Add Label';
@@ -70,6 +75,7 @@ class SubCategoryLabel extends Component
                 'sub_category_id' => $this->sub_category_id,
                 'is_all_nothing' => $this->is_sub == 0 ? $this->is_all_nothing : 0,
                 'bp' => $this->is_sub == 0 ? $this->bp : 0,
+                'dropdown_id' => $this->is_sub == 0 ? $this->dropdown_id : '0',
             ]
         );
         $this->reset();
@@ -112,6 +118,7 @@ class SubCategoryLabel extends Component
         $this->label_id = '';
         $this->is_all_nothing = false;
         $this->bp = '';
+        $this->dropdown_id = 0;
         $this->resetValidation();
     }
     public function onAlertSent($data)

@@ -1,15 +1,17 @@
 <?php
 namespace App\Http\Livewire\Store;
+
 use Livewire\Component;
 use App\Models\SubCategory as SubCategoryModel;
 use App\Models\SubSubCategoryLabel as SubSubCategoryLabelModel;
+use App\Models\DropdownMenu as DropdownMenuModel;
+
 class Form extends Component
 {
     public $store_name;
     /* Audit Category */
     public $food = [];
     public $data;
-
     public $production = [];
     public $service = [];
     public $clean = [];
@@ -40,7 +42,7 @@ class Form extends Component
         $this->store_name = $store_name;
         $service_list = SubCategoryModel::with([
             'subCategoryLabels' => function ($query) {
-                $query->select('id', 'name', 'is_all_nothing', 'bp', 'sub_category_id');
+                $query->select('id', 'name', 'is_all_nothing', 'bp', 'sub_category_id', 'dropdown_id');
             },
         ])->where('category_id', 1)->get();
         $this->service = [
@@ -53,14 +55,17 @@ class Form extends Component
                         'score' => '20',
                         'total_percentage' => '100%',
                         'sub_category' => $subCategory->subCategoryLabels->map(function ($label) {
-                            return [
-                                'id' => $label->id,
-                                'name' => $label->name,
-                                'bp' => $label->is_all_nothing == 0 ? $label->bp : $label->bp . '*',
-                                'points' => '',
-                                'remarks' => '',
-                            ];
-                        })
+                                    return [
+                                        'id' => $label->id,
+                                        'name' => $label->name,
+                                        'bp' => $label->bp,
+                                        'is_all_nothing' => $label->is_all_nothing == 0 ? $label->bp : $label->bp . '*',
+                                        'points' => '',
+                                        'remarks' => '',
+                                        'tag' => '',
+                                        'dropdown' => DropdownMenuModel::where('dropdown_id', $label->dropdown_id)->get()->toArray()
+                                    ];
+                                })
                     ];
                 }),
                 'overall_score' => '100%',
@@ -70,7 +75,7 @@ class Form extends Component
         ];
         $food_list = SubCategoryModel::with([
             'subCategoryLabels' => function ($query) {
-                $query->select('id', 'name', 'is_all_nothing', 'bp', 'sub_category_id');
+                $query->select('id', 'name', 'is_all_nothing', 'bp', 'sub_category_id', 'dropdown_id');
             },
             'category',
         ])->where('category_id', 2)->get();
@@ -83,16 +88,20 @@ class Form extends Component
                         'overall_score' => '100%',
                         'score' => '20',
                         'total_percentage' => '100%',
-                        'sub_category' => $subCategory->subCategoryLabels->map(function ($label) {
-                            return [
-                                'id' => $label->id,
-                                'name' => $label->name,
-                                'bp' => $label->is_all_nothing == 0 ? $label->bp : $label->bp . '*',
-                                'points' => '',
-                                'remarks' => '',
-                                'tag' => '',
-                            ];
-                        })
+                        'sub_category' =>
+                        $subCategory->subCategoryLabels->map(function ($label) {
+
+                                    return [
+                                        'id' => $label->id,
+                                        'name' => $label->name,
+                                        'bp' => $label->bp,
+                                        'is_all_nothing' => $label->is_all_nothing == 0 ? $label->bp : $label->bp . '*',
+                                        'points' => '',
+                                        'remarks' => '',
+                                        'tag' => '',
+                                        'dropdown' => DropdownMenuModel::where('dropdown_id', $label->dropdown_id)->get()->toArray()
+                                    ];
+                                })
                     ];
                 }),
                 'overall_score' => '100%',
@@ -102,7 +111,7 @@ class Form extends Component
         ];
         $production_list = SubCategoryModel::with([
             'subCategoryLabels' => function ($query) {
-                $query->select('id', 'name', 'is_all_nothing', 'bp', 'sub_category_id');
+                $query->select('id', 'name', 'is_all_nothing', 'bp', 'sub_category_id', 'dropdown_id');
             },
         ])->where('category_id', 3)->get();
         $this->production = [
@@ -115,20 +124,23 @@ class Form extends Component
                         'score' => '20',
                         'total_percentage' => '100%',
                         'sub_category' => $subCategory->subCategoryLabels->map(function ($label) {
-                            return [
-                                'id' => $label->id,
-                                'name' => $label->name,
-                                'label' => SubSubCategoryLabelModel::where('sub_sub_category_id', $label->id)->get()->map(function ($subLabel) {
                                     return [
-                                        'id' => $subLabel->id,
-                                        'name' => $subLabel->name,
-                                        'bp' => $subLabel->is_all_nothing == 0 ? $subLabel->bp : $subLabel->bp.'*',
-                                        'points' => '',
-                                        'remarks' => '',
+                                        'id' => $label->id,
+                                        'name' => $label->name,
+                                        'label' => SubSubCategoryLabelModel::where('sub_sub_category_id', $label->id)->get()->map(function ($subLabel) {
+                                                                return [
+                                                                    'id' => $subLabel->id,
+                                                                    'name' => $subLabel->name,
+                                                                    'bp' => $subLabel->bp,
+                                                                    'is_all_nothing' => $subLabel->is_all_nothing == 0 ? $subLabel->bp : $subLabel->bp . '*',
+                                                                    'points' => '',
+                                                                    'remarks' => '',
+                                                                    'tag' => '',
+                                                                    'dropdown' => DropdownMenuModel::where('dropdown_id', $subLabel->dropdown_id)->get()->toArray()
+                                                                ];
+                                                            })
                                     ];
                                 })
-                            ];
-                        })
                     ];
                 }),
                 'overall_score' => '100%',
@@ -138,7 +150,7 @@ class Form extends Component
         ];
         $clean_list = SubCategoryModel::with([
             'subCategoryLabels' => function ($query) {
-                $query->select('id', 'name', 'is_all_nothing', 'bp', 'sub_category_id');
+                $query->select('id', 'name', 'is_all_nothing', 'bp', 'sub_category_id', 'dropdown_id');
             },
         ])->where('category_id', 4)->get();
         $this->clean = [
@@ -151,20 +163,23 @@ class Form extends Component
                         'score' => '20',
                         'total_percentage' => '100%',
                         'sub_category' => $subCategory->subCategoryLabels->map(function ($label) {
-                            return [
-                                'id' => $label->id,
-                                'name' => $label->name,
-                                'label' => SubSubCategoryLabelModel::where('sub_sub_category_id', $label->id)->get()->map(function ($subLabel) {
                                     return [
-                                        'id' => $subLabel->id,
-                                        'name' => $subLabel->name,
-                                        'bp' => $subLabel->is_all_nothing == 0 ? $subLabel->bp : $subLabel->bp.'*',
-                                        'points' => '',
-                                        'remarks' => '',
+                                        'id' => $label->id,
+                                        'name' => $label->name,
+                                        'label' => SubSubCategoryLabelModel::where('sub_sub_category_id', $label->id)->get()->map(function ($subLabel) {
+                                                                return [
+                                                                    'id' => $subLabel->id,
+                                                                    'name' => $subLabel->name,
+                                                                    'bp' => $subLabel->bp,
+                                                                    'is_all_nothing' => $subLabel->is_all_nothing == 0 ? $subLabel->bp : $subLabel->bp . '*',
+                                                                    'points' => '',
+                                                                    'remarks' => '',
+                                                                    'tag' => '',
+                                                                    'dropdown' => DropdownMenuModel::where('dropdown_id', $subLabel->dropdown_id)->get()->toArray()
+                                                                ];
+                                                            })
                                     ];
                                 })
-                            ];
-                        })
                     ];
                 }),
                 'overall_score' => '100%',
@@ -174,7 +189,7 @@ class Form extends Component
         ];
         $document_list = SubCategoryModel::with([
             'subCategoryLabels' => function ($query) {
-                $query->select('id', 'name', 'is_all_nothing', 'bp', 'sub_category_id');
+                $query->select('id', 'name', 'is_all_nothing', 'bp', 'sub_category_id', 'dropdown_id');
             },
         ])->where('category_id', 5)->get();
         $this->document = [
@@ -187,20 +202,23 @@ class Form extends Component
                         'score' => '20',
                         'total_percentage' => '100%',
                         'sub_category' => $subCategory->subCategoryLabels->map(function ($label) {
-                            return [
-                                'id' => $label->id,
-                                'name' => $label->name,
-                                'label' => SubSubCategoryLabelModel::where('sub_sub_category_id', $label->id)->get()->map(function ($subLabel) {
                                     return [
-                                        'id' => $subLabel->id,
-                                        'name' => $subLabel->name,
-                                        'bp' => $subLabel->is_all_nothing == 0 ? $subLabel->bp : $subLabel->bp.'*',
-                                        'points' => '',
-                                        'remarks' => '',
+                                        'id' => $label->id,
+                                        'name' => $label->name,
+                                        'label' => SubSubCategoryLabelModel::where('sub_sub_category_id', $label->id)->get()->map(function ($subLabel) {
+                                                                return [
+                                                                    'id' => $subLabel->id,
+                                                                    'name' => $subLabel->name,
+                                                                    'bp' => $subLabel->bp,
+                                                                    'is_all_nothing' => $subLabel->is_all_nothing == 0 ? $subLabel->bp : $subLabel->bp . '*',
+                                                                    'points' => '',
+                                                                    'remarks' => '',
+                                                                    'tag' => '',
+                                                                    'dropdown' => DropdownMenuModel::where('dropdown_id', $subLabel->dropdown_id)->get()->toArray()
+                                                                ];
+                                                            })
                                     ];
                                 })
-                            ];
-                        })
                     ];
                 }),
                 'overall_score' => '100%',
@@ -210,7 +228,7 @@ class Form extends Component
         ];
         $people_list = SubCategoryModel::with([
             'subCategoryLabels' => function ($query) {
-                $query->select('id', 'name', 'is_all_nothing', 'bp', 'sub_category_id');
+                $query->select('id', 'name', 'is_all_nothing', 'bp', 'sub_category_id', 'dropdown_id');
             },
         ])->where('category_id', 6)->get();
         $this->people = [
@@ -223,20 +241,23 @@ class Form extends Component
                         'score' => '20',
                         'total_percentage' => '100%',
                         'sub_category' => $subCategory->subCategoryLabels->map(function ($label) {
-                            return [
-                                'id' => $label->id,
-                                'name' => $label->name,
-                                'label' => SubSubCategoryLabelModel::where('sub_sub_category_id', $label->id)->get()->map(function ($subLabel) {
                                     return [
-                                        'id' => $subLabel->id,
-                                        'name' => $subLabel->name,
-                                        'bp' => $subLabel->is_all_nothing == 0 ? $subLabel->bp : $subLabel->bp.'*',
-                                        'points' => '',
-                                        'remarks' => '',
+                                        'id' => $label->id,
+                                        'name' => $label->name,
+                                        'label' => SubSubCategoryLabelModel::where('sub_sub_category_id', $label->id)->get()->map(function ($subLabel) {
+                                                                return [
+                                                                    'id' => $subLabel->id,
+                                                                    'name' => $subLabel->name,
+                                                                    'bp' => $subLabel->bp,
+                                                                    'is_all_nothing' => $subLabel->is_all_nothing == 0 ? $subLabel->bp : $subLabel->bp . '*',
+                                                                    'points' => '',
+                                                                    'remarks' => '',
+                                                                    'tag' => '',
+                                                                    'dropdown' => DropdownMenuModel::where('dropdown_id', $subLabel->dropdown_id)->get()->toArray()
+                                                                ];
+                                                            })
                                     ];
                                 })
-                            ];
-                        })
                     ];
                 }),
                 'overall_score' => '100%',

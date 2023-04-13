@@ -5,6 +5,8 @@ use App\Models\Category as CategoryModel;
 use App\Models\SubCategory as SubCategoryModel;
 use App\Models\SubCategoryLabel as SubSubCategoryModel;
 use App\Models\SubSubCategoryLabel as SubSubCategoryLabelModel;
+use App\Models\Dropdown as DropdownModel;
+
 class SubSubCategoryLabel extends Component
 {
     protected $listeners = ['alert-sent' => 'onAlertSent'];
@@ -19,6 +21,8 @@ class SubSubCategoryLabel extends Component
     public $name;
     public $is_all_nothing = false;
     public $bp;
+    public $dropdown_list = [];
+    public $dropdown_id;
     public $searchTerm;
     public $modalTitle;
     public $modalButtonText;
@@ -40,6 +44,8 @@ class SubSubCategoryLabel extends Component
         $this->sub_category_name = SubCategoryModel::where('id', $sub_category_id)->value('name');
         $this->sub_sub_category_name = SubSubCategoryModel::where('id', $sub_sub_category_id)->value('name');
         $this->label_list = SubSubCategoryLabelModel::where('sub_sub_category_id', $sub_sub_category_id)->get()->toArray();
+        $this->dropdown_list = DropdownModel::get()->toArray();
+
     }
     public function showModal($label_id = null)
     {
@@ -47,6 +53,7 @@ class SubSubCategoryLabel extends Component
         $this->name = optional($label)->name;
         $this->bp = optional($label)->bp;
         $this->is_all_nothing = optional($label)->is_all_nothing ?? false;
+        $this->dropdown_id = optional($label)->dropdown_id;
         $this->resetValidation();
         $this->label_id = $label_id;
         $this->modalTitle = $label_id ? 'Edit Label' : 'Add Label';
@@ -59,7 +66,8 @@ class SubSubCategoryLabel extends Component
             'name' => $this->name,
             'sub_sub_category_id' => $this->sub_sub_category_id,
             'is_all_nothing' => $this->is_all_nothing,
-            'bp' => $this->bp
+            'bp' => $this->bp,
+            'dropdown_id' => $this->dropdown_id  ?? '',
         ];
         SubSubCategoryLabelModel::updateOrCreate(['id' => $this->label_id], $labelData);
         $this->label_list = SubSubCategoryLabelModel::where('sub_sub_category_id', $this->sub_sub_category_id)
@@ -104,6 +112,7 @@ class SubSubCategoryLabel extends Component
         $this->label_id = '';
         $this->is_all_nothing = false;
         $this->bp = '';
+        $this->dropdown_id = 0;
         $this->resetValidation();
     }
     public function onAlertSent($data)

@@ -17,54 +17,14 @@ class FoodForm extends Component
     public $search1;
     public $search1_results;
     public $search1Value;
-    public $test = 'check';
+    public $test = 0;
     public function mount($data = null, $lcm = null)
     {
         $this->data = $data;
         $this->lcm = $lcm;
-
-        $food_list = SubCategoryModel::with([
-            'subCategoryLabels' => function ($query) {
-                $query->select('id', 'name', 'is_all_nothing', 'bp', 'sub_category_id', 'dropdown_id');
-            },
-            'category',
-        ])->where('category_id', 2)->get();
-        $this->food = [
-            [
-                'data_items' => $food_list->map(function ($subCategory) {
-                    return [
-                        'id' => $subCategory->id,
-                        'name' => $subCategory->name,
-                        'overall_score' => '100%',
-                        'score' => '20',
-                        'total_percentage' => '100%',
-                        'sub_category' =>
-                        $subCategory->subCategoryLabels->map(function ($label) {
-
-                                    return [
-                                        'id' => $label->id,
-                                        'name' => $label->name,
-                                        'bp' => $label->is_all_nothing == 0 ? $label->bp : $label->bp . '*',
-                                        'points' => '',
-                                        'remarks' => '',
-                                        'tag' => '',
-                                        'dropdown'=> DropdownMenuModel::where('dropdown_id', $label->dropdown_id)->get()->toArray()
-                                    ];
-                                })
-                    ];
-                }),
-                'overall_score' => '100%',
-                'score' => '91',
-                'total_percentage' => '100%',
-            ]
-        ];
-
-
     }
-    public function onSearchDropdown()
-    {
-        $this->search1_results = SubCategoryModel::select('name')->where('name', 'LIKE', '%' . $this->search1Value . '%')->get()->toArray();
-
+    public function onUpdateBP($data = null, $value){
+        dd($data,$value);
     }
     public function render()
     {

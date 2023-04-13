@@ -18,11 +18,11 @@
                         <th class="cell audit-points">Base Point</th>
                         <th class="cell audit-points">Point</th>
                         <th class="cell">Remarks</th>
-                        <th class="cell">Tag</th>
+                        <th class="cell">Deviation</th>
                     </tr>
                 </thead>
                 <tbody>
-                    @foreach ($food as $item)
+                    @foreach ($data as $item)
                         @foreach ($item['data_items'] as $dataItem)
                             <tr id="{{ $dataItem['name'] }}">
                                 <td colspan="5">
@@ -37,22 +37,25 @@
                                     <td>
                                         <input type="text" class="form-control text-center" disabled
                                             name="bp{{ $auditLabel['name'] }}" id="bp" placeholder=""
-                                            value="{{ $auditLabel['bp'] }}">
+                                            value="{{ $auditLabel['is_all_nothing'] }}">
                                     </td>
                                     <td>
                                         <input type="text" class="form-control text-center"
-                                            wire:model="food.{{ $loop->parent->parent->index }}.data_items.{{ $loop->parent->index }}.sub_category.{{ $loop->index }}.points"
+                                            wire:model="data.{{ $loop->parent->parent->index }}.data_items.{{ $loop->parent->index }}.sub_category.{{ $loop->index }}.points"
                                             name="points{{ $auditLabel['name'] }}" id="points"
+                                            wire:keydown="onUpdateBP({{ $auditLabel['id'] }}, $event.target.value)"
                                             value="{{ $auditLabel['points'] }}">
+
                                     </td>
                                     <td>
                                         <input type="text" class="form-control"
-                                            wire:model="food.{{ $loop->parent->parent->index }}.data_items.{{ $loop->parent->index }}.sub_category.{{ $loop->index }}.remarks"
+                                            wire:model="data.{{ $loop->parent->parent->index }}.data_items.{{ $loop->parent->index }}.sub_category.{{ $loop->index }}.remarks"
                                             name="remarks{{ $auditLabel['name'] }}" id="remarks"
                                             value="{{ $auditLabel['remarks'] }}">
                                     </td>
                                     <td>
-                                        {{--  @if (!empty($search1_results))
+                                        {{-- {{ $test += $auditLabel['bp'] }}
+                                         @if (!empty($search1_results))
                                             <datalist id="search1_list">
                                                 @foreach ($search1_results as $result)
                                                     <option value="{{ $result['name'] }}">
@@ -61,9 +64,9 @@
                                         @endif --}}
                                         @if (!empty($auditLabel['dropdown']))
                                             <select class="form-select form-select-md"
-                                                wire:model="food.{{ $loop->parent->parent->index }}.data_items.{{ $loop->parent->index }}.sub_category.{{ $loop->index }}.tag"
+                                                wire:model="data.{{ $loop->parent->parent->index }}.data_items.{{ $loop->parent->index }}.sub_category.{{ $loop->index }}.tag"
                                                 name="tag{{ $auditLabel['name'] }}" id="tag">
-                                                <option value="0">Select a tag</option>
+                                                <option value="0">Select a deviation</option>
                                                 @foreach ($auditLabel['dropdown'] as $result)
                                                     @if (isset($result['name']))
                                                         <option value="{{ $result['id'] }}">{{ $result['name'] }}
@@ -72,7 +75,6 @@
                                                 @endforeach
                                             </select>
                                         @endif
-
                                     </td>
                                 </tr>
                             @endforeach

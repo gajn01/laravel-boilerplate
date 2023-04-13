@@ -173,6 +173,15 @@
                                     wire:model="is_all_nothing">
                                 <label class="form-check-label" for="toggle-switch">All Or Nothing</label>
                             </div>
+                            <div class="mb-3">
+                                <label for="dropdown_id" class="form-label">Dropdown</label>
+                                <select class="form-select form-select-md" name="dropdown_id" id="dropdown_id" wire:model="dropdown_id">
+                                    <option selected value="0">Select one</option>
+                                    @foreach ($dropdown_list as $item)
+                                        <option value="{{ $item['id'] }}">{{ $item['name'] }}</option>
+                                    @endforeach
+                                </select>
+                            </div>
                         @endif
 
                     </form>
