@@ -12,7 +12,7 @@
                 <form class="docs-search-form row gx-1 align-items-center">
                     <div class="col-auto">
                         <input type="text" id="search-docs" name="searchdocs" class="form-control search-docs"
-                            wire:model.debounce.500ms="searchTerm" placeholder="Search">
+                            wire:model.debounce.100ms="searchTerm" placeholder="Search">
                     </div>
                     {{--  <div class="col-auto">
                         <a class="btn app-btn-primary" href="#" wire:click="onSearch">Search</a>

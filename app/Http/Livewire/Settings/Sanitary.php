@@ -33,7 +33,6 @@ class Sanitary extends Component
         $this->sanitary_id = $sanitary_id;
         $this->modalTitle = $this->sanitary_id ? 'Edit Sanitation Defect' : 'Add Sanitation Defect';
         $this->modalButtonText = $this->sanitary_id ? 'Update' : 'Add';
-        $this->dispatchBrowserEvent('show-item-form');
     }
     public function onSave()
     {
@@ -52,7 +51,7 @@ class Sanitary extends Component
         );
         $this->reset();
         $this->onAlert(false, 'Success', 'Sanitation defect saved successfully!', 'success');
-        $this->dispatchBrowserEvent('remove-modal', ['modalName' => '#sanitaryModal']);
+        CustomHelper::onRemoveModal($this, '#sanitaryModal');
     }
     public function onDelete($sanitary_id)
     {

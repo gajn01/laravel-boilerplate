@@ -15,4 +15,11 @@ class CustomHelper
         ]);
     }
 
+    public static function onRemoveModal($componentInstance, $modalName = null)
+    {
+        $componentInstance->dispatchBrowserEvent('remove-modal', [
+            'modalName' => $modalName
+        ]);
+    }
+
 }
