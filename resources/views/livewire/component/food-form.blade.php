@@ -47,13 +47,14 @@
                                             value="{{ $auditLabel['points'] }}">
 
                                     </td>
-                                    <td>
+                                    <td colspan="{{$auditLabel['dropdown'] ? '': 2}}">
                                         <input type="text" class="form-control"
                                             wire:model="data.{{ $loop->parent->parent->index }}.data_items.{{ $loop->parent->index }}.sub_category.{{ $loop->index }}.remarks"
                                             name="remarks{{ $auditLabel['name'] }}" id="remarks"
                                             value="{{ $auditLabel['remarks'] }}">
                                     </td>
                                     <td>
+
                                         {{-- {{ $test += $auditLabel['bp'] }}
                                          @if (!empty($search1_results))
                                             <datalist id="search1_list">

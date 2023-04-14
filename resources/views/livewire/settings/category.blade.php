@@ -22,7 +22,7 @@
             <!--//col-->
             <div class="col-auto">
                 <div class="col-auto">
-                    <a class="btn app-btn-primary" data-bs-toggle="modal" data-bs-target="#category_modal">Create</a>
+                    <a class="btn app-btn-primary" data-bs-toggle="modal" data-bs-target="#category_modal" wire:click="showModal">Create</a>
                 </div>
             </div>
         </div>
@@ -122,8 +122,7 @@
         </div>
     </div>
 
-
-    <div wire:ignore class="modal fade" id="category_modal" tabindex="-1" data-bs-backdrop="static"
+    <div wire:ignore.self class="modal fade" id="category_modal" tabindex="-1" data-bs-backdrop="static"
         data-bs-keyboard="false" role="dialog" aria-labelledby="modalTitleId" aria-hidden="true">
         <div class="modal-dialog modal-dialog-scrollable modal-dialog-centered modal-md" role="document">
             <div class="modal-content">

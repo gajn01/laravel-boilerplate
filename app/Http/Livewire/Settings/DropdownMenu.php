@@ -21,19 +21,19 @@ class DropdownMenu extends Component
     public $modalTitle;
     public $modalButtonText;
     public $limit = 10;
-    public function render($dropdown_id = null)
-    {
-        $searchTerm = '%' . $this->searchTerm . '%';
-        $dropdown_menu_list = DropdownMenuModel::select('id', 'name', 'dropdown_id')
-            ->where('dropdown_id', $dropdown_id)
-            ->orWhere('name', 'like', $searchTerm)
-            ->paginate($this->limit);
-        return view('livewire.settings.dropdown-menu', ['dropdown_menu_list' => $dropdown_menu_list])->extends('layouts.app');
-    }
     public function mount($dropdown_id = null)
     {
         $this->dropdown_id = $dropdown_id;
         $this->dropdown_name = DropdownModel::find($dropdown_id)->name;
+    }
+    public function render()
+    {
+        $searchTerm = '%' . $this->searchTerm . '%';
+        $dropdown_menu_list = DropdownMenuModel::select('id', 'name', 'dropdown_id')
+            ->where('dropdown_id', $this->dropdown_id)
+            ->where('name', 'like', $searchTerm)
+            ->paginate($this->limit);
+        return view('livewire.settings.dropdown-menu', ['dropdown_menu_list' => $dropdown_menu_list])->extends('layouts.app');
     }
     public function onSave()
     {

@@ -50,6 +50,7 @@ class Form extends Component
                 'data_items' => $service_list->map(function ($subCategory) {
                     return [
                         'id' => $subCategory->id,
+                        'is_sub' => $subCategory->is_sub,
                         'name' => $subCategory->name,
                         'overall_score' => '100%',
                         'score' => '20',
@@ -84,24 +85,25 @@ class Form extends Component
                 'data_items' => $food_list->map(function ($subCategory) {
                     return [
                         'id' => $subCategory->id,
+                        'is_sub' => $subCategory->is_sub,
                         'name' => $subCategory->name,
                         'overall_score' => '100%',
                         'score' => '20',
                         'total_percentage' => '100%',
                         'sub_category' =>
-                        $subCategory->subCategoryLabels->map(function ($label) {
+                            $subCategory->subCategoryLabels->map(function ($label) {
 
-                                    return [
-                                        'id' => $label->id,
-                                        'name' => $label->name,
-                                        'bp' => $label->bp,
-                                        'is_all_nothing' => $label->is_all_nothing == 0 ? $label->bp : $label->bp . '*',
-                                        'points' => '',
-                                        'remarks' => '',
-                                        'tag' => '',
-                                        'dropdown' => DropdownMenuModel::where('dropdown_id', $label->dropdown_id)->get()->toArray()
-                                    ];
-                                })
+                                        return [
+                                            'id' => $label->id,
+                                            'name' => $label->name,
+                                            'bp' => $label->bp,
+                                            'is_all_nothing' => $label->is_all_nothing == 0 ? $label->bp : $label->bp . '*',
+                                            'points' => '',
+                                            'remarks' => '',
+                                            'tag' => '',
+                                            'dropdown' => DropdownMenuModel::where('dropdown_id', $label->dropdown_id)->get()->toArray()
+                                        ];
+                                    })
                     ];
                 }),
                 'overall_score' => '100%',
@@ -119,6 +121,7 @@ class Form extends Component
                 'data_items' => $production_list->map(function ($subCategory) {
                     return [
                         'id' => $subCategory->id,
+                        'is_sub' => $subCategory->is_sub,
                         'name' => $subCategory->name,
                         'overall_score' => '100%',
                         'score' => '20',
@@ -158,6 +161,7 @@ class Form extends Component
                 'data_items' => $clean_list->map(function ($subCategory) {
                     return [
                         'id' => $subCategory->id,
+                        'is_sub' => $subCategory->is_sub,
                         'name' => $subCategory->name,
                         'overall_score' => '100%',
                         'score' => '20',
@@ -197,6 +201,7 @@ class Form extends Component
                 'data_items' => $document_list->map(function ($subCategory) {
                     return [
                         'id' => $subCategory->id,
+                        'is_sub' => $subCategory->is_sub,
                         'name' => $subCategory->name,
                         'overall_score' => '100%',
                         'score' => '20',
@@ -236,6 +241,7 @@ class Form extends Component
                 'data_items' => $people_list->map(function ($subCategory) {
                     return [
                         'id' => $subCategory->id,
+                        'is_sub' => $subCategory->is_sub,
                         'name' => $subCategory->name,
                         'overall_score' => '100%',
                         'score' => '20',

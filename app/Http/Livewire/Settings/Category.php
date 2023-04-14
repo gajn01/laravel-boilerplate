@@ -31,10 +31,11 @@ class Category extends Component
         $category = CategoryModel::find($category_id);
         $this->name = optional($category)->name;
         $this->type = optional($category)->type;
-        $this->resetValidation();
         $this->category_id = $category_id;
         $this->modalTitle = $this->category_id ? 'Edit Category' : 'Add Category';
         $this->modalButtonText = $this->category_id ? 'Update' : 'Add';
+        $this->reset();
+
     }
     public function onSave()
     {
@@ -49,7 +50,7 @@ class Category extends Component
                 'type' => strip_tags($this->type),
             ]
         );
-        $this->resetValidation();
+        $this->reset();
         $this->onAlert(false, 'Success', 'Category saved successfully!', 'success');
         CustomHelper::onRemoveModal($this, '#category_modal');
     }
