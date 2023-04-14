@@ -17,7 +17,7 @@ class StoreSettings extends Component
     public $modalButtonText;
     public function mount()
     {
-        $this->store_list = StoreModel::all(['id','code', 'name', 'type', 'store_head', 'area'])->toArray();
+        $this->store_list = StoreModel::all(['id','code', 'name', 'type', 'store_head', 'area']);
     }
     public function render()
     {

@@ -11,7 +11,7 @@
             <div class="col-auto">
                 <form class="docs-search-form row gx-1 align-items-center">
                     <div class="col-auto">
-                            <input type="text" id="search-docs" name="searchdocs" class="form-control search-docs" wire:model.debounce.500ms="searchTerm" wire:keyup="onSearch" placeholder="Search">
+                            <input type="text" id="search-docs" name="searchdocs" class="form-control search-docs" wire:model.debounce.500ms="searchTerm" placeholder="Search">
 
                     </div>
                     {{--  <div class="col-auto">
@@ -39,16 +39,16 @@
                         <tr>
                             <th class="cell">Sanitation Defect</th>
                             <th class="cell">Code</th>
-                            <th class="cell">Action</th>
+                            <th class="cell text-center">Action</th>
                         </tr>
                     </thead>
                     <tbody>
                         @if ($sanitary_list)
-                            @foreach ($sanitary_list['data'] as $sanitary)
+                            @foreach ($sanitary_list as $sanitary)
                                 <tr>
                                     <td class="cell">{{ $sanitary['title'] }}</td>
                                     <td class="cell">{{ $sanitary['code'] }}</td>
-                                    <td class="cell">
+                                    <td class="cell text-center">
                                         <a href="#" data-bs-toggle="modal" data-bs-target="#sanitaryModal"
                                             wire:click="showModal({{ $sanitary['id'] }})">
                                             <svg class="icon" xmlns="http://www.w3.org/2000/svg"
@@ -80,6 +80,8 @@
                                 </td>
                             </tr>
 
+
+
                         @endif
 
                     </tbody>
@@ -100,7 +102,7 @@
                         <label for="limit">Display</label>
                     </div>
                     <div class="col-auto">
-                        <select class="form-select-sm w-auto" id="limit" wire:model="limit" wire:change="">
+                        <select class="form-select-sm w-auto" id="limit" wire:model="limit">
                             <option selected value="10">10</option>
                             <option value="20">20</option>
                             <option value="50">50</option>
@@ -117,19 +119,8 @@
             <!--//table-utilities-->
         </div>
         <div class="col-sm-12 col-md-6">
-
             <nav class="app-pagination">
-                <ul class="pagination justify-content-center">
-                    <li class="page-item disabled">
-                        <a class="page-link" href="#" tabindex="-1" aria-disabled="true">Previous</a>
-                    </li>
-                    <li class="page-item active"><a class="page-link" href="#">1</a></li>
-                    <li class="page-item"><a class="page-link" href="#">2</a></li>
-                    <li class="page-item"><a class="page-link" href="#">3</a></li>
-                    <li class="page-item">
-                        <a class="page-link" href="#">Next</a>
-                    </li>
-                </ul>
+                {{ $sanitary_list->onEachSide(0)->links() }}
             </nav>
             <!--//app-pagination-->
 

@@ -57,7 +57,7 @@
                         @if ($store_list)
                             @foreach ($store_list as $store)
                                 <tr>
-                                    <td class="cell">{{ $store['code'] }}</td>
+                                    <td class="cell">{{ $store->code }}</td>
                                     <td class="cell">{{ $store['name'] }}</td>
                                     <td class="cell">{{ $store['store_head'] ? $store['store_head'] : 'N/A' }}</td>
                                     <td class="cell">{{ $store['type'] == 1 ? 'Cafe' : 'Kiosk' }}</td>

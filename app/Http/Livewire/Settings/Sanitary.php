@@ -3,13 +3,13 @@
 namespace App\Http\Livewire\Settings;
 
 use App\Models\SanitaryModel;
-
 use Livewire\Component;
-
+use Livewire\WithPagination;
 class Sanitary extends Component
 {
+    use WithPagination;
+    protected $paginationTheme = 'bootstrap';
     protected $listeners = ['alert-sent' => 'onAlertSent'];
-    public $sanitary_list = [];
     public $sanitary_id;
     public $title;
     public $code;
@@ -17,54 +17,26 @@ class Sanitary extends Component
     public $modalTitle;
     public $modalButtonText;
     public $limit = 10;
+    public function render()
+    {
+        $searchTerm = '%' . $this->searchTerm . '%';
+        $sanitary_list = SanitaryModel::select('id', 'title', 'code')
+            ->where('title', 'like', $searchTerm)
+            ->orWhere('code', 'like', $searchTerm)
+            ->paginate($this->limit);
+        return view('livewire.settings.sanitary',['sanitary_list' => $sanitary_list])->extends('layouts.app');
+    }
     public function showModal($sanitary_id = null)
     {
         $sanitary = SanitaryModel::find($sanitary_id);
-        $this->title =  optional($sanitary)->title;
-        $this->code =  optional($sanitary)->code;
+        $this->title = optional($sanitary)->title;
+        $this->code = optional($sanitary)->code;
         $this->resetValidation();
         $this->sanitary_id = $sanitary_id;
         $this->modalTitle = $this->sanitary_id ? 'Edit Sanitation Defect' : 'Add Sanitation Defect';
         $this->modalButtonText = $this->sanitary_id ? 'Update' : 'Add';
         $this->dispatchBrowserEvent('show-item-form');
     }
-
-
-    public function render()
-    {
-        $sanitary = SanitaryModel::select('id', 'title', 'code')->paginate($this->limit);
-        $this->sanitary_list = $sanitary->toArray();
-        return view('livewire.settings.sanitary', ['sanitary_list' => $sanitary])->extends('layouts.app');
-    }
-
-    public function onSearch()
-    {
-        $searchTerm = '%' . $this->searchTerm . '%';
-        $sanitary = SanitaryModel::where('title', 'like', $searchTerm)
-            ->orWhere('code', 'like', $searchTerm)
-            ->paginate($this->limit);
-
-        $this->sanitary_list = $sanitary->toArray();
-        $this->render();
-    }
-
-/*     public function render()
-    {
-        return view('livewire.settings.sanitary')->extends('layouts.app');
-    }
-    public function mount()
-    {
-        $sanitary = SanitaryModel::select('id', 'title', 'code')->paginate($this->limit);
-        $this->sanitary_list = $sanitary->toArray();
-    }
-    public function onSearch()
-    {
-        $searchTerm = '%' . $this->searchTerm . '%';
-        $this->sanitary_list = SanitaryModel::where('title', 'like', $searchTerm)
-            ->orWhere('code', 'like', $searchTerm)
-            ->get(['id', 'title', 'code'])
-            ->toArray();
-    } */
     public function onSave()
     {
         $this->validate(
@@ -81,7 +53,6 @@ class Sanitary extends Component
             ]
         );
         $this->reset();
-        $this->sanitary_list = SanitaryModel::all(['id', 'title', 'code'])->toArray();
         $this->onAlert(false, 'Success', 'Sanitation defect saved successfully!', 'success');
         $this->dispatchBrowserEvent('remove-modal', ['modalName' => '#sanitaryModal']);
         $this->emit('saved');
@@ -90,7 +61,6 @@ class Sanitary extends Component
     {
         $sanitary = SanitaryModel::find($sanitary_id);
         $sanitary->delete();
-        $this->sanitary_list = SanitaryModel::all(['id', 'title', 'code'])->toArray();
         $this->emit('saved');
     }
 
