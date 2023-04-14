@@ -38,7 +38,7 @@
                     <thead>
                         <tr>
                             <th class="cell">Name</th>
-                            <th class="cell">Action</th>
+                            <th class="cell table-action-sm">Action</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -46,7 +46,7 @@
                             @foreach ($dropdown_list as $dropdown)
                                 <tr>
                                     <td class="cell">{{ $dropdown['name'] }}</td>
-                                    <td class="cell">
+                                    <td class="cell table-action-sm">
                                         <a href="{{ route('dropdown-menu', ['dropdown_id' => $dropdown['id']]) }}"><svg
                                             class="icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512">
                                             <path

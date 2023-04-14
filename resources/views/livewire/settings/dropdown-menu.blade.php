@@ -40,7 +40,7 @@
                     <thead>
                         <tr>
                             <th class="cell">Name</th>
-                            <th class="cell">Action</th>
+                            <th class="cell table-action-sm">Action</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -48,7 +48,7 @@
                             @foreach ($dropdown_menu_list as $dropdown)
                                 <tr>
                                     <td class="cell">{{ $dropdown['name'] }}</td>
-                                    <td class="cell">
+                                    <td class="cell table-action-sm">
                                         <a href="" wire:click="showModal({{ $dropdown['id'] }})"
                                             data-bs-toggle="modal" data-bs-target="#dropdown_menu_modal">
                                             <svg class="icon" xmlns="http://www.w3.org/2000/svg"

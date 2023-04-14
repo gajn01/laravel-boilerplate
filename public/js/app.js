@@ -91,6 +91,13 @@ searchMobileTrigger.addEventListener('click', () => {
     }
 });
 
+
+// Inside your JavaScript code
+window.Livewire.on('alert', function (message) {
+    alert(message);
+});
+
+
 window.addEventListener('show-alert', showAlert);
 window.addEventListener('confirm-alert', showConfirm);
 function showAlert(event) {
@@ -114,4 +121,3 @@ function showConfirm(event) {
 window.addEventListener('remove-modal', event => {
     $(event.detail.modalName).modal('hide');
 });
-

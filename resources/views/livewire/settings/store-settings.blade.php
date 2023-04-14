@@ -50,7 +50,7 @@
                             <th class="cell">Store Head</th>
                             <th class="cell">Type</th>
                             <th class="cell">Area</th>
-                            <th class="cell">Action</th>
+                            <th class="cell table-action-sm">Action</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -62,7 +62,7 @@
                                     <td class="cell">{{ $store['store_head'] ? $store['store_head'] : 'N/A' }}</td>
                                     <td class="cell">{{ $store['type'] == 1 ? 'Cafe' : 'Kiosk' }}</td>
                                     <td class="cell">{{ $store['area'] }}</td>
-                                    <td class="cell">
+                                    <td class="cell table-action-sm">
                                         <a href="#" data-bs-toggle="modal" data-bs-target="#store_modal"
                                             wire:click="showModal({{ $store['id'] }})">
                                             <svg class="icon" xmlns="http://www.w3.org/2000/svg"

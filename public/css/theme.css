@@ -7,15 +7,12 @@
     background-size: cover;
     background-blend-mode: overlay;
 }
-
-
 :root {
     --primary-color: #FCF9F6;
     --secondary-color: #FFEFD4;
     --cta-color: #790000;
     --tertiary-color: #e0b444;
 }
-
 .primary-bg{
     background-color: var(--primary-color)!important;
 }
@@ -26,7 +23,6 @@
     background-color: var(--cta-color) !important;
     color: var(--primary-color) !important;
 }
-
 .icon {
     background-color: transparent;
     color: #790000;

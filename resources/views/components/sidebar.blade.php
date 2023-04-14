@@ -11,7 +11,8 @@
         <nav id="app-nav-main" class="app-nav app-nav-main flex-grow-1">
             <ul class="app-menu list-unstyled accordion" id="menu-accordion">
                 <li class="nav-item">
-                    <a class="nav-link {{ Request::routeIs('dashboard') ? 'active' : '' }}" href="{{ url('dashboard') }}">
+                    <a class="nav-link {{ Request::routeIs('dashboard') ? 'active' : '' }}"
+                        href="{{ url('dashboard') }}">
                         <span class="nav-icon">
                             <svg viewBox="0 0 16 16" class="bi " fill="currentColor"
                                 xmlns="http://www.w3.org/2000/svg">
@@ -26,11 +27,14 @@
                 </li>
                 <!--//nav-item-->
                 <li class="nav-item">
-                    <a class="nav-link {{ Request::is('store') || Request::is('store/form*') || Request::is('store/details*')  ? 'active' : '' }}" href="{{ url('store') }}">
+                    <a class="nav-link {{ Request::is('store') || Request::is('store/form*') || Request::is('store/details*') ? 'active' : '' }}"
+                        href="{{ url('store') }}">
                         <span class="nav-icon">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-shop" viewBox="0 0 16 16">
-                                <path d="M2.97 1.35A1 1 0 0 1 3.73 1h8.54a1 1 0 0 1 .76.35l2.609 3.044A1.5 1.5 0 0 1 16 5.37v.255a2.375 2.375 0 0 1-4.25 1.458A2.371 2.371 0 0 1 9.875 8 2.37 2.37 0 0 1 8 7.083 2.37 2.37 0 0 1 6.125 8a2.37 2.37 0 0 1-1.875-.917A2.375 2.375 0 0 1 0 5.625V5.37a1.5 1.5 0 0 1 .361-.976l2.61-3.045zm1.78 4.275a1.375 1.375 0 0 0 2.75 0 .5.5 0 0 1 1 0 1.375 1.375 0 0 0 2.75 0 .5.5 0 0 1 1 0 1.375 1.375 0 1 0 2.75 0V5.37a.5.5 0 0 0-.12-.325L12.27 2H3.73L1.12 5.045A.5.5 0 0 0 1 5.37v.255a1.375 1.375 0 0 0 2.75 0 .5.5 0 0 1 1 0zM1.5 8.5A.5.5 0 0 1 2 9v6h1v-5a1 1 0 0 1 1-1h3a1 1 0 0 1 1 1v5h6V9a.5.5 0 0 1 1 0v6h.5a.5.5 0 0 1 0 1H.5a.5.5 0 0 1 0-1H1V9a.5.5 0 0 1 .5-.5zM4 15h3v-5H4v5zm5-5a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1v3a1 1 0 0 1-1 1h-2a1 1 0 0 1-1-1v-3zm3 0h-2v3h2v-3z"/>
-                              </svg>
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
+                                class="bi bi-shop" viewBox="0 0 16 16">
+                                <path
+                                    d="M2.97 1.35A1 1 0 0 1 3.73 1h8.54a1 1 0 0 1 .76.35l2.609 3.044A1.5 1.5 0 0 1 16 5.37v.255a2.375 2.375 0 0 1-4.25 1.458A2.371 2.371 0 0 1 9.875 8 2.37 2.37 0 0 1 8 7.083 2.37 2.37 0 0 1 6.125 8a2.37 2.37 0 0 1-1.875-.917A2.375 2.375 0 0 1 0 5.625V5.37a1.5 1.5 0 0 1 .361-.976l2.61-3.045zm1.78 4.275a1.375 1.375 0 0 0 2.75 0 .5.5 0 0 1 1 0 1.375 1.375 0 0 0 2.75 0 .5.5 0 0 1 1 0 1.375 1.375 0 1 0 2.75 0V5.37a.5.5 0 0 0-.12-.325L12.27 2H3.73L1.12 5.045A.5.5 0 0 0 1 5.37v.255a1.375 1.375 0 0 0 2.75 0 .5.5 0 0 1 1 0zM1.5 8.5A.5.5 0 0 1 2 9v6h1v-5a1 1 0 0 1 1-1h3a1 1 0 0 1 1 1v5h6V9a.5.5 0 0 1 1 0v6h.5a.5.5 0 0 1 0 1H.5a.5.5 0 0 1 0-1H1V9a.5.5 0 0 1 .5-.5zM4 15h3v-5H4v5zm5-5a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1v3a1 1 0 0 1-1 1h-2a1 1 0 0 1-1-1v-3zm3 0h-2v3h2v-3z" />
+                            </svg>
                         </span>
                         <span class="nav-link-text">Stores</span>
                     </a>
@@ -38,7 +42,8 @@
                 </li>
 
                 <li class="nav-item">
-                    <a class="nav-link {{ Request::routeIs('user') || Request::is('user/information*')  ? 'active' : '' }}" href="{{ url('user') }}">
+                    <a class="nav-link {{ Request::routeIs('user') || Request::is('user/information*') ? 'active' : '' }}"
+                        href="{{ url('user') }}">
                         <span class="nav-icon">
                             <svg viewBox="0 0 16 16" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
                                 <path
@@ -74,8 +79,9 @@
                 <ul class="app-menu footer-menu list-unstyled">
                     <!--//nav-item-->
                     <li class="nav-item has-submenu">
-                        <a class="nav-link submenu-toggle {{  Request::routeIs('dropdown') || Request::is('dropdown/menu*') || Request::routeIs('settings') || Request::routeIs('sanitary') || Request::routeIs('category') ? 'active' : '' }}" href="#" data-bs-toggle="collapse"
-                            data-bs-target="#submenu-3" aria-expanded="false" aria-controls="submenu-3">
+                        <a class="nav-link submenu-toggle {{ Request::routeIs('dropdown') || Request::is('dropdown/menu*') || Request::routeIs('settings') || Request::routeIs('sanitary') || Request::routeIs('category') ? 'active' : '' }}"
+                            href="#" data-bs-toggle="collapse" data-bs-target="#submenu-3" aria-expanded="false"
+                            aria-controls="submenu-3">
                             <span class="nav-icon">
                                 <svg viewBox="0 0 16 16" class="bi bi-columns-gap" fill="currentColor"
                                     xmlns="http://www.w3.org/2000/svg">
@@ -96,13 +102,27 @@
                             <!--//submenu-arrow-->
                         </a>
                         <!--//nav-link-->
-                        <div id="submenu-3" class="collapse submenu submenu-3 {{ Request::routeIs('dropdown') || Request::routeIs('dropdown/menu*') || Request::routeIs('settings') || Request::routeIs('sanitary') || Request::routeIs('category') ? 'show' : '' }}" data-bs-parent="#menu-accordion">
+                        <div id="submenu-3" @class([
+                            'collapse submenu submenu-3',
+                            'show' =>
+                                Request::routeIs('dropdown') ||
+                                Request::routeIs('dropdown/menu*') ||
+                                Request::routeIs('settings') ||
+                                Request::routeIs('sanitary') ||
+                                Request::routeIs('category'),
+                        ]) data-bs-parent="#menu-accordion">
                             <ul class="submenu-list list-unstyled">
-                                <li class="submenu-item "><a class="submenu-link {{ Request::routeIs('category') ? 'active' : '' }}" href="{{ url('settings/category') }}">Category</a></li>
-                                <li class="submenu-item"><a class="submenu-link {{ Request::routeIs('settings') ? 'active' : '' }}" href="{{ url('settings/store-settings') }}">Store</a></li>
-                                <li class="submenu-item"><a class="submenu-link {{Request::routeIs('sanitary')  ? 'active' : '' }}" href="{{ url('settings/sanitary') }}">Sanitation Defect</a></li>
-                                <li class="submenu-item"><a class="submenu-link {{Request::routeIs('dropdown') || Request::is('dropdown/menu*')   ? 'active' : '' }}" href="{{ url('settings/dropdown') }}">Dropdown</a></li>
-
+                                <li class="submenu-item "><a @class(['submenu-link', 'active' => Request::routeIs('category')])
+                                        href="{{ url('settings/category') }}">Category</a></li>
+                                <li class="submenu-item"><a
+                                        class="submenu-link {{ Request::routeIs('settings') ? 'active' : '' }}"
+                                        href="{{ url('settings/store-settings') }}">Store</a></li>
+                                <li class="submenu-item"><a
+                                        class="submenu-link {{ Request::routeIs('sanitary') ? 'active' : '' }}"
+                                        href="{{ url('settings/sanitary') }}">Sanitation Defect</a></li>
+                                <li class="submenu-item"><a
+                                        class="submenu-link {{ Request::routeIs('dropdown') || Request::is('dropdown/menu*') ? 'active' : '' }}"
+                                        href="{{ url('settings/dropdown') }}">Dropdown</a></li>
                             </ul>
                         </div>
                     </li>

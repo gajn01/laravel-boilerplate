@@ -219,8 +219,25 @@
                                             name="remarks{{ $auditLabel['name'] }}" id="remarks"
                                             value="{{ $auditLabel['remarks'] }}">
                                     </td>
+                                    <td>
+                                        @if (!empty($auditLabel['dropdown']))
+                                        <select class="form-select form-select-md"
+                                            wire:model="data.{{ $loop->parent->parent->index }}.data_items.{{ $loop->parent->index }}.sub_category.{{ $loop->index }}.tag"
+                                            name="tag{{ $auditLabel['name'] }}" id="tag">
+                                            <option value="0">Select a deviation</option>
+                                            @foreach ($auditLabel['dropdown'] as $result)
+                                                @if (isset($result['name']))
+                                                    <option value="{{ $result['id'] }}">{{ $result['name'] }}
+                                                    </option>
+                                                @endif
+                                            @endforeach
+                                        </select>
+                                    @endif
+                                    </td>
+
                                 </tr>
                             @endforeach
+
                         @endforeach
                     @endforeach
                 </tbody>

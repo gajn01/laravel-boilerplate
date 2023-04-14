@@ -1,4 +1,5 @@
 @import url(theme.css);
+
 body {
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
@@ -497,7 +498,8 @@ button.close:focus {
 .app-sidepanel .sidepanel-inner {
     position: relative;
     z-index: 10;
-    background: var(--primary-color);;
+    background: var(--primary-color);
+    ;
     box-shadow: rgba(0, 0, 0, .05) 0px 8px 15px;
     width: 250px;
     height: 100%
@@ -750,6 +752,7 @@ button.close:focus {
 .app-footer .copyright {
     font-size: .8125rem
 }
+
 .app-wrapper {
     transition: all .4s ease-in-out
 }
@@ -1422,35 +1425,45 @@ button.close:focus {
         width: 100%
     }
 }
-.float-right{
+
+.float-right {
     float: right !important;
 }
-.d-contents{
+
+.d-contents {
     display: contents !important;
 }
-.audit-points{
-   width: 100px;
+
+.audit-points {
+    width: 100px;
 }
-.product-name{
+
+.product-name {
     padding-left: .5rem;
     font-weight: 600;
     text-transform: uppercase;
 }
 
-.product-sub-category p{
+.product-sub-category p {
     margin: 0;
     font-weight: 600;
     padding-left: 1rem;
 }
-.product-audit p{
+
+.product-audit p {
     margin: 0;
     padding-left: 1.5rem;
 }
+
 .core_name_total a {
     text-transform: uppercase;
     color: #000;
     text-decoration: none;
 }
-.service-speed{
+.service-speed {
     padding-left: 2rem !important;
+}
+.table-action-sm{
+    width: 120px;
+    text-align: center;
 }

@@ -38,7 +38,7 @@
                         <tr>
                             <th class="cell">Category</th>
                             <th class="cell">Type</th>
-                            <th class="cell">Action</th>
+                            <th class="cell table-action-sm">Action</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -48,7 +48,7 @@
                                     <td class="cell">{{ $category['name'] }}</td>
                                     <td class="cell">{{ $category['type'] == 1 ? 'Cafe' : 'Kiosk' }}</td>
 
-                                    <td class="cell">
+                                    <td class="cell table-action-sm">
                                         <a href="{{ route('category-details', ['category_id' => $category['id']]) }}"><svg
                                                 class="icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512">
                                                 <path
