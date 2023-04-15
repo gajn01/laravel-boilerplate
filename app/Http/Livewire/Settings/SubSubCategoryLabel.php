@@ -67,7 +67,7 @@ class SubSubCategoryLabel extends Component
             'sub_sub_category_id' => $this->sub_sub_category_id,
             'is_all_nothing' => $this->is_all_nothing,
             'bp' => $this->bp,
-            'dropdown_id' => $this->dropdown_id  ?? '',
+            'dropdown_id' => $this->dropdown_id  ?? '0',
         ];
         SubSubCategoryLabelModel::updateOrCreate(['id' => $this->label_id], $labelData);
         $this->label_list = SubSubCategoryLabelModel::where('sub_sub_category_id', $this->sub_sub_category_id)
