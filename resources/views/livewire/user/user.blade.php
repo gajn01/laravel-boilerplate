@@ -9,29 +9,19 @@
     <div class="page-utilities mb-3">
         <div class="row g-2 justify-content-start justify-content-md-end align-items-center">
             <div class="col-auto">
-                <a href="">
-                    <svg class="icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
-                        <!--! Font Awesome Pro 6.4.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2023 Fonticons, Inc. -->
-                        <path
-                            d="M3.9 54.9C10.5 40.9 24.5 32 40 32H472c15.5 0 29.5 8.9 36.1 22.9s4.6 30.5-5.2 42.5L320 320.9V448c0 12.1-6.8 23.2-17.7 28.6s-23.8 4.3-33.5-3l-64-48c-8.1-6-12.8-15.5-12.8-25.6V320.9L9 97.3C-.7 85.4-2.8 68.8 3.9 54.9z" />
-                    </svg>
-                </a>
-            </div>
-            <div class="col-auto">
                 <form class="docs-search-form row gx-1 align-items-center">
                     <div class="col-auto">
                         <input type="text" id="search-docs" name="searchdocs" class="form-control search-docs"
-                            placeholder="Search">
-                    </div>
-                    <div class="col-auto">
-                        <a class="btn app-btn-primary" href="#" wire:click="test">Search</a>
+                            wire:model.debounce.100ms="searchTerm" placeholder="Search">
+
                     </div>
                 </form>
             </div>
 
             <div class="col-auto">
                 <div class="col-auto">
-                    <a class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#user_modal">Create</a>
+                    <a class="btn app-btn-primary" data-bs-toggle="modal" data-bs-target="#user_modal"
+                        wire:click="showModal">Create</a>
                 </div>
             </div>
             <!--//col-->
@@ -40,7 +30,6 @@
         <!--//row-->
     </div>
     <!--//table-utilities-->
-
     <div class="app-card app-card-orders-table shadow-sm mb-5">
         <div class="app-card-body">
             <div class="table-responsive">
@@ -51,17 +40,25 @@
                             <th class="cell">Name</th>
                             <th class="cell">Email</th>
                             <th class="cell">Status</th>
-                            <th class="cell">Action</th>
+                            <th class="cell table-action-sm">Action</th>
                         </tr>
                     </thead>
                     <tbody>
-                        @foreach ($user_list as $user)
+                        @forelse ($user_list as $user)
                             <tr>
-                                <td class="cell">{{ $user['id'] }}</td>
+                                <td class="cell">{{ $user['employee_id'] }}</td>
                                 <td class="cell">{{ $user['name'] }}</td>
                                 <td class="cell">{{ $user['email'] }}</td>
-                                <td class="cell">{{ $user['status'] }}</td>
                                 <td class="cell">
+                                    @if ($user['status'] == 1)
+                                        <span class="badge bg-success">Active</span>
+                                    @elseif($user['status'] == 0)
+                                        <span class="badge bg-warning">Pending</span>
+                                    @else
+                                        <span class="badge bg-danger">Inactive</span>
+                                    @endif
+                                </td>
+                                <td class="cell table-action-sm">
                                     <a href="{{ route('information', ['user_id' => $user['id']]) }}">
                                         <svg class="icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512">
                                             <!--! Font Awesome Pro 6.3.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2023 Fonticons, Inc. -->
@@ -71,7 +68,15 @@
                                     </a>
                                 </td>
                             </tr>
-                        @endforeach
+                        @empty
+                            <tr>
+                                <td colspan="7">
+                                    <p class="text-center m-0">
+                                        No data found.
+                                    </p>
+                                </td>
+                            </tr>
+                        @endforelse
                     </tbody>
                 </table>
             </div>
@@ -108,49 +113,67 @@
         </div>
         <div class="col-sm-12 col-md-6">
             <nav class="app-pagination">
-                <ul class="pagination justify-content-center">
-                    <li class="page-item disabled">
-                        <a class="page-link" href="#" tabindex="-1" aria-disabled="true">Previous</a>
-                    </li>
-                    <li class="page-item active"><a class="page-link" href="#">1</a></li>
-                    <li class="page-item"><a class="page-link" href="#">2</a></li>
-                    <li class="page-item"><a class="page-link" href="#">3</a></li>
-                    <li class="page-item">
-                        <a class="page-link" href="#">Next</a>
-                    </li>
-                </ul>
+                {{--  {{ $user_list->onEachSide(0)->links() }} --}}
             </nav>
             <!--//app-pagination-->
 
         </div>
     </div>
 
-    <div wire:ignore class="modal fade" id="user_modal" tabindex="-1" data-bs-backdrop="static"
+    <div wire:ignore.self class="modal fade" id="user_modal" tabindex="-1" data-bs-backdrop="static"
         data-bs-keyboard="false" role="dialog" aria-labelledby="modalTitleId" aria-hidden="true">
         <div class="modal-dialog modal-dialog-scrollable modal-dialog-centered modal-md" role="document">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="">Create User</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    <h5 class="modal-title" id=""> {{ $modalTitle }}</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"
+                        wire:click="reset"></button>
                 </div>
                 <div class="modal-body">
                     <form wire:submit.prevent="onSave">
                         @csrf
                         <div class="mb-3">
-                            <label for="name" class="form-label">Name</label>
-                            <input type="text" class="form-control" wire:model="name" id="name"
-                                aria-describedby="helpId" placeholder="">
+                            <label for="employee_id" class="form-label">Employee ID<span
+                                    class="text-danger">*</span></label>
+                            <input type="text" class="form-control" wire:model="employee_id" id="employee_id">
+                            @error('employee_id')
+                                <span class="text-danger">{{ $message }}</span>
+                            @enderror
                         </div>
                         <div class="mb-3">
-                            <label for="email" class="form-label">Email</label>
-                            <input type="email" class="form-control" wire:model="email" id="email"
-                                aria-describedby="helpId" placeholder="">
+                            <label for="name" class="form-label">Name<span class="text-danger">*</span></label>
+                            <input type="text" class="form-control" wire:model="name" id="name">
+                            @error('name')
+                                <span class="text-danger">{{ $message }}</span>
+                            @enderror
                         </div>
+                        <div class="mb-3">
+                            <label for="email" class="form-label">Email<span class="text-danger">*</span></label>
+                            <input type="text" class="form-control" wire:model="email" id="email">
+                            @error('email')
+                                <span class="text-danger">{{ $message }}</span>
+                            @enderror
+                        </div>
+                        <div class="mb-3">
+                            <label for="password" class="form-label">Password<span
+                                    class="text-danger">*</span></label>
+                            <input type="password" class="form-control" wire:model="password" id="password">
+                            @error('password')
+                                <span class="text-danger">{{ $message }}</span>
+                            @enderror
+                        </div>
+                        {{--  <div class="form-group" >
+                            <label for="password">Password</label>
+                            <div class="password-container">
+                                <input  type="password" class="form-control" id="password" name="password" placeholder="Enter Password">
+                                <span class="eye-icon bi bi-eye {{$is_toggle ? 'hide' : '' }} " id="eye-icon" wire:click="onTogglePassword"></span>
+                            </div>
+                        </div> --}}
                     </form>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                    <button type="button" class="btn btn-primary" wire:click="onSave">Save</button>
+                    <button type="button" class="btn app-btn-primary"
+                        wire:click="onSave">{{ $modalButtonText }}</button>
                 </div>
             </div>
         </div>

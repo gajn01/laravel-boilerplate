@@ -14,16 +14,13 @@ return new class extends Migration
         Schema::create('user', function (Blueprint $table) {
             $table->id();
             $table->string('name')->nullable();
-            $table->string('code')->unique();
-            $table->string('avatar')->default('/assets/img/avatar.png');
+            $table->string('employee_id')->unique();
             $table->string('email');
-            $table->string('phone')->nullable();
             $table->string('password');
-            $table->enum('status', ['active', 'inactive'])->nullable()->default('active');
+            $table->boolean('status')->default(false);
             $table->timestamps();
         });
     }
-
     /**
      * Reverse the migrations.
      */

@@ -121,3 +121,11 @@ function showConfirm(event) {
 window.addEventListener('remove-modal', event => {
     $(event.detail.modalName).modal('hide');
 });
+
+window.Livewire.on('toggleEye', () => {
+    const icon = document.getElementById('eye-icon');
+    const password = document.getElementById('password');
+    icon.classList.toggle('hide');
+    const type = password.getAttribute('type') === 'password' ? 'text' : 'password';
+    password.setAttribute('type', type);
+  });

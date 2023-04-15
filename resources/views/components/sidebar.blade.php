@@ -23,9 +23,9 @@
                         </span>
                         <span class="nav-link-text">Dashboard</span>
                     </a>
-                    <!--//nav-link-->
+
                 </li>
-                <!--//nav-item-->
+
                 <li class="nav-item">
                     <a class="nav-link {{ Request::is('store') || Request::is('store/form*') || Request::is('store/details*') ? 'active' : '' }}"
                         href="{{ url('store') }}">
@@ -38,10 +38,41 @@
                         </span>
                         <span class="nav-link-text">Stores</span>
                     </a>
-                    <!--//nav-link-->
-                </li>
 
-                <li class="nav-item">
+                </li>
+                <li class="nav-item has-submenu">
+                    <a @class([
+                        'nav-link submenu-toggle',
+                        'active' => Request::routeIs('user'),
+                    ]) href="#" data-bs-toggle="collapse" data-bs-target="#submenu-2"
+                        aria-expanded="false" aria-controls="submenu-2">
+                        <span class="nav-icon">
+                            <svg viewBox="0 0 16 16" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                                <path
+                                    d="M15 14s1 0 1-1-1-4-5-4-5 3-5 4 1 1 1 1h8Zm-7.978-1A.261.261 0 0 1 7 12.996c.001-.264.167-1.03.76-1.72C8.312 10.629 9.282 10 11 10c1.717 0 2.687.63 3.24 1.276.593.69.758 1.457.76 1.72l-.008.002a.274.274 0 0 1-.014.002H7.022ZM11 7a2 2 0 1 0 0-4 2 2 0 0 0 0 4Zm3-2a3 3 0 1 1-6 0 3 3 0 0 1 6 0ZM6.936 9.28a5.88 5.88 0 0 0-1.23-.247A7.35 7.35 0 0 0 5 9c-4 0-5 3-5 4 0 .667.333 1 1 1h4.216A2.238 2.238 0 0 1 5 13c0-1.01.377-2.042 1.09-2.904.243-.294.526-.569.846-.816ZM4.92 10A5.493 5.493 0 0 0 4 13H1c0-.26.164-1.03.76-1.724.545-.636 1.492-1.256 3.16-1.275ZM1.5 5.5a3 3 0 1 1 6 0 3 3 0 0 1-6 0Zm3-2a2 2 0 1 0 0 4 2 2 0 0 0 0-4Z" />
+                            </svg>
+                        </span>
+                        <span class="nav-link-text">Account Management</span>
+                        <span class="submenu-arrow">
+                            <svg width="1em" height="1em" viewBox="0 0 16 16" class="bi bi-chevron-down"
+                                fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                                <path fill-rule="evenodd"
+                                    d="M1.646 4.646a.5.5 0 0 1 .708 0L8 10.293l5.646-5.647a.5.5 0 0 1 .708.708l-6 6a.5.5 0 0 1-.708 0l-6-6a.5.5 0 0 1 0-.708z" />
+                            </svg>
+                        </span>
+                    </a>
+                    <div id="submenu-2" @class([
+                        'collapse submenu submenu-2',
+                        'show' => Request::routeIs('user'),
+                    ]) data-bs-parent="#menu-accordion">
+                        <ul class="submenu-list list-unstyled">
+                            <li class="submenu-item"><a @class(['submenu-link', 'active' => Request::routeIs('user')])
+                                    href="{{ url('user') }}">Auditor</a></li>
+                            <li class="submenu-item"><a class="submenu-link" href="{{ url('user') }}">Store</a></li>
+                        </ul>
+                    </div>
+                </li>
+                {{--     <li class="nav-item">
                     <a class="nav-link {{ Request::routeIs('user') || Request::is('user/information*') ? 'active' : '' }}"
                         href="{{ url('user') }}">
                         <span class="nav-icon">
@@ -52,12 +83,9 @@
                         </span>
                         <span class="nav-link-text">User Management</span>
                     </a>
-                    <!--//nav-link-->
-                </li>
-
-                <!--//nav-item-->
+                </li> --}}
                 <li class="nav-item">
-                    <a class="nav-link" href="docs.html">
+                    <a class="nav-link" href="#">
                         <span class="nav-icon">
                             <svg viewBox="0 0 16 16" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
                                 <path
@@ -68,16 +96,12 @@
                         </span>
                         <span class="nav-link-text">Reports</span>
                     </a>
-                    <!--//nav-link-->
                 </li>
             </ul>
-            <!--//app-menu-->
         </nav>
-        <!--//app-nav-->
         <div class="app-sidepanel-footer">
             <nav class="app-nav app-nav-footer">
                 <ul class="app-menu footer-menu list-unstyled">
-                    <!--//nav-item-->
                     <li class="nav-item has-submenu">
                         <a class="nav-link submenu-toggle {{ Request::routeIs('dropdown') || Request::is('dropdown/menu*') || Request::routeIs('settings') || Request::routeIs('sanitary') || Request::routeIs('category') ? 'active' : '' }}"
                             href="#" data-bs-toggle="collapse" data-bs-target="#submenu-3" aria-expanded="false"
@@ -99,9 +123,9 @@
                                         d="M1.646 4.646a.5.5 0 0 1 .708 0L8 10.293l5.646-5.647a.5.5 0 0 1 .708.708l-6 6a.5.5 0 0 1-.708 0l-6-6a.5.5 0 0 1 0-.708z" />
                                 </svg>
                             </span>
-                            <!--//submenu-arrow-->
+
                         </a>
-                        <!--//nav-link-->
+
                         <div id="submenu-3" @class([
                             'collapse submenu submenu-3',
                             'show' =>
@@ -139,7 +163,7 @@
                             </span>
                             <span class="nav-link-text">About</span>
                         </a>
-                        <!--//nav-link-->
+
                     </li>
                 </ul>
                 <!--//footer-menu-->
