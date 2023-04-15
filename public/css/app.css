@@ -150,6 +150,7 @@ button.close:focus {
     color: #000;
     background: var(--tertiary-color);
     border-color: var(--tertiary-color);
+    text-decoration: none !important;
 }
 
 .app-btn-secondary {
