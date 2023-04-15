@@ -29,7 +29,6 @@
                                     <h6 class="card-title product-name">{{ $dataItem['name'] }}</h6>
                                 </td>
                             </tr>
-
                             @if ($dataItem['is_sub'] == 0)
                                 @foreach ($dataItem['sub_category'] as $auditLabel)
                                     <tr>
@@ -42,10 +41,9 @@
                                                 value="{{ $auditLabel['is_all_nothing'] }}">
                                         </td>
                                         <td>
-                                            <input type="text" class="form-control text-center"
+                                            <input type="number" class="form-control text-center"
                                                 wire:model="data.{{ $loop->parent->parent->index }}.data_items.{{ $loop->parent->index }}.sub_category.{{ $loop->index }}.points"
                                                 name="points{{ $auditLabel['name'] }}" id="points"
-                                                wire:keydown="onUpdateBP({{ $auditLabel['id'] }}, $event.target.value)"
                                                 value="{{ $auditLabel['points'] }}">
 
                                         </td>
@@ -81,7 +79,6 @@
                                             </td>
                                         </tr>
                                     @endif
-
                                     @foreach ($sub_category['label'] as $auditLabel)
                                         <tr>
                                             <td class="product-audit">
@@ -93,10 +90,9 @@
                                                     value="{{ $auditLabel['is_all_nothing'] }}">
                                             </td>
                                             <td>
-                                                <input type="text" class="form-control text-center"
+                                                <input type="number" class="form-control text-center"
                                                     wire:model="data.{{ $loop->parent->parent->index }}.data_items.{{ $loop->parent->index }}.sub_category.{{ $loop->index }}.points"
                                                     name="points{{ $auditLabel['name'] }}" id="points"
-                                                    wire:keydown="onUpdateBP({{ $auditLabel['id'] }}, $event.target.value)"
                                                     value="{{ $auditLabel['points'] }}">
                                             </td>
                                             <td colspan="{{ $auditLabel['dropdown'] ? '' : 2 }}">

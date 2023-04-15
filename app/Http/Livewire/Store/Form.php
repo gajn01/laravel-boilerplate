@@ -28,10 +28,6 @@ class Form extends Component
             'product' => 'CR'
         ],
     ];
-    public function addLcm()
-    {
-        dd($this->food);
-    }
     public function render()
     {
         return view('livewire.store.form')->extends('layouts.app');
@@ -39,9 +35,6 @@ class Form extends Component
     public function mount($store_name = null)
     {
         $this->store_name = $store_name;
-
-
-
         $service_list = SubCategoryModel::with([
             'subCategoryLabels' => function ($query) {
                 $query->select('id', 'name', 'is_all_nothing', 'bp', 'sub_category_id', 'dropdown_id');

@@ -23,9 +23,6 @@ class FoodForm extends Component
         $this->data = $data;
         $this->lcm = $lcm;
     }
-    public function onUpdateBP($data = null, $value){
-        dd($data,$value);
-    }
     public function render()
     {
 

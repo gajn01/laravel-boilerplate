@@ -1,58 +1,57 @@
 <?php
 namespace App\Http\Livewire\Settings;
-
-use Illuminate\Support\Facades\DB;
 use Livewire\Component;
 use App\Models\Category as CategoryModel;
 use App\Models\SubCategory as SubCategoryModel;
 use App\Models\SubCategoryLabel as SubCategoryLabelModel;
 use App\Models\Dropdown as DropdownModel;
-
+use Livewire\WithPagination;
+use App\Helpers\CustomHelper;
 class SubCategoryLabel extends Component
 {
-    protected $listeners = ['alert-sent' => 'onAlertSent'];
+    use WithPagination;
+    protected $paginationTheme = 'bootstrap';
+    protected $listeners = ['alert-sent' => 'onDelete'];
     public $category_name;
     public $category_id;
     public $sub_category_id;
     public $sub_category_name;
-    public $label_list = [];
     public $label_id;
     public $name;
     public $is_all_nothing = false;
     public $bp;
     public $is_sub = false;
-    public $dropdown_list = [];
+    public $dropdown_list;
     public $dropdown_id;
     public $searchTerm;
     public $modalTitle;
     public $modalButtonText;
-    public function render()
-    {
-        return view('livewire.settings.sub-category-label')->extends('layouts.app');
-    }
+    public $limit = 10;
     public function mount($category_id = null, $sub_category_id = null)
     {
         $this->category_id = $category_id;
         $this->sub_category_id = $sub_category_id;
-        $data = CategoryModel::where('id', $category_id)
-            ->with([
-                'subCategories' => function ($query) use ($sub_category_id) {
-                    $query->where('id', $sub_category_id)->with('subCategoryLabels');
-                }
-            ])
-            ->first();
-        if ($data) {
-            $this->category_name = $data->name;
-            $this->sub_category_name = $data->subCategories->first()->name;
-            $this->is_sub = $data->subCategories->first()->is_sub;
-            $this->label_list = $data->subCategories->first()->subCategoryLabels->toArray();
-        } else {
-            $this->category_name = CategoryModel::where('id', $category_id)->value('name');
-            $this->sub_category_name = SubCategoryModel::where('id', $sub_category_id)->value('name');
-            $this->is_sub = SubCategoryModel::where('id', $sub_category_id)->value('is_sub');
-        }
-        $this->dropdown_list = DropdownModel::get()->toArray();
+        $this->category_name = CategoryModel::where('id', $category_id)->value('name');
+        $sub_category = SubCategoryModel::find($sub_category_id);
+        $this->sub_category_name = optional($sub_category)->name;
+        $this->is_sub = optional($sub_category)->is_sub ?? 0;
+        $this->dropdown_list = DropdownModel::get();
+       /*  $this->dropdown_list = cache()->remember('dropdown_list', 60, function () {
+            return DropdownModel::get()->toArray();
+        }); */
     }
+    public function render()
+    {
+        $searchTerm = '%' . $this->searchTerm . '%';
+        $label_list = SubCategoryLabelModel::select('id', 'name', 'sub_category_id', 'bp', 'is_all_nothing','dropdown_id')
+            ->where('sub_category_id', $this->sub_category_id)
+            ->where(function ($query) use ($searchTerm) {
+                $query->where('name', 'like', $searchTerm);
+            })
+            ->paginate($this->limit);
+        return view('livewire.settings.sub-category-label', ['label_list' => $label_list])->extends('layouts.app');
+    }
+
     public function showModal($label_id = null)
     {
         $label = SubCategoryLabelModel::find($label_id);
@@ -64,7 +63,6 @@ class SubCategoryLabel extends Component
         $this->label_id = $label_id;
         $this->modalTitle = $label_id ? 'Edit Label' : 'Add Label';
         $this->modalButtonText = $label_id ? 'Update' : 'Add';
-        $this->dispatchBrowserEvent('show-item-form');
     }
     public function onSave()
     {
@@ -79,50 +77,20 @@ class SubCategoryLabel extends Component
             ]
         );
         $this->reset();
-        $this->label_list = SubCategoryLabelModel::where('sub_category_id', $this->sub_category_id)->get()->toArray();
         $this->onAlert(false, 'Success', 'Label saved successfully!', 'success');
-        $this->dispatchBrowserEvent('remove-modal', ['modalName' => '#label_modal']);
-        $this->emit('saved');
-    }
-    public function onSearch()
-    {
-        $query = SubCategoryLabelModel::select('id', 'name', 'sub_category_id', 'is_all_nothing', 'bp')
-            ->where('sub_category_id', $this->sub_category_id);
-        if ($this->searchTerm) {
-            $query->where('name', 'like', '%' . $this->searchTerm . '%');
-        }
-        $this->label_list = $query->get(['id', 'name', 'sub_category_id', 'is_all_nothing', 'bp'])->toArray();
+        CustomHelper::onRemoveModal($this, '#label_modal');
     }
     public function onDelete($id)
     {
-        $store = SubCategoryLabelModel::find($id);
-        $store->delete();
-        $this->label_list = array_values(array_filter($this->label_list, function ($label) use ($id) {
-            return $label['id'] != $id;
-        }));
-        $this->emit('saved');
+        $sub_category = SubCategoryLabelModel::find($id);
+        $sub_category->delete();
     }
     public function onAlert($is_confirm = false, $title = null, $message = null, $type = null, $data = null)
     {
-        $alert = $is_confirm ? 'confirm-alert' : 'show-alert';
-        $this->dispatchBrowserEvent($alert, [
-            'title' => $title,
-            'message' => $message,
-            'type' => $type,
-            'data' => $data
-        ]);
+        CustomHelper::onShow($this, $is_confirm, $title, $message, $type, $data);
     }
     public function reset(...$properties)
     {
-        $this->name = '';
-        $this->label_id = '';
-        $this->is_all_nothing = false;
-        $this->bp = '';
-        $this->dropdown_id = 0;
         $this->resetValidation();
-    }
-    public function onAlertSent($data)
-    {
-        $this->onDelete($data);
     }
 }

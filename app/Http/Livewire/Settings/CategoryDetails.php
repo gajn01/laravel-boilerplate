@@ -36,8 +36,6 @@ class CategoryDetails extends Component
                 $query->where('name', 'like', $searchTerm);
             })
             ->paginate($this->limit);
-
-
         return view('livewire.settings.category-details', ['sub_category_list' => $sub_category_list])->extends('layouts.app');
     }
     public function showModal($sub_category_id = null)

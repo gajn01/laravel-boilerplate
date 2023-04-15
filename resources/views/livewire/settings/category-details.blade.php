@@ -93,7 +93,7 @@
                         <label for="limit">Display</label>
                     </div>
                     <div class="col-auto">
-                        <select class="form-select-sm w-auto" id="limit">
+                        <select class="form-select-sm w-auto" id="limit"  wire:model="limit">
                             <option selected value="10">10</option>
                             <option value="20">20</option>
                             <option value="50">50</option>
