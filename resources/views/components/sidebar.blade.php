@@ -43,7 +43,7 @@
                 <li class="nav-item has-submenu">
                     <a @class([
                         'nav-link submenu-toggle',
-                        'active' => Request::routeIs('user'),
+                        'active' => Request::is('user') || Request::is('user/information*'),
                     ]) href="#" data-bs-toggle="collapse" data-bs-target="#submenu-2"
                         aria-expanded="false" aria-controls="submenu-2">
                         <span class="nav-icon">
@@ -63,10 +63,10 @@
                     </a>
                     <div id="submenu-2" @class([
                         'collapse submenu submenu-2',
-                        'show' => Request::routeIs('user'),
+                        'show' => Request::is('user') || Request::is('user/information*'),
                     ]) data-bs-parent="#menu-accordion">
                         <ul class="submenu-list list-unstyled">
-                            <li class="submenu-item"><a @class(['submenu-link', 'active' => Request::routeIs('user')])
+                            <li class="submenu-item"><a @class(['submenu-link', 'active' => Request::is('user') || Request::is('user/information*')])
                                     href="{{ url('user') }}">Auditor</a></li>
                             <li class="submenu-item"><a class="submenu-link" href="{{ url('user') }}">Store</a></li>
                         </ul>
