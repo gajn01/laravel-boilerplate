@@ -3,7 +3,7 @@
 <div class="container-xl">
     <nav aria-label="breadcrumb">
         <ol class="breadcrumb">
-            <li class="breadcrumb-item"><a href="{{ route('user') }}">User</a></li>
+            <li class="breadcrumb-item"><a href="{{ route('user') }}">Account</a></li>
             <li class="breadcrumb-item active" aria-current="page" wire:ignore>{{ $name }}</li>
         </ol>
     </nav>
@@ -34,26 +34,33 @@
 
                         <div class="item border-bottom py-3">
                             <div class="row justify-content-between align-items-center">
-                                <div class="col-auto">
+                                <div class="col-12">
                                     <div class="item-label mb-1"><strong>Employee ID</strong></div>
-                                    <div class="item-data">5358</div>
+                                    @if ($is_edit)
+                                        <input type="text" class="form-control" wire:model="input_employee_id"
+                                            id="input_employee_id" value="{{ $name }}">
+                                        @error('input_employee_id')
+                                            <span class="text-danger">{{ $message }}</span>
+                                        @enderror
+                                    @else
+                                        <div class="item-data">{{ $employee_id }}</div>
+                                    @endif
                                 </div>
                             </div>
                         </div>
-
                         <div class="item border-bottom py-3">
                             <div class="row ">
                                 <div class="col-12">
                                     <div class="item-label mb-1"><strong>Full Name</strong></div>
                                     @if ($is_edit)
-                                        <input type="text" class="form-control" wire:model="input_name" id="input_name" value="{{ $name}}">
+                                        <input type="text" class="form-control" wire:model="input_name"
+                                            id="input_name" value="{{ $name }}">
                                         @error('input_name')
                                             <span class="text-danger">{{ $message }}</span>
                                         @enderror
                                     @else
                                         <div class="item-data">{{ $name }}</div>
                                     @endif
-
                                 </div>
                             </div>
                         </div>
@@ -63,7 +70,8 @@
                                 <div class="col-12">
                                     <div class="item-label mb-1"><strong>Email</strong></div>
                                     @if ($is_edit)
-                                        <input type="text" class="form-control" wire:model="input_email" id="input_email">
+                                        <input type="text" class="form-control" wire:model="input_email"
+                                            id="input_email">
                                         @error('input_email')
                                             <span class="text-danger">{{ $message }}</span>
                                         @enderror
@@ -100,7 +108,8 @@
                             </div>
                         </div>
                         <div class="app-card-footer pt-2 mt-auto text-end {{ $is_edit ? '' : 'd-none' }}">
-                            <button type="button" class="btn btn-secondary" wire:click="onUpdate(false)">Cancel</button>
+                            <button type="button" class="btn btn-secondary"
+                                wire:click="onUpdate(false)">Cancel</button>
                             <button type="button" class="btn app-btn-primary" wire:click="onSaveAccount">Save</button>
                         </div>
                     </form>

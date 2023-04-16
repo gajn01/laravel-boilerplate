@@ -3,7 +3,7 @@
 <div class="container-xl">
     <nav aria-label="breadcrumb">
         <ol class="breadcrumb">
-            <li class="breadcrumb-item active">User</li>
+            <li class="breadcrumb-item active">Account</li>
         </ol>
     </nav>
     <div class="page-utilities mb-3">

@@ -56,7 +56,7 @@ class Form extends Component
                                         'name' => $label->name,
                                         'bp' => $label->bp,
                                         'is_all_nothing' => $label->is_all_nothing == 0 ? $label->bp : $label->bp . '*',
-                                        'points' => '',
+                                        'points' =>  $label->bp,
                                         'remarks' => '',
                                         'tag' => '',
                                         'dropdown' => DropdownMenuModel::where('dropdown_id', $label->dropdown_id)->get()->toArray()
@@ -98,7 +98,7 @@ class Form extends Component
                                 'name' => $label->name,
                                 'bp' => $label->bp,
                                 'is_all_nothing' => $isAllNothing,
-                                'points' => '',
+                                'points' => $label->bp,
                                 'remarks' => '',
                                 'tag' => '',
                                 'dropdown' => $dropdownMenu,
@@ -110,13 +110,12 @@ class Form extends Component
                             $subLabelData = $subLabels->map(function ($subLabel) {
                                 $dropdownMenu = DropdownMenuModel::where('dropdown_id', $subLabel->dropdown_id)->get()->toArray();
                                 $isAllNothing = $subLabel->is_all_nothing == 0 ? $subLabel->bp : $subLabel->bp . '*';
-
                                 return [
                                     'id' => $subLabel->id,
                                     'name' => $subLabel->name,
                                     'bp' => $subLabel->bp,
                                     'is_all_nothing' => $isAllNothing,
-                                    'points' => '',
+                                    'points' => $subLabel->bp,
                                     'remarks' => '',
                                     'tag' => '',
                                     'dropdown' => $dropdownMenu,

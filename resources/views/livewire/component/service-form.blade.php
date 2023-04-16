@@ -6,9 +6,7 @@
                     <div class="col-auto">
                         <h4 class="app-card-title">Overall Score</h4>
                     </div>
-                    <!--//col-->
                 </div>
-                <!--//row-->
             </div>
             <div class="app-card-body p-3 p-lg-4">
                 <table class="table app-table-hover mb-0 text-left">
@@ -46,13 +44,9 @@
                         @endforeach
                     </tbody>
                 </table>
-
             </div>
-            <!--//app-card-body-->
         </div>
-        <!--//app-card-->
     </div>
-    <!--//col-->
     <div class="col-12 col-lg-6">
         <div class="app-card app-card-chart h-100 shadow-sm">
             <div class="app-card-header p-3">
@@ -65,11 +59,8 @@
             <div class="app-card-body p-3 p-lg-4">
                 <x-service-issue />
             </div>
-            <!--//app-card-body-->
         </div>
-        <!--//app-card-->
     </div>
-    <!--//col-->
 </div>
 <div wire:ignore class="app-card app-card-orders-table shadow-sm mb-5">
     <div class="app-card-header p-3">
@@ -77,11 +68,8 @@
             <div class="col-auto">
                 <h4 class="app-card-title">Category </h4>
             </div>
-            <!--//col-->
         </div>
-        <!--//row-->
     </div>
-    <!--//app-card-header-->
     <div class="app-card-body">
         <div class="table-responsive">
             <table class="table app-table-hover mb-0 text-left">
@@ -221,31 +209,25 @@
                                     </td>
                                     <td>
                                         @if (!empty($auditLabel['dropdown']))
-                                        <select class="form-select form-select-md"
-                                            wire:model="data.{{ $loop->parent->parent->index }}.data_items.{{ $loop->parent->index }}.sub_category.{{ $loop->index }}.tag"
-                                            name="tag{{ $auditLabel['name'] }}" id="tag">
-                                            <option value="0">Select a deviation</option>
-                                            @foreach ($auditLabel['dropdown'] as $result)
-                                                @if (isset($result['name']))
-                                                    <option value="{{ $result['id'] }}">{{ $result['name'] }}
-                                                    </option>
-                                                @endif
-                                            @endforeach
-                                        </select>
-                                    @endif
+                                            <select class="form-select form-select-md"
+                                                wire:model="data.{{ $loop->parent->parent->index }}.data_items.{{ $loop->parent->index }}.sub_category.{{ $loop->index }}.tag"
+                                                name="tag{{ $auditLabel['name'] }}" id="tag">
+                                                <option value="0">Select a deviation</option>
+                                                @foreach ($auditLabel['dropdown'] as $result)
+                                                    @if (isset($result['name']))
+                                                        <option value="{{ $result['id'] }}">{{ $result['name'] }}
+                                                        </option>
+                                                    @endif
+                                                @endforeach
+                                            </select>
+                                        @endif
                                     </td>
-
                                 </tr>
                             @endforeach
-
                         @endforeach
                     @endforeach
                 </tbody>
             </table>
         </div>
-        <!--//table-responsive-->
-
     </div>
-    <!--//app-card-body-->
 </div>
-<!--//app-card-->

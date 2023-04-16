@@ -12,6 +12,7 @@ class UserDetails extends Component
     public $account_id;
     public $employee_id;
     public $name;
+    public $input_employee_id;
     public $input_name;
     public $input_email;
     public $input_status;
@@ -33,6 +34,7 @@ class UserDetails extends Component
         $this->status = optional($data)->status;
     }
     public function onUpdate($boolean){
+        $this->input_employee_id = $this->employee_id;
         $this->input_name = $this->name;
         $this->input_email = $this->email;
         $this->input_status = $this->status;
