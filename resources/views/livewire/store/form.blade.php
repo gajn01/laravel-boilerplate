@@ -19,6 +19,34 @@
     </div>
     <!--//table-utilities-->
 
+    {{-- <nav wire:ignore id="audit-form-tab"
+        class="audit-form-tab app-nav-tabs nav shadow-sm flex-column flex-sm-row mb-4 justify-content-center">
+        @forelse ($category_list as $key => $data)
+            <a @class([
+                'flex-sm-fill',
+                'text-sm-center',
+                'nav-link',
+                'active' => $key == 0,
+            ]) id="cat{{ $data->id }}-tab" data-bs-toggle="tab" href="#cat{{ $data->id }}"
+                role="tab" aria-controls="cat{{ $data->id }}" aria-selected="{{ $key == 0 ? 'true' : 'false' }}">
+                {{ $data->name }}
+            </a>
+        @empty
+            <p class="m-0 p-2">No category found!</p>
+        @endforelse
+    </nav>
+
+    <div class="tab-content" id="audit-form-tab-content" wire:ignore>
+        @forelse ($category_list as $key => $data)
+            <div class="tab-pane fade show {{ $key == 0 ? 'active' : '' }}" id="cat{{ $data->id }}" role="tabpanel"
+                aria-labelledby="cat{{ $data->id }}-tab">
+                {{ $data->name }}
+            </div>
+        @empty
+            <p class="m-0 p-2">No category found!</p>
+        @endforelse
+    </div>
+ --}}
     <nav wire:ignore id="audit-form-tab" class="audit-form-tab app-nav-tabs nav shadow-sm flex-column flex-sm-row mb-4">
         <a class="flex-sm-fill text-sm-center nav-link active " id="service-tab" data-bs-toggle="tab" href="#service"
             role="tab" aria-controls="service" aria-selected="true">Service</a>

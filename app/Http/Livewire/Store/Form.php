@@ -2,6 +2,7 @@
 namespace App\Http\Livewire\Store;
 
 use Livewire\Component;
+use App\Models\Category as CategoryModel;
 use App\Models\SubCategory as SubCategoryModel;
 use App\Models\SubSubCategoryLabel as SubSubCategoryLabelModel;
 use App\Models\DropdownMenu as DropdownMenuModel;
@@ -10,6 +11,8 @@ class Form extends Component
 {
     public $store_name;
     /* Audit Category */
+    public $store_type = 1;
+    public $active_tab;
     public $food = [];
     public $data;
     public $production = [];
@@ -30,7 +33,83 @@ class Form extends Component
     ];
     public function render()
     {
-        return view('livewire.store.form')->extends('layouts.app');
+        $data = CategoryModel::select('id', 'name', 'type')
+            ->where('type', $this->store_type)
+            ->with([
+                'subCategories' => function ($query) {
+                    $query->with([
+                        'subCategoryLabels' => function ($query) {
+                                    $query->select('id', 'name', 'is_all_nothing', 'bp', 'sub_category_id', 'dropdown_id');
+                                },
+                    ]);
+                }
+            ])
+            ->get();
+        foreach ($data as $category) {
+            $subCategories = $category->subCategories;
+            $sub_category = [
+                [
+                    'data_items' => $subCategories->map(function ($subCategory) {
+                        $subCategoryData = [
+                            'id' => $subCategory->id,
+                            'is_sub' => $subCategory->is_sub,
+                            'name' => $subCategory->name,
+                            'overall_score' => '100%',
+                            'score' => '20',
+                            'total_percentage' => '100%',
+                        ];
+                        if ($subCategory->is_sub == 0) {
+                            $subCategoryData['sub_category'] = $subCategory->subCategoryLabels->map(function ($label) {
+                                $dropdownMenu = DropdownMenuModel::where('dropdown_id', $label->dropdown_id)->get()->toArray();
+                                $isAllNothing = $label->is_all_nothing == 0 ? $label->bp : $label->bp . '*';
+
+                                return [
+                                    'id' => $label->id,
+                                    'name' => $label->name,
+                                    'bp' => $label->bp,
+                                    'is_all_nothing' => $isAllNothing,
+                                    'points' => $label->bp,
+                                    'remarks' => '',
+                                    'tag' => '',
+                                    'dropdown' => $dropdownMenu,
+                                ];
+                            });
+                        } else {
+                            $subCategoryData['sub_category'] = $subCategory->subCategoryLabels->map(function ($label) {
+                                $subLabels = SubSubCategoryLabelModel::where('sub_sub_category_id', $label->id)->get();
+                                $subLabelData = $subLabels->map(function ($subLabel) {
+                                    $dropdownMenu = DropdownMenuModel::where('dropdown_id', $subLabel->dropdown_id)->get()->toArray();
+                                    $isAllNothing = $subLabel->is_all_nothing == 0 ? $subLabel->bp : $subLabel->bp . '*';
+                                    return [
+                                        'id' => $subLabel->id,
+                                        'name' => $subLabel->name,
+                                        'bp' => $subLabel->bp,
+                                        'is_all_nothing' => $isAllNothing,
+                                        'points' => $subLabel->bp,
+                                        'remarks' => '',
+                                        'tag' => '',
+                                        'dropdown' => $dropdownMenu,
+                                    ];
+                                });
+
+                                return [
+                                    'id' => $label->id,
+                                    'name' => $label->name,
+                                    'label' => $subLabelData,
+                                ];
+                            });
+                        }
+
+                        return $subCategoryData;
+                    }),
+                    'overall_score' => '100%',
+                    'score' => '91',
+                    'total_percentage' => '100%',
+                ]
+            ];
+            $category->sub_category = $sub_category;
+        }
+        return view('livewire.store.form', ['category_list' => $data])->extends('layouts.app');
     }
     public function mount($store_name = null)
     {
@@ -56,7 +135,7 @@ class Form extends Component
                                         'name' => $label->name,
                                         'bp' => $label->bp,
                                         'is_all_nothing' => $label->is_all_nothing == 0 ? $label->bp : $label->bp . '*',
-                                        'points' =>  $label->bp,
+                                        'points' => $label->bp,
                                         'remarks' => '',
                                         'tag' => '',
                                         'dropdown' => DropdownMenuModel::where('dropdown_id', $label->dropdown_id)->get()->toArray()

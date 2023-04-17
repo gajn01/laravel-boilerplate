@@ -66,7 +66,10 @@
                         'show' => Request::is('user') || Request::is('user/information*'),
                     ]) data-bs-parent="#menu-accordion">
                         <ul class="submenu-list list-unstyled">
-                            <li class="submenu-item"><a @class(['submenu-link', 'active' => Request::is('user') || Request::is('user/information*')])
+                            <li class="submenu-item"><a @class([
+                                'submenu-link',
+                                'active' => Request::is('user') || Request::is('user/information*'),
+                            ])
                                     href="{{ url('user') }}">Auditor</a></li>
                             <li class="submenu-item"><a class="submenu-link" href="{{ url('user') }}">Store</a></li>
                         </ul>
@@ -103,7 +106,7 @@
             <nav class="app-nav app-nav-footer">
                 <ul class="app-menu footer-menu list-unstyled">
                     <li class="nav-item has-submenu">
-                        <a class="nav-link submenu-toggle {{ Request::routeIs('dropdown') || Request::is('dropdown/menu*') || Request::routeIs('settings') || Request::routeIs('sanitary') || Request::routeIs('category') ? 'active' : '' }}"
+                        <a class="nav-link submenu-toggle {{ Request::routeIs('critical-deviation') || Request::routeIs('dropdown') || Request::routeIs('dropdown/menu*') || Request::routeIs('settings') || Request::routeIs('sanitary') || Request::routeIs('category') ? 'active' : '' }}"
                             href="#" data-bs-toggle="collapse" data-bs-target="#submenu-3" aria-expanded="false"
                             aria-controls="submenu-3">
                             <span class="nav-icon">
@@ -123,9 +126,7 @@
                                         d="M1.646 4.646a.5.5 0 0 1 .708 0L8 10.293l5.646-5.647a.5.5 0 0 1 .708.708l-6 6a.5.5 0 0 1-.708 0l-6-6a.5.5 0 0 1 0-.708z" />
                                 </svg>
                             </span>
-
                         </a>
-
                         <div id="submenu-3" @class([
                             'collapse submenu submenu-3',
                             'show' =>
@@ -133,7 +134,8 @@
                                 Request::routeIs('dropdown/menu*') ||
                                 Request::routeIs('settings') ||
                                 Request::routeIs('sanitary') ||
-                                Request::routeIs('category'),
+                                Request::routeIs('category') ||
+                                Request::routeIs('critical-deviation'),
                         ]) data-bs-parent="#menu-accordion">
                             <ul class="submenu-list list-unstyled">
                                 <li class="submenu-item "><a @class(['submenu-link', 'active' => Request::routeIs('category')])
@@ -141,6 +143,8 @@
                                 <li class="submenu-item"><a
                                         class="submenu-link {{ Request::routeIs('settings') ? 'active' : '' }}"
                                         href="{{ url('settings/store-settings') }}">Store</a></li>
+                                <li class="submenu-item"><a @class(['submenu-link','active' => Request::routeIs('critical-deviation')])
+                                        href="{{ url('settings/critical-deviation') }}">Critical Deviation</a></li>
                                 <li class="submenu-item"><a
                                         class="submenu-link {{ Request::routeIs('sanitary') ? 'active' : '' }}"
                                         href="{{ url('settings/sanitary') }}">Sanitation Defect</a></li>
