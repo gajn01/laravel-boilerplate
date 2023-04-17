@@ -4,11 +4,8 @@
             <div class="col-auto">
                 <h4 class="app-card-title">Core Product</h4>
             </div>
-            <!--//col-->
         </div>
-        <!--//row-->
     </div>
-    <!--//app-card-header-->
     <div class="app-card-body">
         <div class="table-responsive">
             <table class="table app-table-hover mb-0 text-left">
@@ -133,11 +130,5 @@
                 </tbody>
             </table>
         </div>
-
-
-        <!--//table-responsive-->
-
     </div>
-    <!--//app-card-body-->
 </div>
-<!--//app-card-->

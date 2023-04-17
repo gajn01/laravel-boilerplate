@@ -15,11 +15,8 @@
                     href="{{ route('form.summary', ['store_name' => $store_name]) }}">Complete</a>
             </div>
         </div>
-        <!--//row-->
     </div>
-    <!--//table-utilities-->
-
-    {{-- <nav wire:ignore id="audit-form-tab"
+    <nav wire:ignore id="audit-form-tab"
         class="audit-form-tab app-nav-tabs nav shadow-sm flex-column flex-sm-row mb-4 justify-content-center">
         @forelse ($category_list as $key => $data)
             <a @class([
@@ -27,8 +24,9 @@
                 'text-sm-center',
                 'nav-link',
                 'active' => $key == 0,
-            ]) id="cat{{ $data->id }}-tab" data-bs-toggle="tab" href="#cat{{ $data->id }}"
-                role="tab" aria-controls="cat{{ $data->id }}" aria-selected="{{ $key == 0 ? 'true' : 'false' }}">
+            ]) id="cat{{ $data->id }}-tab" data-bs-toggle="tab"
+                href="#cat{{ $data->id }}" role="tab" aria-controls="cat{{ $data->id }}"
+                aria-selected="{{ $key == 0 ? 'true' : 'false' }}">
                 {{ $data->name }}
             </a>
         @empty
@@ -40,100 +38,168 @@
         @forelse ($category_list as $key => $data)
             <div class="tab-pane fade show {{ $key == 0 ? 'active' : '' }}" id="cat{{ $data->id }}" role="tabpanel"
                 aria-labelledby="cat{{ $data->id }}-tab">
-                {{ $data->name }}
+
+                <div class="row g-4 mb-4">
+                    <div class="col-12 col-lg-6">
+                        <div class="app-card app-card-chart h-100 shadow-sm">
+                            <div class="app-card-header p-3">
+                                <div class="row justify-content-between align-items-center">
+                                    <div class="col-auto">
+                                        <h4 class="app-card-title">Overall Score</h4>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="app-card-body p-3 p-lg-4">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-12 col-lg-6">
+                        <div class="app-card app-card-chart h-100 shadow-sm">
+                            <div class="app-card-header p-3">
+                                <div class="row justify-content-between align-items-center">
+                                    <div class="col-auto">
+                                        <h4 class="app-card-title">Critical Deviation</h4>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="app-card-body p-3 p-lg-4">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="app-card app-card-orders-table shadow-sm mb-5">
+                    {{--  <div class="app-card-header p-3">
+                        <div class="row justify-content-between align-items-center">
+                            <div class="col-auto">
+                                <h4 class="app-card-title">Core Product</h4>
+                            </div>
+                        </div>
+                    </div> --}}
+                    @forelse ($data->sub_categ['data_items'] as $dataItem)
+                        <div class="app-card-body">
+                            <div class="table-responsive">
+                                <table class="table app-table-hover mb-0 text-left">
+                                    <thead>
+                                        <tr>
+                                            <th class="cell "></th>
+                                            <th class="cell audit-points">Base Point</th>
+                                            <th class="cell audit-points">Point</th>
+                                            <th class="cell w-25">Remarks</th>
+                                            <th class="cell w-25">Deviation</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr id="{{ $dataItem['name'] }}">
+                                            <td colspan="5">
+                                                <h6 class="card-title product-name">{{ $dataItem['name'] }}</h6>
+                                            </td>
+                                        </tr>
+                                        @if ($dataItem['is_sub'] == 0)
+                                            @foreach ($dataItem['sub_category'] as $auditLabel)
+                                                <tr>
+                                                    <td class="product-audit">
+                                                        <p>{{ $auditLabel['name'] }}</p>
+                                                    </td>
+                                                    <td>
+                                                        <input type="text" class="form-control text-center" disabled
+                                                            name="bp{{ $auditLabel['name'] }}" id="bp"
+                                                            placeholder="" value="{{ $auditLabel['is_all_nothing'] }}">
+                                                    </td>
+                                                    <td>
+                                                        <input type="number" class="form-control text-center"
+                                                            wire:model="data.{{ $loop->parent->parent->index }}.data_items.{{ $loop->parent->index }}.sub_category.{{ $loop->index }}.points"
+                                                            name="points{{ $auditLabel['name'] }}" id="points"
+                                                            value="{{ $auditLabel['points'] }}">
+                                                    </td>
+                                                    <td colspan="{{ $auditLabel['dropdown'] ? '' : 2 }}">
+                                                        <input type="text" class="form-control"
+                                                            wire:model="data.{{ $loop->parent->parent->index }}.data_items.{{ $loop->parent->index }}.sub_category.{{ $loop->index }}.remarks"
+                                                            name="remarks{{ $auditLabel['name'] }}" id="remarks"
+                                                            value="{{ $auditLabel['remarks'] }}">
+                                                    </td>
+                                                    <td>
+                                                        @if (!empty($auditLabel['dropdown']))
+                                                            <select class="form-select form-select-md"
+                                                                wire:model="data.{{ $loop->parent->parent->index }}.data_items.{{ $loop->parent->index }}.sub_category.{{ $loop->index }}.tag"
+                                                                name="tag{{ $auditLabel['name'] }}" id="tag">
+                                                                <option value="0">Select a deviation</option>
+                                                                @foreach ($auditLabel['dropdown'] as $result)
+                                                                    @if (isset($result['name']))
+                                                                        <option value="{{ $result['id'] }}">
+                                                                            {{ $result['name'] }}
+                                                                        </option>
+                                                                    @endif
+                                                                @endforeach
+                                                            </select>
+                                                        @endif
+                                                    </td>
+                                                </tr>
+                                            @endforeach
+                                        @else
+                                            @foreach ($dataItem['sub_category'] as $sub_category)
+                                                @if ($sub_category['name'])
+                                                    <tr>
+                                                        <td class="product-sub-category " colspan="5">
+                                                            <p>{{ $sub_category['name'] }}</p>
+                                                        </td>
+                                                    </tr>
+                                                @endif
+                                                @foreach ($sub_category['label'] as $auditLabel)
+                                                    <tr>
+                                                        <td class="product-audit">
+                                                            <p>{{ $auditLabel['name'] }}</p>
+                                                        </td>
+                                                        <td>
+                                                            <input type="text" class="form-control text-center"
+                                                                disabled name="bp{{ $auditLabel['name'] }}"
+                                                                id="bp" placeholder=""
+                                                                value="{{ $auditLabel['is_all_nothing'] }}">
+                                                        </td>
+                                                        <td>
+                                                            <input type="number" class="form-control text-center"
+                                                                wire:model="data.{{ $loop->parent->parent->index }}.data_items.{{ $loop->parent->index }}.sub_category.{{ $loop->index }}.points"
+                                                                name="points{{ $auditLabel['name'] }}" id="points"
+                                                                value="{{ $auditLabel['points'] }}">
+                                                        </td>
+                                                        <td colspan="{{ $auditLabel['dropdown'] ? '' : 2 }}">
+                                                            <input type="text" class="form-control"
+                                                                wire:model="data.{{ $loop->parent->parent->index }}.data_items.{{ $loop->parent->index }}.sub_category.{{ $loop->index }}.remarks"
+                                                                name="remarks{{ $auditLabel['name'] }}" id="remarks"
+                                                                value="{{ $auditLabel['remarks'] }}">
+                                                        </td>
+                                                        <td>
+                                                            @if (!empty($auditLabel['dropdown']))
+                                                                <select class="form-select form-select-md"
+                                                                    wire:model="data.{{ $loop->parent->parent->index }}.data_items.{{ $loop->parent->index }}.sub_category.{{ $loop->index }}.tag"
+                                                                    name="tag{{ $auditLabel['name'] }}"
+                                                                    id="tag">
+                                                                    <option value="0">Select a deviation
+                                                                    </option>
+                                                                    @foreach ($auditLabel['dropdown'] as $result)
+                                                                        @if (isset($result['name']))
+                                                                            <option value="{{ $result['id'] }}">
+                                                                                {{ $result['name'] }}
+                                                                            </option>
+                                                                        @endif
+                                                                    @endforeach
+                                                                </select>
+                                                            @endif
+                                                        </td>
+                                                @endforeach
+                                            @endforeach
+                                        @endif
+
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    @empty
+                        <p class="m-0 p-2 text-center">No category found!</p>
+                    @endforelse
+                </div>
             </div>
         @empty
             <p class="m-0 p-2">No category found!</p>
         @endforelse
     </div>
- --}}
-    <nav wire:ignore id="audit-form-tab" class="audit-form-tab app-nav-tabs nav shadow-sm flex-column flex-sm-row mb-4">
-        <a class="flex-sm-fill text-sm-center nav-link active " id="service-tab" data-bs-toggle="tab" href="#service"
-            role="tab" aria-controls="service" aria-selected="true">Service</a>
-        <a class="flex-sm-fill text-sm-center nav-link " id="food-tab" data-bs-toggle="tab" href="#food"
-            role="tab" aria-controls="food" aria-selected="false">Food</a>
-        <a class="flex-sm-fill text-sm-center nav-link" id="production-tab" data-bs-toggle="tab" href="#production"
-            role="tab" aria-controls="production" aria-selected="false">Production Process</a>
-        <a class="flex-sm-fill text-sm-center nav-link" id="clean-tab" data-bs-toggle="tab" href="#clean"
-            role="tab" aria-controls="clean" aria-selected="false">Cleanliness & Condition</a>
-        <a class="flex-sm-fill text-sm-center nav-link" id="document-tab" data-bs-toggle="tab" href="#document"
-            role="tab" aria-controls="document" aria-selected="false">Document</a>
-        <a class="flex-sm-fill text-sm-center nav-link" id="people-tab" data-bs-toggle="tab" href="#people"
-            role="tab" aria-controls="people" aria-selected="false">People</a>
-    </nav>
-
-    <div class="tab-content" id="audit-form-tab-content" wire:ignore>
-        {{-- Service Forms --}}
-        <div class="tab-pane fade show active" id="service" role="tabpanel" aria-labelledby="service-tab">
-            <livewire:component.service-form :data="$service" :lcm="$lcm">
-        </div>
-
-        {{-- Food Forms --}}
-        <div class="tab-pane fade show " id="food" role="tabpanel" aria-labelledby="food-tab">
-            <div class="row g-4 mb-4">
-                <div class="col-12 col-lg-6">
-                    <div class="app-card app-card-chart h-100 shadow-sm">
-                        <div class="app-card-header p-3">
-                            <div class="row justify-content-between align-items-center">
-                                <div class="col-auto">
-                                    <h4 class="app-card-title">Overall Score</h4>
-                                </div>
-                                <!--//col-->
-                            </div>
-                            <!--//row-->
-                        </div>
-                        <div class="app-card-body p-3 p-lg-4">
-                            <x-overall :data="$food" />
-                        </div>
-                        <!--//app-card-body-->
-                    </div>
-                    <!--//app-card-->
-                </div>
-                <!--//col-->
-                <div class="col-12 col-lg-6">
-                    <div class="app-card app-card-chart h-100 shadow-sm">
-                        <div class="app-card-header p-3">
-                            <div class="row justify-content-between align-items-center">
-                                <div class="col-auto">
-                                    <h4 class="app-card-title">Issues</h4>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="app-card-body p-3 p-lg-4">
-                            <x-issue />
-                        </div>
-                        <!--//app-card-body-->
-                    </div>
-                    <!--//app-card-->
-                </div>
-                <!--//col-->
-            </div>
-
-            <livewire:component.food-form :data="$food" :lcm="$lcm">
-        </div>
-
-        {{-- production Forms --}}
-        <div class="tab-pane fade show " id="production" role="tabpanel" aria-labelledby="production-tab">
-            <livewire:component.production-form :data="$production" :lcm="$lcm">
-        </div>
-
-        {{-- clean Forms --}}
-        <div class="tab-pane fade show " id="clean" role="tabpanel" aria-labelledby="clean-tab">
-            <livewire:component.clean-form :data="$clean">
-        </div>
-
-        {{-- document Forms --}}
-        <div class="tab-pane fade show " id="document" role="tabpanel" aria-labelledby="document-tab">
-            <livewire:component.document-form :data="$document">
-        </div>
-
-        {{-- people Forms --}}
-        <div class="tab-pane fade show " id="people" role="tabpanel" aria-labelledby="people-tab">
-            <livewire:component.people-form :data="$people">
-        </div>
-
-    </div>
-    <!--//tab-content-->
-
-
 </div>

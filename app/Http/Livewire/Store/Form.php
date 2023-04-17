@@ -48,66 +48,62 @@ class Form extends Component
         foreach ($data as $category) {
             $subCategories = $category->subCategories;
             $sub_category = [
-                [
-                    'data_items' => $subCategories->map(function ($subCategory) {
-                        $subCategoryData = [
-                            'id' => $subCategory->id,
-                            'is_sub' => $subCategory->is_sub,
-                            'name' => $subCategory->name,
-                            'overall_score' => '100%',
-                            'score' => '20',
-                            'total_percentage' => '100%',
-                        ];
-                        if ($subCategory->is_sub == 0) {
-                            $subCategoryData['sub_category'] = $subCategory->subCategoryLabels->map(function ($label) {
-                                $dropdownMenu = DropdownMenuModel::where('dropdown_id', $label->dropdown_id)->get()->toArray();
-                                $isAllNothing = $label->is_all_nothing == 0 ? $label->bp : $label->bp . '*';
+                'data_items' => $subCategories->map(function ($subCategory) {
+                    $subCategoryData = [
+                        'id' => $subCategory->id,
+                        'is_sub' => $subCategory->is_sub,
+                        'name' => $subCategory->name,
+                        'overall_score' => '100%',
+                        'score' => '20',
+                        'total_percentage' => '100%',
+                    ];
+                    if ($subCategory->is_sub == 0) {
+                        $subCategoryData['sub_category'] = $subCategory->subCategoryLabels->map(function ($label) {
+                            $dropdownMenu = DropdownMenuModel::where('dropdown_id', $label->dropdown_id)->get()->toArray();
+                            $isAllNothing = $label->is_all_nothing == 0 ? $label->bp : $label->bp . '*';
 
+                            return [
+                                'id' => $label->id,
+                                'name' => $label->name,
+                                'bp' => $label->bp,
+                                'is_all_nothing' => $isAllNothing,
+                                'points' => $label->bp,
+                                'remarks' => '',
+                                'tag' => '',
+                                'dropdown' => $dropdownMenu,
+                            ];
+                        });
+                    } else {
+                        $subCategoryData['sub_category'] = $subCategory->subCategoryLabels->map(function ($label) {
+                            $subLabels = SubSubCategoryLabelModel::where('sub_sub_category_id', $label->id)->get();
+                            $subLabelData = $subLabels->map(function ($subLabel) {
+                                $dropdownMenu = DropdownMenuModel::where('dropdown_id', $subLabel->dropdown_id)->get()->toArray();
+                                $isAllNothing = $subLabel->is_all_nothing == 0 ? $subLabel->bp : $subLabel->bp . '*';
                                 return [
-                                    'id' => $label->id,
-                                    'name' => $label->name,
-                                    'bp' => $label->bp,
+                                    'id' => $subLabel->id,
+                                    'name' => $subLabel->name,
+                                    'bp' => $subLabel->bp,
                                     'is_all_nothing' => $isAllNothing,
-                                    'points' => $label->bp,
+                                    'points' => $subLabel->bp,
                                     'remarks' => '',
                                     'tag' => '',
                                     'dropdown' => $dropdownMenu,
                                 ];
                             });
-                        } else {
-                            $subCategoryData['sub_category'] = $subCategory->subCategoryLabels->map(function ($label) {
-                                $subLabels = SubSubCategoryLabelModel::where('sub_sub_category_id', $label->id)->get();
-                                $subLabelData = $subLabels->map(function ($subLabel) {
-                                    $dropdownMenu = DropdownMenuModel::where('dropdown_id', $subLabel->dropdown_id)->get()->toArray();
-                                    $isAllNothing = $subLabel->is_all_nothing == 0 ? $subLabel->bp : $subLabel->bp . '*';
-                                    return [
-                                        'id' => $subLabel->id,
-                                        'name' => $subLabel->name,
-                                        'bp' => $subLabel->bp,
-                                        'is_all_nothing' => $isAllNothing,
-                                        'points' => $subLabel->bp,
-                                        'remarks' => '',
-                                        'tag' => '',
-                                        'dropdown' => $dropdownMenu,
-                                    ];
-                                });
-
-                                return [
-                                    'id' => $label->id,
-                                    'name' => $label->name,
-                                    'label' => $subLabelData,
-                                ];
-                            });
-                        }
-
-                        return $subCategoryData;
-                    }),
-                    'overall_score' => '100%',
-                    'score' => '91',
-                    'total_percentage' => '100%',
-                ]
+                            return [
+                                'id' => $label->id,
+                                'name' => $label->name,
+                                'label' => $subLabelData,
+                            ];
+                        });
+                    }
+                    return $subCategoryData;
+                }),
+                'overall_score' => '100%',
+                'score' => '91',
+                'total_percentage' => '100%',
             ];
-            $category->sub_category = $sub_category;
+            $category->sub_categ = $sub_category;
         }
         return view('livewire.store.form', ['category_list' => $data])->extends('layouts.app');
     }
