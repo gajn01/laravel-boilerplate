@@ -188,7 +188,8 @@ button.close:focus {
 .form-control:focus {
     box-shadow: none;
     outline: none;
-    color: #5d6778
+    color: #5d6778;
+/*     border-color: var(--cta-color); */
 }
 
 .form-check-input:checked {

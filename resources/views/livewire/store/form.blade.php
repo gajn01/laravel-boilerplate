@@ -16,6 +16,97 @@
             </div>
         </div>
     </div>
+
+    <div class="accordion" id="accordionExample">
+        <div class="accordion-item">
+            <h2 class="accordion-header" id="headingOne">
+                <button class="accordion-button " type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne"
+                    aria-expanded="true" aria-controls="collapseOne">
+                    <h6 class="card-title product-name">Sub-Category Title</h6>
+
+                </button>
+            </h2>
+            <div id="collapseOne" class="accordion-collapse collapse show" aria-labelledby="headingOne"
+                data-bs-parent="#accordionExample">
+                <div class="accordion-body">
+
+                    <div class="accordion accordion-flush" id="accordionFlushExample">
+                        <div class="accordion-item">
+                            <h2 class="accordion-header" id="flush-headingOne">
+                                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
+                                    data-bs-target="#flush-collapseOne" aria-expanded="true"
+                                    aria-controls="flush-collapseOne">
+                                    Accordion Item #1
+                                </button>
+                            </h2>
+                            <div id="flush-collapseOne" class="accordion-collapse collapse"
+                                aria-labelledby="flush-headingOne" data-bs-parent="#accordionFlushExample">
+                                <div class="accordion-body">
+                                    <div class="row">
+                                        <div class="col-sm-12 col-md-4 col-lg-4">
+                                            <p>Personnel with personalized greetings/with welcome to the brand</p>
+                                        </div>
+                                        <div class="col-sm-12 col-md-2">
+                                                <label for="" class="form-label">Base Point</label>
+                                                <input type="text" class="form-control form-control-sm"
+                                                    name="" id="" aria-describedby="helpId"
+                                                    placeholder="">
+
+                                                    <label for="" class="form-label">Point</label>
+                                                    <input type="text" class="form-control form-control-sm"
+                                                        name="" id="" aria-describedby="helpId"
+                                                        placeholder="">
+
+                                        </div>
+                                        <div class="col-sm-12 col-md-6 col-lg-6">
+                                                <label for="" class="form-label">Deviation</label>
+                                                <select class="form-select form-select-md" name="" id="">
+                                                    <option selected>Select one</option>
+                                                    <option value="">New Delhi</option>
+                                                    <option value="">Istanbul</option>
+                                                    <option value="">Jakarta</option>
+                                                </select>
+                                            <label for="" class="form-label">Remarks</label>
+                                            <div class="form-floating mb-3">
+                                                <textarea class="form-control" name="" id="" cols="30" rows="10"></textarea>
+                                            </div>
+
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="accordion accordion-flush" id="accordionFlushExample">
+                        <div class="accordion-item">
+                            <h2 class="accordion-header" id="flush-headingOne">
+                                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
+                                    data-bs-target="#flush-collapseOne" aria-expanded="true"
+                                    aria-controls="flush-collapseOne">
+                                    Accordion Item #2
+                                </button>
+                            </h2>
+                            <div id="flush-collapseOne" class="accordion-collapse collapse"
+                                aria-labelledby="flush-headingOne" data-bs-parent="#accordionFlushExample">
+                                <div class="accordion-body">
+                                    This is the first item's accordion body.
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+
+
+
+
     <nav wire:ignore id="audit-form-tab"
         class="audit-form-tab app-nav-tabs nav shadow-sm flex-column flex-sm-row mb-4 justify-content-center">
         @forelse ($category_list as $key => $data)
@@ -101,9 +192,10 @@
                                                         <p>{{ $auditLabel['name'] }}</p>
                                                     </td>
                                                     <td>
-                                                        <input type="text" class="form-control text-center" disabled
-                                                            name="bp{{ $auditLabel['name'] }}" id="bp"
-                                                            placeholder="" value="{{ $auditLabel['is_all_nothing'] }}">
+                                                        <input type="text" class="form-control text-center"
+                                                            disabled name="bp{{ $auditLabel['name'] }}"
+                                                            id="bp" placeholder=""
+                                                            value="{{ $auditLabel['is_all_nothing'] }}">
                                                     </td>
                                                     <td>
                                                         <input type="number" class="form-control text-center"
@@ -164,8 +256,8 @@
                                                         <td colspan="{{ $auditLabel['dropdown'] ? '' : 2 }}">
                                                             <input type="text" class="form-control"
                                                                 wire:model="data.{{ $loop->parent->parent->index }}.data_items.{{ $loop->parent->index }}.sub_category.{{ $loop->index }}.remarks"
-                                                                name="remarks{{ $auditLabel['name'] }}" id="remarks"
-                                                                value="{{ $auditLabel['remarks'] }}">
+                                                                name="remarks{{ $auditLabel['name'] }}"
+                                                                id="remarks" value="{{ $auditLabel['remarks'] }}">
                                                         </td>
                                                         <td>
                                                             @if (!empty($auditLabel['dropdown']))
