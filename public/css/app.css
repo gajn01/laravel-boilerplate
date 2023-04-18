@@ -176,11 +176,14 @@ button.close:focus {
     background: #f5f6fe;
     color: var(--cta-color)
 }
+textarea.form-control{
+    height: auto !important;
+}
 
 .form-control {
     padding-top: .6rem;
     padding-bottom: .6rem;
-    height: 2.5rem;
+   /*  height: 2.5rem; */
     border-color: #e7e9ed;
     color: #5d6778
 }
@@ -1471,7 +1474,22 @@ button.close:focus {
     width: 120px;
     text-align: center;
 }
+.input-point{
+    width: 80px;
+    text-align: center;
+}
 
+
+.accordion-button:not(.collapsed){
+    color: #000 !important;
+    background-color: var(--secondary-color) !important;
+}
+.accordion-button:focus {
+    border-color: var(--cta-color) !important;
+}
+.accordion-button{
+    background-color: var(--primary-color) !important;
+}
 .eye-icon {
     position: absolute;
     top: 50%;

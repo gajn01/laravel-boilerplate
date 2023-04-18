@@ -12,6 +12,7 @@
     --secondary-color: #FFEFD4;
     --cta-color: #790000;
     --tertiary-color: #e0b444;
+    --bs-accordion-btn-focus-border-color : #790000 !important;
 }
 .primary-bg{
     background-color: var(--primary-color)!important;
@@ -22,6 +23,9 @@
 .cta-bg{
     background-color: var(--cta-color) !important;
     color: var(--primary-color) !important;
+}
+.bg-none{
+    background-color: transparent !important;
 }
 .icon {
     background-color: transparent;

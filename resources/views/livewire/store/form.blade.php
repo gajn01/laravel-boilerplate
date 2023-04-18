@@ -17,95 +17,6 @@
         </div>
     </div>
 
-    <div class="accordion" id="accordionExample">
-        <div class="accordion-item">
-            <h2 class="accordion-header" id="headingOne">
-                <button class="accordion-button " type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne"
-                    aria-expanded="true" aria-controls="collapseOne">
-                    <h6 class="card-title product-name">Sub-Category Title</h6>
-
-                </button>
-            </h2>
-            <div id="collapseOne" class="accordion-collapse collapse show" aria-labelledby="headingOne"
-                data-bs-parent="#accordionExample">
-                <div class="accordion-body">
-
-                    <div class="accordion accordion-flush" id="accordionFlushExample">
-                        <div class="accordion-item">
-                            <h2 class="accordion-header" id="flush-headingOne">
-                                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
-                                    data-bs-target="#flush-collapseOne" aria-expanded="true"
-                                    aria-controls="flush-collapseOne">
-                                    Accordion Item #1
-                                </button>
-                            </h2>
-                            <div id="flush-collapseOne" class="accordion-collapse collapse"
-                                aria-labelledby="flush-headingOne" data-bs-parent="#accordionFlushExample">
-                                <div class="accordion-body">
-                                    <div class="row">
-                                        <div class="col-sm-12 col-md-4 col-lg-4">
-                                            <p>Personnel with personalized greetings/with welcome to the brand</p>
-                                        </div>
-                                        <div class="col-sm-12 col-md-2">
-                                                <label for="" class="form-label">Base Point</label>
-                                                <input type="text" class="form-control form-control-sm"
-                                                    name="" id="" aria-describedby="helpId"
-                                                    placeholder="">
-
-                                                    <label for="" class="form-label">Point</label>
-                                                    <input type="text" class="form-control form-control-sm"
-                                                        name="" id="" aria-describedby="helpId"
-                                                        placeholder="">
-
-                                        </div>
-                                        <div class="col-sm-12 col-md-6 col-lg-6">
-                                                <label for="" class="form-label">Deviation</label>
-                                                <select class="form-select form-select-md" name="" id="">
-                                                    <option selected>Select one</option>
-                                                    <option value="">New Delhi</option>
-                                                    <option value="">Istanbul</option>
-                                                    <option value="">Jakarta</option>
-                                                </select>
-                                            <label for="" class="form-label">Remarks</label>
-                                            <div class="form-floating mb-3">
-                                                <textarea class="form-control" name="" id="" cols="30" rows="10"></textarea>
-                                            </div>
-
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="accordion accordion-flush" id="accordionFlushExample">
-                        <div class="accordion-item">
-                            <h2 class="accordion-header" id="flush-headingOne">
-                                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
-                                    data-bs-target="#flush-collapseOne" aria-expanded="true"
-                                    aria-controls="flush-collapseOne">
-                                    Accordion Item #2
-                                </button>
-                            </h2>
-                            <div id="flush-collapseOne" class="accordion-collapse collapse"
-                                aria-labelledby="flush-headingOne" data-bs-parent="#accordionFlushExample">
-                                <div class="accordion-body">
-                                    This is the first item's accordion body.
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-
-                </div>
-            </div>
-        </div>
-
-    </div>
-
-
-
-
 
     <nav wire:ignore id="audit-form-tab"
         class="audit-form-tab app-nav-tabs nav shadow-sm flex-column flex-sm-row mb-4 justify-content-center">
@@ -158,7 +69,208 @@
                         </div>
                     </div>
                 </div>
-                <div class="app-card app-card-orders-table shadow-sm mb-5">
+                <div class="app-card app-card-orders-table shadow-sm mb-5 bg-none">
+                    <div class="app-card-body">
+                        @forelse ($data->sub_categ['data_items'] as  $key =>  $dataItem)
+                            <div class="accordion mb-3" id="accordionCategory">
+                                <div class="accordion-item">
+                                    <h2 class="accordion-header" id="headingOne">
+                                        <button class="accordion-button " type="button" data-bs-toggle="collapse"
+                                            data-bs-target="#accrod{{ $dataItem['id'] }}" aria-expanded="true"
+                                            aria-controls="accrod{{ $dataItem['id'] }}">
+                                            <h6 class="card-title product-name">{{ $dataItem['name'] }}</h6>
+                                        </button>
+                                    </h2>
+                                    <div id="accrod{{ $dataItem['id'] }}" class="accordion-collapse collapse show"
+                                        aria-labelledby="accrod{{ $dataItem['id'] }}"
+                                        data-bs-parent="#accordionCategory">
+                                        <div class="accordion-body">
+                                            @if ($dataItem['is_sub'] == 0)
+                                                @foreach ($dataItem['sub_category'] as $key => $auditLabel)
+                                                    <div class="row mb-3">
+                                                        <div class="col-sm-12 col-md-4 col-lg-4">
+                                                            <p @class(['pt-4' => $key == 0])>{{ $auditLabel['name'] }}
+                                                            </p>
+                                                        </div>
+                                                        <div class="col-sm-12 col-md-2  ">
+                                                            <div class="row">
+                                                                <div class="col-sm-6 col-md-6">
+                                                                    @if ($key == 0)
+                                                                        <label for=""
+                                                                            class="form-label">BP</label>
+                                                                    @endif
+                                                                    <input type="text"
+                                                                        class="form-control text-center" disabled
+                                                                        name="bp{{ $auditLabel['name'] }}"
+                                                                        id="bp" placeholder=""
+                                                                        value="{{ $auditLabel['is_all_nothing'] }}">
+                                                                </div>
+                                                                <div class="col-sm-6 col-md-6">
+                                                                    @if ($key == 0)
+                                                                        <label for=""
+                                                                            class="form-label">Point</label>
+                                                                    @endif
+                                                                    <input type="number"
+                                                                        class="form-control text-center"
+                                                                        wire:model="data.{{ $loop->parent->parent->index }}.data_items.{{ $loop->parent->index }}.sub_category.{{ $loop->index }}.points"
+                                                                        name="points{{ $auditLabel['name'] }}"
+                                                                        id="points"
+                                                                        value="{{ $auditLabel['points'] }}">
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-sm-12 col-md-6 col-lg-6 ">
+                                                            <div class="row">
+                                                                <div
+                                                                    class="col-sm-12 {{ $auditLabel['dropdown'] ? 'col-md-6' : 'col-md-12' }}">
+                                                                    @if ($key == 0)
+                                                                        <label for=""
+                                                                            class="form-label">Remarks</label>
+                                                                    @endif
+                                                                    <textarea class="form-control" name="" id="" rows="1"></textarea>
+                                                                </div>
+                                                                @if (!empty($auditLabel['dropdown']))
+                                                                    <div
+                                                                        class="col-sm-12 col-md-6 {{ $auditLabel['dropdown'] ? '' : 'd-none' }}">
+                                                                        @if ($key == 0 || empty($auditLabel['dropdown']))
+                                                                            <label for=""
+                                                                                class="form-label">Deviation</label>
+                                                                        @endif
+                                                                        <select class="form-select form-select-md"
+                                                                            wire:model="data.{{ $loop->parent->parent->index }}.data_items.{{ $loop->parent->index }}.sub_category.{{ $loop->index }}.tag"
+                                                                            name="tag{{ $auditLabel['name'] }}"
+                                                                            id="tag">
+                                                                            <option value="0">Select a deviation
+                                                                            </option>
+                                                                            @foreach ($auditLabel['dropdown'] as $result)
+                                                                                @if (isset($result['name']))
+                                                                                    <option
+                                                                                        value="{{ $result['id'] }}">
+                                                                                        {{ $result['name'] }}</option>
+                                                                                @endif
+                                                                            @endforeach
+                                                                        </select>
+                                                                    </div>
+                                                                @endif
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                @endforeach
+                                            @else
+                                                @foreach ($dataItem['sub_category'] as $sub_category)
+                                                    <div class="accordion accordion-flush mb-3"
+                                                        id="accordionFlushSubcategory">
+                                                        <div class="accordion-item">
+                                                            <h2 class="accordion-header"
+                                                                id="headingSub">
+                                                                <button class="accordion-button collapsed"
+                                                                    type="button" data-bs-toggle="collapse"
+                                                                    data-bs-target="#flush-{{ $sub_category['id'] }}"
+                                                                    aria-expanded="true"
+                                                                    aria-controls="flush-{{ $sub_category['id'] }}">
+                                                                    {{ $sub_category['name'] }}
+                                                                </button>
+                                                            </h2>
+                                                            <div id="flush-{{ $sub_category['id'] }}"
+                                                                class="accordion-collapse collapse"
+                                                                aria-labelledby="flush-{{ $sub_category['id'] }}"
+                                                                data-bs-parent="#accordionFlushSubcategory">
+                                                                <div class="accordion-body">
+                                                                    @foreach ($sub_category['label'] as $auditLabel)
+                                                                        <div class="row mb-3">
+                                                                            <div class="col-sm-12 col-md-4 col-lg-4">
+                                                                                <p @class(['pt-4' => $key == 0])>
+                                                                                    {{ $auditLabel['name'] }}
+                                                                                </p>
+                                                                            </div>
+                                                                            <div class="col-sm-12 col-md-2  ">
+                                                                                <div class="row">
+                                                                                    <div class="col-sm-6 col-md-6">
+                                                                                        @if ($key == 0)
+                                                                                            <label for=""
+                                                                                                class="form-label">BP</label>
+                                                                                        @endif
+                                                                                        <input type="text"
+                                                                                            class="form-control text-center"
+                                                                                            disabled
+                                                                                            name="bp{{ $auditLabel['name'] }}"
+                                                                                            id="bp"
+                                                                                            placeholder=""
+                                                                                            value="{{ $auditLabel['is_all_nothing'] }}">
+                                                                                    </div>
+                                                                                    <div class="col-sm-6 col-md-6">
+                                                                                        @if ($key == 0)
+                                                                                            <label for=""
+                                                                                                class="form-label">Point</label>
+                                                                                        @endif
+                                                                                        <input type="number"
+                                                                                            class="form-control text-center"
+                                                                                            wire:model="data.{{ $loop->parent->parent->index }}.data_items.{{ $loop->parent->index }}.sub_category.{{ $loop->index }}.points"
+                                                                                            name="points{{ $auditLabel['name'] }}"
+                                                                                            id="points"
+                                                                                            value="{{ $auditLabel['points'] }}">
+                                                                                    </div>
+                                                                                </div>
+                                                                            </div>
+                                                                            <div class="col-sm-12 col-md-6 col-lg-6 ">
+                                                                                <div class="row">
+                                                                                    <div
+                                                                                        class="col-sm-12 {{ $auditLabel['dropdown'] ? 'col-md-6' : 'col-md-12' }}">
+                                                                                        @if ($key == 0)
+                                                                                            <label for=""
+                                                                                                class="form-label">Remarks</label>
+                                                                                        @endif
+                                                                                        <textarea class="form-control" name="" id="" rows="1"></textarea>
+                                                                                    </div>
+                                                                                    @if (!empty($auditLabel['dropdown']))
+                                                                                        <div
+                                                                                            class="col-sm-12 col-md-6 {{ $auditLabel['dropdown'] ? '' : 'd-none' }}">
+                                                                                            @if ($key == 0 || empty($auditLabel['dropdown']))
+                                                                                                <label for=""
+                                                                                                    class="form-label">Deviation</label>
+                                                                                            @endif
+                                                                                            <select
+                                                                                                class="form-select form-select-md"
+                                                                                                wire:model="data.{{ $loop->parent->parent->index }}.data_items.{{ $loop->parent->index }}.sub_category.{{ $loop->index }}.tag"
+                                                                                                name="tag{{ $auditLabel['name'] }}"
+                                                                                                id="tag">
+                                                                                                <option value="0">
+                                                                                                    Select a deviation
+                                                                                                </option>
+                                                                                                @foreach ($auditLabel['dropdown'] as $result)
+                                                                                                    @if (isset($result['name']))
+                                                                                                        <option
+                                                                                                            value="{{ $result['id'] }}">
+                                                                                                            {{ $result['name'] }}
+                                                                                                        </option>
+                                                                                                    @endif
+                                                                                                @endforeach
+                                                                                            </select>
+                                                                                        </div>
+                                                                                    @endif
+                                                                                </div>
+                                                                            </div>
+                                                                        </div>
+                                                                    @endforeach
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                @endforeach
+                                            @endif
+
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        @empty
+                            <p class="m-0 p-2 text-center">No category found!</p>
+                        @endforelse
+
+
+                    </div>
+
+
                     {{--  <div class="app-card-header p-3">
                         <div class="row justify-content-between align-items-center">
                             <div class="col-auto">
@@ -166,7 +278,7 @@
                             </div>
                         </div>
                     </div> --}}
-                    @forelse ($data->sub_categ['data_items'] as $dataItem)
+                    {{--       @forelse ($data->sub_categ['data_items'] as $dataItem)
                         <div class="app-card-body">
                             <div class="table-responsive">
                                 <table class="table app-table-hover mb-0 text-left">
@@ -287,7 +399,7 @@
                         </div>
                     @empty
                         <p class="m-0 p-2 text-center">No category found!</p>
-                    @endforelse
+                    @endforelse --}}
                 </div>
             </div>
         @empty
