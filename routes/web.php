@@ -37,9 +37,9 @@ Route::get('/dashboard',Dashboard::class)->name('dashboard');
 
 /* Audit */
 Route::get('/store',Store::class)->name('store');
-Route::get('/store/form/{store_name?}',Form::class)->name('form');
-Route::get('/store/details/{store_name?}',StoreDetails::class)->name('details');
-Route::get('/store/form/{store_name?}/summary',ExecutiveSummary::class)->name('form.summary');
+Route::get('/store/form/{store_id?}',Form::class)->name('form');
+Route::get('/store/details/{store_id?}',StoreDetails::class)->name('details');
+Route::get('/store/form/{store_id?}/summary',ExecutiveSummary::class)->name('form.summary');
 
 /* User */
 Route::get('/user',User::class)->name('user');

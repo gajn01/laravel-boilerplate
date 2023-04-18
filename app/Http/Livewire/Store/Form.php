@@ -98,15 +98,15 @@ class Form extends Component
                     }
                     $subCategoryData['base_score'] = $total_bp;
                     $subCategoryData['total_percent'] = $total_bp * 100 / $total_bp;
-
                     $total_bp = 0;
-
                     return $subCategoryData;
                 }),
                 'total_base_score' => $total_base_score,
                 'total_percentage' => '100',
             ];
             $category->sub_categ = $sub_category;
+
+
         }
         $this->lslp = $data;
         return view('livewire.store.form', ['category_list' => $data])->extends('layouts.app');

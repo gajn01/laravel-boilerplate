@@ -4,20 +4,22 @@ namespace App\Http\Livewire\Store;
 
 use Livewire\Component;
 use App\Models\Store as StoreModel;
-
-
+use Livewire\WithPagination;
 class Store extends Component
 {
-    public $store_list = [];
-
-    public function test(){
-        dd($this->store_list);
-    }
+    use WithPagination;
+    protected $paginationTheme = 'bootstrap';
+    protected $listeners = ['alert-sent' => 'onDelete'];
+    public $searchTerm;
+    public $limit = 10;
     public function render()
     {
-        return view('livewire.store.store')->extends('layouts.app');
-    }
-    public function mount(){
-        $this->store_list = StoreModel::all(['id','code', 'name', 'type', 'store_head', 'area'])->toArray();
+        $searchTerm = '%' . $this->searchTerm . '%';
+        $store_list = StoreModel::select('id', 'code', 'name', 'type', 'area')
+            ->where('name', 'like', $searchTerm)
+            ->orWhere('code', 'like', $searchTerm)
+            ->orWhere('area', 'like', '%' . $this->searchTerm . '%')
+            ->paginate($this->limit);
+        return view('livewire.store.store', ['store_list' => $store_list])->extends('layouts.app');
     }
 }

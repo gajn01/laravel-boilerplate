@@ -7,7 +7,6 @@
             <li class="breadcrumb-item active" aria-current="page">{{ $store_name }}</li>
         </ol>
     </nav>
-
     <div class="page-utilities mb-3">
         <div class="row g-2 justify-content-start justify-content-md-end align-items-center">
             <div class="col-auto">
@@ -15,8 +14,6 @@
             </div>
         </div>
     </div>
-
-
     <nav wire:ignore id="audit-form-tab"
         class="audit-form-tab app-nav-tabs nav shadow-sm flex-column flex-sm-row mb-4 justify-content-center">
         @forelse ($category_list as $key => $data)
@@ -34,7 +31,6 @@
             <p class="m-0 p-2">No category found!</p>
         @endforelse
     </nav>
-
     <div class="tab-content" id="audit-form-tab-content" wire:ignore>
         @forelse ($category_list as $key => $data)
             <div class="tab-pane fade show {{ $key == 0 ? 'active' : '' }}" id="cat{{ $data->id }}" role="tabpanel"
