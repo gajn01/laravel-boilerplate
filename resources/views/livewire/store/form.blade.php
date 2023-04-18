@@ -46,12 +46,37 @@
                         <div class="app-card app-card-chart h-100 shadow-sm">
                             <div class="app-card-header p-3">
                                 <div class="row justify-content-between align-items-center">
-                                    <div class="col-auto">
+                                    <div class="col-12">
                                         <h4 class="app-card-title">Overall Score</h4>
+                                        <table class="table app-table-hover mb-0 text-left">
+                                            <thead>
+                                                <tr>
+                                                    <th class="cell">Category</th>
+                                                    <th class="cell text-center">Base</th>
+                                                    <th class="cell text-center">Score</th>
+                                                    <th class="cell text-center">%</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                    @foreach ($data->sub_categ['data_items'] as $sub)
+                                                    <tr >
+                                                        <td class="core_name_total"><a href="#{{$sub['name']}}">{{$sub['name']}}</a> </td>
+                                                        <td class="text-center">{{$sub['base_score']}}</td>
+                                                        <td class="text-center">{{$sub['base_score']}}</td>
+                                                        <td class="text-center"> {{$sub['total_percent']}}</td>
+                                                    </tr>
+                                                    @endforeach
+                                                    <tr>
+                                                        <td> <h5 class="app-card-title text-center">Total</h5> </td>
+                                                        <td class="text-center">{{$data->sub_categ['total_base_score']}}</td>
+                                                        <td class="text-center"> {{$data->sub_categ['total_base_score']}}</td>
+                                                        <td class="text-center">{{$data->sub_categ['total_percentage']}}</td>
+                                                    </tr>
+                                            </tbody>
+                                        </table>
+
                                     </div>
                                 </div>
-                            </div>
-                            <div class="app-card-body p-3 p-lg-4">
                             </div>
                         </div>
                     </div>
@@ -74,7 +99,7 @@
                         @forelse ($data->sub_categ['data_items'] as  $key =>  $dataItem)
                             <div class="accordion mb-3" id="accordionCategory">
                                 <div class="accordion-item">
-                                    <h2 class="accordion-header" id="headingOne">
+                                    <h2 class="accordion-header" id="{{ $dataItem['name'] }}">
                                         <button class="accordion-button " type="button" data-bs-toggle="collapse"
                                             data-bs-target="#accrod{{ $dataItem['id'] }}" aria-expanded="true"
                                             aria-controls="accrod{{ $dataItem['id'] }}">
