@@ -11,8 +11,7 @@
     <div class="page-utilities mb-3">
         <div class="row g-2 justify-content-start justify-content-md-end align-items-center">
             <div class="col-auto">
-                <a class="btn app-btn-primary"
-                    href="{{ route('form.summary', ['store_name' => $store_name]) }}">Complete</a>
+                <a class="btn app-btn-primary" wire:click="test" {{-- href="{{ route('form.summary', ['store_name' => $store_name]) }}" --}}>Complete</a>
             </div>
         </div>
     </div>
@@ -40,7 +39,6 @@
         @forelse ($category_list as $key => $data)
             <div class="tab-pane fade show {{ $key == 0 ? 'active' : '' }}" id="cat{{ $data->id }}" role="tabpanel"
                 aria-labelledby="cat{{ $data->id }}-tab">
-
                 <div class="row g-4 mb-4">
                     <div class="col-12 col-lg-6">
                         <div class="app-card app-card-chart h-100 shadow-sm">
@@ -58,20 +56,27 @@
                                                 </tr>
                                             </thead>
                                             <tbody>
-                                                    @foreach ($data->sub_categ['data_items'] as $sub)
-                                                    <tr >
-                                                        <td class="core_name_total"><a href="#{{$sub['name']}}">{{$sub['name']}}</a> </td>
-                                                        <td class="text-center">{{$sub['base_score']}}</td>
-                                                        <td class="text-center">{{$sub['base_score']}}</td>
-                                                        <td class="text-center"> {{$sub['total_percent']}}</td>
-                                                    </tr>
-                                                    @endforeach
+                                                @foreach ($data->sub_categ['data_items'] as $sub)
                                                     <tr>
-                                                        <td> <h5 class="app-card-title text-center">Total</h5> </td>
-                                                        <td class="text-center">{{$data->sub_categ['total_base_score']}}</td>
-                                                        <td class="text-center"> {{$data->sub_categ['total_base_score']}}</td>
-                                                        <td class="text-center">{{$data->sub_categ['total_percentage']}}</td>
+                                                        <td class="core_name_total"><a
+                                                                href="#{{ $sub['name'] }}">{{ $sub['name'] }}</a>
+                                                        </td>
+                                                        <td class="text-center">{{ $sub['base_score'] }}</td>
+                                                        <td class="text-center">{{ $sub['base_score'] }}</td>
+                                                        <td class="text-center"> {{ $sub['total_percent'] }}</td>
                                                     </tr>
+                                                @endforeach
+                                                <tr>
+                                                    <td>
+                                                        <h5 class="app-card-title text-center">Total</h5>
+                                                    </td>
+                                                    <td class="text-center">{{ $data->sub_categ['total_base_score'] }}
+                                                    </td>
+                                                    <td class="text-center"> {{ $data->sub_categ['total_base_score'] }}
+                                                    </td>
+                                                    <td class="text-center">{{ $data->sub_categ['total_percentage'] }}
+                                                    </td>
+                                                </tr>
                                             </tbody>
                                         </table>
 
@@ -111,16 +116,16 @@
                                         data-bs-parent="#accordionCategory">
                                         <div class="accordion-body">
                                             @if ($dataItem['is_sub'] == 0)
-                                                @foreach ($dataItem['sub_category'] as $key => $auditLabel)
+                                                @foreach ($dataItem['sub_category'] as $index => $auditLabel)
                                                     <div class="row mb-3">
                                                         <div class="col-sm-12 col-md-4 col-lg-4">
-                                                            <p @class(['pt-4' => $key == 0])>{{ $auditLabel['name'] }}
+                                                            <p @class(['pt-4' => $index == 0])>{{ $auditLabel['name'] }}
                                                             </p>
                                                         </div>
-                                                        <div class="col-sm-12 col-md-2  ">
+                                                        <div class="col-sm-12 col-md-2">
                                                             <div class="row">
                                                                 <div class="col-sm-6 col-md-6">
-                                                                    @if ($key == 0)
+                                                                    @if ($index == 0)
                                                                         <label for=""
                                                                             class="form-label">BP</label>
                                                                     @endif
@@ -131,33 +136,35 @@
                                                                         value="{{ $auditLabel['is_all_nothing'] }}">
                                                                 </div>
                                                                 <div class="col-sm-6 col-md-6">
-                                                                    @if ($key == 0)
+                                                                    @if ($index == 0)
                                                                         <label for=""
                                                                             class="form-label">Point</label>
                                                                     @endif
                                                                     <input type="number"
                                                                         class="form-control text-center"
-                                                                        wire:model="data.{{ $loop->parent->parent->index }}.data_items.{{ $loop->parent->index }}.sub_category.{{ $loop->index }}.points"
                                                                         name="points{{ $auditLabel['name'] }}"
-                                                                        id="points"
-                                                                        value="{{ $auditLabel['points'] }}">
+                                                                        value="{{ $auditLabel['points'] }}"
+                                                                        id="points">
+
                                                                 </div>
                                                             </div>
                                                         </div>
-                                                        <div class="col-sm-12 col-md-6 col-lg-6 ">
+                                                        <div class="col-sm-12 col-md-6 col-lg-6">
                                                             <div class="row">
                                                                 <div
                                                                     class="col-sm-12 {{ $auditLabel['dropdown'] ? 'col-md-6' : 'col-md-12' }}">
-                                                                    @if ($key == 0)
+                                                                    @if ($index == 0)
                                                                         <label for=""
                                                                             class="form-label">Remarks</label>
                                                                     @endif
-                                                                    <textarea class="form-control" name="" id="" rows="1"></textarea>
+                                                                    <textarea class="form-control"
+                                                                        wire:model="data.{{ $loop->parent->parent->index }}.data_items.{{ $loop->parent->index }}.sub_category.{{ $loop->index }}.remarks"
+                                                                        id="" rows="1"></textarea>
                                                                 </div>
                                                                 @if (!empty($auditLabel['dropdown']))
                                                                     <div
                                                                         class="col-sm-12 col-md-6 {{ $auditLabel['dropdown'] ? '' : 'd-none' }}">
-                                                                        @if ($key == 0 || empty($auditLabel['dropdown']))
+                                                                        @if ($index == 0 || empty($auditLabel['dropdown']))
                                                                             <label for=""
                                                                                 class="form-label">Deviation</label>
                                                                         @endif
@@ -182,12 +189,11 @@
                                                     </div>
                                                 @endforeach
                                             @else
-                                                @foreach ($dataItem['sub_category'] as $sub_category)
+                                                @foreach ($dataItem['sub_category'] as  $sub_category)
                                                     <div class="accordion accordion-flush mb-3"
                                                         id="accordionFlushSubcategory">
                                                         <div class="accordion-item">
-                                                            <h2 class="accordion-header"
-                                                                id="headingSub">
+                                                            <h2 class="accordion-header" id="headingSub">
                                                                 <button class="accordion-button collapsed"
                                                                     type="button" data-bs-toggle="collapse"
                                                                     data-bs-target="#flush-{{ $sub_category['id'] }}"
@@ -201,17 +207,17 @@
                                                                 aria-labelledby="flush-{{ $sub_category['id'] }}"
                                                                 data-bs-parent="#accordionFlushSubcategory">
                                                                 <div class="accordion-body">
-                                                                    @foreach ($sub_category['label'] as $auditLabel)
+                                                                    @foreach ($sub_category['label'] as $keyIndex => $auditLabel)
                                                                         <div class="row mb-3">
                                                                             <div class="col-sm-12 col-md-4 col-lg-4">
-                                                                                <p @class(['pt-4' => $key == 0])>
+                                                                                <p @class(['pt-4' => $keyIndex == 0])>
                                                                                     {{ $auditLabel['name'] }}
                                                                                 </p>
                                                                             </div>
                                                                             <div class="col-sm-12 col-md-2  ">
                                                                                 <div class="row">
                                                                                     <div class="col-sm-6 col-md-6">
-                                                                                        @if ($key == 0)
+                                                                                        @if ($keyIndex == 0)
                                                                                             <label for=""
                                                                                                 class="form-label">BP</label>
                                                                                         @endif
@@ -224,7 +230,7 @@
                                                                                             value="{{ $auditLabel['is_all_nothing'] }}">
                                                                                     </div>
                                                                                     <div class="col-sm-6 col-md-6">
-                                                                                        @if ($key == 0)
+                                                                                        @if ($keyIndex == 0)
                                                                                             <label for=""
                                                                                                 class="form-label">Point</label>
                                                                                         @endif
@@ -241,7 +247,7 @@
                                                                                 <div class="row">
                                                                                     <div
                                                                                         class="col-sm-12 {{ $auditLabel['dropdown'] ? 'col-md-6' : 'col-md-12' }}">
-                                                                                        @if ($key == 0)
+                                                                                        @if ($keyIndex == 0)
                                                                                             <label for=""
                                                                                                 class="form-label">Remarks</label>
                                                                                         @endif
@@ -250,7 +256,7 @@
                                                                                     @if (!empty($auditLabel['dropdown']))
                                                                                         <div
                                                                                             class="col-sm-12 col-md-6 {{ $auditLabel['dropdown'] ? '' : 'd-none' }}">
-                                                                                            @if ($key == 0 || empty($auditLabel['dropdown']))
+                                                                                            @if ($keyIndex == 0 || empty($auditLabel['dropdown']))
                                                                                                 <label for=""
                                                                                                     class="form-label">Deviation</label>
                                                                                             @endif

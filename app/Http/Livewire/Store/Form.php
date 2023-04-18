@@ -14,7 +14,7 @@ class Form extends Component
     public $store_type = 1;
     public $active_tab;
     public $data;
-    public $lslp = [];
+    public $lslp ;
     public $lcm = [
         [
             'sd' => 'SD1',
@@ -64,7 +64,7 @@ class Form extends Component
                                 'bp' => $label->bp,
                                 'is_all_nothing' => $isAllNothing,
                                 'points' => $label->bp,
-                                'remarks' => '',
+                                'remarks' => 'fs',
                                 'tag' => '',
                                 'dropdown' => $dropdownMenu,
                             ];
@@ -108,11 +108,14 @@ class Form extends Component
             ];
             $category->sub_categ = $sub_category;
         }
+        $this->lslp = $data;
         return view('livewire.store.form', ['category_list' => $data])->extends('layouts.app');
     }
     public function mount($store_name = null)
     {
         $this->store_name = $store_name;
-
+    }
+    public function test(){
+        dd($this->lslp);
     }
 }
