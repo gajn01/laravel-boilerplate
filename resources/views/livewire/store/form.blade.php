@@ -236,7 +236,6 @@
                                                                                         @endif
                                                                                         <input type="number"
                                                                                             class="form-control text-center"
-                                                                                            wire:model="data.{{ $loop->parent->parent->index }}.data_items.{{ $loop->parent->index }}.sub_category.{{ $loop->index }}.points"
                                                                                             name="points{{ $auditLabel['name'] }}"
                                                                                             id="points"
                                                                                             value="{{ $auditLabel['points'] }}">
