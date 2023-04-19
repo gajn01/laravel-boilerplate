@@ -12,7 +12,7 @@ class Store extends Model
         'code',
         'name',
         'type',
-        'store_head',
+        'representative',
         'area',
         'created_at'
     ];

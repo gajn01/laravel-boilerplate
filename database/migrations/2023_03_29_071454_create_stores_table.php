@@ -16,7 +16,7 @@ return new class extends Migration
             $table->string('code');
             $table->string('name');
             $table->integer('type');
-            $table->string('store_head');
+            $table->string('representative');
             $table->string('area');
             $table->timestamps();
         });

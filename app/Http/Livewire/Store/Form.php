@@ -2,6 +2,7 @@
 namespace App\Http\Livewire\Store;
 
 use Livewire\Component;
+use App\Models\Store as StoreModel;
 use App\Models\Category as CategoryModel;
 use App\Models\SubCategory as SubCategoryModel;
 use App\Models\SubSubCategoryLabel as SubSubCategoryLabelModel;
@@ -9,22 +10,17 @@ use App\Models\DropdownMenu as DropdownMenuModel;
 
 class Form extends Component
 {
+    public $store_id;
     public $store_name;
     /* Audit Category */
-    public $store_type = 1;
-    public $active_tab;
-    public $data;
-    public $lslp ;
-    public $lcm = [
-        [
-            'sd' => 'SD1',
-            'product' => 'EQ'
-        ],
-        [
-            'sd' => 'SD3',
-            'product' => 'CR'
-        ],
-    ];
+    public $store_type;
+    public function mount($store_id = null)
+    {
+        $this->store_id = $store_id;
+        $store = StoreModel::find($store_id);
+        $this->store_name = $store->name;
+        $this->store_type = $store->type;
+    }
     public function render()
     {
         $data = CategoryModel::select('id', 'name', 'type')
@@ -108,14 +104,6 @@ class Form extends Component
 
 
         }
-        $this->lslp = $data;
         return view('livewire.store.form', ['category_list' => $data])->extends('layouts.app');
-    }
-    public function mount($store_name = null)
-    {
-        $this->store_name = $store_name;
-    }
-    public function test(){
-        dd($this->lslp);
     }
 }

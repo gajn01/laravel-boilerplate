@@ -16,7 +16,7 @@ class StoreSettings extends Component
     public $code;
     public $type;
     public $area;
-    public $store_head;
+    public $representative;
     public $searchTerm;
     public $modalTitle;
     public $modalButtonText;
@@ -24,10 +24,9 @@ class StoreSettings extends Component
     public function render()
     {
         $searchTerm = '%' . $this->searchTerm . '%';
-        $store_list = StoreModel::select('id', 'code', 'name', 'type', 'store_head', 'area')
+        $store_list = StoreModel::select('id', 'code', 'name', 'type', 'representative', 'area')
             ->where('name', 'like', $searchTerm)
             ->orWhere('code', 'like', $searchTerm)
-            ->orWhere('store_head', 'like', '%' . $this->searchTerm . '%')
             ->orWhere('area', 'like', '%' . $this->searchTerm . '%')
             ->paginate($this->limit);
         return view('livewire.settings.store-settings', ['store_list' => $store_list])->extends('layouts.app');
@@ -39,7 +38,6 @@ class StoreSettings extends Component
         $this->code = optional($store)->code;
         $this->type = optional($store)->type;
         $this->area = optional($store)->area;
-        $this->store_head = optional($store)->store_head;
         $this->resetValidation();
         $this->store_id = $store_id;
         $this->modalTitle = $this->store_id ? 'Edit Store' : 'Add Store';
@@ -51,7 +49,6 @@ class StoreSettings extends Component
             [
                 'name' => 'required|max:255',
                 'code' => 'required',
-                'store_head' => '',
                 'type' => 'required|in:0,1',
                 'area' => 'required|in:MFO,South,North',
             ]
@@ -61,7 +58,6 @@ class StoreSettings extends Component
             [
                 'name' => strip_tags($this->name),
                 'code' => strip_tags($this->code),
-                'store_head' => strip_tags($this->store_head),
                 'type' => strip_tags($this->type),
                 'area' => strip_tags($this->area),
             ]

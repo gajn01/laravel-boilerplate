@@ -4,7 +4,7 @@
     <nav aria-label="breadcrumb">
         <ol class="breadcrumb">
             <li class="breadcrumb-item"><a href="{{ route('store') }}">Store</a></li>
-            <li class="breadcrumb-item active" aria-current="page">{{ $store_name }}</li>
+            <li class="breadcrumb-item active" aria-current="page">{{ $store->name }}</li>
         </ol>
     </nav>
 
@@ -31,7 +31,7 @@
                         <div class="row justify-content-between align-items-center">
                             <div class="col-auto">
                                 <div class="item-label mb-1"><strong>Store Type</strong></div>
-                                <div class="item-data">Cafe</div>
+                                <div class="item-data">{{ $store->type == 1 ? 'Cafe' : 'Kiosk'  }}</div>
                             </div>
                         </div>
                     </div>
@@ -40,7 +40,7 @@
                         <div class="row justify-content-between align-items-center">
                             <div class="col-auto">
                                 <div class="item-label mb-1"><strong>Store Code</strong></div>
-                                <div class="item-data">code</div>
+                                <div class="item-data">{{ $store->code}}</div>
                             </div>
                         </div>
                     </div>
@@ -49,35 +49,8 @@
                         <div class="row justify-content-between align-items-center">
                             <div class="col-auto">
                                 <div class="item-label mb-1"><strong>Store Name</strong></div>
-                                <div class="item-data">{{ $store_name }}</div>
-                                {{--  <form class="docs-search-form row gx-1 align-items-center">
-                                    <div class="col-auto">
-                                        <input type="text" id="search-docs" name="searchdocs" class="form-control search-docs"/>
-                                    </div>
-                                </form> --}}
+                                <div class="item-data">{{ $store->name}}</div>
                             </div>
-
-                            <!--//col-->
-                            <div class="col text-end">
-                                <a class="btn-sm app-btn-secondary" href="#">Update</a>
-                            </div>
-                            <!--//col-->
-                        </div>
-                        <!--//row-->
-                    </div>
-
-                    <div class="item border-bottom py-3">
-                        <div class="row justify-content-between align-items-center">
-                            <div class="col-auto">
-                                <div class="item-label mb-1"><strong>Store Head</strong></div>
-                                <div class="item-data">Juan</div>
-                            </div>
-
-                            <!--//col-->
-                            <div class="col text-end">
-                                <a class="btn-sm app-btn-secondary" href="#">Update</a>
-                            </div>
-                            <!--//col-->
                         </div>
                     </div>
 
@@ -85,14 +58,8 @@
                         <div class="row justify-content-between align-items-center">
                             <div class="col-auto">
                                 <div class="item-label mb-1"><strong>Store Area</strong></div>
-                                <div class="item-data">South</div>
+                                <div class="item-data">{{ $store->area}}</div>
                             </div>
-
-                            <!--//col-->
-                            <div class="col text-end">
-                                <a class="btn-sm app-btn-secondary" href="#">Update</a>
-                            </div>
-                            <!--//col-->
                         </div>
                     </div>
                 </div>

@@ -3,14 +3,17 @@
 namespace App\Http\Livewire\Store;
 
 use Livewire\Component;
+use App\Models\Store as StoreModel;
+
 
 class StoreDetails extends Component
 {
-    public $store_name;
-
-    public function mount($store_name = null)
+    public $store_id;
+    public $store;
+    public function mount($store_id = null)
     {
-        $this->store_name = $store_name;
+        $this->store_id = $store_id;
+        $this->store = StoreModel::find($store_id);
     }
 
     public function render()

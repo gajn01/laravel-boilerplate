@@ -47,7 +47,6 @@
                         <tr>
                             <th class="cell">Code</th>
                             <th class="cell">Name</th>
-                            <th class="cell">Store Head</th>
                             <th class="cell">Type</th>
                             <th class="cell">Area</th>
                             <th class="cell table-action-sm">Action</th>
@@ -58,7 +57,6 @@
                             <tr>
                                 <td class="cell">{{ $store['code'] }}</td>
                                 <td class="cell">{{ $store['name'] }}</td>
-                                <td class="cell">{{ $store['store_head'] ? $store['store_head'] : 'N/A' }}</td>
                                 <td class="cell">{{ $store['type'] == 1 ? 'Cafe' : 'Kiosk' }}</td>
                                 <td class="cell">{{ $store['area'] }}</td>
                                 <td class="cell table-action-sm">
@@ -156,13 +154,6 @@
                                     class="text-danger">*</span></label>
                             <input type="text" class="form-control" wire:model="code" id="code">
                             @error('code')
-                                <span class="text-danger">{{ $message }}</span>
-                            @enderror
-                        </div>
-                        <div class="mb-3">
-                            <label for="code" class="form-label">Store Head</label>
-                            <input type="text" class="form-control" wire:model="store_head" id="store_head">
-                            @error('store_head')
                                 <span class="text-danger">{{ $message }}</span>
                             @enderror
                         </div>
