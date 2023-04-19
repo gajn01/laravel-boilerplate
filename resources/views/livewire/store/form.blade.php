@@ -39,9 +39,13 @@
                     <div class="col-12 col-lg-6">
                         <div class="app-card app-card-chart h-100 shadow-sm">
                             <div class="app-card-header p-3">
+                                <h4 class="app-card-title">Overall Score</h4>
+
+                            </div>
+
+                            <div class="app-card-body p-3 p-lg-4">
                                 <div class="row justify-content-between align-items-center">
                                     <div class="col-12">
-                                        <h4 class="app-card-title">Overall Score</h4>
                                         <table class="table app-table-hover mb-0 text-left">
                                             <thead>
                                                 <tr>
@@ -91,6 +95,91 @@
                                 </div>
                             </div>
                             <div class="app-card-body p-3 p-lg-4">
+                                <div class="table-responsive">
+                                    <table class="table overall-table m-0">
+                                        <tbody>
+                                            {{-- Less Critical & Major SD  --}}
+                                            <tr>
+                                                <td scope="col" colspan="4">Less Critical & Major SD</td>
+                                            </tr>
+                                            <tr>
+                                                <td>
+                                                    <select class="form-select form-select-md" name="sd" id="sd">
+                                                        <option selected hidden>Type of SD</option>
+                                                        <option value="SD1">SD1</option>
+                                                        <option value="SD3">SD3</option>
+                                                        <option value="SD7">SD7</option>
+                                                    </select>
+                                                </td>
+                                                <td class="w-50">
+                                                    <input type="text" class="form-control" name="product" id="product"
+                                                        placeholder="Product">
+                                                </td>
+                                                <td class="text-center">
+                                                    <span x-on:click.prevent="addLcm">
+                                                        <svg class="icon mt-1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512">
+                                                            <!--! Font Awesome Pro 6.3.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2023 Fonticons, Inc. -->
+                                                            <path
+                                                                d="M240 80c0-17.7-14.3-32-32-32s-32 14.3-32 32V224H32c-17.7 0-32 14.3-32 32s14.3 32 32 32H176V432c0 17.7 14.3 32 32 32s32-14.3 32-32V288H384c17.7 0 32-14.3 32-32s-14.3-32-32-32H240V80z" />
+                                                        </svg>
+                                                    </span>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td colspan="4">
+                                                    <select class="form-select form-select-md" name="sd" id="sd">
+                                                        <option selected hidden>Score</option>
+                                                        <option value="5%">5%</option>
+                                                        <option value="15%">15%</option>
+                                                        <option value="25%">25%</option>
+                                                    </select>
+                                                </td>
+                                            </tr>
+                                      {{--       <tr>
+                                                <td colspan="4">
+                                                    <ul>
+                                                        @foreach ($lcm as $item)
+                                                            <li>
+                                                                {{ $item['sd'] }} - <span>{{ $item['product'] }}</span>
+                                                            </li>
+                                                        @endforeach
+                                                    </ul>
+                                                </td>
+                                            </tr> --}}
+                                            {{-- Less Spoiled/Lapsed product  --}}
+
+                                            <tr>
+                                                <td scope="col" colspan="4">Less Spoiled/Lapsed product</td>
+                                            </tr>
+                                            <tr>
+                                                <td colspan="2">
+                                                    <input type="text" class="form-control" name="" id=""
+                                                        placeholder="Product">
+                                                </td>
+                                                <td class="text-center">
+                                                    <span>
+                                                        <svg class="icon mt-1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512">
+                                                            <!--! Font Awesome Pro 6.3.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2023 Fonticons, Inc. -->
+                                                            <path
+                                                                d="M240 80c0-17.7-14.3-32-32-32s-32 14.3-32 32V224H32c-17.7 0-32 14.3-32 32s14.3 32 32 32H176V432c0 17.7 14.3 32 32 32s32-14.3 32-32V288H384c17.7 0 32-14.3 32-32s-14.3-32-32-32H240V80z" />
+                                                        </svg>
+                                                    </span>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td colspan="4">
+                                                    <select class="form-select form-select-md" name="sd" id="sd">
+                                                        <option selected hidden>Score</option>
+                                                        <option value="5%">5%</option>
+                                                        <option value="15%">15%</option>
+                                                        <option value="25%">25%</option>
+                                                    </select>
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+
                             </div>
                         </div>
                     </div>
@@ -432,15 +521,12 @@
             <p class="m-0 p-2">No category found!</p>
         @endforelse
     </div>
-
     <a href="#">
         <div class="floating-btn">
             <svg class="icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512">
-                <!--! Font Awesome Pro 6.4.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2023 Fonticons, Inc. -->
                 <path
                     d="M182.6 137.4c-12.5-12.5-32.8-12.5-45.3 0l-128 128c-9.2 9.2-11.9 22.9-6.9 34.9s16.6 19.8 29.6 19.8H288c12.9 0 24.6-7.8 29.6-19.8s2.2-25.7-6.9-34.9l-128-128z" />
             </svg>
         </div>
     </a>
-
 </div>

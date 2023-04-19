@@ -1516,6 +1516,9 @@ textarea.form-control{
 .floating-btn svg{
     margin-left: 0 !important;
 }
+.form-select{
+    height: 2.8em !important;
+}
 
 .eye-icon::before {
     content: "";
