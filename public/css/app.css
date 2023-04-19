@@ -1497,6 +1497,25 @@ textarea.form-control{
     transform: translateY(-50%);
     cursor: pointer;
 }
+.floating-btn{
+    border: 1px solid var(--cta-color);
+    border-radius: 5px;
+    width: 45px;
+    text-align: center;
+    padding: 5px;
+    position: fixed;
+    bottom: 20px;
+    right: 25px;
+    background: var(--secondary-color);
+    opacity: 0.5;
+}
+.floating-btn:hover{
+    opacity: 1;
+    cursor: pointer;
+}
+.floating-btn svg{
+    margin-left: 0 !important;
+}
 
 .eye-icon::before {
     content: "";
