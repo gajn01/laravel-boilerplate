@@ -7,6 +7,8 @@ use App\Models\Category as CategoryModel;
 use App\Models\SubCategory as SubCategoryModel;
 use App\Models\SubSubCategoryLabel as SubSubCategoryLabelModel;
 use App\Models\DropdownMenu as DropdownMenuModel;
+use App\Models\Dropdown as DropdownModel;
+use App\Models\SanitaryModel as SanitaryModel;
 
 class Form extends Component
 {
@@ -14,6 +16,8 @@ class Form extends Component
     public $store_name;
     /* Audit Category */
     public $store_type;
+    public $f_major_sd = [];
+    public $sanitation_defect;
     public function mount($store_id = null)
     {
         $this->store_id = $store_id;
@@ -23,6 +27,7 @@ class Form extends Component
     }
     public function render()
     {
+        $sanitation_defect = SanitaryModel::select('id', 'title', 'code')->get();
         $data = CategoryModel::select('id', 'name', 'type')
             ->where('type', $this->store_type)
             ->with([
@@ -101,9 +106,21 @@ class Form extends Component
                 'total_percentage' => '100',
             ];
             $category->sub_categ = $sub_category;
-
-
         }
-        return view('livewire.store.form', ['category_list' => $data])->extends('layouts.app');
+        return view('livewire.store.form', ['category_list' => $data, 'sanitation_list' => $sanitation_defect])->extends('layouts.app');
     }
+
+    public function onAddSd()
+    {
+        $sanitation = SanitaryModel::find($this->sanitation_defect);
+
+        $this->f_major_sd[] = [
+            'id' => $sanitation->id,
+            'code' => $sanitation->code,
+            'title' => $sanitation->title,
+            'remarks' => '',
+            'tag' => '',
+        ];
+    }
+
 }

@@ -104,20 +104,25 @@
                                             </tr>
                                             <tr>
                                                 <td>
-                                                    <select class="form-select form-select-md" name="sd" id="sd">
+                                                    <select class="form-select form-select-md" name="sd"
+                                                        wire:model="sanitation_defect" id="sd">
                                                         <option selected hidden>Type of SD</option>
-                                                        <option value="SD1">SD1</option>
-                                                        <option value="SD3">SD3</option>
-                                                        <option value="SD7">SD7</option>
+                                                        @forelse ($sanitation_list as $item)
+                                                            <option value="{{ $item->id }}">{{ $item->code }}
+                                                            </option>
+                                                        @empty
+                                                            <option value="0">No data found!</option>
+                                                        @endforelse
                                                     </select>
                                                 </td>
                                                 <td class="w-50">
-                                                    <input type="text" class="form-control" name="product" id="product"
-                                                        placeholder="Product">
+                                                    <input type="text" class="form-control" name="product"
+                                                        id="product" placeholder="Product">
                                                 </td>
                                                 <td class="text-center">
-                                                    <span x-on:click.prevent="addLcm">
-                                                        <svg class="icon mt-1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512">
+                                                    <span wire:click="onAddSd()">
+                                                        <svg class="icon mt-1" xmlns="http://www.w3.org/2000/svg"
+                                                            viewBox="0 0 448 512">
                                                             <!--! Font Awesome Pro 6.3.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2023 Fonticons, Inc. -->
                                                             <path
                                                                 d="M240 80c0-17.7-14.3-32-32-32s-32 14.3-32 32V224H32c-17.7 0-32 14.3-32 32s14.3 32 32 32H176V432c0 17.7 14.3 32 32 32s32-14.3 32-32V288H384c17.7 0 32-14.3 32-32s-14.3-32-32-32H240V80z" />
@@ -126,8 +131,19 @@
                                                 </td>
                                             </tr>
                                             <tr>
+                                                <td colspan="3">
+                                                    <ul>
+                                                        @forelse ($f_major_sd as $item)
+                                                            <li>{{$item->product}} -  {{$item->sd}}</li>
+                                                        @empty
+                                                        @endforelse
+                                                    </ul>
+                                                </td>
+                                            </tr>
+                                            <tr>
                                                 <td colspan="4">
-                                                    <select class="form-select form-select-md" name="sd" id="sd">
+                                                    <select class="form-select form-select-md" name="sd"
+                                                        id="sd">
                                                         <option selected hidden>Score</option>
                                                         <option value="5%">5%</option>
                                                         <option value="15%">15%</option>
@@ -135,7 +151,7 @@
                                                     </select>
                                                 </td>
                                             </tr>
-                                      {{--       <tr>
+                                            {{--       <tr>
                                                 <td colspan="4">
                                                     <ul>
                                                         @foreach ($lcm as $item)
@@ -153,12 +169,13 @@
                                             </tr>
                                             <tr>
                                                 <td colspan="2">
-                                                    <input type="text" class="form-control" name="" id=""
-                                                        placeholder="Product">
+                                                    <input type="text" class="form-control" name=""
+                                                        id="" placeholder="Product">
                                                 </td>
                                                 <td class="text-center">
                                                     <span>
-                                                        <svg class="icon mt-1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512">
+                                                        <svg class="icon mt-1" xmlns="http://www.w3.org/2000/svg"
+                                                            viewBox="0 0 448 512">
                                                             <!--! Font Awesome Pro 6.3.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2023 Fonticons, Inc. -->
                                                             <path
                                                                 d="M240 80c0-17.7-14.3-32-32-32s-32 14.3-32 32V224H32c-17.7 0-32 14.3-32 32s14.3 32 32 32H176V432c0 17.7 14.3 32 32 32s32-14.3 32-32V288H384c17.7 0 32-14.3 32-32s-14.3-32-32-32H240V80z" />
@@ -168,7 +185,8 @@
                                             </tr>
                                             <tr>
                                                 <td colspan="4">
-                                                    <select class="form-select form-select-md" name="sd" id="sd">
+                                                    <select class="form-select form-select-md" name="sd"
+                                                        id="sd">
                                                         <option selected hidden>Score</option>
                                                         <option value="5%">5%</option>
                                                         <option value="15%">15%</option>
