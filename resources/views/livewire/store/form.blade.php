@@ -31,7 +31,7 @@
             <p class="m-0 p-2">No category found!</p>
         @endforelse
     </nav>
-    <div class="tab-content" id="audit-form-tab-content" wire:ignore>
+    <div class="tab-content" id="audit-form-tab-content" >
         @forelse ($category_list as $key => $data)
             <div class="tab-pane fade show {{ $key == 0 ? 'active' : '' }}" id="cat{{ $data->id }}" role="tabpanel"
                 aria-labelledby="cat{{ $data->id }}-tab">
@@ -117,7 +117,7 @@
                                                 </td>
                                                 <td class="w-50">
                                                     <input type="text" class="form-control" name="product"
-                                                        id="product" placeholder="Product">
+                                                        id="product" placeholder="Product" wire:model="f_product">
                                                 </td>
                                                 <td class="text-center">
                                                     <span wire:click="onAddSd()">
@@ -134,8 +134,9 @@
                                                 <td colspan="3">
                                                     <ul>
                                                         @forelse ($f_major_sd as $item)
-                                                            <li>{{$item->product}} -  {{$item->sd}}</li>
+                                                            <li>{{$item['remarks']}} -  {{$item['code']}}</li>
                                                         @empty
+                                                        <li>No data Found!</li>
                                                         @endforelse
                                                     </ul>
                                                 </td>
@@ -202,7 +203,7 @@
                         </div>
                     </div>
                 </div>
-                <div class="app-card app-card-orders-table shadow-sm mb-5 bg-none">
+                <div class="app-card app-card-orders-table shadow-sm mb-5 bg-none" wire:ignore>
                     <div class="app-card-body">
                         @forelse ($data->sub_categ['data_items'] as  $key =>  $dataItem)
                             <div class="accordion mb-3" id="accordionCategory">

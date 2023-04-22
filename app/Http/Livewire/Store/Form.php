@@ -17,6 +17,7 @@ class Form extends Component
     /* Audit Category */
     public $store_type;
     public $f_major_sd = [];
+    public $f_product;
     public $sanitation_defect;
     public function mount($store_id = null)
     {
@@ -27,6 +28,7 @@ class Form extends Component
     }
     public function render()
     {
+
         $sanitation_defect = SanitaryModel::select('id', 'title', 'code')->get();
         $data = CategoryModel::select('id', 'name', 'type')
             ->where('type', $this->store_type)
@@ -113,14 +115,15 @@ class Form extends Component
     public function onAddSd()
     {
         $sanitation = SanitaryModel::find($this->sanitation_defect);
-
-        $this->f_major_sd[] = [
+        $newSd = [
             'id' => $sanitation->id,
             'code' => $sanitation->code,
             'title' => $sanitation->title,
-            'remarks' => '',
+            'remarks' => $this->f_product,
             'tag' => '',
         ];
+        array_push($this->f_major_sd, $newSd);
+
     }
 
 }

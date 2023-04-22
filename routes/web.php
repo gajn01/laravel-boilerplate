@@ -27,6 +27,7 @@ use App\Http\Livewire\Settings\StoreSettings;
 use App\Http\Livewire\Settings\Dropdown;
 use App\Http\Livewire\Settings\DropdownMenu;
 use App\Http\Livewire\Settings\CriticalDeviation;
+use App\Http\Livewire\Settings\CriticalDeviationMenu;
 
 
 // $controller_path = 'App\Http\Livewire';
@@ -55,5 +56,9 @@ Route::get('/settings/sanitary',Sanitary::class)->name('sanitary');
 Route::get('/settings/dropdown',Dropdown::class)->name('dropdown');
 Route::get('/settings/dropdown/menu/{dropdown_id?}',DropdownMenu::class)->name('dropdown-menu');
 Route::get('/settings/critical-deviation',CriticalDeviation::class)->name('critical-deviation');
+Route::get('/settings/critical-deviation/menu/{critical_deviation_id?}',CriticalDeviationMenu::class)->name('critical-deviation-menu');
+
+
+
 
 
