@@ -5,6 +5,7 @@ namespace App\Http\Livewire\Settings;
 use Livewire\Component;
 use App\Models\CriticalDeviationMenu as CriticalDeviationMenuModel;
 use App\Models\CriticalDeviation as CriticalDeviationModel;
+use App\Models\Dropdown as DropdownModel;
 use Livewire\WithPagination;
 use App\Helpers\CustomHelper;
 
@@ -15,6 +16,11 @@ class CriticalDeviationMenu extends Component
     protected $listeners = ['alert-sent' => 'onDelete'];
     public $deviation;
     public $critical_deviation_menu_id;
+    public $label;
+    public $is_sd;
+    public $remarks;
+    public $is_dropdown;
+    public $dropdown_id;
     public $searchTerm;
     public $modalTitle;
     public $modalButtonText;
@@ -25,31 +31,38 @@ class CriticalDeviationMenu extends Component
     }
     public function render()
     {
+        $dropdown = DropdownModel::select('id', 'name')->get();
         $searchTerm = '%' . $this->searchTerm . '%';
         $data = CriticalDeviationMenuModel::select('id', 'critical_deviation_id', 'label', 'remarks', 'score_dropdown_id', 'is_sd', 'is_dropdown', 'dropdown_id')
             ->where('label', 'like', $searchTerm)
             ->paginate($this->limit);
-        return view('livewire.settings.critical-deviation-menu', ['deviation_list' => $data])->extends('layouts.app');
+        return view('livewire.settings.critical-deviation-menu', ['deviation_list' => $data, 'dropdown_list' => $dropdown])->extends('layouts.app');
     }
     public function showModal($id = null)
     {
         $data = CriticalDeviationModel::find($id);
 
         $this->critical_deviation_menu_id = $id;
-        $this->modalTitle = $this->critical_deviation_menu_id ? 'Edit Sanitation Defect' : 'Add Sanitation Defect';
+        $this->modalTitle = $this->critical_deviation_menu_id ? 'Edit Critical Deviation ' : 'Add Critical Deviation ';
         $this->modalButtonText = $this->critical_deviation_menu_id ? 'Update' : 'Add';
     }
     public function onSave()
     {
-        $this->validate(
-            [
-                'name' => 'required',
-            ]
-        );
+        $this->validate([
+            'label' => 'required',
+            'remarks' => 'nullable|string',
+            'is_sd' => 'nullable|boolean',
+            'is_dropdown' => 'nullable|boolean',
+            'dropdown_id' => 'nullable|exists:dropdowns,id',
+        ]);
         CriticalDeviationModel::updateOrCreate(
             ['id' => $this->critical_deviation_menu_id ?? null],
             [
-                'name' => strip_tags($this->name),
+                'label' => htmlspecialchars($this->label),
+                'remarks' => htmlspecialchars($this->remarks),
+                'is_sd' => $this->is_sd ?? false,
+                'is_dropdown' => $this->is_dropdown ?? false,
+                'dropdown_id' => $this->dropdown_id,
             ]
         );
         $this->reset();

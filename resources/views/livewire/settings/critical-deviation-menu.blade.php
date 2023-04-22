@@ -131,13 +131,50 @@
                     <form wire:submit.prevent="onSave">
                         @csrf
                         <div class="mb-3">
-                            <label for="name" class="form-label">Name <span class="text-danger">*</span></label>
-                            <input type="text" class="form-control" wire:model="name" id="name"
+                            <label for="label" class="form-label">Label <span class="text-danger">*</span></label>
+                            <input type="text" class="form-control" wire:model="label" id="label" wire:model="label"
                                 aria-describedby="helpId" placeholder="">
-                            @error('name')
+                            @error('label')
                                 <span class="text-danger mt-1 ">{{ $message }}</span>
                             @enderror
                         </div>
+                        <div class="">
+                            <label for="" class="form-label">Fields </label>
+                        </div>
+                        <div class="checkbox-field d-grid">
+                            <div class="form-check form-check-inline">
+                                <input class="form-check-input" type="checkbox" id="remarks" value="remarks">
+                                <label class="form-check-label" for="remarks" wire:model="remarks">Remarks</label>
+                            </div>
+                            <div class="form-check form-check-inline">
+                                <input class="form-check-input" type="checkbox" id="is_sd" value="is_sd">
+                                <label class="form-check-label" for="is_sd" wire:model="is_sd">SD</label>
+                            </div>
+                            <div class="form-check form-check-inline">
+                                <input class="form-check-input" type="checkbox" id="is_dropdown" value="is_dropdown"
+                                    wire:model="is_dropdown">
+                                <label class="form-check-label" for="is_dropdown">Dropdown</label>
+                                @if ($is_dropdown)
+                                    <select class="form-select form-select-sm" name="" id="">
+                                        <option value="0" selected>Select one</option>
+                                        @forelse ($dropdown_list as $item)
+                                            <option value="{{ $item['id'] }}">{{ $item['name'] }}</option>
+                                        @empty
+                                        @endforelse
+                                    </select>
+                                @endif
+                            </div>
+                        </div>
+                {{--         <div class="mb-3">
+                            <label for="" class="form-label">Score</label>
+                            <select class="form-select form-select-sm" name="" id="">
+                                <option selected>Select one</option>
+                                @forelse ($dropdown_list as $item)
+                                    <option value="{{ $item['id'] }}">{{ $item['name'] }}</option>
+                                @empty
+                                @endforelse
+                            </select>
+                        </div> --}}
                     </form>
                 </div>
                 <div class="modal-footer">
