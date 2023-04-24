@@ -19,6 +19,10 @@ class CriticalDeviationMenu extends Component
     public $label;
     public $is_sd;
     public $remarks;
+    public $is_location;
+    public $location_dropdown_id;
+    public $is_product;
+    public $product_dropdown_id;
     public $is_dropdown;
     public $dropdown_id;
     public $searchTerm;
@@ -40,8 +44,16 @@ class CriticalDeviationMenu extends Component
     }
     public function showModal($id = null)
     {
-        $data = CriticalDeviationModel::find($id);
-
+        $data = CriticalDeviationMenuModel::find($id);
+        $this->label = optional($data)->label;
+        $this->remarks = optional($data)->remarks;
+        $this->is_sd = optional($data)->is_sd;
+        $this->is_location = optional($data)->is_location;
+        $this->location_dropdown_id = optional($data)->location_dropdown_id;
+        $this->is_product = optional($data)->is_product;
+        $this->product_dropdown_id = optional($data)->product_dropdown_id;
+        $this->is_dropdown = optional($data)->is_dropdown;
+        $this->dropdown_id = optional($data)->dropdown_id;
         $this->critical_deviation_menu_id = $id;
         $this->modalTitle = $this->critical_deviation_menu_id ? 'Edit Critical Deviation ' : 'Add Critical Deviation ';
         $this->modalButtonText = $this->critical_deviation_menu_id ? 'Update' : 'Add';
@@ -50,19 +62,28 @@ class CriticalDeviationMenu extends Component
     {
         $this->validate([
             'label' => 'required',
-            'remarks' => 'nullable|string',
+            'remarks' => 'nullable|boolean',
             'is_sd' => 'nullable|boolean',
+            'is_location' => 'nullable|boolean',
+            'location_dropdown_id' => 'nullable',
+            'is_product' => 'nullable|boolean',
+            'product_dropdown_id' => 'nullable',
             'is_dropdown' => 'nullable|boolean',
-            'dropdown_id' => 'nullable|exists:dropdowns,id',
+            'dropdown_id' => 'nullable',
         ]);
-        CriticalDeviationModel::updateOrCreate(
+        CriticalDeviationMenuModel::updateOrCreate(
             ['id' => $this->critical_deviation_menu_id ?? null],
             [
-                'label' => htmlspecialchars($this->label),
-                'remarks' => htmlspecialchars($this->remarks),
+                'critical_deviation_id' => $this->deviation->id,
+                'label' => strip_tags($this->label),
+                'remarks' => $this->remarks ?? false,
                 'is_sd' => $this->is_sd ?? false,
+                'is_location' => $this->is_location ?? false,
+                'location_dropdown_id' => $this->location_dropdown_id ?? 0,
+                'is_product' => $this->is_product ?? false,
+                'product_dropdown_id' => $this->product_dropdown_id ?? 0,
                 'is_dropdown' => $this->is_dropdown ?? false,
-                'dropdown_id' => $this->dropdown_id,
+                'dropdown_id' => $this->dropdown_id ?? 0,
             ]
         );
         $this->reset();
@@ -71,7 +92,7 @@ class CriticalDeviationMenu extends Component
     }
     public function onDelete($id)
     {
-        $data = CriticalDeviationModel::find($id);
+        $data = CriticalDeviationMenuModel::find($id);
         $data->delete();
     }
     public function onAlert($is_confirm = false, $title = null, $message = null, $type = null, $data = null)

@@ -14,6 +14,10 @@ class CriticalDeviationMenu extends Model
         'remarks',
         'score_dropdown_id',
         'is_sd',
+        'is_location',
+        'location_dropdown_id',
+        'is_product',
+        'product_dropdown_id',
         'is_dropdown',
         'dropdown_id',
     ];

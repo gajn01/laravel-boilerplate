@@ -45,7 +45,7 @@
                     <tbody>
                         @forelse ($deviation_list as $data)
                             <tr>
-                                <td class="cell">{{ $data['name'] }}</td>
+                                <td class="cell">{{ $data['label'] }}</td>
                                 <td class="cell table-action-sm">
                                     <a href="" wire:click="showModal({{ $data['id'] }})" data-bs-toggle="modal"
                                         data-bs-target="#critical_deviation_menu_modal">
@@ -132,30 +132,62 @@
                         @csrf
                         <div class="mb-3">
                             <label for="label" class="form-label">Label <span class="text-danger">*</span></label>
-                            <input type="text" class="form-control" wire:model="label" id="label" wire:model="label"
-                                aria-describedby="helpId" placeholder="">
+                            <input type="text" class="form-control" wire:model="label" id="label"
+                                wire:model="label" aria-describedby="helpId" placeholder="">
                             @error('label')
                                 <span class="text-danger mt-1 ">{{ $message }}</span>
                             @enderror
                         </div>
+
                         <div class="">
                             <label for="" class="form-label">Fields </label>
                         </div>
                         <div class="checkbox-field d-grid">
                             <div class="form-check form-check-inline">
-                                <input class="form-check-input" type="checkbox" id="remarks" value="remarks">
-                                <label class="form-check-label" for="remarks" wire:model="remarks">Remarks</label>
+                                <input class="form-check-input" type="checkbox" id="remarks" wire:model="remarks">
+                                <label class="form-check-label" for="remarks">Remarks</label>
                             </div>
                             <div class="form-check form-check-inline">
-                                <input class="form-check-input" type="checkbox" id="is_sd" value="is_sd">
-                                <label class="form-check-label" for="is_sd" wire:model="is_sd">SD</label>
+                                <input class="form-check-input" type="checkbox" id="is_sd" wire:model="is_sd">
+                                <label class="form-check-label" for="is_sd">SD</label>
                             </div>
                             <div class="form-check form-check-inline">
-                                <input class="form-check-input" type="checkbox" id="is_dropdown" value="is_dropdown"
+                                <input class="form-check-input" type="checkbox" id="is_location"
+                                    wire:model="is_location">
+                                <label class="form-check-label" for="is_location">Location</label>
+                                @if ($is_location)
+                                    <select class="form-select form-select-sm" name="" id=""
+                                        wire:model="location_dropdown_id">
+                                        <option value="0" selected>Select one</option>
+                                        @forelse ($dropdown_list as $item)
+                                            <option value="{{ $item['id'] }}">{{ $item['name'] }}</option>
+                                        @empty
+                                        @endforelse
+                                    </select>
+                                @endif
+                            </div>
+                            <div class="form-check form-check-inline">
+                                <input class="form-check-input" type="checkbox" id="is_product"
+                                    wire:model="is_product">
+                                <label class="form-check-label" for="is_product">Product</label>
+                                @if ($is_product)
+                                    <select class="form-select form-select-sm" name="" id=""
+                                        wire:model="product_dropdown_id">
+                                        <option value="0" selected>Select one</option>
+                                        @forelse ($dropdown_list as $item)
+                                            <option value="{{ $item['id'] }}">{{ $item['name'] }}</option>
+                                        @empty
+                                        @endforelse
+                                    </select>
+                                @endif
+                            </div>
+                            <div class="form-check form-check-inline">
+                                <input class="form-check-input" type="checkbox" id="is_dropdown"
                                     wire:model="is_dropdown">
                                 <label class="form-check-label" for="is_dropdown">Dropdown</label>
                                 @if ($is_dropdown)
-                                    <select class="form-select form-select-sm" name="" id="">
+                                    <select class="form-select form-select-sm" name="" id=""
+                                        wire:model="dropdown_id">
                                         <option value="0" selected>Select one</option>
                                         @forelse ($dropdown_list as $item)
                                             <option value="{{ $item['id'] }}">{{ $item['name'] }}</option>
@@ -165,7 +197,7 @@
                                 @endif
                             </div>
                         </div>
-                {{--         <div class="mb-3">
+                        {{--         <div class="mb-3">
                             <label for="" class="form-label">Score</label>
                             <select class="form-select form-select-sm" name="" id="">
                                 <option selected>Select one</option>
