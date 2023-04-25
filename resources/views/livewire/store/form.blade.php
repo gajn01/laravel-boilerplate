@@ -36,13 +36,11 @@
             <div class="tab-pane fade show {{ $key == 0 ? 'active' : '' }}" id="cat{{ $data->id }}" role="tabpanel"
                 aria-labelledby="cat{{ $data->id }}-tab">
                 <div class="row g-4 mb-4">
-                    <div class="col-12 col-lg-6">
-                        <div class="app-card app-card-chart h-100 shadow-sm">
+                    <div class="col-12  {{$data->critical_deviation ? 'col-lg-6' : 'col-lg-12'}}">
+                        <div class="app-card app-card-chart  shadow-sm">
                             <div class="app-card-header p-3">
                                 <h4 class="app-card-title">Overall Score</h4>
-
                             </div>
-
                             <div class="app-card-body p-3 p-lg-4">
                                 <div class="row justify-content-between align-items-center">
                                     <div class="col-12">
@@ -68,7 +66,7 @@
                                                 @endforeach
                                                 <tr>
                                                     <td>
-                                                        <h5 class="app-card-title text-center">Total</h5>
+                                                        <h5 class="app-card-title ">Total</h5>
                                                     </td>
                                                     <td class="text-center">{{ $data->sub_categ['total_base_score'] }}
                                                     </td>
@@ -85,18 +83,22 @@
                             </div>
                         </div>
                     </div>
-                    <div class="col-12 col-lg-6">
-                        <div class="app-card app-card-chart h-100 shadow-sm">
-                            <div class="app-card-header p-3">
-                                <div class="row justify-content-between align-items-center">
-                                    <div class="col-auto">
-                                        <h4 class="app-card-title">Critical Deviation</h4>
+                    @if ($data->critical_deviation)
+                        <div class="col-12 col-lg-6">
+                            <div class="app-card app-card-chart h-100 shadow-sm">
+                                <div class="app-card-header p-3">
+                                    <div class="row justify-content-between align-items-center">
+                                        <div class="col-auto">
+                                            <h4 class="app-card-title">Critical Deviation</h4>
+                                        </div>
                                     </div>
                                 </div>
+                                <livewire:component.deviation  :data="$data->critical_deviation">
+
                             </div>
-                            <livewire:component.deviation :data="$document">
                         </div>
-                    </div>
+                    @endif
+
                 </div>
                 <div class="app-card app-card-orders-table shadow-sm mb-5 bg-none" wire:ignore>
                     <div class="app-card-body">

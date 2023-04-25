@@ -4,11 +4,10 @@ namespace App\Http\Livewire\Store;
 use Livewire\Component;
 use App\Models\Store as StoreModel;
 use App\Models\Category as CategoryModel;
-use App\Models\SubCategory as SubCategoryModel;
 use App\Models\SubSubCategoryLabel as SubSubCategoryLabelModel;
 use App\Models\DropdownMenu as DropdownMenuModel;
-use App\Models\Dropdown as DropdownModel;
 use App\Models\SanitaryModel as SanitaryModel;
+use App\Models\CriticalDeviationMenu as CriticalDeviationMenuModel;
 
 class Form extends Component
 {
@@ -30,7 +29,7 @@ class Form extends Component
     {
 
         $sanitation_defect = SanitaryModel::select('id', 'title', 'code')->get();
-        $data = CategoryModel::select('id', 'name', 'type')
+        $data = CategoryModel::select('id', 'name', 'type', 'critical_deviation')
             ->where('type', $this->store_type)
             ->with([
                 'subCategories' => function ($query) {
@@ -80,7 +79,6 @@ class Form extends Component
                                 $isAllNothing = $subLabel->is_all_nothing == 0 ? $subLabel->bp : $subLabel->bp . '*';
                                 $total_bp += $subLabel->bp;
                                 $total_base_score += $subLabel->bp;
-
                                 return [
                                     'id' => $subLabel->id,
                                     'name' => $subLabel->name,
@@ -108,6 +106,29 @@ class Form extends Component
                 'total_percentage' => '100',
             ];
             $category->sub_categ = $sub_category;
+            $critical_deviation = CriticalDeviationMenuModel::select('*')
+                ->where('critical_deviation_id', $category->critical_deviation)
+                ->get();
+            $category->critical_deviation = $critical_deviation->map(function ($cd) {
+                $dropdownMenu = DropdownMenuModel::where('dropdown_id', $cd->dropdown_id)->get()->toArray();
+                $location_dropdownMenu = DropdownMenuModel::where('dropdown_id', $cd->location_dropdown_id)->get()->toArray();
+                $product_dropdownMenu = DropdownMenuModel::where('dropdown_id', $cd->product_dropdown_id)->get()->toArray();
+                return [
+                    'id' => $cd->id,
+                    'critical_deviation_id' => $cd->critical_deviation_id,
+                    'label' => $cd->label,
+                    'remarks' => $cd->remarks,
+                    'score_dropdown_id' => $cd->score_dropdown_id,
+                    'is_sd' => $cd->is_sd,
+                    'is_location' => $cd->is_location,
+                    'location' => $location_dropdownMenu,
+                    'is_product' => $cd->is_product,
+                    'product' => $product_dropdownMenu,
+                    'is_dropdown' => $cd->is_dropdown,
+                    'dropdown_id' => $cd->dropdown_id,
+                    'dropdown' => $dropdownMenu,
+                ];
+            });
         }
         return view('livewire.store.form', ['category_list' => $data, 'sanitation_list' => $sanitation_defect])->extends('layouts.app');
     }

@@ -38,6 +38,7 @@ class CriticalDeviationMenu extends Component
         $dropdown = DropdownModel::select('id', 'name')->get();
         $searchTerm = '%' . $this->searchTerm . '%';
         $data = CriticalDeviationMenuModel::select('id', 'critical_deviation_id', 'label', 'remarks', 'score_dropdown_id', 'is_sd', 'is_dropdown', 'dropdown_id')
+            ->where('critical_deviation_id', $this->deviation->id)
             ->where('label', 'like', $searchTerm)
             ->paginate($this->limit);
         return view('livewire.settings.critical-deviation-menu', ['deviation_list' => $data, 'dropdown_list' => $dropdown])->extends('layouts.app');

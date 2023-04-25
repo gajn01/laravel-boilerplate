@@ -22,7 +22,8 @@
             <!--//col-->
             <div class="col-auto">
                 <div class="col-auto">
-                    <a class="btn app-btn-primary" data-bs-toggle="modal" data-bs-target="#category_modal" wire:click="showModal">Create</a>
+                    <a class="btn app-btn-primary" data-bs-toggle="modal" data-bs-target="#category_modal"
+                        wire:click="showModal">Create</a>
                 </div>
             </div>
         </div>
@@ -152,6 +153,24 @@
                                 <span class="text-danger">{{ $message }}</span>
                             @enderror
                         </div>
+
+                        <div class="mb-3">
+                            <label for="critical_deviation" class="form-label">Critical Deviation<span
+                                    class="text-danger">*</span></label>
+                            <select class="form-select form-select-md" wire:model="critical_deviation"
+                                id="critical_deviation">
+                                <option selected hidden>Select one</option>
+                                @foreach ($deviation_list as $critical_deviation)
+                                    <option value="{{ $critical_deviation['id'] }}">{{ $critical_deviation['name'] }}
+                                    </option>
+                                @endforeach
+
+                            </select>
+                            @error('type')
+                                <span class="text-danger">{{ $message }}</span>
+                            @enderror
+                        </div>
+
                     </form>
                 </div>
                 <div class="modal-footer">

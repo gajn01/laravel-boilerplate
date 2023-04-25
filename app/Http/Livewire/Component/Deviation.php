@@ -10,6 +10,11 @@ class Deviation extends Component
 {
     public $f_major_sd = [];
     public $f_product;
+    public $deviation_list;
+
+    public function mount($data=null){
+        $this->deviation_list = $data;
+    }
     public function render()
     {
         $sanitation_defect = SanitaryModel::select('id', 'title', 'code')->get();
