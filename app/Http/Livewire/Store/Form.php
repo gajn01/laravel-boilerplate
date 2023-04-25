@@ -128,11 +128,10 @@ class Form extends Component
                     'dropdown_id' => $cd->dropdown_id,
                     'dropdown' => $dropdownMenu,
                 ];
-            });
+            } ?? []);
         }
         return view('livewire.store.form', ['category_list' => $data, 'sanitation_list' => $sanitation_defect])->extends('layouts.app');
     }
-
     public function onAddSd()
     {
         $sanitation = SanitaryModel::find($this->sanitation_defect);

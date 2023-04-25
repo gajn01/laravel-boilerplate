@@ -1,17 +1,12 @@
 <?php
-
 namespace App\Http\Livewire\Component;
-
 use Livewire\Component;
 use App\Models\SanitaryModel as SanitaryModel;
-
-
 class Deviation extends Component
 {
     public $f_major_sd = [];
     public $f_product;
     public $deviation_list;
-
     public function mount($data=null){
         $this->deviation_list = $data;
     }
