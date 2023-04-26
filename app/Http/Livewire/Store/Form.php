@@ -12,7 +12,7 @@ use App\Helpers\CustomHelper;
 
 class Form extends Component
 {
-    protected $listeners = ['alert-sent' => 'onUpdateStatus','start-alert-sent' => 'onUpdateStatus'];
+    protected $listeners = ['alert-sent' => 'onUpdateStatus', 'start-alert-sent' => 'onUpdateStatus'];
     public $store_id;
     public $store_name;
     /* Audit Category */
@@ -22,6 +22,7 @@ class Form extends Component
     public $sanitation_defect;
     public $audit_status;
     public $actionTitle = 'Start';
+    public $cashier_sa_list;
 
     public function mount($store_id = null)
     {
@@ -39,13 +40,9 @@ class Form extends Component
         $data = CategoryModel::select('id', 'name', 'type', 'critical_deviation')
             ->where('type', $this->store_type)
             ->with([
-                'subCategories' => function ($query) {
-                    $query->with([
-                        'subCategoryLabels' => function ($query) {
-                                    $query->select('id', 'name', 'is_all_nothing', 'bp', 'sub_category_id', 'dropdown_id');
-                                },
-                    ]);
-                }
+                'subCategories.subCategoryLabels' => function ($query) {
+                    $query->selectRaw('id, name, is_all_nothing, bp, sub_category_id, dropdown_id');
+                },
             ])
             ->get();
         foreach ($data as $category) {
@@ -159,7 +156,7 @@ class Form extends Component
         } else {
             $message = 'Are you sure you want to start this audit?';
         }
-        $this->emit('onStartAlert',$message);
+        $this->emit('onStartAlert', $message);
     }
     public function onUpdateStatus()
     {
@@ -168,5 +165,4 @@ class Form extends Component
             'audit_status' => $data,
         ]);
     }
-
 }

@@ -9,8 +9,9 @@
     </nav>
     <div class="page-utilities mb-3">
         <div class="row g-2 justify-content-start justify-content-md-end align-items-center">
-            <div class="col-auto mb-3" >
-                <a class="btn app-btn-primary" wire:click="onStartAndComplete(true,'Are you sure?','warning')">{{ $actionTitle }}</a>
+            <div class="col-auto mb-3">
+                <a class="btn app-btn-primary"
+                    wire:click="onStartAndComplete(true,'Are you sure?','warning')">{{ $actionTitle }}</a>
             </div>
         </div>
         <nav wire:ignore id="audit-form-tab"
@@ -86,7 +87,7 @@
                             </div>
                         </div>
 
-                        @if ($data->critical_deviation->isNotEmpty())
+                        {{--   @if ($data->critical_deviation->isNotEmpty())
                             <div class="col-12 col-lg-6" wire:ignore>
                                 <div class="app-card app-card-chart h-100 shadow-sm">
                                     <div class="app-card-header p-3">
@@ -99,21 +100,198 @@
                                     <livewire:component.deviation :data="$data->critical_deviation">
                                 </div>
                             </div>
-                        @endif
+                        @endif --}}
                     </div>
                     <div class="app-card app-card-orders-table shadow-sm mb-5 bg-none" wire:ignore>
                         <div class="app-card-body">
+
+                            <div class="accordion mb-3" id="accordionExample">
+                                <div class="accordion-item">
+                                    <h2 class="accordion-header" id="headingOne">
+                                        <button class="accordion-button" type="button" data-bs-toggle="collapse"
+                                            data-bs-target="#collapseOne" aria-expanded="true"
+                                            aria-controls="collapseOne">
+                                            Speed and Accuracy
+                                        </button>
+                                    </h2>
+                                    <div id="collapseOne" class="accordion-collapse collapse show"
+                                        aria-labelledby="headingOne" data-bs-parent="#accordionExample">
+                                        <div class="accordion-body">
+
+                                            <div id="collapseOne" class="accordion-collapse collapse show"
+                                                aria-labelledby="headingOne" data-bs-parent="#accordionSpdAcc">
+                                                <div class="accordion-body">
+                                                    <div class="accordion accordion-flush" id="accordionSpd">
+                                                        <div class="accordion-item">
+                                                            <h2 class="accordion-header" id="flush-headingOne">
+                                                                <button class="accordion-button collapsed"
+                                                                    type="button" data-bs-toggle="collapse"
+                                                                    data-bs-target="#flush-collapseOne"
+                                                                    aria-expanded="true"
+                                                                    aria-controls="flush-collapseOne">
+                                                                    Cashier TAT
+                                                                </button>
+                                                            </h2>
+                                                            <div id="flush-collapseOne"
+                                                                class="accordion-collapse collapse"
+                                                                aria-labelledby="flush-headingOne"
+                                                                data-bs-parent="#accordionSpd">
+                                                                <div class="accordion-body">
+                                                                    <div class="row">
+                                                                        <div class="col-sm-12 col-md-9">
+                                                                            <div class="row">
+                                                                                <div class="col-4">
+                                                                                    <div class="mb-3">
+                                                                                        <input type="text"
+                                                                                            class="form-control"
+                                                                                            name="cashier_name"
+                                                                                            id="cashier_name"
+                                                                                            placeholder="Cashier Name">
+                                                                                    </div>
+                                                                                </div>
+                                                                                <div class="col-4">
+                                                                                    <div class="mb-3">
+                                                                                        <input type="text"
+                                                                                            class="form-control"
+                                                                                            name="time"
+                                                                                            id="time"
+                                                                                            placeholder="Time(hh:mm)">
+                                                                                    </div>
+                                                                                </div>
+                                                                                <div class="col-4">
+                                                                                    <div class="mb-3">
+                                                                                        <input type="text"
+                                                                                            class="form-control"
+                                                                                            name="product_order"
+                                                                                            id="product_order"
+                                                                                            placeholder="Product Ordered">
+                                                                                    </div>
+                                                                                </div>
+                                                                                <div class="col-4">
+                                                                                    <label for=""
+                                                                                        class="form-label">Accuracy (1
+                                                                                        Pt.)</label>
+                                                                                    <div class="row">
+                                                                                        <div class="col-6">
+                                                                                            <div class="mb-3">
+                                                                                                <label for=""
+                                                                                                    class="form-label">OT</label>
+                                                                                                <input type="text"
+                                                                                                    class="form-control"
+                                                                                                    name="product_order"
+                                                                                                    id="product_order"
+                                                                                                    placeholder="hh:mm">
+                                                                                            </div>
+                                                                                        </div>
+                                                                                        <div class="col-6">
+                                                                                            <div class="mb-3">
+                                                                                                <label for=""
+                                                                                                    class="form-label">Point
+                                                                                                </label>
+                                                                                                <input type="text"
+                                                                                                    class="form-control"
+                                                                                                    name="product_order"
+                                                                                                    id="product_order"
+                                                                                                    placeholder="Point">
+                                                                                            </div>
+                                                                                        </div>
+                                                                                    </div>
+                                                                                </div>
+                                                                                <div class="col-4">
+                                                                                    <label for=""
+                                                                                        class="form-label">TAT (1
+                                                                                        Pt.)</label>
+                                                                                    <div class="row">
+                                                                                        <div class="col-6">
+                                                                                            <div class="mb-3">
+                                                                                                <label for=""
+                                                                                                    class="form-label">Time</label>
+                                                                                                <input type="text"
+                                                                                                    class="form-control"
+                                                                                                    name="product_order"
+                                                                                                    id="product_order"
+                                                                                                    placeholder="hh:mm">
+                                                                                            </div>
+                                                                                        </div>
+                                                                                        <div class="col-6">
+                                                                                            <div class="mb-3">
+                                                                                                <label for=""
+                                                                                                    class="form-label">Point
+                                                                                                </label>
+                                                                                                <input type="text"
+                                                                                                    class="form-control"
+                                                                                                    name="product_order"
+                                                                                                    id="product_order"
+                                                                                                    placeholder="Point">
+                                                                                            </div>
+                                                                                        </div>
+                                                                                    </div>
+                                                                                </div>
+                                                                                <div class="col-4">
+                                                                                    <label for=""
+                                                                                        class="form-label">FST (3
+                                                                                        Pt.)</label>
+                                                                                    <div class="row">
+                                                                                        <div class="col-6">
+                                                                                            <div class="mb-3">
+                                                                                                <label for=""
+                                                                                                    class="form-label">Time</label>
+                                                                                                <input type="text"
+                                                                                                    class="form-control"
+                                                                                                    name="product_order"
+                                                                                                    id="product_order"
+                                                                                                    placeholder="hh:mm">
+                                                                                            </div>
+                                                                                        </div>
+                                                                                        <div class="col-6">
+                                                                                            <div class="mb-3">
+                                                                                                <label for=""
+                                                                                                    class="form-label">Point
+                                                                                                </label>
+                                                                                                <input type="text"
+                                                                                                    class="form-control"
+                                                                                                    name="product_order"
+                                                                                                    id="product_order"
+                                                                                                    placeholder="Point">
+                                                                                            </div>
+                                                                                        </div>
+                                                                                    </div>
+                                                                                </div>
+                                                                            </div>
+                                                                        </div>
+                                                                        <div class="col-sm-12 col-md-3">
+                                                                            <div class="mb-3">
+                                                                                <textarea class="form-control" name="" id="" rows="6" placeholder="Remarks"></textarea>
+                                                                            </div>
+
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                        </div>
+                                    </div>
+
+
+                                </div>
+                            </div>
                             @forelse ($data->sub_categ['data_items'] as  $key =>  $dataItem)
                                 <div class="accordion mb-3" id="accordionCategory">
                                     <div class="accordion-item">
                                         <h2 class="accordion-header" id="{{ $dataItem['name'] }}">
-                                            <button class="accordion-button " type="button" data-bs-toggle="collapse"
+                                            <button class="accordion-button " type="button"
+                                                data-bs-toggle="collapse"
                                                 data-bs-target="#accrod{{ $dataItem['id'] }}" aria-expanded="true"
                                                 aria-controls="accrod{{ $dataItem['id'] }}">
                                                 <h6 class="card-title product-name">{{ $dataItem['name'] }}</h6>
                                             </button>
                                         </h2>
-                                        <div id="accrod{{ $dataItem['id'] }}" class="accordion-collapse collapse show"
+                                        <div id="accrod{{ $dataItem['id'] }}"
+                                            class="accordion-collapse collapse show"
                                             aria-labelledby="accrod{{ $dataItem['id'] }}"
                                             data-bs-parent="#accordionCategory">
                                             <div class="accordion-body">
@@ -122,8 +300,7 @@
                                                         <div class="row mb-3">
                                                             <div class="col-sm-12 col-md-4 col-lg-4">
                                                                 <p @class(['pt-4' => $index == 0])>
-                                                                    {{ $auditLabel['name'] }}
-                                                                </p>
+                                                                    {{ $auditLabel['name'] }}</p>
                                                             </div>
                                                             <div class="col-sm-12 col-md-2">
                                                                 <div class="row">

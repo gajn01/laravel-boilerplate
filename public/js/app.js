@@ -107,7 +107,10 @@ function showConfirm(event) {
         title: event.detail.title,
         text: event.detail.message,
         icon: event.detail.type,
-        buttons: true,
+        buttons: {
+            cancel: 'No',
+            confirm: 'Yes',
+        },
         dangerMode: true,
     })
         .then((willDelete) => {
@@ -126,7 +129,10 @@ window.Livewire.on('onStartAlert', function (message) {
         title: 'Are you sure?',
         text: message,
         icon: 'warning',
-        buttons: true,
+        buttons: {
+            cancel: 'No',
+            confirm: 'Yes',
+        },
         dangerMode: true,
     })
         .then((willDelete) => {
