@@ -10,7 +10,7 @@
     <div class="page-utilities mb-3">
         <div class="row g-2 justify-content-start justify-content-md-end align-items-center">
             <div class="col-auto mb-3" >
-                <a class="btn app-btn-primary" wire:click="onStartAndComplete()">{{ $actionTitle }}</a>
+                <a class="btn app-btn-primary" wire:click="onStartAndComplete(true,'Are you sure?','warning')">{{ $actionTitle }}</a>
             </div>
         </div>
         <nav wire:ignore id="audit-form-tab"

@@ -50,7 +50,7 @@ class DropdownMenu extends Component
             ]
         );
         $this->reset();
-        $this->onAlert(false, 'Success', 'Dropdown menu saved successfully!', '','success');
+        $this->onAlert(false, 'Success', 'Dropdown menu saved successfully!', 'success');
         CustomHelper::onRemoveModal($this, '#dropdown_menu_modal');
     }
     public function showModal($dropdown_menu_id = null)
@@ -67,9 +67,9 @@ class DropdownMenu extends Component
         $dropdown = DropdownMenuModel::find($dropdown_menu_id);
         $dropdown->delete();
     }
-    public function onAlert($is_confirm = false, $title = null, $message = null, $confirm_message = null, $type = null, $data = null)
+    public function onAlert($is_confirm = false, $title = null, $message = null, $type = null, $data = null)
     {
-        CustomHelper::onShow($this, $is_confirm, $title, $message,$confirm_message, $type, $data);
+        CustomHelper::onShow($this, $is_confirm, $title, $message, $type, $data);
     }
     public function reset(...$properties)
     {

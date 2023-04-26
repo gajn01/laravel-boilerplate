@@ -39,7 +39,7 @@ class Dropdown extends Component
             ]
         );
         $this->resetValidation();
-        $this->onAlert(false, 'Success', 'Dropdown saved successfully!','', 'success');
+        $this->onAlert(false, 'Success', 'Dropdown saved successfully!', 'success');
         CustomHelper::onRemoveModal($this, '#dropdown_modal');
     }
     public function showModal($dropdown_id = null)
@@ -56,9 +56,9 @@ class Dropdown extends Component
         $dropdown = DropdownModel::find($dropdown_id);
         $dropdown->delete();
     }
-    public function onAlert($is_confirm = false, $title = null, $message = null, $confirm_message = null, $type = null, $data = null)
+    public function onAlert($is_confirm = false, $title = null, $message = null, $type = null, $data = null)
     {
-        CustomHelper::onShow($this, $is_confirm, $title, $message,$confirm_message, $type, $data);
+        CustomHelper::onShow($this, $is_confirm, $title, $message, $type, $data);
     }
     public function reset(...$properties)
     {

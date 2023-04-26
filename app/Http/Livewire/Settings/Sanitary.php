@@ -1,11 +1,9 @@
 <?php
 namespace App\Http\Livewire\Settings;
-
 use App\Models\SanitaryModel;
 use Livewire\Component;
 use Livewire\WithPagination;
 use App\Helpers\CustomHelper;
-
 class Sanitary extends Component
 {
     use WithPagination;
@@ -52,7 +50,7 @@ class Sanitary extends Component
             ]
         );
         $this->reset();
-        $this->onAlert(false, 'Success', 'Sanitation defect saved successfully!', '','success');
+        $this->onAlert(false, 'Success', 'Sanitation defect saved successfully!', 'success');
         CustomHelper::onRemoveModal($this, '#sanitaryModal');
     }
     public function onDelete($sanitary_id)
@@ -60,9 +58,9 @@ class Sanitary extends Component
         $sanitary = SanitaryModel::find($sanitary_id);
         $sanitary->delete();
     }
-    public function onAlert($is_confirm = false, $title = null, $message = null, $confirm_message = null, $type = null, $data = null)
+    public function onAlert($is_confirm = false, $title = null, $message = null, $type = null, $data = null)
     {
-        CustomHelper::onShow($this, $is_confirm, $title, $message, $confirm_message, $type, $data);
+        CustomHelper::onShow($this, $is_confirm, $title, $message, $type, $data);
     }
     public function reset(...$properties)
     {

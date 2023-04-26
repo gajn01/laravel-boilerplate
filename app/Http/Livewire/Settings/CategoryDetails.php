@@ -64,7 +64,7 @@ class CategoryDetails extends Component
             ]
         );
         $this->reset();
-        $this->onAlert(false, 'Success', 'Sub category saved successfully!','', 'success');
+        $this->onAlert(false, 'Success', 'Sub category saved successfully!', 'success');
         CustomHelper::onRemoveModal($this, '#sub_category_label_modal');
     }
     public function onDelete($id)
@@ -72,9 +72,9 @@ class CategoryDetails extends Component
         $sub_category = SubCategoryModel::find($id);
         $sub_category->delete();
     }
-    public function onAlert($is_confirm = false, $title = null, $message = null, $confirm_message = null, $type = null, $data = null)
+    public function onAlert($is_confirm = false, $title = null, $message = null, $type = null, $data = null)
     {
-        CustomHelper::onShow($this, $is_confirm, $title, $message,$confirm_message, $type, $data);
+        CustomHelper::onShow($this, $is_confirm, $title, $message, $type, $data);
     }
     public function reset(...$properties)
     {

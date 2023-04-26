@@ -12,7 +12,7 @@ use App\Helpers\CustomHelper;
 
 class Form extends Component
 {
-    protected $listeners = ['alert-sent' => 'onUpdateStatus'];
+    protected $listeners = ['alert-sent' => 'onUpdateStatus','start-alert-sent' => 'onUpdateStatus'];
     public $store_id;
     public $store_name;
     /* Audit Category */
@@ -151,7 +151,7 @@ class Form extends Component
         ];
         array_push($this->f_major_sd, $newSd);
     }
-    public function onStartAndComplete($is_confirm = true, $title = 'Are you sure?', $type = 'warning', $data = null)
+    public function onStartAndComplete($is_confirm = true, $title = 'Are you sure?', $type = null, $data = null)
     {
         $data = $this->store_id;
         if ($this->audit_status) {
@@ -159,7 +159,7 @@ class Form extends Component
         } else {
             $message = 'Are you sure you want to start this audit?';
         }
-        CustomHelper::onShow($this, $is_confirm, $title, $message, $type, $data);
+        $this->emit('onStartAlert',$message);
     }
     public function onUpdateStatus()
     {

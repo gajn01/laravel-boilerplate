@@ -94,7 +94,6 @@ searchMobileTrigger.addEventListener('click', () => {
 
 // Inside your JavaScript code
 window.Livewire.on('alert', function (message) {
-    alert(message);
 });
 
 
@@ -121,6 +120,26 @@ function showConfirm(event) {
 window.addEventListener('remove-modal', event => {
     $(event.detail.modalName).modal('hide');
 });
+
+window.Livewire.on('onStartAlert', function (message) {
+    swal({
+        title: 'Are you sure?',
+        text: message,
+        icon: 'warning',
+        buttons: true,
+        dangerMode: true,
+    })
+        .then((willDelete) => {
+            if (willDelete) {
+                Livewire.emit('start-alert-sent');
+            }
+        });
+
+
+});
+
+
+
 
 window.Livewire.on('toggleEye', () => {
     const icon = document.getElementById('eye-icon');

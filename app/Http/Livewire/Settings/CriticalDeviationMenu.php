@@ -88,7 +88,7 @@ class CriticalDeviationMenu extends Component
             ]
         );
         $this->reset();
-        $this->onAlert(false, 'Success', 'Critical deviation saved successfully!','', 'success');
+        $this->onAlert(false, 'Success', 'Critical deviation saved successfully!', 'success');
         CustomHelper::onRemoveModal($this, '#critical_deviation_menu_modal');
     }
     public function onDelete($id)
@@ -96,9 +96,9 @@ class CriticalDeviationMenu extends Component
         $data = CriticalDeviationMenuModel::find($id);
         $data->delete();
     }
-    public function onAlert($is_confirm = false, $title = null, $message = null, $confirm_message = null, $type = null, $data = null)
+    public function onAlert($is_confirm = false, $title = null, $message = null, $type = null, $data = null)
     {
-        CustomHelper::onShow($this, $is_confirm, $title, $message,$confirm_message, $type, $data);
+        CustomHelper::onShow($this, $is_confirm, $title, $message, $type, $data);
     }
     public function reset(...$properties)
     {

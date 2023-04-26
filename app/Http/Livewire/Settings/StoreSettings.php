@@ -63,7 +63,7 @@ class StoreSettings extends Component
             ]
         );
         $this->resetValidation();
-        $this->onAlert(false, 'Success', 'Store saved successfully!','', 'success');
+        $this->onAlert(false, 'Success', 'Store saved successfully!', 'success');
         CustomHelper::onRemoveModal($this, '#store_modal');
     }
     public function onDelete($store_id)
@@ -71,9 +71,9 @@ class StoreSettings extends Component
         $store = StoreModel::find($store_id);
         $store->delete();
     }
-    public function onAlert($is_confirm = false, $title = null, $message = null, $confirm_message = null, $type = null, $data = null)
+    public function onAlert($is_confirm = false, $title = null, $message = null, $type = null, $data = null)
     {
-        CustomHelper::onShow($this, $is_confirm, $title, $message, $confirm_message, $type, $data);
+        CustomHelper::onShow($this, $is_confirm, $title, $message, $type, $data);
     }
     public function reset(...$properties)
     {
