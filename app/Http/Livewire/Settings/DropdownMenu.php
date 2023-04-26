@@ -50,7 +50,7 @@ class DropdownMenu extends Component
             ]
         );
         $this->reset();
-        $this->onAlert(false, 'Success', 'Dropdown menu saved successfully!', 'success');
+        $this->onAlert(false, 'Success', 'Dropdown menu saved successfully!', '','success');
         CustomHelper::onRemoveModal($this, '#dropdown_menu_modal');
     }
     public function showModal($dropdown_menu_id = null)

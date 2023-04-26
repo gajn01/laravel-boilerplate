@@ -77,7 +77,7 @@ class SubCategoryLabel extends Component
             ]
         );
         $this->reset();
-        $this->onAlert(false, 'Success', 'Label saved successfully!', 'success');
+        $this->onAlert(false, 'Success', 'Label saved successfully!','', 'success');
         CustomHelper::onRemoveModal($this, '#label_modal');
     }
     public function onDelete($id)

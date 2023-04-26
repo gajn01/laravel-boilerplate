@@ -39,7 +39,7 @@ class Dropdown extends Component
             ]
         );
         $this->resetValidation();
-        $this->onAlert(false, 'Success', 'Dropdown saved successfully!', 'success');
+        $this->onAlert(false, 'Success', 'Dropdown saved successfully!','', 'success');
         CustomHelper::onRemoveModal($this, '#dropdown_modal');
     }
     public function showModal($dropdown_id = null)

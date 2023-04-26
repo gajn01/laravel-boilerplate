@@ -151,7 +151,7 @@ class Form extends Component
         ];
         array_push($this->f_major_sd, $newSd);
     }
-    public function onStartAndComplete($is_confirm = true, $title = 'Are you sure?', $type = null, $data = null)
+    public function onStartAndComplete($is_confirm = true, $title = 'Are you sure?', $type = 'warning', $data = null)
     {
         $data = $this->store_id;
         if ($this->audit_status) {

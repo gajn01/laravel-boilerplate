@@ -63,7 +63,7 @@ class StoreSettings extends Component
             ]
         );
         $this->resetValidation();
-        $this->onAlert(false, 'Success', 'Store saved successfully!', 'success');
+        $this->onAlert(false, 'Success', 'Store saved successfully!','', 'success');
         CustomHelper::onRemoveModal($this, '#store_modal');
     }
     public function onDelete($store_id)

@@ -52,7 +52,7 @@ class Sanitary extends Component
             ]
         );
         $this->reset();
-        $this->onAlert(false, 'Success', 'Sanitation defect saved successfully!', 'success');
+        $this->onAlert(false, 'Success', 'Sanitation defect saved successfully!', '','success');
         CustomHelper::onRemoveModal($this, '#sanitaryModal');
     }
     public function onDelete($sanitary_id)

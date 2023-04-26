@@ -64,7 +64,7 @@ class CategoryDetails extends Component
             ]
         );
         $this->reset();
-        $this->onAlert(false, 'Success', 'Sub category saved successfully!', 'success');
+        $this->onAlert(false, 'Success', 'Sub category saved successfully!','', 'success');
         CustomHelper::onRemoveModal($this, '#sub_category_label_modal');
     }
     public function onDelete($id)

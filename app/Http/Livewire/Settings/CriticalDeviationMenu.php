@@ -88,7 +88,7 @@ class CriticalDeviationMenu extends Component
             ]
         );
         $this->reset();
-        $this->onAlert(false, 'Success', 'Critical deviation saved successfully!', 'success');
+        $this->onAlert(false, 'Success', 'Critical deviation saved successfully!','', 'success');
         CustomHelper::onRemoveModal($this, '#critical_deviation_menu_modal');
     }
     public function onDelete($id)

@@ -57,7 +57,7 @@ class Category extends Component
             ]
         );
         $this->reset();
-        $this->onAlert(false, 'Success', 'Category saved successfully!', 'success');
+        $this->onAlert(false, 'Success', 'Category saved successfully!','', 'success');
         CustomHelper::onRemoveModal($this, '#category_modal');
     }
     public function onDelete($id)

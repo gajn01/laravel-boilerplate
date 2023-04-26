@@ -75,7 +75,7 @@ class SubSubCategoryLabel extends Component
         ];
         SubSubCategoryLabelModel::updateOrCreate(['id' => $this->label_id], $labelData);
         $this->reset();
-        $this->onAlert(false, 'Success', 'Label saved successfully!', 'success');
+        $this->onAlert(false, 'Success', 'Label saved successfully!','', 'success');
         CustomHelper::onRemoveModal($this, '#sub_category_label_modal');
     }
     public function onDelete($id)
