@@ -56,9 +56,9 @@ class CriticalDeviation extends Component
         $data = CriticalDeviationModel::find($id);
         $data->delete();
     }
-    public function onAlert($is_confirm = false, $title = null, $message = null, $type = null, $data = null)
+    public function onAlert($is_confirm = false, $title = null, $message = null, $confirm_message = null, $type = null, $data = null)
     {
-        CustomHelper::onShow($this, $is_confirm, $title, $message, $type, $data);
+        CustomHelper::onShow($this, $is_confirm, $title, $message,$confirm_message, $type, $data);
     }
     public function reset(...$properties)
     {

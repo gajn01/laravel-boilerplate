@@ -8,9 +8,11 @@ use App\Models\SubSubCategoryLabel as SubSubCategoryLabelModel;
 use App\Models\DropdownMenu as DropdownMenuModel;
 use App\Models\SanitaryModel as SanitaryModel;
 use App\Models\CriticalDeviationMenu as CriticalDeviationMenuModel;
+use App\Helpers\CustomHelper;
 
 class Form extends Component
 {
+    protected $listeners = ['alert-sent' => 'onUpdateStatus'];
     public $store_id;
     public $store_name;
     /* Audit Category */
@@ -18,15 +20,20 @@ class Form extends Component
     public $f_major_sd = [];
     public $f_product;
     public $sanitation_defect;
+    public $audit_status;
+    public $actionTitle = 'Start';
+
     public function mount($store_id = null)
     {
         $this->store_id = $store_id;
-        $store = StoreModel::find($store_id);
-        $this->store_name = $store->name;
-        $this->store_type = $store->type;
     }
     public function render()
     {
+        $store = StoreModel::find($this->store_id);
+        $this->store_name = $store->name;
+        $this->store_type = $store->type;
+        $this->audit_status = $store->audit_status;
+        $this->actionTitle = $this->audit_status ? 'Complete' : 'Start';
 
         $sanitation_defect = SanitaryModel::select('id', 'title', 'code')->get();
         $data = CategoryModel::select('id', 'name', 'type', 'critical_deviation')
@@ -143,7 +150,23 @@ class Form extends Component
             'tag' => '',
         ];
         array_push($this->f_major_sd, $newSd);
-
+    }
+    public function onStartAndComplete($is_confirm = true, $title = 'Are you sure?', $type = null, $data = null)
+    {
+        $data = $this->store_id;
+        if ($this->audit_status) {
+            $message = 'Are you sure you want to complete this audit?';
+        } else {
+            $message = 'Are you sure you want to start this audit?';
+        }
+        CustomHelper::onShow($this, $is_confirm, $title, $message, $type, $data);
+    }
+    public function onUpdateStatus()
+    {
+        $data = $this->audit_status ? false : true;
+        StoreModel::where('id', $this->store_id)->update([
+            'audit_status' => $data,
+        ]);
     }
 
 }

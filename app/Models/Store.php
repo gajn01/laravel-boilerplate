@@ -14,7 +14,7 @@ class Store extends Model
         'type',
         'representative',
         'area',
-        'created_at'
+        'audit_status'
     ];
 
     protected $dates = ['created_at'];

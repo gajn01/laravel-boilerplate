@@ -70,8 +70,6 @@ sidePanelDrop.addEventListener('click', (e) => {
     sidePanelToggler.click();
 });
 
-
-
 /* ====== Mobile search ======= */
 const searchMobileTrigger = document.querySelector('.search-mobile-trigger');
 const searchBox = document.querySelector('.app-search-box');
@@ -91,7 +89,6 @@ searchMobileTrigger.addEventListener('click', () => {
     }
 });
 
-
 // Inside your JavaScript code
 window.Livewire.on('alert', function (message) {
     alert(message);
@@ -101,7 +98,7 @@ window.Livewire.on('alert', function (message) {
 window.addEventListener('show-alert', showAlert);
 window.addEventListener('confirm-alert', showConfirm);
 function showAlert(event) {
-    swal(event.detail.title, event.detail.message, event.detail.type, { timer: 1000, button: false });
+    swal(event.detail.title, event.detail.message, event.detail.confirm_message , event.detail.type, { timer: 1000, button: false });
 }
 function showConfirm(event) {
     swal({
@@ -113,7 +110,7 @@ function showConfirm(event) {
     })
         .then((willDelete) => {
             if (willDelete) {
-                swal("Success", "Successfully deleted", "success", { timer: 1000, button: false });
+                swal("Success", event.detail.confirm_message , "success", { timer: 1000, button: false });
                 Livewire.emit('alert-sent', event.detail.data);
             }
         });
