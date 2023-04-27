@@ -17,6 +17,7 @@ return new class extends Migration
             $table->string('employee_id')->unique();
             $table->string('email');
             $table->string('password');
+            $table->integer('user_level');
             $table->boolean('status')->default(false);
             $table->timestamps();
         });

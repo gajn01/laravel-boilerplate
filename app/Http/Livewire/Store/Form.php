@@ -1,6 +1,5 @@
 <?php
 namespace App\Http\Livewire\Store;
-
 use Livewire\Component;
 use App\Models\Store as StoreModel;
 use App\Models\Category as CategoryModel;
@@ -9,7 +8,6 @@ use App\Models\DropdownMenu as DropdownMenuModel;
 use App\Models\SanitaryModel as SanitaryModel;
 use App\Models\CriticalDeviationMenu as CriticalDeviationMenuModel;
 use App\Helpers\CustomHelper;
-
 class Form extends Component
 {
     protected $listeners = ['alert-sent' => 'onUpdateStatus', 'start-alert-sent' => 'onUpdateStatus'];
@@ -23,7 +21,6 @@ class Form extends Component
     public $audit_status;
     public $actionTitle = 'Start';
     public $cashier_sa_list;
-
     public function mount($store_id = null)
     {
         $this->store_id = $store_id;
@@ -35,7 +32,6 @@ class Form extends Component
         $this->store_type = $store->type;
         $this->audit_status = $store->audit_status;
         $this->actionTitle = $this->audit_status ? 'Complete' : 'Start';
-
         $sanitation_defect = SanitaryModel::select('id', 'title', 'code')->get();
         $data = CategoryModel::select('id', 'name', 'type', 'critical_deviation')
             ->where('type', $this->store_type)
@@ -132,7 +128,7 @@ class Form extends Component
                     'dropdown_id' => $cd->dropdown_id,
                     'dropdown' => $dropdownMenu,
                 ];
-            } ?? []);
+            } );
         }
         return view('livewire.store.form', ['category_list' => $data, 'sanitation_list' => $sanitation_defect])->extends('layouts.app');
     }

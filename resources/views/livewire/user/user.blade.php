@@ -13,23 +13,17 @@
                     <div class="col-auto">
                         <input type="text" id="search-docs" name="searchdocs" class="form-control search-docs"
                             wire:model.debounce.100ms="searchTerm" placeholder="Search">
-
                     </div>
                 </form>
             </div>
-
             <div class="col-auto">
                 <div class="col-auto">
                     <a class="btn app-btn-primary" data-bs-toggle="modal" data-bs-target="#user_modal"
                         wire:click="showModal">Create</a>
                 </div>
             </div>
-            <!--//col-->
-
         </div>
-        <!--//row-->
     </div>
-    <!--//table-utilities-->
     <div class="app-card app-card-orders-table shadow-sm mb-5">
         <div class="app-card-body">
             <div class="table-responsive">
@@ -39,6 +33,7 @@
                             <th class="cell">ID</th>
                             <th class="cell">Name</th>
                             <th class="cell">Email</th>
+                            <th class="cell">User Level</th>
                             <th class="cell">Status</th>
                             <th class="cell table-action-sm">Action</th>
                         </tr>
@@ -49,6 +44,7 @@
                                 <td class="cell">{{ $user['employee_id'] }}</td>
                                 <td class="cell">{{ $user['name'] }}</td>
                                 <td class="cell">{{ $user['email'] }}</td>
+                                <td class="cell">{{ $user['user_level'] ? 'Auditor' : 'Store' }}</td>
                                 <td class="cell">
                                     @if ($user['status'] == 1)
                                         <span class="badge bg-success">Active</span>
@@ -61,7 +57,6 @@
                                 <td class="cell table-action-sm">
                                     <a href="{{ route('information', ['employee_id' => $user['employee_id']]) }}">
                                         <svg class="icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512">
-                                            <!--! Font Awesome Pro 6.3.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2023 Fonticons, Inc. -->
                                             <path
                                                 d="M288 32c-80.8 0-145.5 36.8-192.6 80.6C48.6 156 17.3 208 2.5 243.7c-3.3 7.9-3.3 16.7 0 24.6C17.3 304 48.6 356 95.4 399.4C142.5 443.2 207.2 480 288 480s145.5-36.8 192.6-80.6c46.8-43.5 78.1-95.4 93-131.1c3.3-7.9 3.3-16.7 0-24.6c-14.9-35.7-46.2-87.7-93-131.1C433.5 68.8 368.8 32 288 32zM144 256a144 144 0 1 1 288 0 144 144 0 1 1 -288 0zm144-64c0 35.3-28.7 64-64 64c-7.1 0-13.9-1.2-20.3-3.3c-5.5-1.8-11.9 1.6-11.7 7.4c.3 6.9 1.3 13.8 3.2 20.7c13.7 51.2 66.4 81.6 117.6 67.9s81.6-66.4 67.9-117.6c-11.1-41.5-47.8-69.4-88.6-71.1c-5.8-.2-9.2 6.1-7.4 11.7c2.1 6.4 3.3 13.2 3.3 20.3z" />
                                         </svg>
@@ -80,11 +75,8 @@
                     </tbody>
                 </table>
             </div>
-            <!--//table-responsive-->
         </div>
-        <!--//app-card-body-->
     </div>
-
     {{-- Pagination --}}
 
     <div class="row">
@@ -116,7 +108,6 @@
                 {{--  {{ $user_list->onEachSide(0)->links() }} --}}
             </nav>
             <!--//app-pagination-->
-
         </div>
     </div>
 
@@ -133,20 +124,41 @@
                     <form wire:submit.prevent="onSave">
                         @csrf
                         <div class="mb-3">
-                            <label for="employee_id" class="form-label">Employee ID<span
-                                    class="text-danger">*</span></label>
+                            <label for="user_level" class="form-label">User Level</label>
+                            <select class="form-select form-select-md" name="user_level" id="user_level"
+                                wire:model="user_level">
+                                <option selected hidden>Select one</option>
+                                <option value="1">Auditor</option>
+                                <option value="0">Store</option>
+                            </select>
+                        </div>
+                        <div class="mb-3">
+                            <label for="employee_id" class="form-label">ID<span class="text-danger">*</span></label>
                             <input type="text" class="form-control" wire:model="employee_id" id="employee_id">
                             @error('employee_id')
                                 <span class="text-danger">{{ $message }}</span>
                             @enderror
                         </div>
-                        <div class="mb-3">
-                            <label for="name" class="form-label">Name<span class="text-danger">*</span></label>
-                            <input type="text" class="form-control" wire:model="name" id="name">
-                            @error('name')
-                                <span class="text-danger">{{ $message }}</span>
-                            @enderror
-                        </div>
+                        @if ($user_level)
+                            <div class="mb-3">
+                                <label for="name" class="form-label">Name<span class="text-danger">*</span></label>
+                                <input type="text" class="form-control" wire:model="name" id="name">
+                                @error('name')
+                                    <span class="text-danger">{{ $message }}</span>
+                                @enderror
+                            </div>
+                        @else
+                            <div class="mb-3">
+                                <label for="store_id" class="form-label">Store<span class="text-danger">*</span></label>
+                                <select class="form-select form-select-md" name="store_id" id="store_id"
+                                    wire:model="store_id">
+                                    <option selected hidden>Select one</option>
+                                    @foreach ($store_list as $store)
+                                        <option value="{{ $store->id }}">{{ $store->name }}</option>
+                                    @endforeach
+                                </select>
+                            </div>
+                        @endif
                         <div class="mb-3">
                             <label for="email" class="form-label">Email<span class="text-danger">*</span></label>
                             <input type="text" class="form-control" wire:model="email" id="email">
@@ -178,6 +190,4 @@
             </div>
         </div>
     </div>
-
-
 </div>

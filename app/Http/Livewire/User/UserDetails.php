@@ -6,7 +6,6 @@ use Livewire\Component;
 use App\Models\User as UserModel;
 use Livewire\WithPagination;
 use App\Helpers\CustomHelper;
-
 class UserDetails extends Component
 {
     public $account_id;
@@ -40,7 +39,6 @@ class UserDetails extends Component
         $this->input_status = $this->status;
         $this->is_edit = $boolean;
     }
-
     public function onSaveAccount()
     {
         $this->validate(

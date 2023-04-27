@@ -40,7 +40,7 @@
                     </a>
 
                 </li>
-                <li class="nav-item has-submenu">
+             {{--    <li class="nav-item has-submenu">
                     <a @class([
                         'nav-link submenu-toggle',
                         'active' => Request::is('user') || Request::is('user/information*'),
@@ -74,7 +74,7 @@
                             <li class="submenu-item"><a class="submenu-link" href="{{ url('user') }}">Store</a></li>
                         </ul>
                     </div>
-                </li>
+                </li> --}}
                 {{--     <li class="nav-item">
                     <a class="nav-link {{ Request::routeIs('user') || Request::is('user/information*') ? 'active' : '' }}"
                         href="{{ url('user') }}">
@@ -138,6 +138,8 @@
                                 Request::routeIs('critical-deviation'),
                         ]) data-bs-parent="#menu-accordion">
                             <ul class="submenu-list list-unstyled">
+                                <li class="submenu-item "><a @class(['submenu-link', 'active' => Request::routeIs('user')])
+                                    href="{{ url('user') }}">Account Management</a></li>
                                 <li class="submenu-item "><a @class(['submenu-link', 'active' => Request::routeIs('category')])
                                         href="{{ url('settings/category') }}">Category</a></li>
                                 <li class="submenu-item"><a

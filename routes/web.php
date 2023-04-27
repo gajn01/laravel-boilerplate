@@ -2,8 +2,8 @@
 
 use Illuminate\Support\Facades\Route;
 
-
-
+/* Login */
+use App\Http\Livewire\Auth\Login;
 /* Dashboard */
 use App\Http\Livewire\Dashboard\Dashboard;
 
@@ -29,8 +29,11 @@ use App\Http\Livewire\Settings\DropdownMenu;
 use App\Http\Livewire\Settings\CriticalDeviation;
 use App\Http\Livewire\Settings\CriticalDeviationMenu;
 
-
 // $controller_path = 'App\Http\Livewire';
+
+
+/* Login */
+Route::get('/login',Login::class)->name('login');
 
 /* Dashboard */
 Route::get('/',Dashboard::class)->name('dashboard');

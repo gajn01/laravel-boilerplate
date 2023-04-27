@@ -118,165 +118,142 @@
                                         aria-labelledby="headingOne" data-bs-parent="#accordionExample">
                                         <div class="accordion-body">
 
-                                            <div id="collapseOne" class="accordion-collapse collapse show"
-                                                aria-labelledby="headingOne" data-bs-parent="#accordionSpdAcc">
-                                                <div class="accordion-body">
-                                                    <div class="accordion accordion-flush" id="accordionSpd">
-                                                        <div class="accordion-item">
-                                                            <h2 class="accordion-header" id="flush-headingOne">
-                                                                <button class="accordion-button collapsed"
-                                                                    type="button" data-bs-toggle="collapse"
-                                                                    data-bs-target="#flush-collapseOne"
-                                                                    aria-expanded="true"
-                                                                    aria-controls="flush-collapseOne">
-                                                                    Cashier TAT
-                                                                </button>
-                                                            </h2>
-                                                            <div id="flush-collapseOne"
-                                                                class="accordion-collapse collapse"
-                                                                aria-labelledby="flush-headingOne"
-                                                                data-bs-parent="#accordionSpd">
-                                                                <div class="accordion-body">
-                                                                    <div class="row">
-                                                                        <div class="col-sm-12 col-md-9">
-                                                                            <div class="row">
-                                                                                <div class="col-4">
-                                                                                    <div class="mb-3">
-                                                                                        <input type="text"
-                                                                                            class="form-control"
-                                                                                            name="cashier_name"
-                                                                                            id="cashier_name"
-                                                                                            placeholder="Cashier Name">
-                                                                                    </div>
-                                                                                </div>
-                                                                                <div class="col-4">
-                                                                                    <div class="mb-3">
-                                                                                        <input type="text"
-                                                                                            class="form-control"
-                                                                                            name="time"
-                                                                                            id="time"
-                                                                                            placeholder="Time(hh:mm)">
-                                                                                    </div>
-                                                                                </div>
-                                                                                <div class="col-4">
-                                                                                    <div class="mb-3">
-                                                                                        <input type="text"
-                                                                                            class="form-control"
-                                                                                            name="product_order"
-                                                                                            id="product_order"
-                                                                                            placeholder="Product Ordered">
-                                                                                    </div>
-                                                                                </div>
-                                                                                <div class="col-4">
-                                                                                    <label for=""
-                                                                                        class="form-label">Accuracy (1
-                                                                                        Pt.)</label>
-                                                                                    <div class="row">
-                                                                                        <div class="col-6">
-                                                                                            <div class="mb-3">
-                                                                                                <label for=""
-                                                                                                    class="form-label">OT</label>
-                                                                                                <input type="text"
-                                                                                                    class="form-control"
-                                                                                                    name="product_order"
-                                                                                                    id="product_order"
-                                                                                                    placeholder="hh:mm">
-                                                                                            </div>
-                                                                                        </div>
-                                                                                        <div class="col-6">
-                                                                                            <div class="mb-3">
-                                                                                                <label for=""
-                                                                                                    class="form-label">Point
-                                                                                                </label>
-                                                                                                <input type="text"
-                                                                                                    class="form-control"
-                                                                                                    name="product_order"
-                                                                                                    id="product_order"
-                                                                                                    placeholder="Point">
-                                                                                            </div>
-                                                                                        </div>
-                                                                                    </div>
-                                                                                </div>
-                                                                                <div class="col-4">
-                                                                                    <label for=""
-                                                                                        class="form-label">TAT (1
-                                                                                        Pt.)</label>
-                                                                                    <div class="row">
-                                                                                        <div class="col-6">
-                                                                                            <div class="mb-3">
-                                                                                                <label for=""
-                                                                                                    class="form-label">Time</label>
-                                                                                                <input type="text"
-                                                                                                    class="form-control"
-                                                                                                    name="product_order"
-                                                                                                    id="product_order"
-                                                                                                    placeholder="hh:mm">
-                                                                                            </div>
-                                                                                        </div>
-                                                                                        <div class="col-6">
-                                                                                            <div class="mb-3">
-                                                                                                <label for=""
-                                                                                                    class="form-label">Point
-                                                                                                </label>
-                                                                                                <input type="text"
-                                                                                                    class="form-control"
-                                                                                                    name="product_order"
-                                                                                                    id="product_order"
-                                                                                                    placeholder="Point">
-                                                                                            </div>
-                                                                                        </div>
-                                                                                    </div>
-                                                                                </div>
-                                                                                <div class="col-4">
-                                                                                    <label for=""
-                                                                                        class="form-label">FST (3
-                                                                                        Pt.)</label>
-                                                                                    <div class="row">
-                                                                                        <div class="col-6">
-                                                                                            <div class="mb-3">
-                                                                                                <label for=""
-                                                                                                    class="form-label">Time</label>
-                                                                                                <input type="text"
-                                                                                                    class="form-control"
-                                                                                                    name="product_order"
-                                                                                                    id="product_order"
-                                                                                                    placeholder="hh:mm">
-                                                                                            </div>
-                                                                                        </div>
-                                                                                        <div class="col-6">
-                                                                                            <div class="mb-3">
-                                                                                                <label for=""
-                                                                                                    class="form-label">Point
-                                                                                                </label>
-                                                                                                <input type="text"
-                                                                                                    class="form-control"
-                                                                                                    name="product_order"
-                                                                                                    id="product_order"
-                                                                                                    placeholder="Point">
-                                                                                            </div>
-                                                                                        </div>
-                                                                                    </div>
-                                                                                </div>
-                                                                            </div>
-                                                                        </div>
-                                                                        <div class="col-sm-12 col-md-3">
-                                                                            <div class="mb-3">
-                                                                                <textarea class="form-control" name="" id="" rows="6" placeholder="Remarks"></textarea>
-                                                                            </div>
+                                            <div class="accordion mb-3" id="accordionExample">
+                                                <div class="accordion-item">
+                                                    <h2 class="accordion-header" id="headingOne">
+                                                        <button class="accordion-button" type="button"
+                                                            data-bs-toggle="collapse" data-bs-target="#collapseOne"
+                                                            aria-expanded="true" aria-controls="collapseOne">
+                                                            Speed and Accuracy
+                                                        </button>
+                                                    </h2>
+                                                    <div id="collapseOne" class="accordion-collapse collapse show"
+                                                        aria-labelledby="headingOne" data-bs-parent="#accordionExample">
+                                                        <div class="accordion-body">
 
-                                                                        </div>
-                                                                    </div>
-                                                                </div>
-                                                            </div>
+                                                            <table class="table mb-0 text-left  table-borderless">
+                                                                <tbody>
+                                                                    <tr>
+                                                                        <td class="product-sub-category "
+                                                                            colspan="8">
+                                                                            <p>Cashier TAT</p>
+                                                                        </td>
+                                                                    </tr>
+                                                                    <tr>
+                                                                        <td class="service-speed">Name</td>
+                                                                        <td>Time (hh:mm)</td>
+                                                                        <td>Product Ordered</td>
+                                                                        <td>OT </td>
+                                                                        <td>Assembly</td>
+                                                                        <td>TAT</td>
+                                                                        <td>FST</td>
+                                                                        <td>Remarks</td>
+                                                                    </tr>
+                                                                    <tr>
+                                                                        <td class="service-speed">
+                                                                            <input type="text" class="form-control "
+                                                                                name="bp" id="bp"
+                                                                                placeholder="">
+                                                                        </td>
+                                                                        <td>
+                                                                            <input type="text" class="form-control "
+                                                                                name="bp" id="bp"
+                                                                                placeholder="">
+                                                                        </td>
+                                                                        <td>
+                                                                            <input type="text" class="form-control "
+                                                                                name="bp" id="bp"
+                                                                                placeholder="">
+                                                                        </td>
+                                                                        <td>
+                                                                            <input type="text"
+                                                                                class="form-control " name="bp"
+                                                                                id="bp" placeholder="">
+                                                                        </td>
+                                                                        <td>
+                                                                            <input type="text"
+                                                                                class="form-control " name="bp"
+                                                                                id="bp" placeholder="">
+                                                                        </td>
+                                                                        <td>
+                                                                            <input type="text"
+                                                                                class="form-control " name="bp"
+                                                                                id="bp" placeholder="">
+                                                                        </td>
+                                                                        <td>
+                                                                            <input type="text"
+                                                                                class="form-control " name="bp"
+                                                                                id="bp" placeholder="">
+                                                                        </td>
+                                                                        <td>
+                                                                            <textarea class="form-control" name="" id="" rows="1"></textarea>
+                                                                        </td>
+                                                                    </tr>
+
+                                                                    <tr>
+                                                                        <td class="product-sub-category "
+                                                                            colspan="8">
+                                                                            <p>Server CAT</p>
+                                                                        </td>
+                                                                    </tr>
+                                                                    <tr>
+                                                                        <td class="service-speed">Name</td>
+                                                                        <td>Time (hh:mm)</td>
+                                                                        <td>Product Ordered</td>
+                                                                        <td>OT </td>
+                                                                        <td>Assembly</td>
+                                                                        <td>TAT</td>
+                                                                        <td>FST</td>
+                                                                        <td>Remarks</td>
+                                                                    </tr>
+                                                                    <tr>
+                                                                        <td class="service-speed">
+                                                                            <input type="text"
+                                                                                class="form-control " name="bp"
+                                                                                id="bp" placeholder="">
+                                                                        </td>
+                                                                        <td>
+                                                                            <input type="text"
+                                                                                class="form-control " name="bp"
+                                                                                id="bp" placeholder="">
+                                                                        </td>
+                                                                        <td>
+                                                                            <input type="text"
+                                                                                class="form-control " name="bp"
+                                                                                id="bp" placeholder="">
+                                                                        </td>
+                                                                        <td>
+                                                                            <input type="text"
+                                                                                class="form-control " name="bp"
+                                                                                id="bp" placeholder="">
+                                                                        </td>
+                                                                        <td>
+                                                                            <input type="text"
+                                                                                class="form-control " name="bp"
+                                                                                id="bp" placeholder="">
+                                                                        </td>
+                                                                        <td>
+                                                                            <input type="text"
+                                                                                class="form-control " name="bp"
+                                                                                id="bp" placeholder="">
+                                                                        </td>
+                                                                        <td>
+                                                                            <input type="text"
+                                                                                class="form-control " name="bp"
+                                                                                id="bp" placeholder="">
+                                                                        </td>
+                                                                        <td>
+                                                                            <textarea class="form-control" name="" id="" rows="1"></textarea>
+                                                                        </td>
+                                                                    </tr>
+                                                                </tbody>
+                                                            </table>
                                                         </div>
                                                     </div>
                                                 </div>
                                             </div>
-
                                         </div>
                                     </div>
-
-
                                 </div>
                             </div>
                             @forelse ($data->sub_categ['data_items'] as  $key =>  $dataItem)
