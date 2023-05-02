@@ -1,5 +1,6 @@
 <?php
 namespace App\Http\Livewire\Store;
+
 use Livewire\Component;
 use App\Models\Store as StoreModel;
 use App\Models\Category as CategoryModel;
@@ -8,6 +9,9 @@ use App\Models\DropdownMenu as DropdownMenuModel;
 use App\Models\SanitaryModel as SanitaryModel;
 use App\Models\CriticalDeviationMenu as CriticalDeviationMenuModel;
 use App\Helpers\CustomHelper;
+use DateTime;
+use DateTimeZone;
+
 class Form extends Component
 {
     protected $listeners = ['alert-sent' => 'onUpdateStatus', 'start-alert-sent' => 'onUpdateStatus'];
@@ -20,7 +24,33 @@ class Form extends Component
     public $sanitation_defect;
     public $audit_status;
     public $actionTitle = 'Start';
-    public $cashier_sa_list;
+    public $currentField;
+    public $currentIndex;
+    public $speed_list = [
+        ['id' => 0, 'name' => null, 'time' => null, 'product_order' => null, 'ot' => null, 'assembly' => null, 'tat' => null, 'fst' => null, 'remarks' => null],
+        ['id' => 1, 'name' => null, 'time' => null, 'product_order' => null, 'ot' => null, 'assembly' => null, 'tat' => null, 'fst' => null, 'remarks' => null],
+        ['id' => 2, 'name' => null, 'time' => null, 'product_order' => null, 'ot' => null, 'assembly' => null, 'tat' => null, 'fst' => null, 'remarks' => null],
+        ['id' => 3, 'name' => null, 'time' => null, 'product_order' => null, 'ot' => null, 'assembly' => null, 'tat' => null, 'fst' => null, 'remarks' => null],
+        ['id' => 4, 'name' => null, 'time' => null, 'product_order' => null, 'ot' => null, 'assembly' => null, 'tat' => null, 'fst' => null, 'remarks' => null],
+    ];
+    public function startTimer()
+    {
+        $currentTime = new DateTime('now', new DateTimeZone('Asia/Manila'));
+        $currentTime = date('H:i');
+        $this->speed_list[$this->currentIndex][$this->currentField] = $currentTime;
+    }
+    public function stopTimer()
+    {
+        if (empty($this->currentField)) {
+            return;
+        }
+        $currentTime = new DateTime('now', new DateTimeZone('Asia/Manila'));
+        $currentTime = date('H:i');
+        if ($this->currentField == "product_order_{$this->currentIndex}") {
+            $this->speed_list[$this->currentIndex]['ot'] = $currentTime;
+        }
+        $this->currentField = '';
+    }
     public function mount($store_id = null)
     {
         $this->store_id = $store_id;
@@ -128,21 +158,22 @@ class Form extends Component
                     'dropdown_id' => $cd->dropdown_id,
                     'dropdown' => $dropdownMenu,
                 ];
-            } );
+            });
         }
         return view('livewire.store.form', ['category_list' => $data, 'sanitation_list' => $sanitation_defect])->extends('layouts.app');
     }
-    public function onAddSd()
+    public function onAddCashier()
     {
-        $sanitation = SanitaryModel::find($this->sanitation_defect);
-        $newSd = [
-            'id' => $sanitation->id,
-            'code' => $sanitation->code,
-            'title' => $sanitation->title,
-            'remarks' => $this->f_product,
-            'tag' => '',
+        $add = [
+            'name' => '',
+            'time' => '',
+            'product_order' => '',
+            'assembly' => '',
+            'tat' => '',
+            'fst' => '',
+            'remarks' => '',
         ];
-        array_push($this->f_major_sd, $newSd);
+        array_push($this->speed_list, $add);
     }
     public function onStartAndComplete($is_confirm = true, $title = 'Are you sure?', $type = null, $data = null)
     {

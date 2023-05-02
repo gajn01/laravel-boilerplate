@@ -24,8 +24,8 @@
 <body class="app bg-marygrace">
     <!-- Define the application header and include the topbar and sidebar components -->
     <header class="app-header fixed-top">
-        @include('components.topbar')
-        @include('components.sidebar')
+        @include('livewire.components.topbar')
+        @include('livewire.components.sidebar')
     </header>
     <!-- Define the application wrapper -->
     <div class="app-wrapper">

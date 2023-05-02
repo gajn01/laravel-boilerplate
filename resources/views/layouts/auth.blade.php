@@ -27,7 +27,7 @@
 
     @livewireScripts
 
-    <script src="{{ url('js/alert.js') }}"></script>
+    <script src="{{ url('js/app.js') }}"></script>
 
 </body>
 </html>

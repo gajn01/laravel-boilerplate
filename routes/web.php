@@ -30,25 +30,18 @@ use App\Http\Livewire\Settings\CriticalDeviation;
 use App\Http\Livewire\Settings\CriticalDeviationMenu;
 
 // $controller_path = 'App\Http\Livewire';
-
-
 /* Login */
 Route::get('/login',Login::class)->name('login');
-
 /* Dashboard */
-Route::get('/',Dashboard::class)->name('dashboard');
-Route::get('/dashboard',Dashboard::class)->name('dashboard');
-
+Route::get('/',Dashboard::class)->name('dashboard')->middleware('auth');
 /* Audit */
 Route::get('/store',Store::class)->name('store');
 Route::get('/store/form/{store_id?}',Form::class)->name('form');
 Route::get('/store/details/{store_id?}',StoreDetails::class)->name('details');
 Route::get('/store/form/{store_id?}/summary',ExecutiveSummary::class)->name('form.summary');
-
 /* User */
 Route::get('/user',User::class)->name('user');
 Route::get('/user/information/{employee_id?}',UserDetails::class)->name('information');
-
 /* Settings */
 Route::get('/settings/store-settings',StoreSettings::class)->name('settings');
 Route::get('/settings/category',Category::class)->name('category');
@@ -60,8 +53,3 @@ Route::get('/settings/dropdown',Dropdown::class)->name('dropdown');
 Route::get('/settings/dropdown/menu/{dropdown_id?}',DropdownMenu::class)->name('dropdown-menu');
 Route::get('/settings/critical-deviation',CriticalDeviation::class)->name('critical-deviation');
 Route::get('/settings/critical-deviation/menu/{critical_deviation_id?}',CriticalDeviationMenu::class)->name('critical-deviation-menu');
-
-
-
-
-

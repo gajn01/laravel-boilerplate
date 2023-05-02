@@ -8,6 +8,7 @@ use Illuminate\Routing\Controller as BaseController;
 
 class Controller extends BaseController
 {
+    public $name= "hello";
     use AuthorizesRequests, ValidatesRequests;
 
     public function onAlert($is_confirm = false, $title = null, $message = null, $type = null, $data = null)

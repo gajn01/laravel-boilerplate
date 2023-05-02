@@ -1,6 +1,6 @@
 @section('title', 'Mary Grace Restaurant Operation System / Audit Forms')
 
-<div class="container-xl">
+<div class="container-xl" wire:ignore.self>
     <nav aria-label="breadcrumb">
         <ol class="breadcrumb">
             <li class="breadcrumb-item"><a href="{{ route('store') }}">Store</a></li>
@@ -31,7 +31,7 @@
                 <p class="m-0 p-2">No category found!</p>
             @endforelse
         </nav>
-        <div class="tab-content" id="audit-form-tab-content">
+        <div class="tab-content" id="audit-form-tab-content" wire:ignore>
             @forelse ($category_list as $key => $data)
                 <div class="tab-pane fade show {{ $key == 0 ? 'active' : '' }}" id="cat{{ $data->id }}"
                     role="tabpanel" aria-labelledby="cat{{ $data->id }}-tab">
@@ -86,7 +86,6 @@
                                 </div>
                             </div>
                         </div>
-
                         {{--   @if ($data->critical_deviation->isNotEmpty())
                             <div class="col-12 col-lg-6" wire:ignore>
                                 <div class="app-card app-card-chart h-100 shadow-sm">
@@ -104,21 +103,147 @@
                     </div>
                     <div class="app-card app-card-orders-table shadow-sm mb-5 bg-none" wire:ignore>
                         <div class="app-card-body">
+                            @if ($key == 0)
+                                <div class="accordion mb-3" id="accordionExample">
+                                    <div class="accordion-item">
+                                        <h2 class="accordion-header" id="headingOne">
+                                            <button class="accordion-button" type="button" data-bs-toggle="collapse"
+                                                data-bs-target="#collapseOne" aria-expanded="true"
+                                                aria-controls="collapseOne">
+                                                <h6 class="card-title product-name">Speed and Accuracy</h6>
+                                            </button>
+                                        </h2>
+                                        <div id="collapseOne" class="accordion-collapse collapse show"
+                                            aria-labelledby="headingOne" data-bs-parent="#accordionExample">
+                                            <div class="accordion-body">
+                                                <a name="" id="" class="btn btn-primary" href="#" wire:ignore
+                                                    role="button" wire:click="startTimer">start</a>
+                                                <a name="" id="" class="btn btn-primary" href="#"
+                                                    role="button" wire:click="stopTimer">stop</a>
+                                                <table class="table mb-0 text-left  table-borderless">
+                                                    <form >
+                                                        @csrf
+                                                        <tbody>
+                                                            <tr>
+                                                                <td class="product-sub-category " colspan="8">
+                                                                    <p>Cashier TAT</p>
+                                                                </td>
+                                                            </tr>
+                                                            <tr>
+                                                                <td class="service-speed">Name</td>
+                                                                <td>Time (hh:mm)</td>
+                                                                <td>Product Ordered</td>
+                                                                <td>OT</td>
+                                                                <td>Assembly</td>
+                                                                <td>TAT</td>
+                                                                <td>FST</td>
+                                                                <td>Remarks</td>
+                                                            </tr>
+                                                            @foreach ($speed_list as $index => $item)
+                                                                <tr wire:key="{{$index}}">
+                                                                    <td class="service-speed">
+                                                                        <input type="text" class="form-control"
+                                                                            id="name_{{ $loop->index }}"
+                                                                            wire:model.lazy="speed_list.{{ $loop->index }}.name"
+                                                                            wire:focus="$set('currentIndex', '{{ $loop->index }}')">
+                                                                    </td>
+                                                                    <td>
+                                                                        <input type="text" class="form-control"
+                                                                            id="time_{{ $loop->index }}"
+                                                                            wire:model="speed_list.{{ $loop->index }}.time"
+                                                                            wire:focus="$set('currentField', 'time')">
+                                                                    </td>
+                                                                    <td>
+                                                                        <input type="text" class="form-control"
+                                                                            id="product_order_{{ $loop->index }}"
+                                                                            wire:model.lazy="speed_list.{{ $loop->index }}.product_order"
+                                                                            wire:focus="$set('currentField', 'product_order_{{ $loop->index }}')"
+                                                                            wire:keydown.enter="startTimer({{ $loop->index }})">
+                                                                    </td>
+                                                                    <td>
+                                                                        <input type="text" class="form-control"
+                                                                            id="ot_{{ $loop->index }}"
+                                                                            wire:model="speed_list.{{ $loop->index }}.ot_{{ $loop->index }}"
+                                                                            wire:focus="$set('currentField', 'ot_{{ $loop->index }}')">
+                                                                    </td>
+                                                                    <td>
+                                                                        <input type="text" class="form-control"
+                                                                            id="assembly_{{ $loop->index }}"
+                                                                            wire:model.lazy="speed_list.{{ $loop->index }}.assembly_{{ $loop->index }}"
+                                                                            wire:focus="$set('currentField', 'assembly_{{ $loop->index }}')">
+                                                                    </td>
+                                                                    <td>
+                                                                        <input type="text" class="form-control"
+                                                                            id="tat_{{ $loop->index }}"
+                                                                            wire:model="speed_list.{{ $loop->index }}.tat_{{ $loop->index }}"
+                                                                            wire:focus="$set('currentField', 'tat_{{ $loop->index }}')">
+                                                                    </td>
+                                                                    <td>
+                                                                        <input type="text" class="form-control"
+                                                                            id="fst_{{ $loop->index }}"
+                                                                            wire:model="speed_list.{{ $loop->index }}.fst_{{ $loop->index }}"
+                                                                            wire:focus="$set('currentField', 'fst_{{ $loop->index }}')">
+                                                                    </td>
+                                                                    <td>
+                                                                        <textarea class="form-control" rows="1" id="remarks_{{ $loop->index }}"
+                                                                            wire:model="speed_list.{{ $loop->index }}.remarks"
+                                                                            wire:focus="$set('currentField', 'remarks_{{ $loop->index }}')"></textarea>
+                                                                    </td>
+                                                                </tr>
+                                                            @endforeach
+                                                            <tr>
+                                                                <td class="product-sub-category " colspan="8">
+                                                                    <p>Server CAT</p>
+                                                                </td>
+                                                            </tr>
+                                                            <tr>
+                                                                <td class="service-speed">Name</td>
+                                                                <td>Time (hh:mm)</td>
+                                                                <td>Product Ordered</td>
+                                                                <td>OT </td>
+                                                                <td>Assembly</td>
+                                                                <td>TAT</td>
+                                                                <td>FST</td>
+                                                                <td>Remarks</td>
+                                                            </tr>
+                                                            <tr>
+                                                                <td class="service-speed">
+                                                                    <input type="text" class="form-control "
+                                                                        name="bp" id="bp">
+                                                                </td>
+                                                                <td>
+                                                                    <input type="text" class="form-control "
+                                                                        name="bp" id="bp">
+                                                                </td>
+                                                                <td>
+                                                                    <input type="text" class="form-control "
+                                                                        name="bp" id="bp">
+                                                                </td>
+                                                                <td>
+                                                                    <input type="text" class="form-control "
+                                                                        name="bp" id="bp">
+                                                                </td>
+                                                                <td>
+                                                                    <input type="text" class="form-control "
+                                                                        name="bp" id="bp">
+                                                                </td>
+                                                                <td>
+                                                                    <input type="text" class="form-control "
+                                                                        name="bp" id="bp">
+                                                                </td>
+                                                                <td>
+                                                                    <input type="text" class="form-control "
+                                                                        name="bp" id="bp">
+                                                                </td>
+                                                                <td>
+                                                                    <textarea class="form-control" name="" id="" rows="1"></textarea>
+                                                                </td>
+                                                            </tr>
+                                                        </tbody>
 
-                            <div class="accordion mb-3" id="accordionExample">
-                                <div class="accordion-item">
-                                    <h2 class="accordion-header" id="headingOne">
-                                        <button class="accordion-button" type="button" data-bs-toggle="collapse"
-                                            data-bs-target="#collapseOne" aria-expanded="true"
-                                            aria-controls="collapseOne">
-                                            Speed and Accuracy
-                                        </button>
-                                    </h2>
-                                    <div id="collapseOne" class="accordion-collapse collapse show"
-                                        aria-labelledby="headingOne" data-bs-parent="#accordionExample">
-                                        <div class="accordion-body">
-
-                                            <div class="accordion mb-3" id="accordionExample">
+                                                    </form>
+                                                </table>
+                                                {{-- <div class="accordion mb-3" id="accordionExample">
                                                 <div class="accordion-item">
                                                     <h2 class="accordion-header" id="headingOne">
                                                         <button class="accordion-button" type="button"
@@ -131,131 +256,18 @@
                                                         aria-labelledby="headingOne" data-bs-parent="#accordionExample">
                                                         <div class="accordion-body">
 
-                                                            <table class="table mb-0 text-left  table-borderless">
-                                                                <tbody>
-                                                                    <tr>
-                                                                        <td class="product-sub-category "
-                                                                            colspan="8">
-                                                                            <p>Cashier TAT</p>
-                                                                        </td>
-                                                                    </tr>
-                                                                    <tr>
-                                                                        <td class="service-speed">Name</td>
-                                                                        <td>Time (hh:mm)</td>
-                                                                        <td>Product Ordered</td>
-                                                                        <td>OT </td>
-                                                                        <td>Assembly</td>
-                                                                        <td>TAT</td>
-                                                                        <td>FST</td>
-                                                                        <td>Remarks</td>
-                                                                    </tr>
-                                                                    <tr>
-                                                                        <td class="service-speed">
-                                                                            <input type="text" class="form-control "
-                                                                                name="bp" id="bp"
-                                                                                placeholder="">
-                                                                        </td>
-                                                                        <td>
-                                                                            <input type="text" class="form-control "
-                                                                                name="bp" id="bp"
-                                                                                placeholder="">
-                                                                        </td>
-                                                                        <td>
-                                                                            <input type="text" class="form-control "
-                                                                                name="bp" id="bp"
-                                                                                placeholder="">
-                                                                        </td>
-                                                                        <td>
-                                                                            <input type="text"
-                                                                                class="form-control " name="bp"
-                                                                                id="bp" placeholder="">
-                                                                        </td>
-                                                                        <td>
-                                                                            <input type="text"
-                                                                                class="form-control " name="bp"
-                                                                                id="bp" placeholder="">
-                                                                        </td>
-                                                                        <td>
-                                                                            <input type="text"
-                                                                                class="form-control " name="bp"
-                                                                                id="bp" placeholder="">
-                                                                        </td>
-                                                                        <td>
-                                                                            <input type="text"
-                                                                                class="form-control " name="bp"
-                                                                                id="bp" placeholder="">
-                                                                        </td>
-                                                                        <td>
-                                                                            <textarea class="form-control" name="" id="" rows="1"></textarea>
-                                                                        </td>
-                                                                    </tr>
 
-                                                                    <tr>
-                                                                        <td class="product-sub-category "
-                                                                            colspan="8">
-                                                                            <p>Server CAT</p>
-                                                                        </td>
-                                                                    </tr>
-                                                                    <tr>
-                                                                        <td class="service-speed">Name</td>
-                                                                        <td>Time (hh:mm)</td>
-                                                                        <td>Product Ordered</td>
-                                                                        <td>OT </td>
-                                                                        <td>Assembly</td>
-                                                                        <td>TAT</td>
-                                                                        <td>FST</td>
-                                                                        <td>Remarks</td>
-                                                                    </tr>
-                                                                    <tr>
-                                                                        <td class="service-speed">
-                                                                            <input type="text"
-                                                                                class="form-control " name="bp"
-                                                                                id="bp" placeholder="">
-                                                                        </td>
-                                                                        <td>
-                                                                            <input type="text"
-                                                                                class="form-control " name="bp"
-                                                                                id="bp" placeholder="">
-                                                                        </td>
-                                                                        <td>
-                                                                            <input type="text"
-                                                                                class="form-control " name="bp"
-                                                                                id="bp" placeholder="">
-                                                                        </td>
-                                                                        <td>
-                                                                            <input type="text"
-                                                                                class="form-control " name="bp"
-                                                                                id="bp" placeholder="">
-                                                                        </td>
-                                                                        <td>
-                                                                            <input type="text"
-                                                                                class="form-control " name="bp"
-                                                                                id="bp" placeholder="">
-                                                                        </td>
-                                                                        <td>
-                                                                            <input type="text"
-                                                                                class="form-control " name="bp"
-                                                                                id="bp" placeholder="">
-                                                                        </td>
-                                                                        <td>
-                                                                            <input type="text"
-                                                                                class="form-control " name="bp"
-                                                                                id="bp" placeholder="">
-                                                                        </td>
-                                                                        <td>
-                                                                            <textarea class="form-control" name="" id="" rows="1"></textarea>
-                                                                        </td>
-                                                                    </tr>
-                                                                </tbody>
-                                                            </table>
                                                         </div>
                                                     </div>
                                                 </div>
+                                            </div> --}}
                                             </div>
                                         </div>
                                     </div>
                                 </div>
-                            </div>
+                            @endif
+
+
                             @forelse ($data->sub_categ['data_items'] as  $key =>  $dataItem)
                                 <div class="accordion mb-3" id="accordionCategory">
                                     <div class="accordion-item">
