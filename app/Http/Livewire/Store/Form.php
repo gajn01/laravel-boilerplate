@@ -26,18 +26,19 @@ class Form extends Component
     public $actionTitle = 'Start';
     public $currentField;
     public $currentIndex;
-    public $speed_list = [
-        ['id' => 0, 'name' => null, 'time' => null, 'product_order' => null, 'ot' => null, 'assembly' => null, 'tat' => null, 'fst' => null, 'remarks' => null],
-        ['id' => 1, 'name' => null, 'time' => null, 'product_order' => null, 'ot' => null, 'assembly' => null, 'tat' => null, 'fst' => null, 'remarks' => null],
-        ['id' => 2, 'name' => null, 'time' => null, 'product_order' => null, 'ot' => null, 'assembly' => null, 'tat' => null, 'fst' => null, 'remarks' => null],
-        ['id' => 3, 'name' => null, 'time' => null, 'product_order' => null, 'ot' => null, 'assembly' => null, 'tat' => null, 'fst' => null, 'remarks' => null],
-        ['id' => 4, 'name' => null, 'time' => null, 'product_order' => null, 'ot' => null, 'assembly' => null, 'tat' => null, 'fst' => null, 'remarks' => null],
-    ];
-    public function startTimer()
+    public $cashier_tat = [['name' => null, 'time' => null, 'product_order' => null, 'ot' => null, 'ot_point' => 1, 'tat' => null, 'tat_point' => 1, 'fst' => null, 'fst_point' => 3, 'remarks' => null],];
+    public $server_cat = [['name' => null, 'time' => null, 'product_order' => null, 'ot' => null, 'ot_point' => 1, 'tat' => null, 'tat_point' => 1, 'fst' => null, 'fst_point' => 3, 'remarks' => null],];
+
+    public function setTime($data)
     {
-        $currentTime = new DateTime('now', new DateTimeZone('Asia/Manila'));
-        $currentTime = date('H:i');
-        $this->speed_list[$this->currentIndex][$this->currentField] = $currentTime;
+        $timezone = new DateTimeZone('Asia/Manila');
+        $time = new DateTime('now', $timezone);
+        $currentTime = $time->format('h:i A');
+        if ($data == 0) {
+            $this->cashier_tat[$this->currentIndex][$this->currentField] = $currentTime;
+        } else if ($data == 1) {
+            $this->server_cat[$this->currentIndex][$this->currentField] = $currentTime;
+        }
     }
     public function stopTimer()
     {
@@ -47,7 +48,7 @@ class Form extends Component
         $currentTime = new DateTime('now', new DateTimeZone('Asia/Manila'));
         $currentTime = date('H:i');
         if ($this->currentField == "product_order_{$this->currentIndex}") {
-            $this->speed_list[$this->currentIndex]['ot'] = $currentTime;
+            $this->cashier_tat[$this->currentIndex]['ot'] = $currentTime;
         }
         $this->currentField = '';
     }
@@ -162,18 +163,33 @@ class Form extends Component
         }
         return view('livewire.store.form', ['category_list' => $data, 'sanitation_list' => $sanitation_defect])->extends('layouts.app');
     }
-    public function onAddCashier()
+    public function addInput($data)
     {
         $add = [
             'name' => '',
             'time' => '',
             'product_order' => '',
-            'assembly' => '',
-            'tat' => '',
+            'ot' => '',
+            'ot_point' => 1,
             'fst' => '',
+            'fst_point' => 3,
             'remarks' => '',
         ];
-        array_push($this->speed_list, $add);
+        if ($data == 0) {
+            $add['tat'] = '';
+            $add['tat_point'] = 1;
+            array_push($this->cashier_tat, $add);
+
+
+        } else if ($data == 1) {
+            $add['cat'] = '';
+            $add['tat_point'] = 1;
+            array_push($this->server_cat, $add);
+        }
+    }
+    public function test()
+    {
+        dd($this->cashier_tat);
     }
     public function onStartAndComplete($is_confirm = true, $title = 'Are you sure?', $type = null, $data = null)
     {

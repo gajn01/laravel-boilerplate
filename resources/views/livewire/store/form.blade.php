@@ -1,12 +1,13 @@
 @section('title', 'Mary Grace Restaurant Operation System / Audit Forms')
 
-<div class="container-xl" wire:ignore.self>
+<div class="container-xl">
     <nav aria-label="breadcrumb">
         <ol class="breadcrumb">
             <li class="breadcrumb-item"><a href="{{ route('store') }}">Store</a></li>
             <li class="breadcrumb-item active" aria-current="page">{{ $store_name }}</li>
         </ol>
     </nav>
+
     <div class="page-utilities mb-3">
         <div class="row g-2 justify-content-start justify-content-md-end align-items-center">
             <div class="col-auto mb-3">
@@ -31,7 +32,8 @@
                 <p class="m-0 p-2">No category found!</p>
             @endforelse
         </nav>
-        <div class="tab-content" id="audit-form-tab-content" wire:ignore>
+
+        <div class="tab-content" id="audit-form-tab-content">
             @forelse ($category_list as $key => $data)
                 <div class="tab-pane fade show {{ $key == 0 ? 'active' : '' }}" id="cat{{ $data->id }}"
                     role="tabpanel" aria-labelledby="cat{{ $data->id }}-tab">
@@ -44,7 +46,7 @@
                                 <div class="app-card-body p-3 p-lg-4">
                                     <div class="row justify-content-between align-items-center">
                                         <div class="col-12">
-                                            <table class="table app-table-hover mb-0 text-left">
+                                            <table class="table app-table-hover mb-0 text-left ">
                                                 <thead>
                                                     <tr>
                                                         <th class="cell">Category</th>
@@ -101,7 +103,7 @@
                             </div>
                         @endif --}}
                     </div>
-                    <div class="app-card app-card-orders-table shadow-sm mb-5 bg-none" wire:ignore>
+                    <div class="app-card app-card-orders-table shadow-sm mb-5 bg-none">
                         <div class="app-card-body">
                             @if ($key == 0)
                                 <div class="accordion mb-3" id="accordionExample">
@@ -116,75 +118,317 @@
                                         <div id="collapseOne" class="accordion-collapse collapse show"
                                             aria-labelledby="headingOne" data-bs-parent="#accordionExample">
                                             <div class="accordion-body">
-                                                <a name="" id="" class="btn btn-primary" href="#" wire:ignore
-                                                    role="button" wire:click="startTimer">start</a>
-                                                <a name="" id="" class="btn btn-primary" href="#"
-                                                    role="button" wire:click="stopTimer">stop</a>
-                                                <table class="table mb-0 text-left  table-borderless">
-                                                    <form >
+                                                <label for="" class="mb-3">Cashier TAT</label>
+                                                    <svg class="icon" wire:click="addInput(0)" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512">
+                                                        <path
+                                                            d="M256 80c0-17.7-14.3-32-32-32s-32 14.3-32 32V224H48c-17.7 0-32 14.3-32 32s14.3 32 32 32H192V432c0 17.7 14.3 32 32 32s32-14.3 32-32V288H400c17.7 0 32-14.3 32-32s-14.3-32-32-32H256V80z" />
+                                                    </svg>
+                                                <a class="btn app-btn-primary float-right" wire:ignore role="button" wire:click="setTime(0)">Set</a>
+                                                @foreach ($cashier_tat as $item)
+                                                    <div class="row">
+                                                        <div class="col-sm-12 col-md-9">
+                                                            <div class="row">
+                                                                <div class="col-4">
+                                                                    <div class="mb-3">
+                                                                        <input type="text" class="form-control"
+                                                                            name="cashier_name"
+                                                                            placeholder="Cashier Name"
+                                                                            id="name_{{ $loop->index }}"
+                                                                            wire:model.lazy="cashier_tat.{{ $loop->index }}.name"
+                                                                            wire:focus="$set('currentIndex', '{{ $loop->index }}')">
+                                                                    </div>
+                                                                </div>
+                                                                <div class="col-4">
+                                                                    <div class="mb-3">
+                                                                        <input type="text" class="form-control" name="time" id="time_{{ $loop->index }}"
+                                                                            wire:model="cashier_tat.{{ $loop->index }}.time"
+                                                                            wire:focus="$set('currentField', 'time')"
+                                                                            placeholder="hh:mm">
+                                                                    </div>
+                                                                </div>
+                                                                <div class="col-4">
+                                                                    <div class="mb-3">
+                                                                        <input type="text" class="form-control" name="product_order" id="product_order{{ $loop->index }}"
+                                                                            wire:model="cashier_tat.{{ $loop->index }}.product_order"
+                                                                            placeholder="Product Ordered">
+                                                                    </div>
+                                                                </div>
+                                                                <div class="col-4">
+                                                                    <label for="" class="">Accuracy (1 pt.)</label>
+                                                                    <div class="row">
+                                                                        <div class="col-6">
+                                                                            <div class="mb-3">
+                                                                                <label for=""
+                                                                                    class="">OT</label>
+                                                                                <input type="text" class="form-control" id="ot"
+                                                                                    wire:model="cashier_tat.{{ $loop->index }}.ot"
+                                                                                    wire:focus="$set('currentField', 'ot')"
+                                                                                    placeholder="hh:mm">
+                                                                            </div>
+                                                                        </div>
+                                                                        <div class="col-6">
+                                                                            <div class="mb-3">
+                                                                                <label for=""
+                                                                                    class="">Point
+                                                                                </label>
+                                                                                <input type="text" class="form-control" name="ot_point" id="ot_point"
+                                                                                    wire:model="cashier_tat.{{ $loop->index }}.ot_point"
+                                                                                    wire:focus="$set('currentField', 'ot_point')"
+                                                                                    placeholder="Point">
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                                <div class="col-4">
+                                                                    <label for="" class="">TAT (1 pt.)</label>
+                                                                    <div class="row">
+                                                                        <div class="col-6">
+                                                                            <div class="mb-3">
+                                                                                <label for=""
+                                                                                    class="">Time</label>
+                                                                                <input type="text" class="form-control" name="tat" id="tat"
+                                                                                    wire:model="cashier_tat.{{ $loop->index }}.tat"
+                                                                                    wire:focus="$set('currentField', 'tat')"
+                                                                                    placeholder="hh:mm">
+                                                                            </div>
+                                                                        </div>
+
+                                                                        <div class="col-6">
+                                                                            <div class="mb-3">
+                                                                                <label for=""
+                                                                                    class="">Point
+                                                                                </label>
+                                                                                <input type="text" class="form-control" name="tat_point" id="tat_point"
+                                                                                    wire:model="cashier_tat.{{ $loop->index }}.tat_point"
+                                                                                    wire:focus="$set('currentField', 'tat_point')"
+                                                                                    placeholder="Point">
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                                <div class="col-4">
+                                                                    <label for="" class="">FST  (3 pts.) </label>
+                                                                    <div class="row">
+                                                                        <div class="col-6">
+                                                                            <div class="mb-3">
+                                                                                <label for=""
+                                                                                    class="">Time</label>
+                                                                                <input type="text" class="form-control" name="fst" id="fst"
+                                                                                    wire:model="cashier_tat.{{ $loop->index }}.fst"
+                                                                                    wire:focus="$set('currentField', 'fst')"
+                                                                                    placeholder="hh:mm">
+                                                                            </div>
+                                                                        </div>
+
+                                                                        <div class="col-6">
+                                                                            <div class="mb-3">
+                                                                                <label for="" class="" >Point</label>
+                                                                                <input type="text" class="form-control" name="fst_point" id="fst_point"
+                                                                                    wire:model="cashier_tat.{{ $loop->index }}.fst_point"
+                                                                                    wire:focus="$set('currentField', 'fst_point')"
+                                                                                    placeholder="Point">
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-sm-12 col-md-3">
+                                                            <div class="mb-3">
+                                                                <textarea class="form-control" name="" id="" rows="6"
+                                                                id="remarks_{{ $loop->index }}"
+                                                                wire:model="cashier_tat.{{ $loop->index }}.remarks"
+                                                                placeholder="Remarks"
+                                                                ></textarea>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                @endforeach
+                                                <label for="" class="mb-3">Server CAT</label>
+                                                <svg class="icon" wire:click="addInput(1)" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512">
+                                                    <path
+                                                        d="M256 80c0-17.7-14.3-32-32-32s-32 14.3-32 32V224H48c-17.7 0-32 14.3-32 32s14.3 32 32 32H192V432c0 17.7 14.3 32 32 32s32-14.3 32-32V288H400c17.7 0 32-14.3 32-32s-14.3-32-32-32H256V80z" />
+                                                </svg>
+                                                <a class="btn app-btn-primary float-right" wire:ignore role="button" wire:click="setTime(1)">Set</a>
+                                                @foreach ($server_cat as $item)
+                                                <div class="row">
+                                                    <div class="col-sm-12 col-md-9">
+                                                        <div class="row">
+                                                            <div class="col-4">
+                                                                <div class="mb-3">
+                                                                    <input type="text" class="form-control"
+                                                                        name="server_name"
+                                                                        placeholder="Server Name"
+                                                                        id="name_{{ $loop->index }}"
+                                                                        wire:model.lazy="server_cat.{{ $loop->index }}.name"
+                                                                        wire:focus="$set('currentIndex', '{{ $loop->index }}')">
+                                                                </div>
+                                                            </div>
+                                                            <div class="col-4">
+                                                                <div class="mb-3">
+                                                                    <input type="text" class="form-control" name="time" id="time_{{ $loop->index }}"
+                                                                        wire:model="server_cat.{{ $loop->index }}.time"
+                                                                        wire:focus="$set('currentField', 'time')"
+                                                                        placeholder="hh:mm">
+                                                                </div>
+                                                            </div>
+                                                            <div class="col-4">
+                                                                <div class="mb-3">
+                                                                    <input type="text" class="form-control" name="product_order" id="product_order{{ $loop->index }}"
+                                                                        wire:model="server_cat.{{ $loop->index }}.product_order"
+                                                                        placeholder="Product Ordered">
+                                                                </div>
+                                                            </div>
+                                                            <div class="col-4">
+                                                                <label for="" class="">Accuracy (1 pt.)</label>
+                                                                <div class="row">
+                                                                    <div class="col-6">
+                                                                        <div class="mb-3">
+                                                                            <label for=""
+                                                                                class="">OT</label>
+                                                                            <input type="text" class="form-control" id="ot"
+                                                                                wire:model="server_cat.{{ $loop->index }}.ot"
+                                                                                wire:focus="$set('currentField', 'ot')"
+                                                                                placeholder="hh:mm">
+                                                                        </div>
+                                                                    </div>
+                                                                    <div class="col-6">
+                                                                        <div class="mb-3">
+                                                                            <label for=""
+                                                                                class="">Point
+                                                                            </label>
+                                                                            <input type="text" class="form-control" name="ot_point" id="ot_point"
+                                                                                wire:model="server_cat.{{ $loop->index }}.ot_point"
+                                                                                wire:focus="$set('currentField', 'ot_point')"
+                                                                                placeholder="Point">
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                            <div class="col-4">
+                                                                <label for="" class="">CAT (1 pt.)</label>
+                                                                <div class="row">
+                                                                    <div class="col-6">
+                                                                        <div class="mb-3">
+                                                                            <label for=""
+                                                                                class="">Time</label>
+                                                                            <input type="text" class="form-control" name="tat" id="tat"
+                                                                                wire:model="server_cat.{{ $loop->index }}.tat"
+                                                                                wire:focus="$set('currentField', 'tat')"
+                                                                                placeholder="hh:mm">
+                                                                        </div>
+                                                                    </div>
+
+                                                                    <div class="col-6">
+                                                                        <div class="mb-3">
+                                                                            <label for=""
+                                                                                class="">Point
+                                                                            </label>
+                                                                            <input type="text" class="form-control" name="tat_point" id="tat_point"
+                                                                                wire:model="server_cat.{{ $loop->index }}.tat_point"
+                                                                                wire:focus="$set('currentField', 'tat_point')"
+                                                                                placeholder="Point">
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                            <div class="col-4">
+                                                                <label for="" class="">FST  (3 pts.) </label>
+                                                                <div class="row">
+                                                                    <div class="col-6">
+                                                                        <div class="mb-3">
+                                                                            <label for=""
+                                                                                class="">Time</label>
+                                                                            <input type="text" class="form-control" name="fst" id="fst"
+                                                                                wire:model="server_cat.{{ $loop->index }}.fst"
+                                                                                wire:focus="$set('currentField', 'fst')"
+                                                                                placeholder="hh:mm">
+                                                                        </div>
+                                                                    </div>
+
+                                                                    <div class="col-6">
+                                                                        <div class="mb-3">
+                                                                            <label for="" class="" >Point</label>
+                                                                            <input type="text" class="form-control" name="fst_point" id="fst_point"
+                                                                                wire:model="server_cat.{{ $loop->index }}.fst_point"
+                                                                                wire:focus="$set('currentField', 'fst_point')"
+                                                                                placeholder="Point">
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-sm-12 col-md-3">
+                                                        <div class="mb-3">
+                                                            <textarea class="form-control" name="" id="" rows="6"
+                                                            id="remarks_{{ $loop->index }}"
+                                                            wire:model="server_cat.{{ $loop->index }}.remarks"
+                                                            placeholder="Remarks"
+                                                            ></textarea>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            @endforeach
+                                                {{--    <table class="table mb-0 text-left  table-borderless">
+                                                    <form>
                                                         @csrf
                                                         <tbody>
-                                                            <tr>
-                                                                <td class="product-sub-category " colspan="8">
-                                                                    <p>Cashier TAT</p>
-                                                                </td>
-                                                            </tr>
-                                                            <tr>
-                                                                <td class="service-speed">Name</td>
-                                                                <td>Time (hh:mm)</td>
-                                                                <td>Product Ordered</td>
-                                                                <td>OT</td>
-                                                                <td>Assembly</td>
-                                                                <td>TAT</td>
-                                                                <td>FST</td>
-                                                                <td>Remarks</td>
-                                                            </tr>
                                                             @foreach ($speed_list as $index => $item)
-                                                                <tr wire:key="{{$index}}">
-                                                                    <td class="service-speed">
+                                                                <tr wire:key="{{ $index }}">
+                                                                    <td class="service-speed p-0">
                                                                         <input type="text" class="form-control"
                                                                             id="name_{{ $loop->index }}"
                                                                             wire:model.lazy="speed_list.{{ $loop->index }}.name"
                                                                             wire:focus="$set('currentIndex', '{{ $loop->index }}')">
                                                                     </td>
-                                                                    <td>
+                                                                    <td class="p-0">
                                                                         <input type="text" class="form-control"
                                                                             id="time_{{ $loop->index }}"
                                                                             wire:model="speed_list.{{ $loop->index }}.time"
                                                                             wire:focus="$set('currentField', 'time')">
                                                                     </td>
-                                                                    <td>
+                                                                    <td class="p-0">
                                                                         <input type="text" class="form-control"
                                                                             id="product_order_{{ $loop->index }}"
                                                                             wire:model.lazy="speed_list.{{ $loop->index }}.product_order"
                                                                             wire:focus="$set('currentField', 'product_order_{{ $loop->index }}')"
                                                                             wire:keydown.enter="startTimer({{ $loop->index }})">
                                                                     </td>
-                                                                    <td>
-                                                                        <input type="text" class="form-control"
-                                                                            id="ot_{{ $loop->index }}"
-                                                                            wire:model="speed_list.{{ $loop->index }}.ot_{{ $loop->index }}"
-                                                                            wire:focus="$set('currentField', 'ot_{{ $loop->index }}')">
+                                                                    <td class="p-0">
+                                                                        <div class="d-flex">
+                                                                            <input type="text" class="form-control"
+                                                                                id="ot_{{ $loop->index }}"
+                                                                                wire:model="speed_list.{{ $loop->index }}.ot_{{ $loop->index }}"
+                                                                                wire:focus="$set('currentField', 'ot_{{ $loop->index }}')">
+                                                                            <input type="text" class="form-control"
+                                                                                id="assembly_{{ $loop->index }}"
+                                                                                wire:model="speed_list.{{ $loop->index }}.assembly_{{ $loop->index }}"
+                                                                                wire:focus="$set('currentField', 'assembly_{{ $loop->index }}')">
+                                                                        </div>
                                                                     </td>
-                                                                    <td>
+                                                                    <td class="p-0">
+                                                                        <div class="d-flex">
+
+                                                                        </div>
                                                                         <input type="text" class="form-control"
                                                                             id="assembly_{{ $loop->index }}"
                                                                             wire:model.lazy="speed_list.{{ $loop->index }}.assembly_{{ $loop->index }}"
                                                                             wire:focus="$set('currentField', 'assembly_{{ $loop->index }}')">
                                                                     </td>
-                                                                    <td>
+                                                                    <td class="p-0">
                                                                         <input type="text" class="form-control"
                                                                             id="tat_{{ $loop->index }}"
                                                                             wire:model="speed_list.{{ $loop->index }}.tat_{{ $loop->index }}"
                                                                             wire:focus="$set('currentField', 'tat_{{ $loop->index }}')">
                                                                     </td>
-                                                                    <td>
+                                                                    <td class="p-0">
                                                                         <input type="text" class="form-control"
                                                                             id="fst_{{ $loop->index }}"
                                                                             wire:model="speed_list.{{ $loop->index }}.fst_{{ $loop->index }}"
                                                                             wire:focus="$set('currentField', 'fst_{{ $loop->index }}')">
                                                                     </td>
-                                                                    <td>
+                                                                    <td class="p-0">
                                                                         <textarea class="form-control" rows="1" id="remarks_{{ $loop->index }}"
                                                                             wire:model="speed_list.{{ $loop->index }}.remarks"
                                                                             wire:focus="$set('currentField', 'remarks_{{ $loop->index }}')"></textarea>
@@ -242,7 +486,7 @@
                                                         </tbody>
 
                                                     </form>
-                                                </table>
+                                                </table> --}}
                                                 {{-- <div class="accordion mb-3" id="accordionExample">
                                                 <div class="accordion-item">
                                                     <h2 class="accordion-header" id="headingOne">
@@ -266,7 +510,6 @@
                                     </div>
                                 </div>
                             @endif
-
 
                             @forelse ($data->sub_categ['data_items'] as  $key =>  $dataItem)
                                 <div class="accordion mb-3" id="accordionCategory">
@@ -307,14 +550,13 @@
                                                                     <div class="col-sm-6 col-md-6">
                                                                         @if ($index == 0)
                                                                             <label for=""
-                                                                                class="form-label">Point</label>
+                                                                                class="form-label">Point(s)</label>
                                                                         @endif
                                                                         <input type="number"
                                                                             class="form-control text-center"
                                                                             name="points{{ $auditLabel['name'] }}"
                                                                             value="{{ $auditLabel['points'] }}"
                                                                             id="points">
-
                                                                     </div>
                                                                 </div>
                                                             </div>
@@ -472,11 +714,7 @@
                             @empty
                                 <p class="m-0 p-2 text-center">No category found!</p>
                             @endforelse
-
-
                         </div>
-
-
                         {{--  <div class="app-card-header p-3">
                         <div class="row justify-content-between align-items-center">
                             <div class="col-auto">
