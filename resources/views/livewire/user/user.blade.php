@@ -129,7 +129,7 @@
                                 wire:model="user_level">
                                 <option selected hidden>Select one</option>
                                 <option value="1">Auditor</option>
-                                <option value="0">Store</option>
+                                <option value="2">Store</option>
                             </select>
                         </div>
                         <div class="mb-3">

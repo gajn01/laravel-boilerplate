@@ -79,7 +79,6 @@
                                 <div class="item-label mb-1"><strong>Status</strong></div>
                                 <div class="col-12">
                                     @if ($is_edit)
-
                                         <select class="form-select form-select-md" name="input_status" id="input_status"
                                             wire:model="input_status">
                                             <option selected>Select status</option>
@@ -129,7 +128,7 @@
                             wire:model.debounce.100ms="date_filter">
                             <option value="{{ $today }}" selected>Today</option>
                             <option value="weekly">This week</option>
-                            <option value="monthly">This Month</option>
+                            <option value="monthly">This month</option>
                         </select>
                     </div>
                     <div class="table-responsive">
@@ -144,7 +143,7 @@
                             <tbody>
                                 @forelse ($schedule_list as $item)
                                     <tr>
-                                        <td class="cell">{{ $item->audit_date }}</td>
+                                        <td class="cell">{{ \Carbon\Carbon::parse($item->audit_date)->format('F d Y') }}</td>
                                         <td class="cell">{{ $item->store_name }}</td>
                                         <td class="cell table-action-sm">
                                             <a href="#" data-bs-toggle="modal" data-bs-target="#assign_modal"
@@ -178,13 +177,9 @@
                             </tbody>
                         </table>
                     </div>
-
-
-
                 </div>
                 <div class="app-card-footer p-4 mt-auto">
                     {{-- Pagination --}}
-
                     <div class="row">
                         <div class="col-sm-12 col-md-6">
                             <div class="page-utilities d-flex justify-start">
@@ -211,15 +206,13 @@
                         </div>
                         <div class="col-sm-12 col-md-6">
                             <nav class="app-pagination">
-                                 {{ $schedule_list->onEachSide(0)->links() }}
+                                {{ $schedule_list->onEachSide(0)->links() }}
                             </nav>
                             <!--//app-pagination-->
                         </div>
                     </div>
-
                 </div>
                 <!--//app-card-footer-->
-
             </div>
         </div>
     </div>
@@ -261,13 +254,13 @@
             </div>
         </div>
     </div>
-    <div wire:ignore.self  class="modal fade" id="assign_modal" tabindex="-1" data-bs-backdrop="static" data-bs-keyboard="false"
-        role="dialog" aria-labelledby="modalTitleId" aria-hidden="true">
+    <div wire:ignore.self class="modal fade" id="assign_modal" tabindex="-1" data-bs-backdrop="static"
+        data-bs-keyboard="false" role="dialog" aria-labelledby="modalTitleId" aria-hidden="true">
         <div class="modal-dialog modal-dialog-scrollable modal-dialog-centered modal-md" role="document">
             <div class="modal-content">
                 <div class="modal-header">
                     <h5 class="modal-title" id="modalTitleId">Assign Store</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" wire:click="reset"></button>
                 </div>
                 <div class="modal-body">
                     <div class="mb-3">
@@ -280,8 +273,8 @@
                         </select>
                     </div>
                     <div class="mb-3">
-                        <label for=audit_date class="form-label">Date of Audit</label>
-                        <input type="date" class="form-control" name=audit_date id=audit_date
+                        <label for="audit_date" class="form-label">Date of Audit</label>
+                        <input type="date" class="form-control" name="audit_date" id="audit_date"
                             wire:model="audit_date" aria-describedby="helpId" placeholder="">
                     </div>
                 </div>

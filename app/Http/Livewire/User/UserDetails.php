@@ -9,7 +9,6 @@ use Livewire\WithPagination;
 use App\Helpers\CustomHelper;
 use Illuminate\Support\Facades\DB;
 use Carbon\Carbon;
-
 use DateTime;
 use DateTimeZone;
 
@@ -46,31 +45,28 @@ class UserDetails extends Component
         $this->status = optional($user)->status;
         $startDate = null;
         $endDate = null;
-
         if ($this->date_filter == 'weekly') {
             $startDate = Carbon::now()->startOfWeek();
             $endDate = Carbon::now()->endOfWeek();
         } elseif ($this->date_filter == 'monthly') {
             $startDate = Carbon::now()->startOfMonth();
             $endDate = Carbon::now()->endOfMonth();
-        } else {
-            // handle invalid filter type here
         }
         if ($startDate && $endDate) {
             $schedule = DB::table('audit_date')
                 ->join('stores', 'audit_date.store', '=', 'stores.id')
                 ->select('audit_date.*', 'stores.name as store_name')
                 ->whereBetween('audit_date.audit_date', [$startDate, $endDate])
+                ->orderBy('audit_date', 'asc')
                 ->paginate($this->limit);
-
         } else {
             $schedule = DB::table('audit_date')
                 ->join('stores', 'audit_date.store', '=', 'stores.id')
                 ->select('audit_date.*', 'stores.name as store_name')
                 ->where('audit_date.audit_date', $this->date_filter)
+                ->orderBy('audit_date', 'asc')
                 ->paginate($this->limit);
         }
-
         return view('livewire.user.user-details', ['store_list' => $data, 'schedule_list' => $schedule])->extends('layouts.app');
     }
     public function mount($employee_id = null)
@@ -79,7 +75,6 @@ class UserDetails extends Component
         $time = new DateTime('now', $timezone);
         $this->today = $time->format('Y-m-d');
         $this->date_filter = $this->today;
-
         $this->employee_id = $employee_id;
     }
     public function onUpdate($boolean)
@@ -131,7 +126,7 @@ class UserDetails extends Component
         AuditDateModel::updateOrCreate(
             ['id' => $this->audit_date_id ?? null],
             [
-                'auditor' => strip_tags($this->name),
+                'auditor' => strip_tags($this->employee_id),
                 'store' => strip_tags($this->store),
                 'audit_date' => strip_tags($this->audit_date),
             ]

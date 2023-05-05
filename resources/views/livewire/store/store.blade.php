@@ -83,9 +83,7 @@
             </div>
         </div>
     </div>
-
     {{-- Pagination --}}
-
     <div class="row">
         <div class="col-sm-12 col-md-6">
             <div class="page-utilities d-flex justify-start">
@@ -106,7 +104,6 @@
                     </div>
                 </div>
             </div>
-
         </div>
         <div class="col-sm-12 col-md-6">
             <nav class="app-pagination">
@@ -114,6 +111,4 @@
             </nav>
         </div>
     </div>
-
-
 </div>
