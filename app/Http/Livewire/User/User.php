@@ -1,14 +1,11 @@
 <?php
-
 namespace App\Http\Livewire\User;
-
 use Livewire\Component;
 use Illuminate\Support\Facades\Hash;
 use Livewire\WithPagination;
 use App\Helpers\CustomHelper;
 use App\Models\User as UserModel;
 use App\Models\Store as StoreModel;
-
 class User extends Component
 {
     use WithPagination;

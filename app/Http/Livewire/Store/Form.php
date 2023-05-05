@@ -18,6 +18,7 @@ class Form extends Component
     public $store_id;
     public $store_name;
     /* Audit Category */
+    public $category_list;
     public $store_type;
     public $f_major_sd = [];
     public $f_product;
@@ -26,9 +27,8 @@ class Form extends Component
     public $actionTitle = 'Start';
     public $currentField;
     public $currentIndex;
-    public $cashier_tat = [['name' => null, 'time' => null, 'product_order' => null, 'ot' => null, 'ot_point' => 1, 'tat' => null, 'tat_point' => 1, 'fst' => null, 'fst_point' => 3, 'remarks' => null],];
-    public $server_cat = [['name' => null, 'time' => null, 'product_order' => null, 'ot' => null, 'ot_point' => 1, 'tat' => null, 'tat_point' => 1, 'fst' => null, 'fst_point' => 3, 'remarks' => null],];
-
+    public $cashier_tat = [['name' => null, 'time' => null, 'product_order' => null, 'ot' => null, 'ot_point' => 1, 'tat' => null, 'tat_point' => 1, 'fst' => null, 'fst_point' => 3, 'remarks' => null]];
+    public $server_cat = [['name' => null, 'time' => null, 'product_order' => null, 'ot' => null, 'ot_point' => 1, 'tat' => null, 'tat_point' => 1, 'fst' => null, 'fst_point' => 3, 'remarks' => null]];
     public function setTime($data)
     {
         $timezone = new DateTimeZone('Asia/Manila');
@@ -85,8 +85,7 @@ class Form extends Component
                         'base_score' => 0,
                         'total_percent' => 0,
                     ];
-                    if ($subCategory->is_sub == 0) {
-                        $subCategoryData['sub_category'] = $subCategory->subCategoryLabels->map(function ($label) use (&$total_bp, &$total_base_score) {
+                    $subCategoryData['sub_category'] = ($subCategory->is_sub == 0) ? $subCategory->subCategoryLabels->map(function ($label) use (&$total_bp, &$total_base_score) {
                             $dropdownMenu = DropdownMenuModel::where('dropdown_id', $label->dropdown_id)->get()->toArray();
                             $isAllNothing = $label->is_all_nothing == 0 ? $label->bp : $label->bp . '*';
                             $total_bp += $label->bp;
@@ -101,9 +100,7 @@ class Form extends Component
                                 'tag' => '',
                                 'dropdown' => $dropdownMenu,
                             ];
-                        });
-                    } else {
-                        $subCategoryData['sub_category'] = $subCategory->subCategoryLabels->map(function ($label) use (&$total_bp, &$total_base_score) {
+                        }) : $subCategory->subCategoryLabels->map(function ($label) use (&$total_bp, &$total_base_score) {
                             $subLabels = SubSubCategoryLabelModel::where('sub_sub_category_id', $label->id)->get();
                             $subLabelData = $subLabels->map(function ($subLabel) use (&$total_bp, &$total_base_score) {
                                 $dropdownMenu = DropdownMenuModel::where('dropdown_id', $subLabel->dropdown_id)->get()->toArray();
@@ -127,7 +124,6 @@ class Form extends Component
                                 'label' => $subLabelData,
                             ];
                         });
-                    }
                     $subCategoryData['base_score'] = $total_bp;
                     $subCategoryData['total_percent'] = $total_bp * 100 / $total_bp;
                     $total_bp = 0;
@@ -161,7 +157,8 @@ class Form extends Component
                 ];
             });
         }
-        return view('livewire.store.form', ['category_list' => $data, 'sanitation_list' => $sanitation_defect])->extends('layouts.app');
+        $this->category_list = $data;
+        return view('livewire.store.form', ['sanitation_list' => $sanitation_defect])->extends('layouts.app');
     }
     public function addInput($data)
     {
@@ -179,8 +176,6 @@ class Form extends Component
             $add['tat'] = '';
             $add['tat_point'] = 1;
             array_push($this->cashier_tat, $add);
-
-
         } else if ($data == 1) {
             $add['cat'] = '';
             $add['tat_point'] = 1;
@@ -189,7 +184,7 @@ class Form extends Component
     }
     public function test()
     {
-        dd($this->cashier_tat);
+        dd($this->category_list);
     }
     public function onStartAndComplete($is_confirm = true, $title = 'Are you sure?', $type = null, $data = null)
     {
