@@ -117,7 +117,7 @@
                         <div class="col-auto">
                             <div class="card-header-action col ">
                                 <a class="btn app-btn-primary" data-bs-toggle="modal"
-                                    data-bs-target="#assignModal">Assign Auditor</a>
+                                    data-bs-target="#store_assign_modal">Assign Auditor</a>
                             </div>
                         </div>
                     </div>
@@ -143,17 +143,14 @@
                             <tbody>
                                 @forelse ($schedule_list as $item)
                                     <tr>
-                                        <td class="cell">
-                                            {{ \Carbon\Carbon::parse($item->audit_date)->format('F d Y') }}</td>
-                                        <td class="cell">{{ $item->store_name }}</td>
+                                        <td class="cell">{{ \Carbon\Carbon::parse($item->audit_date)->format('F d Y') }}</td>
+                                        <td class="cell">{{ $item->auditor_name }}</td>
                                         <td class="cell table-action-sm">
-                                            <a href="#" data-bs-toggle="modal" data-bs-target="#assign_modal"
+                                            <a href="#" data-bs-toggle="modal" data-bs-target="#store_assign_modal"
                                                 wire:click="showModal({{ $item->id }})" data-toggle="tooltip"
                                                 data-placement="top" title="Update">
-                                                <svg class="icon" xmlns="http://www.w3.org/2000/svg"
-                                                    viewBox="0 0 512 512">
-                                                    <path
-                                                        d="M362.7 19.3L314.3 67.7 444.3 197.7l48.4-48.4c25-25 25-65.5 0-90.5L453.3 19.3c-25-25-65.5-25-90.5 0zm-71 71L58.6 323.5c-10.4 10.4-18 23.3-22.2 37.4L1 481.2C-1.5 489.7 .8 498.8 7 505s15.3 8.5 23.7 6.1l120.3-35.4c14.1-4.2 27-11.8 37.4-22.2L421.7 220.3 291.7 90.3z" />
+                                                <svg class="icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+                                                    <path d="M362.7 19.3L314.3 67.7 444.3 197.7l48.4-48.4c25-25 25-65.5 0-90.5L453.3 19.3c-25-25-65.5-25-90.5 0zm-71 71L58.6 323.5c-10.4 10.4-18 23.3-22.2 37.4L1 481.2C-1.5 489.7 .8 498.8 7 505s15.3 8.5 23.7 6.1l120.3-35.4c14.1-4.2 27-11.8 37.4-22.2L421.7 220.3 291.7 90.3z" />
                                                 </svg>
                                             </a>
                                             <a href="#"
@@ -220,18 +217,19 @@
             </div>
         </div>
     </div>
-    <div wire:ignore.self class="modal fade" id="assignModal" tabindex="-1" data-bs-backdrop="static"
+    <div wire:ignore.self class="modal fade" id="store_assign_modal" tabindex="-1" data-bs-backdrop="static"
         data-bs-keyboard="false" role="dialog" aria-labelledby="modalTitleId" aria-hidden="true">
         <div class="modal-dialog modal-dialog-scrollable modal-dialog-centered modal-md" role="document">
             <div class="modal-content">
                 <div class="modal-header">
                     <h5 class="modal-title" id="modalTitleId">Assign Auditor</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" wire:click="reset"></button>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"
+                        wire:click="reset"></button>
                 </div>
                 <div class="modal-body">
                     <div class="mb-3">
                         <label for="" class="form-label">Auditor</label>
-                        <select class="form-select form-select-md" name="" id="">
+                        <select class="form-select form-select-md" name="" id="" wire:model="auditor_name">
                             <option selected hidden>Select auditor</option>
                             @foreach ($user_list as $item)
                                 <option value="{{ $item->id }}">{{ $item->name }}</option>

@@ -1,20 +1,23 @@
 <?php
 namespace App\Http\Livewire\Store;
-
 use Livewire\Component;
 use App\Models\Store as StoreModel;
 use App\Models\AuditDate as AuditDateModel;
 use App\Models\User as UserModel;
 use App\Helpers\CustomHelper;
+use Livewire\WithPagination;
 use Illuminate\Support\Facades\DB;
 use Carbon\Carbon;
 use DateTime;
 use DateTimeZone;
-
 class StoreDetails extends Component
 {
+    use WithPagination;
+    protected $paginationTheme = 'bootstrap';
+    protected $listeners = ['alert-sent' => 'onDelete'];
     public $store_id;
     public $store;
+    public $auditor_name;
     public $audit_date_id;
     public $audit_date;
     public $input_type;
@@ -22,6 +25,8 @@ class StoreDetails extends Component
     public $input_name;
     public $input_area;
     public $is_edit = false;
+    public $modalTitle;
+    public $modalButtonText;
     public $limit = 10;
     public $date_filter;
     public $today;
@@ -48,20 +53,23 @@ class StoreDetails extends Component
         }
         if ($startDate && $endDate) {
             $schedule = DB::table('audit_date')
+                ->join('user', 'audit_date.auditor', '=', 'user.id')
                 ->join('stores', 'audit_date.store', '=', 'stores.id')
-                ->select('audit_date.*', 'stores.name as store_name')
+                ->select('audit_date.*', 'stores.name as store_name','user.name as auditor_name')
                 ->where('audit_date.store', $this->store_id)
                 ->whereBetween('audit_date.audit_date', [$startDate, $endDate])
                 ->orderBy('audit_date', 'asc')
                 ->paginate($this->limit);
         } else {
             $schedule = DB::table('audit_date')
-                ->join('stores', 'audit_date.store', '=', 'stores.id')
-                ->select('audit_date.*', 'stores.name as store_name')
+            ->join('user', 'audit_date.auditor', '=', 'user.id')
+            ->join('stores', 'audit_date.store', '=', 'stores.id')
+                ->select('audit_date.*', 'stores.name as store_name', 'user.name as auditor_name')
                 ->where('audit_date.store', $this->store_id)
                 ->where('audit_date.audit_date', $this->date_filter)
                 ->orderBy('audit_date', 'asc')
                 ->paginate($this->limit);
+
         }
         $this->store = StoreModel::find($this->store_id);
         return view('livewire.store.store-details', ['user_list' => $data, 'schedule_list' => $schedule])->extends('layouts.app');
@@ -73,6 +81,16 @@ class StoreDetails extends Component
         $this->input_name = $this->store->name;
         $this->input_area = $this->store->area;
         $this->is_edit = $boolean;
+    }
+    public function showModal($id = null)
+    {
+        $this->audit_date_id = $id;
+        $audit = AuditDateModel::find($id);
+        $this->auditor_name = optional($audit)->auditor;
+        $this->audit_date = optional($audit)->audit_date;
+        $this->resetValidation();
+        $this->modalTitle = $this->audit_date_id ? 'Edit Schedule' : 'Add Schedule';
+        $this->modalButtonText = $this->audit_date_id ? 'Update' : 'Add';
     }
     public function onSaveStore()
     {
@@ -93,9 +111,29 @@ class StoreDetails extends Component
         );
         $this->resetValidation();
         $this->onAlert(false, 'Success', 'Store saved successfully!', 'success');
-        CustomHelper::onRemoveModal($this, '#assign_modal');
         $this->onUpdate(false);
         $this->is_edit = false;
+    }
+    public function onAssign()
+    {
+        $this->validate(
+            [
+                'store' => 'required',
+                'audit_date' => 'required',
+            ]
+        );
+        AuditDateModel::updateOrCreate(
+            ['id' => $this->audit_date_id ?? null],
+            [
+                'auditor' => strip_tags($this->auditor_name),
+                'store' => strip_tags($this->store_id),
+                'audit_date' => strip_tags($this->audit_date),
+            ]
+        );
+        $this->resetValidation();
+        $this->onAlert(false, 'Success', 'Schedule saved successfully!', 'success');
+        CustomHelper::onRemoveModal($this, '#store_assign_modal');
+        $this->onUpdate(false);
     }
     public function onDelete($id)
     {

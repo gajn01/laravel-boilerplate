@@ -126,13 +126,13 @@ class UserDetails extends Component
         AuditDateModel::updateOrCreate(
             ['id' => $this->audit_date_id ?? null],
             [
-                'auditor' => strip_tags($this->employee_id),
+                'auditor' => strip_tags($this->account_id),
                 'store' => strip_tags($this->store),
                 'audit_date' => strip_tags($this->audit_date),
             ]
         );
         $this->resetValidation();
-        $this->onAlert(false, 'Success', 'Account saved successfully!', 'success');
+        $this->onAlert(false, 'Success', 'Schedule saved successfully!', 'success');
         CustomHelper::onRemoveModal($this, '#assign_modal');
         $this->onUpdate(false);
     }
