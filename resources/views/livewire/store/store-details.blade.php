@@ -229,7 +229,6 @@
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" wire:click="reset"></button>
                 </div>
                 <div class="modal-body">
-
                     <div class="mb-3">
                         <label for="" class="form-label">Auditor</label>
                         <select class="form-select form-select-md" name="" id="">

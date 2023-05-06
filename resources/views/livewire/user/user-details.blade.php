@@ -132,7 +132,7 @@
                         </select>
                     </div>
                     <div class="table-responsive">
-                        <table class="table app-table-hover mb-0 text-left">
+                        <table class="table mb-0 text-left">
                             <thead>
                                 <tr>
                                     <th class="cell">Date </th>
