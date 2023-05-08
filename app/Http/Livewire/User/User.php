@@ -72,10 +72,6 @@ class User extends Component
         $this->onAlert(false, 'Success', 'Account saved successfully!', 'success');
         CustomHelper::onRemoveModal($this, '#user_modal');
     }
-    public function onTogglePassword(){
-      /*   $this->is_toggle = !$this->is_toggle; */
-        $this->emit('toggleEye');
-    }
     public function onAlert($is_confirm = false, $title = null, $message = null,  $type = null, $data = null)
     {
         CustomHelper::onShow($this, $is_confirm, $title, $message, $type, $data);

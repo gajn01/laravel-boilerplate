@@ -1,11 +1,8 @@
 <?php
-
 namespace App\Http\Livewire\Auth;
-
 use Illuminate\Support\Facades\Auth;
 use Livewire\Component;
 use App\Helpers\CustomHelper;
-
 class Login extends Component
 {
     public $email;
@@ -15,10 +12,6 @@ class Login extends Component
     {
         return view('livewire.auth.login')->extends('layouts.auth');
     }
-    public function test()
-    {
-        $this->emit('onStartAlert', 'alert');
-    }
     public function onLogin()
     {
         $this->validate([
@@ -26,13 +19,10 @@ class Login extends Component
             'password' => 'required|min:6',
         ]);
         if (Auth::attempt(['email' => $this->email, 'password' => $this->password])) {
-            CustomHelper::onShow($this, false, 'Success.', 'Successfully login!', 'success');
+            CustomHelper::onShow($this, false, 'Success.', 'Successfully login!', 'success','');
             return redirect()->to('/dashboard');
-
         } else {
-            CustomHelper::onShow($this, false, 'Invalid credentials.', 'Invalid email or password. Please try again.', 'error');
+            CustomHelper::onShow($this, false, 'Invalid credentials.', 'Invalid email or password. Please try again.', 'error','');
         }
     }
-
-
 }

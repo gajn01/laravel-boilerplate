@@ -18,9 +18,7 @@
         integrity="sha256-2krYZKh//PcchRtd+H+VyyQoZ/e3EcrkxhM8ycwASPA=" crossorigin="anonymous"></script>
     <!-- Include Livewire styles -->
     @livewireStyles
-
 </head>
-
 <body class="app bg-marygrace">
     <!-- Define the application header and include the topbar and sidebar components -->
     <header class="app-header fixed-top">
@@ -40,17 +38,14 @@
             <div class="container text-center py-3">
                 <!-- Add attribution information to keep the template free to use -->
                 <small class="copyright">
-                    Mary Grace Foods, Inc.   Copyright © 2023. All rights reserved.
+                    Mary Grace Foods, Inc. Copyright © 2023. All rights reserved.
                 </small>
             </div>
         </footer>
     </div>
     <!-- Include the application scripts, including the compiled scripts by Vite and Livewire -->
-
     @vite(['resources/js/app.js'])
-
     @livewireScripts
-
     <script src="{{ url('js/app.js') }}"></script>
     <script src="{{ url('js/alert.js') }}"></script>
 

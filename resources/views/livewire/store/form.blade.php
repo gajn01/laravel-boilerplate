@@ -375,7 +375,6 @@
                                     </div>
                                 </div>
                             @endif
-                            <a name="" id="" class="btn btn-primary" role="button" wire:click="test" >Button</a>
                             @forelse ($data->sub_categ['data_items'] as  $key =>  $dataItem)
                                 <div class="accordion mb-3" id="accordionCategory">
                                     <div class="accordion-item">

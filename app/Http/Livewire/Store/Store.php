@@ -22,4 +22,5 @@ class Store extends Component
             ->paginate($this->limit);
         return view('livewire.store.store', ['store_list' => $store_list])->extends('layouts.app');
     }
+
 }

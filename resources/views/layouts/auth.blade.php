@@ -24,10 +24,7 @@
         </section>
     </div>
     @vite(['resources/js/app.js'])
-
     @livewireScripts
-
-    <script src="{{ url('js/app.js') }}"></script>
-
+    <script src="{{ url('js/alert.js') }}"></script>
 </body>
 </html>

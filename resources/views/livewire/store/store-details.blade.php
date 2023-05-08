@@ -122,7 +122,7 @@
                         </div>
                     </div>
                 </div>
-                <div class="app-card-body p-3 p-lg-4">
+                <div class="app-card-body p-3 ">
                     <div class="mb-3 d-flex">
                         <select class="form-select form-select-sm ms-auto d-inline-flex w-auto"
                             wire:model.debounce.100ms="date_filter">
