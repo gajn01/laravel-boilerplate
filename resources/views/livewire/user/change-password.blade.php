@@ -11,7 +11,7 @@
                         <div class="item pb-3">
                             <div class="row justify-content-between align-items-center">
                                 <div class="col-12">
-                                    <div class="item-label mb-1"><strong>Current Password</strong></div>
+                                    <div class="item-label mb-1"><strong>Current Password</strong><span class="text-danger"> *</span></div>
                                     <input type="password" class="form-control" wire:model="current_password"
                                         id="current_password" >
                                     @error('current_password')
@@ -23,7 +23,7 @@
                         <div class="item pb-3">
                             <div class="row justify-content-between align-items-center">
                                 <div class="col-12">
-                                    <div class="item-label mb-1"><strong>New Password</strong></div>
+                                    <div class="item-label mb-1"><strong>New Password</strong><span class="text-danger"> *</span></div>
                                     <input type="password" class="form-control" wire:model="new_password"
                                         id="new_password" >
                                     @error('new_password')
@@ -35,7 +35,7 @@
                         <div class="item pb-3">
                             <div class="row justify-content-between align-items-center">
                                 <div class="col-12">
-                                    <div class="item-label mb-1"><strong>Confirm Password</strong></div>
+                                    <div class="item-label mb-1"><strong>Confirm Password</strong><span class="text-danger"> *</span></div>
                                     <input type="password" class="form-control" wire:model="confirm_password"
                                         id="confirm_password" >
                                     @error('confirm_password')
