@@ -6,7 +6,6 @@ class Dashboard extends Component
 {
     public function render()
     {
-        $user = Auth::user();
         return view('livewire.dashboard.dashboard')->extends('layouts.app');
     }
 }

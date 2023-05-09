@@ -6,6 +6,7 @@ use Illuminate\Support\Facades\Auth;
 class Topbar extends Component
 {
     public $name = "test";
+    public $notifications = 3;
     public function logout()
     {
         dd('logout');
@@ -15,6 +16,6 @@ class Topbar extends Component
     }
     public function render()
     {
-        return view('livewire.components.topbar');
+        return view('livewire.components.topbar')->extends('layouts.app');
     }
 }
