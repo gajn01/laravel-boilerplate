@@ -18,7 +18,6 @@ class Form extends Component
     public $store_id;
     public $store_name;
     /* Audit Category */
-    public $category_list;
     public $store_type;
     public $f_major_sd = [];
     public $f_product;
@@ -29,6 +28,15 @@ class Form extends Component
     public $currentIndex;
     public $cashier_tat = [['name' => null, 'time' => null, 'product_order' => null, 'ot' => null, 'ot_point' => 1, 'tat' => null, 'tat_point' => 1, 'fst' => null, 'fst_point' => 3, 'remarks' => null]];
     public $server_cat = [['name' => null, 'time' => null, 'product_order' => null, 'ot' => null, 'ot_point' => 1, 'tat' => null, 'tat_point' => 1, 'fst' => null, 'fst_point' => 3, 'remarks' => null]];
+    protected $rules = [
+        'category_list.*.sub_categ.data_items.*.name' => 'required|string|max:255',
+        'category_list.*.sub_categ.data_items.*.base_score' => 'required|string|max:255',
+        'category_list.*.sub_categ.data_items.*.sub_category.*.points' => 'required|string|max:255',
+        'category_list.*.sub_categ.data_items.*.sub_category.*.remarks' => 'required|string|max:255',
+
+
+
+    ];
     public function setTime($data)
     {
         $timezone = new DateTimeZone('Asia/Manila');
@@ -86,44 +94,44 @@ class Form extends Component
                         'total_percent' => 0,
                     ];
                     $subCategoryData['sub_category'] = ($subCategory->is_sub == 0) ? $subCategory->subCategoryLabels->map(function ($label) use (&$total_bp, &$total_base_score) {
-                            $dropdownMenu = DropdownMenuModel::where('dropdown_id', $label->dropdown_id)->get()->toArray();
-                            $isAllNothing = $label->is_all_nothing == 0 ? $label->bp : $label->bp . '*';
-                            $total_bp += $label->bp;
-                            $total_base_score += $label->bp;
+                        $dropdownMenu = DropdownMenuModel::where('dropdown_id', $label->dropdown_id)->get()->toArray();
+                        $isAllNothing = $label->is_all_nothing == 0 ? $label->bp : $label->bp . '*';
+                        $total_bp += $label->bp;
+                        $total_base_score += $label->bp;
+                        return [
+                            'id' => $label->id,
+                            'name' => $label->name,
+                            'bp' => $label->bp,
+                            'is_all_nothing' => $isAllNothing,
+                            'points' => $label->bp,
+                            'remarks' => null,
+                            'tag' => '',
+                            'dropdown' => $dropdownMenu,
+                        ];
+                    }) : $subCategory->subCategoryLabels->map(function ($label) use (&$total_bp, &$total_base_score) {
+                        $subLabels = SubSubCategoryLabelModel::where('sub_sub_category_id', $label->id)->get();
+                        $subLabelData = $subLabels->map(function ($subLabel) use (&$total_bp, &$total_base_score) {
+                            $dropdownMenu = DropdownMenuModel::where('dropdown_id', $subLabel->dropdown_id)->get()->toArray();
+                            $isAllNothing = $subLabel->is_all_nothing == 0 ? $subLabel->bp : $subLabel->bp . '*';
+                            $total_bp += $subLabel->bp;
+                            $total_base_score += $subLabel->bp;
                             return [
-                                'id' => $label->id,
-                                'name' => $label->name,
-                                'bp' => $label->bp,
+                                'id' => $subLabel->id,
+                                'name' => $subLabel->name,
+                                'bp' => $subLabel->bp,
                                 'is_all_nothing' => $isAllNothing,
-                                'points' => $label->bp,
-                                'remarks' => 'fs',
+                                'points' => $subLabel->bp,
+                                'remarks' => '',
                                 'tag' => '',
                                 'dropdown' => $dropdownMenu,
                             ];
-                        }) : $subCategory->subCategoryLabels->map(function ($label) use (&$total_bp, &$total_base_score) {
-                            $subLabels = SubSubCategoryLabelModel::where('sub_sub_category_id', $label->id)->get();
-                            $subLabelData = $subLabels->map(function ($subLabel) use (&$total_bp, &$total_base_score) {
-                                $dropdownMenu = DropdownMenuModel::where('dropdown_id', $subLabel->dropdown_id)->get()->toArray();
-                                $isAllNothing = $subLabel->is_all_nothing == 0 ? $subLabel->bp : $subLabel->bp . '*';
-                                $total_bp += $subLabel->bp;
-                                $total_base_score += $subLabel->bp;
-                                return [
-                                    'id' => $subLabel->id,
-                                    'name' => $subLabel->name,
-                                    'bp' => $subLabel->bp,
-                                    'is_all_nothing' => $isAllNothing,
-                                    'points' => $subLabel->bp,
-                                    'remarks' => '',
-                                    'tag' => '',
-                                    'dropdown' => $dropdownMenu,
-                                ];
-                            });
-                            return [
-                                'id' => $label->id,
-                                'name' => $label->name,
-                                'label' => $subLabelData,
-                            ];
                         });
+                        return [
+                            'id' => $label->id,
+                            'name' => $label->name,
+                            'label' => $subLabelData,
+                        ];
+                    });
                     $subCategoryData['base_score'] = $total_bp;
                     $subCategoryData['total_percent'] = $total_bp * 100 / $total_bp;
                     $total_bp = 0;
@@ -157,9 +165,25 @@ class Form extends Component
                 ];
             });
         }
-        $this->category_list = $data;
-        return view('livewire.store.form', ['sanitation_list' => $sanitation_defect])->extends('layouts.app');
+        // $this->category_list = $data;
+        // dd($this->category_list);
+        return view('livewire.store.form', ['sanitation_list' => $sanitation_defect , 'category_list'=> $data])->extends('layouts.app');
     }
+    public function getCategoryIndex($index = 0)
+    {
+        dd($index);
+    }
+    public function updateRemarks($parentIndex, $subIndex, $childIndex, $value)
+    {
+        $category = $this->category_list[$parentIndex];
+        $subCategory = $category->sub_categ['data_items'][$subIndex];
+        $subCategory['sub_category'][$childIndex]['remarks'] = $value;
+
+        // Update the nested properties using Eloquent's setAttribute method
+      /*   $category->sub_categ['data_items'][$subIndex] = $subCategory;
+        $this->category_list[$parentIndex] = $category; */
+    }
+
     public function addInput($data)
     {
         $add = [

@@ -23,7 +23,7 @@
                     'text-sm-center',
                     'nav-link',
                     'active' => $key == 0,
-                ]) id="cat{{ $data->id }}-tab" data-bs-toggle="tab"
+                ]) id="cat{{ $data->id }}-tab" data-bs-toggle="tab" wire:click="getCategoryIndex({{$key}})"
                     href="#cat{{ $data->id }}" role="tab" aria-controls="cat{{ $data->id }}"
                     aria-selected="{{ $key == 0 ? 'true' : 'false' }}">
                     {{ $data->name }}
@@ -88,7 +88,7 @@
                                 </div>
                             </div>
                         </div>
-                        {{--   @if ($data->critical_deviation->isNotEmpty())
+                       {{--  @if ($data->critical_deviation->isNotEmpty())
                             <div class="col-12 col-lg-6" wire:ignore>
                                 <div class="app-card app-card-chart h-100 shadow-sm">
                                     <div class="app-card-header p-3">
@@ -459,21 +459,25 @@
                                                                             class="form-control text-center"
                                                                             name="points{{ $auditLabel['name'] }}"
                                                                             id="points"
-                                                                            value="{{ $auditLabel['points'] }}">
+                                                                            value="{{ $auditLabel['points'] }}"
+                                                                            wire:model="{{$category_list[$loop->parent->parent->index]['sub_categ']['data_items'][$loop->parent->index]['sub_category'][$loop->index]['remarks'] }}"
+                                                                            {{-- wire:change="updateRemarks('{{ $loop->parent->parent->index }}', '{{ $loop->parent->index }}', '{{ $loop->index }}', $event.target.value)" --}}
+                                                                            >
                                                                     </div>
                                                                 </div>
                                                             </div>
                                                             <div class="col-sm-12 col-md-6 col-lg-6">
                                                                 <div class="row">
-                                                                    <div
-                                                                        class="col-sm-12 {{ $auditLabel['dropdown'] ? 'col-md-6' : 'col-md-12' }}">
+                                                                    <div class="col-sm-12 {{ $auditLabel['dropdown'] ? 'col-md-6' : 'col-md-12' }}">
                                                                         @if ($index == 0)
-                                                                            <label for="remarks"
-                                                                                class="form-label">Remarks</label>
+                                                                            <label for="remarks" class="form-label">Remarks</label>
                                                                         @endif
                                                                         <textarea class="form-control" name="remarks" id="remarks" rows="1"
-                                                                            wire:model="data.{{ $loop->parent->parent->index }}.data_items.{{ $loop->parent->index }}.sub_category.{{ $loop->index }}.remarks"> </textarea>
+                                                                            wire:change="updateRemarks('{{ $loop->parent->parent->index }}', '{{ $loop->parent->index }}', '{{ $loop->index }}', $event.target.value)">
+                                                                            {{ $category_list[$loop->parent->parent->index]['sub_categ']['data_items'][$loop->parent->index]['sub_category'][$loop->index]['remarks'] }}
+                                                                        </textarea>
                                                                     </div>
+
                                                                     @if (!empty($auditLabel['dropdown']))
                                                                         <div
                                                                             class="col-sm-12 col-md-6 {{ $auditLabel['dropdown'] ? '' : 'd-none' }}">
@@ -607,7 +611,6 @@
                                                         </div>
                                                     @endforeach
                                                 @endif
-
                                             </div>
                                         </div>
                                     </div>
@@ -616,135 +619,6 @@
                                 <p class="m-0 p-2 text-center">No category found!</p>
                             @endforelse
                         </div>
-                        {{--  <div class="app-card-header p-3">
-                        <div class="row justify-content-between align-items-center">
-                            <div class="col-auto">
-                                <h4 class="app-card-title">Core Product</h4>
-                            </div>
-                        </div>
-                        </div> --}}
-                        {{--       @forelse ($data->sub_categ['data_items'] as $dataItem)
-                        <div class="app-card-body">
-                            <div class="table-responsive">
-                                <table class="table app-table-hover mb-0 text-left">
-                                    <thead>
-                                        <tr>
-                                            <th class="cell "></th>
-                                            <th class="cell audit-points">Base Point</th>
-                                            <th class="cell audit-points">Point</th>
-                                            <th class="cell w-25">Remarks</th>
-                                            <th class="cell w-25">Deviation</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        <tr id="{{ $dataItem['name'] }}">
-                                            <td colspan="5">
-                                                <h6 class="card-title product-name">{{ $dataItem['name'] }}</h6>
-                                            </td>
-                                        </tr>
-                                        @if ($dataItem['is_sub'] == 0)
-                                            @foreach ($dataItem['sub_category'] as $auditLabel)
-                                                <tr>
-                                                    <td class="product-audit">
-                                                        <p>{{ $auditLabel['name'] }}</p>
-                                                    </td>
-                                                    <td>
-                                                        <input type="text" class="form-control text-center"
-                                                            disabled name="bp{{ $auditLabel['name'] }}"
-                                                            id="bp" placeholder=""
-                                                            value="{{ $auditLabel['is_all_nothing'] }}">
-                                                    </td>
-                                                    <td>
-                                                        <input type="number" class="form-control text-center"
-                                                            wire:model="data.{{ $loop->parent->parent->index }}.data_items.{{ $loop->parent->index }}.sub_category.{{ $loop->index }}.points"
-                                                            name="points{{ $auditLabel['name'] }}" id="points"
-                                                            value="{{ $auditLabel['points'] }}">
-                                                    </td>
-                                                    <td colspan="{{ $auditLabel['dropdown'] ? '' : 2 }}">
-                                                        <input type="text" class="form-control"
-                                                            wire:model="data.{{ $loop->parent->parent->index }}.data_items.{{ $loop->parent->index }}.sub_category.{{ $loop->index }}.remarks"
-                                                            name="remarks{{ $auditLabel['name'] }}" id="remarks"
-                                                            value="{{ $auditLabel['remarks'] }}">
-                                                    </td>
-                                                    <td>
-                                                        @if (!empty($auditLabel['dropdown']))
-                                                            <select class="form-select form-select-md"
-                                                                wire:model="data.{{ $loop->parent->parent->index }}.data_items.{{ $loop->parent->index }}.sub_category.{{ $loop->index }}.tag"
-                                                                name="tag{{ $auditLabel['name'] }}" id="tag">
-                                                                <option value="0">Select a deviation</option>
-                                                                @foreach ($auditLabel['dropdown'] as $result)
-                                                                    @if (isset($result['name']))
-                                                                        <option value="{{ $result['id'] }}">
-                                                                            {{ $result['name'] }}
-                                                                        </option>
-                                                                    @endif
-                                                                @endforeach
-                                                            </select>
-                                                        @endif
-                                                    </td>
-                                                </tr>
-                                            @endforeach
-                                        @else
-                                            @foreach ($dataItem['sub_category'] as $sub_category)
-                                                @if ($sub_category['name'])
-                                                    <tr>
-                                                        <td class="product-sub-category " colspan="5">
-                                                            <p>{{ $sub_category['name'] }}</p>
-                                                        </td>
-                                                    </tr>
-                                                @endif
-                                                @foreach ($sub_category['label'] as $auditLabel)
-                                                    <tr>
-                                                        <td class="product-audit">
-                                                            <p>{{ $auditLabel['name'] }}</p>
-                                                        </td>
-                                                        <td>
-                                                            <input type="text" class="form-control text-center"
-                                                                disabled name="bp{{ $auditLabel['name'] }}"
-                                                                id="bp" placeholder=""
-                                                                value="{{ $auditLabel['is_all_nothing'] }}">
-                                                        </td>
-                                                        <td>
-                                                            <input type="number" class="form-control text-center"
-                                                                wire:model="data.{{ $loop->parent->parent->index }}.data_items.{{ $loop->parent->index }}.sub_category.{{ $loop->index }}.points"
-                                                                name="points{{ $auditLabel['name'] }}" id="points"
-                                                                value="{{ $auditLabel['points'] }}">
-                                                        </td>
-                                                        <td colspan="{{ $auditLabel['dropdown'] ? '' : 2 }}">
-                                                            <input type="text" class="form-control"
-                                                                wire:model="data.{{ $loop->parent->parent->index }}.data_items.{{ $loop->parent->index }}.sub_category.{{ $loop->index }}.remarks"
-                                                                name="remarks{{ $auditLabel['name'] }}"
-                                                                id="remarks" value="{{ $auditLabel['remarks'] }}">
-                                                        </td>
-                                                        <td>
-                                                            @if (!empty($auditLabel['dropdown']))
-                                                                <select class="form-select form-select-md"
-                                                                    wire:model="data.{{ $loop->parent->parent->index }}.data_items.{{ $loop->parent->index }}.sub_category.{{ $loop->index }}.tag"
-                                                                    name="tag{{ $auditLabel['name'] }}"
-                                                                    id="tag">
-                                                                    <option value="0">Select a deviation
-                                                                    </option>
-                                                                    @foreach ($auditLabel['dropdown'] as $result)
-                                                                        @if (isset($result['name']))
-                                                                            <option value="{{ $result['id'] }}">
-                                                                                {{ $result['name'] }}
-                                                                            </option>
-                                                                        @endif
-                                                                    @endforeach
-                                                                </select>
-                                                            @endif
-                                                        </td>
-                                                @endforeach
-                                            @endforeach
-                                        @endif
-
-                                    </tbody>
-                                </table>
-                            </div>
-                        </div>
-                    @empty
-                        <p class="m-0 p-2 text-center">No category found!</p>
-                    @endforelse --}}
                     </div>
                 </div>
             @empty

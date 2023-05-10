@@ -6,6 +6,8 @@
             <li class="breadcrumb-item active">Store</li>
         </ol>
     </nav>
+    {{-- <h1 class="app-page-title">Store</h1> --}}
+
     <div class="page-utilities mb-3">
         <div class="row g-2 justify-content-start justify-content-md-end align-items-center">
             <div class="col-auto">
