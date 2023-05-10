@@ -18,6 +18,7 @@ class Form extends Component
     public $store_id;
     public $store_name;
     /* Audit Category */
+    public $category_list;
     public $store_type;
     public $f_major_sd = [];
     public $f_product;
@@ -33,9 +34,7 @@ class Form extends Component
         'category_list.*.sub_categ.data_items.*.base_score' => 'required|string|max:255',
         'category_list.*.sub_categ.data_items.*.sub_category.*.points' => 'required|string|max:255',
         'category_list.*.sub_categ.data_items.*.sub_category.*.remarks' => 'required|string|max:255',
-
-
-
+        'category_list.*.sub_categ.data_items.*.sub_category.*.is_all_nothing' => 'required|string|max:255',
     ];
     public function setTime($data)
     {
@@ -95,7 +94,7 @@ class Form extends Component
                     ];
                     $subCategoryData['sub_category'] = ($subCategory->is_sub == 0) ? $subCategory->subCategoryLabels->map(function ($label) use (&$total_bp, &$total_base_score) {
                         $dropdownMenu = DropdownMenuModel::where('dropdown_id', $label->dropdown_id)->get()->toArray();
-                        $isAllNothing = $label->is_all_nothing == 0 ? $label->bp : $label->bp . '*';
+                        $isAllNothing = $label->is_all_nothing;
                         $total_bp += $label->bp;
                         $total_base_score += $label->bp;
                         return [
@@ -112,7 +111,7 @@ class Form extends Component
                         $subLabels = SubSubCategoryLabelModel::where('sub_sub_category_id', $label->id)->get();
                         $subLabelData = $subLabels->map(function ($subLabel) use (&$total_bp, &$total_base_score) {
                             $dropdownMenu = DropdownMenuModel::where('dropdown_id', $subLabel->dropdown_id)->get()->toArray();
-                            $isAllNothing = $subLabel->is_all_nothing == 0 ? $subLabel->bp : $subLabel->bp . '*';
+                            $isAllNothing = $subLabel->is_all_nothing ;
                             $total_bp += $subLabel->bp;
                             $total_base_score += $subLabel->bp;
                             return [
@@ -165,19 +164,25 @@ class Form extends Component
                 ];
             });
         }
-        // $this->category_list = $data;
+        $this->category_list = $data;
         // dd($this->category_list);
-        return view('livewire.store.form', ['sanitation_list' => $sanitation_defect , 'category_list'=> $data])->extends('layouts.app');
+        return view('livewire.store.form', ['sanitation_list' => $sanitation_defect])->extends('layouts.app');
     }
     public function getCategoryIndex($index = 0)
     {
         dd($index);
     }
-    public function updateRemarks($parentIndex, $subIndex, $childIndex, $value)
+    public function updateRemarks($parentIndex, $subIndex, $childIndex,$categoryId,$subcategoryId,$labelId, $value)
     {
-        $category = $this->category_list[$parentIndex];
+        $is_all = $this->category_list[$parentIndex]['sub_categ']['data_items'][$subIndex]['sub_category'][$childIndex]['is_all_nothing'];
+        $points =  $this->category_list[$parentIndex]['sub_categ']['data_items'][$subIndex]['sub_category'][$childIndex]['points'];
+        dd($points);
+
+       /*  dd($parentIndex, $subIndex, $childIndex,$categoryId,$subcategoryId,$labelId, $value); */
+
+   /*      $category = $this->category_list[$parentIndex];
         $subCategory = $category->sub_categ['data_items'][$subIndex];
-        $subCategory['sub_category'][$childIndex]['remarks'] = $value;
+        $subCategory['sub_category'][$childIndex]['remarks'] = $value; */
 
         // Update the nested properties using Eloquent's setAttribute method
       /*   $category->sub_categ['data_items'][$subIndex] = $subCategory;

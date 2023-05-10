@@ -23,9 +23,9 @@
                     'text-sm-center',
                     'nav-link',
                     'active' => $key == 0,
-                ]) id="cat{{ $data->id }}-tab" data-bs-toggle="tab" wire:click="getCategoryIndex({{$key}})"
-                    href="#cat{{ $data->id }}" role="tab" aria-controls="cat{{ $data->id }}"
-                    aria-selected="{{ $key == 0 ? 'true' : 'false' }}">
+                ]) id="cat{{ $data->id }}-tab" data-bs-toggle="tab"
+                    wire:click="getCategoryIndex({{ $key }})" href="#cat{{ $data->id }}" role="tab"
+                    aria-controls="cat{{ $data->id }}" aria-selected="{{ $key == 0 ? 'true' : 'false' }}">
                     {{ $data->name }}
                 </a>
             @empty
@@ -88,7 +88,7 @@
                                 </div>
                             </div>
                         </div>
-                       {{--  @if ($data->critical_deviation->isNotEmpty())
+                        {{--      @if ($data->critical_deviation->isNotEmpty())
                             <div class="col-12 col-lg-6" wire:ignore>
                                 <div class="app-card app-card-chart h-100 shadow-sm">
                                     <div class="app-card-header p-3">
@@ -447,7 +447,7 @@
                                                                             class="form-control text-center" disabled
                                                                             name="bp{{ $auditLabel['name'] }}"
                                                                             id="bp"
-                                                                            value="{{ $auditLabel['is_all_nothing'] }}"
+                                                                            value="{{ $auditLabel['is_all_nothing'] ? $auditLabel['points'].'*'  : $auditLabel['points']}}"
                                                                             placeholder="">
                                                                     </div>
                                                                     <div class="col-sm-6 col-md-6">
@@ -460,22 +460,25 @@
                                                                             name="points{{ $auditLabel['name'] }}"
                                                                             id="points"
                                                                             value="{{ $auditLabel['points'] }}"
-                                                                            wire:model="{{$category_list[$loop->parent->parent->index]['sub_categ']['data_items'][$loop->parent->index]['sub_category'][$loop->index]['remarks'] }}"
-                                                                            {{-- wire:change="updateRemarks('{{ $loop->parent->parent->index }}', '{{ $loop->parent->index }}', '{{ $loop->index }}', $event.target.value)" --}}
-                                                                            >
+                                                                            wire:change="updateRemarks(
+                                                                                '{{ $loop->parent->parent->index }}', '{{ $loop->parent->index }}', '{{ $loop->index }}',
+                                                                                '{{ $category_list[$loop->parent->parent->index]['id'] }}',
+                                                                                '{{ $category_list[$loop->parent->parent->index]['sub_categ']['data_items'][$loop->parent->index]['id'] }}',
+                                                                                '{{ $category_list[$loop->parent->parent->index]['sub_categ']['data_items'][$loop->parent->index]['sub_category'][$loop->index]['id'] }}',
+                                                                                $event.target.value )">
                                                                     </div>
                                                                 </div>
                                                             </div>
                                                             <div class="col-sm-12 col-md-6 col-lg-6">
                                                                 <div class="row">
-                                                                    <div class="col-sm-12 {{ $auditLabel['dropdown'] ? 'col-md-6' : 'col-md-12' }}">
+                                                                    <div
+                                                                        class="col-sm-12 {{ $auditLabel['dropdown'] ? 'col-md-6' : 'col-md-12' }}">
                                                                         @if ($index == 0)
-                                                                            <label for="remarks" class="form-label">Remarks</label>
+                                                                            <label for="remarks"
+                                                                                class="form-label">Remarks</label>
                                                                         @endif
                                                                         <textarea class="form-control" name="remarks" id="remarks" rows="1"
-                                                                            wire:change="updateRemarks('{{ $loop->parent->parent->index }}', '{{ $loop->parent->index }}', '{{ $loop->index }}', $event.target.value)">
-                                                                            {{ $category_list[$loop->parent->parent->index]['sub_categ']['data_items'][$loop->parent->index]['sub_category'][$loop->index]['remarks'] }}
-                                                                        </textarea>
+                                                                            wire:change="updateRemarks('{{ $loop->parent->parent->index }}', '{{ $loop->parent->index }}', '{{ $loop->index }}', $event.target.value)">{{ $category_list[$loop->parent->parent->index]['sub_categ']['data_items'][$loop->parent->index]['sub_category'][$loop->index]['remarks'] }}</textarea>
                                                                     </div>
 
                                                                     @if (!empty($auditLabel['dropdown']))
