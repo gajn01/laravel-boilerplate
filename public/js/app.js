@@ -58,30 +58,19 @@ sidePanelToggler.addEventListener('click', () => {
         sidePanel.classList.add('sidepanel-visible');
     }
 });
-
-
-
 sidePanelClose.addEventListener('click', (e) => {
     e.preventDefault();
     sidePanelToggler.click();
 });
-
 sidePanelDrop.addEventListener('click', (e) => {
     sidePanelToggler.click();
 });
-
-
-
 /* ====== Mobile search ======= */
 const searchMobileTrigger = document.querySelector('.search-mobile-trigger');
 const searchBox = document.querySelector('.app-search-box');
-
 searchMobileTrigger.addEventListener('click', () => {
-
     searchBox.classList.toggle('is-visible');
-
     let searchMobileTriggerIcon = document.querySelector('.search-mobile-trigger-icon');
-
     if (searchMobileTriggerIcon.classList.contains('fa-search')) {
         searchMobileTriggerIcon.classList.remove('fa-search');
         searchMobileTriggerIcon.classList.add('fa-times');
@@ -90,12 +79,11 @@ searchMobileTrigger.addEventListener('click', () => {
         searchMobileTriggerIcon.classList.add('fa-search');
     }
 });
-
-
 window.Livewire.on('toggleEye', () => {
     const icon = document.getElementById('eye-icon');
     const password = document.getElementById('password');
     icon.classList.toggle('hide');
     const type = password.getAttribute('type') === 'password' ? 'text' : 'password';
     password.setAttribute('type', type);
-  });
+});
+

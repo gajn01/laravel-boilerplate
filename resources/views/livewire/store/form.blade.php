@@ -447,7 +447,7 @@
                                                                             class="form-control text-center" disabled
                                                                             name="bp{{ $auditLabel['name'] }}"
                                                                             id="bp"
-                                                                            value="{{ $auditLabel['is_all_nothing'] ? $auditLabel['points'].'*'  : $auditLabel['points']}}"
+                                                                            value="{{ $auditLabel['is_all_nothing'] ? $auditLabel['points'] . '*' : $auditLabel['points'] }}"
                                                                             placeholder="">
                                                                     </div>
                                                                     <div class="col-sm-6 col-md-6">
@@ -457,15 +457,20 @@
                                                                         @endif
                                                                         <input type="number"
                                                                             class="form-control text-center"
-                                                                            name="points{{ $auditLabel['name'] }}"
-                                                                            id="points"
+                                                                            name="points{{ $auditLabel['id'] }}"
+                                                                            id="points{{ $auditLabel['id'] }}"
                                                                             value="{{ $auditLabel['points'] }}"
+                                                                            min="{{ $auditLabel['is_all_nothing'] ? $auditLabel['points'] : 0 }}"
+                                                                            max="{{ $auditLabel['is_all_nothing'] ? 0 : $auditLabel['points'] }}"
                                                                             wire:change="updateRemarks(
-                                                                                '{{ $loop->parent->parent->index }}', '{{ $loop->parent->index }}', '{{ $loop->index }}',
-                                                                                '{{ $category_list[$loop->parent->parent->index]['id'] }}',
-                                                                                '{{ $category_list[$loop->parent->parent->index]['sub_categ']['data_items'][$loop->parent->index]['id'] }}',
-                                                                                '{{ $category_list[$loop->parent->parent->index]['sub_categ']['data_items'][$loop->parent->index]['sub_category'][$loop->index]['id'] }}',
-                                                                                $event.target.value )">
+                                                                            'points{{ $auditLabel['id'] }}',
+                                                                            '{{ $loop->parent->parent->index }}',
+                                                                            '{{ $loop->parent->index }}',
+                                                                            '{{ $loop->index }}',
+                                                                            '{{ $category_list[$loop->parent->parent->index]['id'] }}',
+                                                                            '{{ $category_list[$loop->parent->parent->index]['sub_categ']['data_items'][$loop->parent->index]['id'] }}',
+                                                                            '{{ $category_list[$loop->parent->parent->index]['sub_categ']['data_items'][$loop->parent->index]['sub_category'][$loop->index]['id'] }}',
+                                                                            $event.target.value )">
                                                                     </div>
                                                                 </div>
                                                             </div>

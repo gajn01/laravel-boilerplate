@@ -1,13 +1,13 @@
-
-
-// Inside your JavaScript code
-window.Livewire.on('alert', function (message) {
-    alert('asd');
-});
-
-
+window.addEventListener('checkPoints', checkPoints);
 window.addEventListener('show-alert', showAlert);
 window.addEventListener('confirm-alert', showConfirm);
+function checkPoints($event) {
+    if ($event.detail.points < $event.detail.value) {
+        document.getElementById($event.detail.id).value = $event.detail.points;
+    } else if ($event.detail.value < 0) {
+        document.getElementById($event.detail.id).value = 0;
+    }
+}
 function showAlert(event) {
     swal(event.detail.title, event.detail.message, event.detail.type, { timer: 1000, button: false });
 }
@@ -50,5 +50,3 @@ window.Livewire.on('onStartAlert', function (message) {
             }
         });
 });
-
-

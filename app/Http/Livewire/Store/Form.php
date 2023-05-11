@@ -31,10 +31,10 @@ class Form extends Component
     public $server_cat = [['name' => null, 'time' => null, 'product_order' => null, 'ot' => null, 'ot_point' => 1, 'tat' => null, 'tat_point' => 1, 'fst' => null, 'fst_point' => 3, 'remarks' => null]];
     protected $rules = [
         'category_list.*.sub_categ.data_items.*.name' => 'required|string|max:255',
-        'category_list.*.sub_categ.data_items.*.base_score' => 'required|string|max:255',
-        'category_list.*.sub_categ.data_items.*.sub_category.*.points' => 'required|string|max:255',
-        'category_list.*.sub_categ.data_items.*.sub_category.*.remarks' => 'required|string|max:255',
-        'category_list.*.sub_categ.data_items.*.sub_category.*.is_all_nothing' => 'required|string|max:255',
+        'category_list.*.sub_categ.data_items.*.base_score' => 'required',
+        'category_list.*.sub_categ.data_items.*.sub_category.*.points' => 'required',
+        'category_list.*.sub_categ.data_items.*.sub_category.*.remarks' => 'required',
+        'category_list.*.sub_categ.data_items.*.sub_category.*.is_all_nothing' => 'required',
     ];
     public function setTime($data)
     {
@@ -111,7 +111,7 @@ class Form extends Component
                         $subLabels = SubSubCategoryLabelModel::where('sub_sub_category_id', $label->id)->get();
                         $subLabelData = $subLabels->map(function ($subLabel) use (&$total_bp, &$total_base_score) {
                             $dropdownMenu = DropdownMenuModel::where('dropdown_id', $subLabel->dropdown_id)->get()->toArray();
-                            $isAllNothing = $subLabel->is_all_nothing ;
+                            $isAllNothing = $subLabel->is_all_nothing;
                             $total_bp += $subLabel->bp;
                             $total_base_score += $subLabel->bp;
                             return [
@@ -172,23 +172,40 @@ class Form extends Component
     {
         dd($index);
     }
-    public function updateRemarks($parentIndex, $subIndex, $childIndex,$categoryId,$subcategoryId,$labelId, $value)
+    public function updateRemarks($id,$parentIndex, $subIndex, $childIndex, $categoryId, $subcategoryId, $labelId, $value)
     {
+
+        $points = $this->category_list[$parentIndex]['sub_categ']['data_items'][$subIndex]['sub_category'][$childIndex]['points'];
+     /*    $this->store_name = $value;
         $is_all = $this->category_list[$parentIndex]['sub_categ']['data_items'][$subIndex]['sub_category'][$childIndex]['is_all_nothing'];
-        $points =  $this->category_list[$parentIndex]['sub_categ']['data_items'][$subIndex]['sub_category'][$childIndex]['points'];
-        dd($points);
-
-       /*  dd($parentIndex, $subIndex, $childIndex,$categoryId,$subcategoryId,$labelId, $value); */
-
-   /*      $category = $this->category_list[$parentIndex];
+        $points = $this->category_list[$parentIndex]['sub_categ']['data_items'][$subIndex]['sub_category'][$childIndex]['points'];
+        if ($is_all) {
+            if ($value == $points || $value == 0) {
+                dd($value);
+            } else {
+                // Convert the nested structure to a collection
+                $categoryListCollection = collect($this->category_list);
+                // Modify the desired property using the collection methods
+                $categoryListCollection[$parentIndex]['sub_categ']['data_items'][$subIndex]['sub_category'][$childIndex]['points'] = $value;
+                // Convert the collection back to the nested structure, if needed
+                $this->category_list = $categoryListCollection->toArray();
+            }
+        } else {
+            dd($points);
+        } */
+        /* dd($parentIndex, $subIndex, $childIndex,$categoryId,$subcategoryId,$labelId, $value); */
+        /* $category = $this->category_list[$parentIndex];
         $subCategory = $category->sub_categ['data_items'][$subIndex];
-        $subCategory['sub_category'][$childIndex]['remarks'] = $value; */
-
-        // Update the nested properties using Eloquent's setAttribute method
-      /*   $category->sub_categ['data_items'][$subIndex] = $subCategory;
+        $subCategory['sub_category'][$childIndex]['remarks'] = $value
+        $category->sub_categ['data_items'][$subIndex] = $subCategory;
         $this->category_list[$parentIndex] = $category; */
-    }
 
+        $this->dispatchBrowserEvent('checkPoints', [
+            'id' => $id,
+            'value' => $value,
+            'points' => $points,
+        ]);
+    }
     public function addInput($data)
     {
         $add = [
@@ -210,10 +227,6 @@ class Form extends Component
             $add['tat_point'] = 1;
             array_push($this->server_cat, $add);
         }
-    }
-    public function test()
-    {
-        dd($this->category_list);
     }
     public function onStartAndComplete($is_confirm = true, $title = 'Are you sure?', $type = null, $data = null)
     {
