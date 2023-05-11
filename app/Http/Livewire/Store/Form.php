@@ -8,7 +8,12 @@ use App\Models\SubSubCategoryLabel as SubSubCategoryLabelModel;
 use App\Models\DropdownMenu as DropdownMenuModel;
 use App\Models\SanitaryModel as SanitaryModel;
 use App\Models\CriticalDeviationMenu as CriticalDeviationMenuModel;
+use App\Models\AuditForm as AuditFormModel;
+use App\Models\AuditFormResult as AuditFormResultModel;
+
+use Illuminate\Support\Facades\Auth;
 use App\Helpers\CustomHelper;
+
 use DateTime;
 use DateTimeZone;
 
@@ -24,17 +29,17 @@ class Form extends Component
     public $f_product;
     public $sanitation_defect;
     public $audit_status;
+    public $audit_forms_id;
     public $actionTitle = 'Start';
     public $currentField;
     public $currentIndex;
     public $cashier_tat = [['name' => null, 'time' => null, 'product_order' => null, 'ot' => null, 'ot_point' => 1, 'tat' => null, 'tat_point' => 1, 'fst' => null, 'fst_point' => 3, 'remarks' => null]];
     public $server_cat = [['name' => null, 'time' => null, 'product_order' => null, 'ot' => null, 'ot_point' => 1, 'tat' => null, 'tat_point' => 1, 'fst' => null, 'fst_point' => 3, 'remarks' => null]];
     protected $rules = [
-        'category_list.*.sub_categ.data_items.*.name' => 'required|string|max:255',
-        'category_list.*.sub_categ.data_items.*.base_score' => 'required',
-        'category_list.*.sub_categ.data_items.*.sub_category.*.points' => 'required',
-        'category_list.*.sub_categ.data_items.*.sub_category.*.remarks' => 'required',
-        'category_list.*.sub_categ.data_items.*.sub_category.*.is_all_nothing' => 'required',
+        'category_list.*.sub_categ.data_items.*.id' => 'required',
+        'category_list.*.sub_categ.data_items.*.name' => 'required',
+        'category_list.*.sub_categ.data_items.*.sub_category.*.*' => 'required',
+
     ];
     public function setTime($data)
     {
@@ -65,6 +70,7 @@ class Form extends Component
     }
     public function render()
     {
+        $this->audit_forms_id = AuditFormModel::where('store_id', $this->store_id)->value('id');
         $store = StoreModel::find($this->store_id);
         $this->store_name = $store->name;
         $this->store_type = $store->type;
@@ -165,33 +171,29 @@ class Form extends Component
             });
         }
         $this->category_list = $data;
-        // dd($this->category_list);
+        dd($this->category_list);
         return view('livewire.store.form', ['sanitation_list' => $sanitation_defect])->extends('layouts.app');
     }
-    public function getCategoryIndex($index = 0)
+    public function updateRemarks($id, $parentIndex, $subIndex, $childIndex, $categoryId, $subcategoryId, $labelId, $value)
     {
-        dd($index);
-    }
-    public function updateRemarks($id,$parentIndex, $subIndex, $childIndex, $categoryId, $subcategoryId, $labelId, $value)
-    {
-
         $points = $this->category_list[$parentIndex]['sub_categ']['data_items'][$subIndex]['sub_category'][$childIndex]['points'];
-     /*    $this->store_name = $value;
         $is_all = $this->category_list[$parentIndex]['sub_categ']['data_items'][$subIndex]['sub_category'][$childIndex]['is_all_nothing'];
-        $points = $this->category_list[$parentIndex]['sub_categ']['data_items'][$subIndex]['sub_category'][$childIndex]['points'];
-        if ($is_all) {
-            if ($value == $points || $value == 0) {
-                dd($value);
-            } else {
-                // Convert the nested structure to a collection
-                $categoryListCollection = collect($this->category_list);
-                // Modify the desired property using the collection methods
-                $categoryListCollection[$parentIndex]['sub_categ']['data_items'][$subIndex]['sub_category'][$childIndex]['points'] = $value;
-                // Convert the collection back to the nested structure, if needed
-                $this->category_list = $categoryListCollection->toArray();
-            }
+        $this->dispatchBrowserEvent('checkPoints', [
+            'id' => $id,
+            'value' => $value,
+            'points' => $points,
+            'is_all' => $is_all,
+        ]);
+        /* if ($is_all) {
+        if ($value == $points || $value == 0) {
+        dd($value);
         } else {
-            dd($points);
+        $categoryListCollection = collect($this->category_list);
+        $categoryListCollection[$parentIndex]['sub_categ']['data_items'][$subIndex]['sub_category'][$childIndex]['points'] = $value;
+        $this->category_list = $categoryListCollection->toArray();
+        }
+        } else {
+        dd($points);
         } */
         /* dd($parentIndex, $subIndex, $childIndex,$categoryId,$subcategoryId,$labelId, $value); */
         /* $category = $this->category_list[$parentIndex];
@@ -199,12 +201,6 @@ class Form extends Component
         $subCategory['sub_category'][$childIndex]['remarks'] = $value
         $category->sub_categ['data_items'][$subIndex] = $subCategory;
         $this->category_list[$parentIndex] = $category; */
-
-        $this->dispatchBrowserEvent('checkPoints', [
-            'id' => $id,
-            'value' => $value,
-            'points' => $points,
-        ]);
     }
     public function addInput($data)
     {
@@ -230,7 +226,6 @@ class Form extends Component
     }
     public function onStartAndComplete($is_confirm = true, $title = 'Are you sure?', $type = null, $data = null)
     {
-        $data = $this->store_id;
         if ($this->audit_status) {
             $message = 'Are you sure you want to complete this audit?';
         } else {
@@ -240,9 +235,71 @@ class Form extends Component
     }
     public function onUpdateStatus()
     {
+        $timezone = new DateTimeZone('Asia/Manila');
+        $time = new DateTime('now', $timezone);
+        $date_today = $time->format('Y-m-d');
+        $audit_time = $time->format('h:i');
         $data = $this->audit_status ? false : true;
+
         StoreModel::where('id', $this->store_id)->update([
             'audit_status' => $data,
         ]);
+
+        AuditFormModel::updateOrCreate(
+            ['id' => $this->audit_forms_id],
+            [
+                'store_id' => $this->store_id,
+                'date_of_visit' => $date_today,
+                'conducted_by_id' => Auth::user()->id,
+                'received_by' => '',
+                'time_of_audit' => $audit_time,
+                'audit_status' => $data,
+            ]
+        );
+    }
+    public function onSaveResult()
+    {
+        $auditResults = collect($this->category_list)
+            ->flatMap(function ($data) {
+                return collect($data->sub_categ['data_items'])->flatMap(function ($sub) use ($data) {
+                    return collect($sub['sub_category'])->map(function ($child) use ($data, $sub) {
+                        return [
+                            'form_id' => $this->audit_forms_id,
+                            'category_id' => $data->id,
+                            'category_name' => $data->name,
+
+                            'sub_category_id' => $sub['id'],
+                            'sub_name' => $sub['name'],
+                            'sub_base_point' => $sub['bp']?? null,
+                            'sub_point' => $sub['points']?? null,
+                            'sub_remarks' => $sub['remarks']?? null,
+                            'sub_file' => $sub['tag']?? null,
+
+                            'sub_sub_category_id' => $child['id'],
+                            'sub_sub_name' => $child['name'],
+                            'sub_sub_base_point' => $child['bp'] ?? null,
+                            'sub_sub_point' => $child['points']?? null,
+                            'sub_sub_remarks' => $child['remarks']?? null,
+                            'sub_sub_file' => $child['tag']?? null,
+                        ];
+                    });
+                });
+            });
+
+        dd($auditResults);
+
+
+        /* 'sub_base_point' => $sub['bp'],
+        'sub_point' => $sub['points'],
+        'sub_remarks' => $sub['remarks'],
+        'sub_file' => $sub['tag'], */
+
+
+        /*   AuditFormResultModel::create([
+        'form_id' => $this->audit_forms_id,
+        'category_id' => $this->data->id,
+        'category_name' => $this->name,
+        ]); */
+
     }
 }

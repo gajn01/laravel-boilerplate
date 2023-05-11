@@ -1,11 +1,22 @@
 window.addEventListener('checkPoints', checkPoints);
 window.addEventListener('show-alert', showAlert);
 window.addEventListener('confirm-alert', showConfirm);
+
 function checkPoints($event) {
-    if ($event.detail.points < $event.detail.value) {
-        document.getElementById($event.detail.id).value = $event.detail.points;
-    } else if ($event.detail.value < 0) {
-        document.getElementById($event.detail.id).value = 0;
+    if(!$event.detail.is_all){
+        if ($event.detail.points < $event.detail.value) {
+            document.getElementById($event.detail.id).value = $event.detail.points;
+        } else if ($event.detail.value < 0) {
+            document.getElementById($event.detail.id).value = 0;
+        }
+    }else{
+        if ($event.detail.points < $event.detail.value) {
+            document.getElementById($event.detail.id).value = $event.detail.points;
+        } else if ($event.detail.value < 0) {
+            document.getElementById($event.detail.id).value = 0;
+        }else if($event.detail.points > $event.detail.value){
+            document.getElementById($event.detail.id).value = 0;
+        }
     }
 }
 function showAlert(event) {
@@ -32,7 +43,6 @@ function showConfirm(event) {
 window.addEventListener('remove-modal', event => {
     $(event.detail.modalName).modal('hide');
 });
-
 window.Livewire.on('onStartAlert', function (message) {
     swal({
         title: 'Are you sure?',

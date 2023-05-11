@@ -24,8 +24,8 @@
                     'nav-link',
                     'active' => $key == 0,
                 ]) id="cat{{ $data->id }}-tab" data-bs-toggle="tab"
-                    wire:click="getCategoryIndex({{ $key }})" href="#cat{{ $data->id }}" role="tab"
-                    aria-controls="cat{{ $data->id }}" aria-selected="{{ $key == 0 ? 'true' : 'false' }}">
+                    href="#cat{{ $data->id }}" role="tab" aria-controls="cat{{ $data->id }}"
+                    aria-selected="{{ $key == 0 ? 'true' : 'false' }}">
                     {{ $data->name }}
                 </a>
             @empty
@@ -33,6 +33,7 @@
             @endforelse
         </nav>
 
+        <a name="" id="" class="btn btn-primary" wire:click="onSaveResult" role="button">Button</a>
         <div class="tab-content" id="audit-form-tab-content">
             @forelse ($category_list as $key => $data)
                 <div class="tab-pane fade show {{ $key == 0 ? 'active' : '' }}" id="cat{{ $data->id }}"
@@ -482,10 +483,8 @@
                                                                             <label for="remarks"
                                                                                 class="form-label">Remarks</label>
                                                                         @endif
-                                                                        <textarea class="form-control" name="remarks" id="remarks" rows="1"
-                                                                            wire:change="updateRemarks('{{ $loop->parent->parent->index }}', '{{ $loop->parent->index }}', '{{ $loop->index }}', $event.target.value)">{{ $category_list[$loop->parent->parent->index]['sub_categ']['data_items'][$loop->parent->index]['sub_category'][$loop->index]['remarks'] }}</textarea>
+                                                                        <textarea class="form-control" name="remarks" id="remarks" rows="1">{{ $category_list[$loop->parent->parent->index]['sub_categ']['data_items'][$loop->parent->index]['sub_category'][$loop->index]['remarks'] }}</textarea>
                                                                     </div>
-
                                                                     @if (!empty($auditLabel['dropdown']))
                                                                         <div
                                                                             class="col-sm-12 col-md-6 {{ $auditLabel['dropdown'] ? '' : 'd-none' }}">
@@ -533,18 +532,18 @@
                                                                     aria-labelledby="flush-{{ $sub_category['id'] }}"
                                                                     data-bs-parent="#accordionFlushSubcategory">
                                                                     <div class="accordion-body">
-                                                                        @foreach ($sub_category['label'] as $keyIndex => $auditLabel)
+                                                                        @foreach ($sub_category['label'] as $index => $auditLabel)
                                                                             <div class="row mb-3">
                                                                                 <div
                                                                                     class="col-sm-12 col-md-4 col-lg-4">
-                                                                                    <p @class(['pt-4' => $keyIndex == 0])>
+                                                                                    <p @class(['pt-4' => $index == 0])>
                                                                                         {{ $auditLabel['name'] }}
                                                                                     </p>
                                                                                 </div>
                                                                                 <div class="col-sm-12 col-md-2  ">
                                                                                     <div class="row">
                                                                                         <div class="col-sm-6 col-md-6">
-                                                                                            @if ($keyIndex == 0)
+                                                                                            @if ($index == 0)
                                                                                                 <label for=""
                                                                                                     class="form-label">BP</label>
                                                                                             @endif
@@ -554,18 +553,22 @@
                                                                                                 name="bp{{ $auditLabel['name'] }}"
                                                                                                 id="bp"
                                                                                                 placeholder=""
-                                                                                                value="{{ $auditLabel['is_all_nothing'] }}">
+                                                                                                value="{{ $auditLabel['is_all_nothing'] ? $auditLabel['points'] . '*' : $auditLabel['points'] }}">
+
                                                                                         </div>
                                                                                         <div class="col-sm-6 col-md-6">
-                                                                                            @if ($keyIndex == 0)
+                                                                                            @if ($index == 0)
                                                                                                 <label for=""
                                                                                                     class="form-label">Point</label>
                                                                                             @endif
-                                                                                            <input type="number"
+                                                                                                <input type="number"
                                                                                                 class="form-control text-center"
-                                                                                                name="points{{ $auditLabel['name'] }}"
-                                                                                                id="points"
-                                                                                                value="{{ $auditLabel['points'] }}">
+                                                                                                name="points{{ $auditLabel['id'] }}"
+                                                                                                id="points{{ $auditLabel['id'] }}"
+                                                                                                value="{{ $auditLabel['points'] }}"
+                                                                                                min="{{ $auditLabel['is_all_nothing'] ? $auditLabel['points'] : 0 }}"
+                                                                                                max="{{ $auditLabel['is_all_nothing'] ? 0 : $auditLabel['points'] }}"
+                                                                                               >
                                                                                         </div>
                                                                                     </div>
                                                                                 </div>
@@ -574,7 +577,7 @@
                                                                                     <div class="row">
                                                                                         <div
                                                                                             class="col-sm-12 {{ $auditLabel['dropdown'] ? 'col-md-6' : 'col-md-12' }}">
-                                                                                            @if ($keyIndex == 0)
+                                                                                            @if ($index == 0)
                                                                                                 <label for=""
                                                                                                     class="form-label">Remarks</label>
                                                                                             @endif
@@ -583,7 +586,7 @@
                                                                                         @if (!empty($auditLabel['dropdown']))
                                                                                             <div
                                                                                                 class="col-sm-12 col-md-6 {{ $auditLabel['dropdown'] ? '' : 'd-none' }}">
-                                                                                                @if ($keyIndex == 0 || empty($auditLabel['dropdown']))
+                                                                                                @if ($index == 0 || empty($auditLabel['dropdown']))
                                                                                                     <label
                                                                                                         for=""
                                                                                                         class="form-label">Deviation</label>
