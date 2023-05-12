@@ -26,5 +26,11 @@ class AuditFormResult extends Model
         'sub_sub_point',
         'sub_sub_remarks',
         'sub_sub_file',
+        'label_id',
+        'label_name',
+        'label_base_point',
+        'label_point',
+        'label_remarks',
+        'label_file',
     ];
 }

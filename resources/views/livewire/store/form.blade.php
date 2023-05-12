@@ -34,7 +34,7 @@
         </nav>
 
         <a name="" id="" class="btn btn-primary" wire:click="onSaveResult" role="button">Button</a>
-        <div class="tab-content" id="audit-form-tab-content">
+        <div class="tab-content" id="audit-form-tab-content" wire:ignore>
             @forelse ($category_list as $key => $data)
                 <div class="tab-pane fade show {{ $key == 0 ? 'active' : '' }}" id="cat{{ $data->id }}"
                     role="tabpanel" aria-labelledby="cat{{ $data->id }}-tab">
@@ -83,7 +83,6 @@
                                                     </tr>
                                                 </tbody>
                                             </table>
-
                                         </div>
                                     </div>
                                 </div>
@@ -104,7 +103,7 @@
                             </div>
                         @endif --}}
                     </div>
-                    <div class="app-card app-card-orders-table shadow-sm mb-5 bg-none">
+                    <div class="app-card app-card-orders-table shadow-sm mb-5 bg-none" >
                         <div class="app-card-body">
                             @if ($key == 0)
                                 <div class="accordion mb-3" id="accordionExample">
@@ -415,7 +414,7 @@
                                 </div>
                             @endif
                             @forelse ($data->sub_categ['data_items'] as  $key =>  $dataItem)
-                                <div class="accordion mb-3" id="accordionCategory">
+                                <div class="accordion mb-3" id="accordionCategory" >
                                     <div class="accordion-item">
                                         <h2 class="accordion-header" id="{{ $dataItem['name'] }}">
                                             <button class="accordion-button " type="button"
@@ -448,7 +447,7 @@
                                                                             class="form-control text-center" disabled
                                                                             name="bp{{ $auditLabel['name'] }}"
                                                                             id="bp"
-                                                                            value="{{ $auditLabel['is_all_nothing'] ? $auditLabel['points'] . '*' : $auditLabel['points'] }}"
+                                                                            value="{{ $auditLabel['is_all_nothing'] ? $auditLabel['bp'] . '*' : $auditLabel['bp'] }}"
                                                                             placeholder="">
                                                                     </div>
                                                                     <div class="col-sm-6 col-md-6">
@@ -463,7 +462,7 @@
                                                                             value="{{ $auditLabel['points'] }}"
                                                                             min="{{ $auditLabel['is_all_nothing'] ? $auditLabel['points'] : 0 }}"
                                                                             max="{{ $auditLabel['is_all_nothing'] ? 0 : $auditLabel['points'] }}"
-                                                                            wire:change="updateRemarks(
+                                                                            wire:change.lazy="updatePoints(
                                                                             'points{{ $auditLabel['id'] }}',
                                                                             '{{ $loop->parent->parent->index }}',
                                                                             '{{ $loop->parent->index }}',
@@ -471,6 +470,7 @@
                                                                             '{{ $category_list[$loop->parent->parent->index]['id'] }}',
                                                                             '{{ $category_list[$loop->parent->parent->index]['sub_categ']['data_items'][$loop->parent->index]['id'] }}',
                                                                             '{{ $category_list[$loop->parent->parent->index]['sub_categ']['data_items'][$loop->parent->index]['sub_category'][$loop->index]['id'] }}',
+                                                                            '{{ $dataItem['is_sub']}}',
                                                                             $event.target.value )">
                                                                     </div>
                                                                 </div>
@@ -553,7 +553,7 @@
                                                                                                 name="bp{{ $auditLabel['name'] }}"
                                                                                                 id="bp"
                                                                                                 placeholder=""
-                                                                                                value="{{ $auditLabel['is_all_nothing'] ? $auditLabel['points'] . '*' : $auditLabel['points'] }}">
+                                                                                                value="{{ $auditLabel['is_all_nothing'] ? $auditLabel['bp'] . '*' : $auditLabel['bp'] }}">
 
                                                                                         </div>
                                                                                         <div class="col-sm-6 col-md-6">
@@ -561,14 +561,25 @@
                                                                                                 <label for=""
                                                                                                     class="form-label">Point</label>
                                                                                             @endif
-                                                                                                <input type="number"
-                                                                                                class="form-control text-center"
-                                                                                                name="points{{ $auditLabel['id'] }}"
-                                                                                                id="points{{ $auditLabel['id'] }}"
-                                                                                                value="{{ $auditLabel['points'] }}"
-                                                                                                min="{{ $auditLabel['is_all_nothing'] ? $auditLabel['points'] : 0 }}"
-                                                                                                max="{{ $auditLabel['is_all_nothing'] ? 0 : $auditLabel['points'] }}"
-                                                                                               >
+                                                                                               <input type="number"
+                                                                                               class="form-control text-center"
+                                                                                               name="points{{ $auditLabel['id'] }}"
+                                                                                               id="points{{ $auditLabel['id'] }}"
+                                                                                               value="{{ $auditLabel['points'] }}"
+                                                                                               min="{{ $auditLabel['is_all_nothing'] ? $auditLabel['points'] : 0 }}"
+                                                                                               max="{{ $auditLabel['is_all_nothing'] ? 0 : $auditLabel['points'] }}"
+                                                                                              {{--  wire:change="updatePoints(
+                                                                                               'points{{ $auditLabel['id'] }}',
+                                                                                               '{{ $loop->parent->parent->parent->index }}',
+                                                                                               '{{ $loop->parent->parent->index }}',
+                                                                                               '{{ $loop->parent->index }}',
+                                                                                               '{{ $loop->index }}',
+                                                                                               '{{ $category_list[$loop->parent->parent->index]['id'] }}',
+                                                                                               '{{ $category_list[$loop->parent->parent->index]['sub_categ']['data_items'][$loop->parent->index]['id'] }}',
+                                                                                               '{{ $category_list[$loop->parent->parent->index]['sub_categ']['data_items'][$loop->parent->index]['sub_category'][$loop->index]['id'] }}',
+                                                                                               '{{ $category_list[$loop->parent->parent->parent->index]['sub_categ']['data_items'][$loop->parent->parent->index]['sub_category'][$loop->parent->index]['label'][$loop->index]['id'] }}',
+                                                                                               '{{ $dataItem['is_sub']}}',
+                                                                                               $event.target.value )" --}}>
                                                                                         </div>
                                                                                     </div>
                                                                                 </div>

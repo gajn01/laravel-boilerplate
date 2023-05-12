@@ -39,7 +39,6 @@ class Form extends Component
         'category_list.*.sub_categ.data_items.*.id' => 'required',
         'category_list.*.sub_categ.data_items.*.name' => 'required',
         'category_list.*.sub_categ.data_items.*.sub_category.*.*' => 'required',
-
     ];
     public function setTime($data)
     {
@@ -71,12 +70,18 @@ class Form extends Component
     public function render()
     {
         $this->audit_forms_id = AuditFormModel::where('store_id', $this->store_id)->value('id');
+        $audit_result = AuditFormResultModel::select('*')
+            ->where('form_id', $this->audit_forms_id)
+            ->get()
+            ->toArray();
+        // dd($audit_result);
         $store = StoreModel::find($this->store_id);
         $this->store_name = $store->name;
         $this->store_type = $store->type;
         $this->audit_status = $store->audit_status;
         $this->actionTitle = $this->audit_status ? 'Complete' : 'Start';
         $sanitation_defect = SanitaryModel::select('id', 'title', 'code')->get();
+
         $data = CategoryModel::select('id', 'name', 'type', 'critical_deviation')
             ->where('type', $this->store_type)
             ->with([
@@ -87,10 +92,14 @@ class Form extends Component
             ->get();
         foreach ($data as $category) {
             $subCategories = $category->subCategories;
+            $category_id = $category->id;
+            $sub_category_id = 0;
+            $sub_sub_category_id = 0;
             $total_bp = 0;
             $total_base_score = 0;
             $sub_category = [
-                'data_items' => $subCategories->map(function ($subCategory) use (&$total_bp, &$total_base_score) {
+                'data_items' => $subCategories->map(function ($subCategory) use (&$total_bp, &$total_base_score, &$category_id, &$sub_category_id, &$sub_sub_category_id) {
+                    $sub_category_id = $subCategory->id;
                     $subCategoryData = [
                         'id' => $subCategory->id,
                         'is_sub' => $subCategory->is_sub,
@@ -98,7 +107,21 @@ class Form extends Component
                         'base_score' => 0,
                         'total_percent' => 0,
                     ];
-                    $subCategoryData['sub_category'] = ($subCategory->is_sub == 0) ? $subCategory->subCategoryLabels->map(function ($label) use (&$total_bp, &$total_base_score) {
+                    $subCategoryData['sub_category'] = ($subCategory->is_sub == 0) ? $subCategory->subCategoryLabels->map(function ($label) use (&$total_bp, &$total_base_score, &$category_id, &$sub_category_id, &$sub_sub_category_id) {
+                        $sub_sub_category_id = $label->id;
+                        $saved_point = 0;
+                        if ($this->audit_status) {
+                            $saved_point = $label->bp;
+                        } else {
+                            $data = AuditFormResultModel::select('sub_sub_point')
+                                ->where('form_id', $this->audit_forms_id)
+                                ->where('category_id', $category_id)
+                                ->where('sub_category_id', $sub_category_id)
+                                ->where('sub_sub_category_id', $sub_sub_category_id)
+                                ->first();
+                            $saved_point = $data['sub_sub_point'];
+                        }
+
                         $dropdownMenu = DropdownMenuModel::where('dropdown_id', $label->dropdown_id)->get()->toArray();
                         $isAllNothing = $label->is_all_nothing;
                         $total_bp += $label->bp;
@@ -108,7 +131,7 @@ class Form extends Component
                             'name' => $label->name,
                             'bp' => $label->bp,
                             'is_all_nothing' => $isAllNothing,
-                            'points' => $label->bp,
+                            'points' => $saved_point,
                             'remarks' => null,
                             'tag' => '',
                             'dropdown' => $dropdownMenu,
@@ -171,11 +194,12 @@ class Form extends Component
             });
         }
         $this->category_list = $data;
-        dd($this->category_list);
+        // dd($this->category_list);
         return view('livewire.store.form', ['sanitation_list' => $sanitation_defect])->extends('layouts.app');
     }
-    public function updateRemarks($id, $parentIndex, $subIndex, $childIndex, $categoryId, $subcategoryId, $labelId, $value)
+    public function updatePoints($id, $parentIndex, $subIndex, $childIndex, $categoryId, $subcategoryId, $labelId, $is_sub, $value)
     {
+        // dd($id, $parentIndex, $subIndex, $childIndex, $categoryId, $subcategoryId, $labelId, $is_sub, $value);
         $points = $this->category_list[$parentIndex]['sub_categ']['data_items'][$subIndex]['sub_category'][$childIndex]['points'];
         $is_all = $this->category_list[$parentIndex]['sub_categ']['data_items'][$subIndex]['sub_category'][$childIndex]['is_all_nothing'];
         $this->dispatchBrowserEvent('checkPoints', [
@@ -184,23 +208,15 @@ class Form extends Component
             'points' => $points,
             'is_all' => $is_all,
         ]);
-        /* if ($is_all) {
-        if ($value == $points || $value == 0) {
-        dd($value);
-        } else {
-        $categoryListCollection = collect($this->category_list);
-        $categoryListCollection[$parentIndex]['sub_categ']['data_items'][$subIndex]['sub_category'][$childIndex]['points'] = $value;
-        $this->category_list = $categoryListCollection->toArray();
+        if ($this->audit_status) {
+            AuditFormResultModel::where('form_id', $this->audit_forms_id)
+                ->where('category_id', $categoryId)
+                ->where('sub_category_id', $subcategoryId)
+                ->where('sub_sub_category_id', $labelId)
+                ->update([
+                    'sub_sub_point' => $value,
+                ]);
         }
-        } else {
-        dd($points);
-        } */
-        /* dd($parentIndex, $subIndex, $childIndex,$categoryId,$subcategoryId,$labelId, $value); */
-        /* $category = $this->category_list[$parentIndex];
-        $subCategory = $category->sub_categ['data_items'][$subIndex];
-        $subCategory['sub_category'][$childIndex]['remarks'] = $value
-        $category->sub_categ['data_items'][$subIndex] = $subCategory;
-        $this->category_list[$parentIndex] = $category; */
     }
     public function addInput($data)
     {
@@ -256,50 +272,55 @@ class Form extends Component
                 'audit_status' => $data,
             ]
         );
+        $this->onInitialSave();
     }
     public function onSaveResult()
     {
-        $auditResults = collect($this->category_list)
-            ->flatMap(function ($data) {
-                return collect($data->sub_categ['data_items'])->flatMap(function ($sub) use ($data) {
-                    return collect($sub['sub_category'])->map(function ($child) use ($data, $sub) {
-                        return [
-                            'form_id' => $this->audit_forms_id,
-                            'category_id' => $data->id,
-                            'category_name' => $data->name,
-
-                            'sub_category_id' => $sub['id'],
-                            'sub_name' => $sub['name'],
-                            'sub_base_point' => $sub['bp']?? null,
-                            'sub_point' => $sub['points']?? null,
-                            'sub_remarks' => $sub['remarks']?? null,
-                            'sub_file' => $sub['tag']?? null,
-
-                            'sub_sub_category_id' => $child['id'],
-                            'sub_sub_name' => $child['name'],
-                            'sub_sub_base_point' => $child['bp'] ?? null,
-                            'sub_sub_point' => $child['points']?? null,
-                            'sub_sub_remarks' => $child['remarks']?? null,
-                            'sub_sub_file' => $child['tag']?? null,
-                        ];
-                    });
-                });
-            });
-
-        dd($auditResults);
-
-
-        /* 'sub_base_point' => $sub['bp'],
-        'sub_point' => $sub['points'],
-        'sub_remarks' => $sub['remarks'],
-        'sub_file' => $sub['tag'], */
-
-
-        /*   AuditFormResultModel::create([
-        'form_id' => $this->audit_forms_id,
-        'category_id' => $this->data->id,
-        'category_name' => $this->name,
-        ]); */
 
     }
+
+    public function onInitialSave()
+    {
+        $auditResults = collect($this->category_list)->flatMap(function ($data) {
+            return collect($data->sub_categ['data_items'])->flatMap(function ($sub) use ($data) {
+                return collect($sub['sub_category'])->map(function ($child) use ($data, $sub) {
+                    $result = [
+                        'form_id' => $this->audit_forms_id,
+                        'category_id' => $data->id,
+                        'category_name' => $data->name,
+                        'sub_category_id' => $sub['id'],
+                        'sub_name' => $sub['name'],
+                        'sub_sub_category_id' => $child['id'],
+                        'sub_sub_name' => $child['name'],
+                        'sub_sub_base_point' => $child['bp'] ?? null,
+                        'sub_sub_point' => $child['points'] ?? null,
+                        'sub_sub_remarks' => $child['remarks'] ?? null,
+                        'sub_sub_file' => $child['tag'] ?? null,
+                    ];
+
+                    if (isset($child['label'])) {
+                        return collect($child['label'])->map(function ($label) use ($result) {
+                            return array_merge($result, [
+                                'label_category_id' => $label['id'],
+                                'label_name' => $label['name'],
+                                'label_base_point' => $label['bp'] ?? null,
+                                'label_point' => $label['points'] ?? null,
+                                'label_remarks' => $label['remarks'] ?? null,
+                                'label_file' => $label['tag'] ?? null,
+                            ]);
+                        });
+                    } else {
+                        return [$result];
+                    }
+                });
+            });
+        })->flatten(1);
+
+        $auditResults->each(function ($result) {
+            if (is_array($result)) {
+                AuditFormResultModel::create($result);
+            }
+        });
+    }
+
 }

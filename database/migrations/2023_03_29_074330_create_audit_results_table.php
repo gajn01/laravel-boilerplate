@@ -28,7 +28,13 @@ return new class extends Migration
             $table->integer('sub_sub_point')->nullable();
             $table->string('sub_sub_remarks')->nullable();
             $table->string('sub_sub_file')->nullable();
-            $table->timestamps();
+            $table->integer('label_id')->nullable();
+            $table->string('label_name')->nullable();
+            $table->integer('label_base_point')->nullable();
+            $table->integer('label_point')->nullable();
+            $table->string('label_remarks')->nullable();
+            $table->string('label_file')->nullable();
+
         });
     }
 
