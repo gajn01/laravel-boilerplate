@@ -94,7 +94,7 @@ class Form extends Component
             $sub_category_id = 0;
             $sub_sub_category_id = 0;
             $total_bp = 0;
-            $total_points =0;
+            $total_points = 0;
             $sub_category = [
                 'data_items' => $subCategories->map(function ($subCategory) use (&$total_bp, &$category_id, &$sub_category_id, &$sub_sub_category_id, &$total_points) {
                     $sub_category_id = $subCategory->id;
@@ -109,14 +109,17 @@ class Form extends Component
                     $subCategoryData['sub_category'] = ($subCategory->is_sub == 0) ? $subCategory->subCategoryLabels->map(function ($label) use (&$total_bp, &$category_id, &$sub_category_id, &$sub_sub_category_id, &$total_points) {
                         $sub_sub_category_id = $label->id;
                         $saved_point = 0;
+                        $saved_remarks ='';
                         if ($this->audit_status) {
-                            $data = AuditFormResultModel::select('sub_sub_point')
+                            $data = AuditFormResultModel::select('*')
                                 ->where('form_id', $this->audit_forms_id)
                                 ->where('category_id', $category_id)
                                 ->where('sub_category_id', $sub_category_id)
                                 ->where('sub_sub_category_id', $sub_sub_category_id)
                                 ->first();
                             $saved_point = $data ? $data['sub_sub_point'] : null;
+                            $saved_remarks = $data ? $data['sub_sub_remarks'] : null;
+
                         } else {
                             $saved_point = $label->bp;
                         }
@@ -130,11 +133,11 @@ class Form extends Component
                             'bp' => $label->bp,
                             'is_all_nothing' => $isAllNothing,
                             'points' => $saved_point,
-                            'remarks' => null,
+                            'remarks' => $saved_remarks,
                             'tag' => '',
                             'dropdown' => $dropdownMenu,
                         ];
-                    }) : $subCategory->subCategoryLabels->map(function ($label) use (&$total_bp,  &$total_points) {
+                    }) : $subCategory->subCategoryLabels->map(function ($label) use (&$total_bp, &$total_points) {
                         $subLabels = SubSubCategoryLabelModel::where('sub_sub_category_id', $label->id)->get();
                         $subLabelData = $subLabels->map(function ($subLabel) use (&$total_bp, &$total_points) {
                             $dropdownMenu = DropdownMenuModel::where('dropdown_id', $subLabel->dropdown_id)->get()->toArray();
@@ -197,28 +200,41 @@ class Form extends Component
         // dd($this->category_list);
         return view('livewire.store.form', ['sanitation_list' => $sanitation_defect])->extends('layouts.app');
     }
-    public function setActive($index){
+    public function setActive($index)
+    {
         $this->active_index = $index;
     }
     public function updatePoints($id, $parentIndex, $subIndex, $childIndex, $categoryId, $subcategoryId, $labelId, $is_sub, $value)
     {
-        $this->store_name ='';
-        // dd($id, $parentIndex, $subIndex, $childIndex, $categoryId, $subcategoryId, $labelId, $is_sub, $value);
-        $bp = $this->category_list[$parentIndex]['sub_categ']['data_items'][$subIndex]['sub_category'][$childIndex]['bp'];
-        $is_all = $this->category_list[$parentIndex]['sub_categ']['data_items'][$subIndex]['sub_category'][$childIndex]['is_all_nothing'];
+        $dataItems = $this->category_list[$parentIndex]['sub_categ']['data_items'];
+        $subCategory = $dataItems[$subIndex]['sub_category'][$childIndex];
+        $bp = $subCategory['bp'];
+        $is_all = $subCategory['is_all_nothing'];
         $this->dispatchBrowserEvent('checkPoints', [
             'id' => $id,
             'value' => $value,
             'points' => $bp,
             'is_all' => $is_all,
         ]);
+        $validated_points = max(0, min($value, $bp));
         if ($this->audit_status) {
             AuditFormResultModel::where('form_id', $this->audit_forms_id)
                 ->where('category_id', $categoryId)
                 ->where('sub_category_id', $subcategoryId)
                 ->where('sub_sub_category_id', $labelId)
                 ->update([
-                    'sub_sub_point' => $value,
+                    'sub_sub_point' => $validated_points,
+                ]);
+        }
+    }
+    public function updateRemarks($categoryId, $subcategoryId, $labelId, $value){
+        if ($this->audit_status) {
+            AuditFormResultModel::where('form_id', $this->audit_forms_id)
+                ->where('category_id', $categoryId)
+                ->where('sub_category_id', $subcategoryId)
+                ->where('sub_sub_category_id', $labelId)
+                ->update([
+                    'sub_sub_remarks' => $value,
                 ]);
         }
     }

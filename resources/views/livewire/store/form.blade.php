@@ -111,7 +111,7 @@
                                                 <h6 class="card-title product-name">Speed and Accuracy</h6>
                                             </button>
                                         </h2>
-                                        <div id="collapseOne" class="accordion-collapse collapse show"
+                                        <div id="collapseOne" class="accordion-collapse collapse "
                                             aria-labelledby="headingOne" data-bs-parent="#accordionExample">
                                             <div class="accordion-body">
                                                 <label for="" class="mb-3">Cashier TAT</label>
@@ -458,7 +458,7 @@
                                                                             value="{{ $auditLabel['points'] }}"
                                                                             min="{{ $auditLabel['is_all_nothing'] ? $auditLabel['bp'] : 0 }}"
                                                                             max="{{ $auditLabel['is_all_nothing'] ? 0 : $auditLabel['bp'] }}"
-                                                                            wire:change.lazy="updatePoints(
+                                                                            wire:change="updatePoints(
                                                                             'points{{ $auditLabel['id'] }}',
                                                                             '{{ $loop->parent->parent->index }}',
                                                                             '{{ $loop->parent->index }}',
@@ -479,7 +479,13 @@
                                                                             <label for="remarks"
                                                                                 class="form-label">Remarks</label>
                                                                         @endif
-                                                                        <textarea class="form-control" name="remarks" id="remarks" rows="1">{{ $category_list[$loop->parent->parent->index]['sub_categ']['data_items'][$loop->parent->index]['sub_category'][$loop->index]['remarks'] }}</textarea>
+                                                                        <textarea class="form-control" name="remarks" id="remarks" rows="1"
+                                                                        wire:change="updateRemarks(
+                                                                            '{{ $category_list[$loop->parent->parent->index]['id'] }}',
+                                                                            '{{ $category_list[$loop->parent->parent->index]['sub_categ']['data_items'][$loop->parent->index]['id'] }}',
+                                                                            '{{ $category_list[$loop->parent->parent->index]['sub_categ']['data_items'][$loop->parent->index]['sub_category'][$loop->index]['id'] }}',
+                                                                            $event.target.value )"
+                                                                        >{{ $category_list[$loop->parent->parent->index]['sub_categ']['data_items'][$loop->parent->index]['sub_category'][$loop->index]['remarks'] }}</textarea>
                                                                     </div>
                                                                     @if (!empty($auditLabel['dropdown']))
                                                                         <div
