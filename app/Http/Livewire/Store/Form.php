@@ -109,7 +109,8 @@ class Form extends Component
                     $subCategoryData['sub_category'] = ($subCategory->is_sub == 0) ? $subCategory->subCategoryLabels->map(function ($label) use (&$total_bp, &$category_id, &$sub_category_id, &$sub_sub_category_id, &$total_points) {
                         $sub_sub_category_id = $label->id;
                         $saved_point = 0;
-                        $saved_remarks ='';
+                        $saved_remarks = '';
+                        $saved_deviation = '';
                         if ($this->audit_status) {
                             $data = AuditFormResultModel::select('*')
                                 ->where('form_id', $this->audit_forms_id)
@@ -119,6 +120,7 @@ class Form extends Component
                                 ->first();
                             $saved_point = $data ? $data['sub_sub_point'] : null;
                             $saved_remarks = $data ? $data['sub_sub_remarks'] : null;
+                            $saved_deviation = $data ? $data['sub_sub_deviation'] : null;
 
                         } else {
                             $saved_point = $label->bp;
@@ -135,6 +137,7 @@ class Form extends Component
                             'points' => $saved_point,
                             'remarks' => $saved_remarks,
                             'tag' => '',
+                            'deviation' => $saved_deviation,
                             'dropdown' => $dropdownMenu,
                         ];
                     }) : $subCategory->subCategoryLabels->map(function ($label) use (&$total_bp, &$total_points) {
@@ -227,7 +230,8 @@ class Form extends Component
                 ]);
         }
     }
-    public function updateRemarks($categoryId, $subcategoryId, $labelId, $value){
+    public function updateRemarks($categoryId, $subcategoryId, $labelId, $value)
+    {
         if ($this->audit_status) {
             AuditFormResultModel::where('form_id', $this->audit_forms_id)
                 ->where('category_id', $categoryId)
@@ -238,6 +242,19 @@ class Form extends Component
                 ]);
         }
     }
+    public function updateDeviation($categoryId, $subcategoryId, $labelId, $value)
+    {
+        if ($this->audit_status) {
+            AuditFormResultModel::where('form_id', $this->audit_forms_id)
+                ->where('category_id', $categoryId)
+                ->where('sub_category_id', $subcategoryId)
+                ->where('sub_sub_category_id', $labelId)
+                ->update([
+                    'sub_sub_deviation' => $value,
+                ]);
+        }
+    }
+
     public function addInput($data)
     {
         $add = [

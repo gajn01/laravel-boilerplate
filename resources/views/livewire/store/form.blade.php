@@ -22,8 +22,8 @@
                     'nav-link',
                     'active' => $key == $active_index,
                 ]) id="cat{{ $data->id }}-tab" data-bs-toggle="tab"
-                    wire:click="setActive({{$key}})"
-                    href="#cat{{ $data->id }}" role="tab" aria-controls="cat{{ $data->id }}"
+                    wire:click="setActive({{ $key }})" href="#cat{{ $data->id }}" role="tab"
+                    aria-controls="cat{{ $data->id }}"
                     aria-selected="{{ $key == $active_index ? 'true' : 'false' }}">
                     {{ $data->name }}
                 </a>
@@ -32,7 +32,7 @@
             @endforelse
         </nav>
 
-        <div class="tab-content" id="audit-form-tab-content" >
+        <div class="tab-content" id="audit-form-tab-content">
             @forelse ($category_list as $key => $data)
                 <div class="tab-pane fade show {{ $key == $active_index ? 'active' : '' }}" id="cat{{ $data->id }}"
                     role="tabpanel" aria-labelledby="cat{{ $data->id }}-tab">
@@ -99,7 +99,7 @@
                             </div>
                         @endif --}}
                     </div>
-                    <div class="app-card app-card-orders-table shadow-sm mb-5 bg-none" >
+                    <div class="app-card app-card-orders-table shadow-sm mb-5 bg-none">
                         <div class="app-card-body">
                             @if ($key == 0)
                                 <div class="accordion mb-3" id="accordionExample">
@@ -410,7 +410,7 @@
                                 </div>
                             @endif
                             @forelse ($data->sub_categ['data_items'] as  $key =>  $dataItem)
-                                <div class="accordion mb-3" id="accordionCategory" >
+                                <div class="accordion mb-3" id="accordionCategory">
                                     <div class="accordion-item">
                                         <h2 class="accordion-header" id="{{ $dataItem['name'] }}">
                                             <button class="accordion-button " type="button"
@@ -466,7 +466,7 @@
                                                                             '{{ $category_list[$loop->parent->parent->index]['id'] }}',
                                                                             '{{ $category_list[$loop->parent->parent->index]['sub_categ']['data_items'][$loop->parent->index]['id'] }}',
                                                                             '{{ $category_list[$loop->parent->parent->index]['sub_categ']['data_items'][$loop->parent->index]['sub_category'][$loop->index]['id'] }}',
-                                                                            '{{ $dataItem['is_sub']}}',
+                                                                            '{{ $dataItem['is_sub'] }}',
                                                                             $event.target.value )">
                                                                     </div>
                                                                 </div>
@@ -480,12 +480,11 @@
                                                                                 class="form-label">Remarks</label>
                                                                         @endif
                                                                         <textarea class="form-control" name="remarks" id="remarks" rows="1"
-                                                                        wire:change="updateRemarks(
+                                                                            wire:change="updateRemarks(
                                                                             '{{ $category_list[$loop->parent->parent->index]['id'] }}',
                                                                             '{{ $category_list[$loop->parent->parent->index]['sub_categ']['data_items'][$loop->parent->index]['id'] }}',
                                                                             '{{ $category_list[$loop->parent->parent->index]['sub_categ']['data_items'][$loop->parent->index]['sub_category'][$loop->index]['id'] }}',
-                                                                            $event.target.value )"
-                                                                        >{{ $category_list[$loop->parent->parent->index]['sub_categ']['data_items'][$loop->parent->index]['sub_category'][$loop->index]['remarks'] }}</textarea>
+                                                                            $event.target.value )">{{ $category_list[$loop->parent->parent->index]['sub_categ']['data_items'][$loop->parent->index]['sub_category'][$loop->index]['remarks'] }}</textarea>
                                                                     </div>
                                                                     @if (!empty($auditLabel['dropdown']))
                                                                         <div
@@ -495,20 +494,25 @@
                                                                                     class="form-label">Deviation</label>
                                                                             @endif
                                                                             <select class="form-select form-select-md"
-                                                                                wire:model="data.{{ $loop->parent->parent->index }}.data_items.{{ $loop->parent->index }}.sub_category.{{ $loop->index }}.tag"
+                                                                                wire:change="updateDeviation('{{ $category_list[$loop->parent->parent->index]['id'] }}',
+                                                                                                        '{{ $category_list[$loop->parent->parent->index]['sub_categ']['data_items'][$loop->parent->index]['id'] }}',
+                                                                                                        '{{ $category_list[$loop->parent->parent->index]['sub_categ']['data_items'][$loop->parent->index]['sub_category'][$loop->index]['id'] }}',
+                                                                                                        $event.target.value )"
                                                                                 name="tag{{ $auditLabel['name'] }}"
                                                                                 id="tag">
                                                                                 <option value="0">Select a
-                                                                                    deviation </option>
+                                                                                    deviation</option>
                                                                                 @foreach ($auditLabel['dropdown'] as $result)
-                                                                                    @if (isset($result['name']))
+                                                                                    @isset($result['name'])
                                                                                         <option
-                                                                                            value="{{ $result['id'] }}">
+                                                                                            value="{{ $result['name'] }}"
+                                                                                            {{ $result['name'] === $auditLabel['deviation'] ? 'selected' : '' }}>
                                                                                             {{ $result['name'] }}
                                                                                         </option>
-                                                                                    @endif
+                                                                                    @endisset
                                                                                 @endforeach
                                                                             </select>
+
                                                                         </div>
                                                                     @endif
                                                                 </div>
@@ -563,14 +567,14 @@
                                                                                                 <label for=""
                                                                                                     class="form-label">Point</label>
                                                                                             @endif
-                                                                                               <input type="number"
-                                                                                               class="form-control text-center"
-                                                                                               name="points{{ $auditLabel['id'] }}"
-                                                                                               id="points{{ $auditLabel['id'] }}"
-                                                                                               value="{{ $auditLabel['points'] }}"
-                                                                                               min="{{ $auditLabel['is_all_nothing'] ? $auditLabel['points'] : 0 }}"
-                                                                                               max="{{ $auditLabel['is_all_nothing'] ? 0 : $auditLabel['points'] }}"
-                                                                                              {{--  wire:change="updatePoints(
+                                                                                            <input type="number"
+                                                                                                class="form-control text-center"
+                                                                                                name="points{{ $auditLabel['id'] }}"
+                                                                                                id="points{{ $auditLabel['id'] }}"
+                                                                                                value="{{ $auditLabel['points'] }}"
+                                                                                                min="{{ $auditLabel['is_all_nothing'] ? $auditLabel['points'] : 0 }}"
+                                                                                                max="{{ $auditLabel['is_all_nothing'] ? 0 : $auditLabel['points'] }}"
+                                                                                                {{--  wire:change="updatePoints(
                                                                                                'points{{ $auditLabel['id'] }}',
                                                                                                '{{ $loop->parent->parent->parent->index }}',
                                                                                                '{{ $loop->parent->parent->index }}',
