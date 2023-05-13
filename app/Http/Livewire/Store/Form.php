@@ -19,6 +19,7 @@ use DateTimeZone;
 
 class Form extends Component
 {
+    public $active_index = 0;
     protected $listeners = ['alert-sent' => 'onUpdateStatus', 'start-alert-sent' => 'onUpdateStatus'];
     public $store_id;
     public $store_name;
@@ -69,18 +70,15 @@ class Form extends Component
     }
     public function render()
     {
+        $sanitation_defect = SanitaryModel::select('id', 'title', 'code')->get();
+
         $this->audit_forms_id = AuditFormModel::where('store_id', $this->store_id)->value('id');
-        $audit_result = AuditFormResultModel::select('*')
-            ->where('form_id', $this->audit_forms_id)
-            ->get()
-            ->toArray();
         // dd($audit_result);
         $store = StoreModel::find($this->store_id);
         $this->store_name = $store->name;
         $this->store_type = $store->type;
         $this->audit_status = $store->audit_status;
         $this->actionTitle = $this->audit_status ? 'Complete' : 'Start';
-        $sanitation_defect = SanitaryModel::select('id', 'title', 'code')->get();
 
         $data = CategoryModel::select('id', 'name', 'type', 'critical_deviation')
             ->where('type', $this->store_type)
@@ -96,36 +94,36 @@ class Form extends Component
             $sub_category_id = 0;
             $sub_sub_category_id = 0;
             $total_bp = 0;
-            $total_base_score = 0;
+            $total_points =0;
             $sub_category = [
-                'data_items' => $subCategories->map(function ($subCategory) use (&$total_bp, &$total_base_score, &$category_id, &$sub_category_id, &$sub_sub_category_id) {
+                'data_items' => $subCategories->map(function ($subCategory) use (&$total_bp, &$category_id, &$sub_category_id, &$sub_sub_category_id, &$total_points) {
                     $sub_category_id = $subCategory->id;
                     $subCategoryData = [
                         'id' => $subCategory->id,
                         'is_sub' => $subCategory->is_sub,
                         'name' => $subCategory->name,
                         'base_score' => 0,
+                        'total_point' => 0,
                         'total_percent' => 0,
                     ];
-                    $subCategoryData['sub_category'] = ($subCategory->is_sub == 0) ? $subCategory->subCategoryLabels->map(function ($label) use (&$total_bp, &$total_base_score, &$category_id, &$sub_category_id, &$sub_sub_category_id) {
+                    $subCategoryData['sub_category'] = ($subCategory->is_sub == 0) ? $subCategory->subCategoryLabels->map(function ($label) use (&$total_bp, &$category_id, &$sub_category_id, &$sub_sub_category_id, &$total_points) {
                         $sub_sub_category_id = $label->id;
                         $saved_point = 0;
                         if ($this->audit_status) {
-                            $saved_point = $label->bp;
-                        } else {
                             $data = AuditFormResultModel::select('sub_sub_point')
                                 ->where('form_id', $this->audit_forms_id)
                                 ->where('category_id', $category_id)
                                 ->where('sub_category_id', $sub_category_id)
                                 ->where('sub_sub_category_id', $sub_sub_category_id)
                                 ->first();
-                            $saved_point = $data['sub_sub_point'];
+                            $saved_point = $data ? $data['sub_sub_point'] : null;
+                        } else {
+                            $saved_point = $label->bp;
                         }
-
                         $dropdownMenu = DropdownMenuModel::where('dropdown_id', $label->dropdown_id)->get()->toArray();
                         $isAllNothing = $label->is_all_nothing;
                         $total_bp += $label->bp;
-                        $total_base_score += $label->bp;
+                        $total_points += $saved_point;
                         return [
                             'id' => $label->id,
                             'name' => $label->name,
@@ -136,13 +134,13 @@ class Form extends Component
                             'tag' => '',
                             'dropdown' => $dropdownMenu,
                         ];
-                    }) : $subCategory->subCategoryLabels->map(function ($label) use (&$total_bp, &$total_base_score) {
+                    }) : $subCategory->subCategoryLabels->map(function ($label) use (&$total_bp,  &$total_points) {
                         $subLabels = SubSubCategoryLabelModel::where('sub_sub_category_id', $label->id)->get();
-                        $subLabelData = $subLabels->map(function ($subLabel) use (&$total_bp, &$total_base_score) {
+                        $subLabelData = $subLabels->map(function ($subLabel) use (&$total_bp, &$total_points) {
                             $dropdownMenu = DropdownMenuModel::where('dropdown_id', $subLabel->dropdown_id)->get()->toArray();
                             $isAllNothing = $subLabel->is_all_nothing;
                             $total_bp += $subLabel->bp;
-                            $total_base_score += $subLabel->bp;
+                            $total_points += $subLabel->bp;
                             return [
                                 'id' => $subLabel->id,
                                 'name' => $subLabel->name,
@@ -160,12 +158,14 @@ class Form extends Component
                             'label' => $subLabelData,
                         ];
                     });
+                    $subCategoryData['total_points'] = $total_points;
                     $subCategoryData['base_score'] = $total_bp;
-                    $subCategoryData['total_percent'] = $total_bp * 100 / $total_bp;
+                    $subCategoryData['total_percent'] = round(($total_points * 100 / $total_bp), 2);
                     $total_bp = 0;
+                    $total_points = 0;
                     return $subCategoryData;
                 }),
-                'total_base_score' => $total_base_score,
+                'total_point' => 0,
                 'total_percentage' => '100',
             ];
             $category->sub_categ = $sub_category;
@@ -197,15 +197,19 @@ class Form extends Component
         // dd($this->category_list);
         return view('livewire.store.form', ['sanitation_list' => $sanitation_defect])->extends('layouts.app');
     }
+    public function setActive($index){
+        $this->active_index = $index;
+    }
     public function updatePoints($id, $parentIndex, $subIndex, $childIndex, $categoryId, $subcategoryId, $labelId, $is_sub, $value)
     {
+        $this->store_name ='';
         // dd($id, $parentIndex, $subIndex, $childIndex, $categoryId, $subcategoryId, $labelId, $is_sub, $value);
-        $points = $this->category_list[$parentIndex]['sub_categ']['data_items'][$subIndex]['sub_category'][$childIndex]['points'];
+        $bp = $this->category_list[$parentIndex]['sub_categ']['data_items'][$subIndex]['sub_category'][$childIndex]['bp'];
         $is_all = $this->category_list[$parentIndex]['sub_categ']['data_items'][$subIndex]['sub_category'][$childIndex]['is_all_nothing'];
         $this->dispatchBrowserEvent('checkPoints', [
             'id' => $id,
             'value' => $value,
-            'points' => $points,
+            'points' => $bp,
             'is_all' => $is_all,
         ]);
         if ($this->audit_status) {
@@ -274,13 +278,9 @@ class Form extends Component
         );
         $this->onInitialSave();
     }
-    public function onSaveResult()
-    {
-
-    }
-
     public function onInitialSave()
     {
+        $this->audit_forms_id = AuditFormModel::where('store_id', $this->store_id)->value('id');
         $auditResults = collect($this->category_list)->flatMap(function ($data) {
             return collect($data->sub_categ['data_items'])->flatMap(function ($sub) use ($data) {
                 return collect($sub['sub_category'])->map(function ($child) use ($data, $sub) {

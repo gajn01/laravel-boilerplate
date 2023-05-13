@@ -1,5 +1,4 @@
 @section('title', 'Mary Grace Restaurant Operation System / Audit Forms')
-
 <div class="container-xl">
     <nav aria-label="breadcrumb">
         <ol class="breadcrumb">
@@ -7,7 +6,6 @@
             <li class="breadcrumb-item active" aria-current="page">{{ $store_name }}</li>
         </ol>
     </nav>
-
     <div class="page-utilities mb-3">
         <div class="row g-2 justify-content-start justify-content-md-end align-items-center">
             <div class="col-auto mb-3">
@@ -22,10 +20,11 @@
                     'flex-sm-fill',
                     'text-sm-center',
                     'nav-link',
-                    'active' => $key == 0,
+                    'active' => $key == $active_index,
                 ]) id="cat{{ $data->id }}-tab" data-bs-toggle="tab"
+                    wire:click="setActive({{$key}})"
                     href="#cat{{ $data->id }}" role="tab" aria-controls="cat{{ $data->id }}"
-                    aria-selected="{{ $key == 0 ? 'true' : 'false' }}">
+                    aria-selected="{{ $key == $active_index ? 'true' : 'false' }}">
                     {{ $data->name }}
                 </a>
             @empty
@@ -33,12 +32,11 @@
             @endforelse
         </nav>
 
-        <a name="" id="" class="btn btn-primary" wire:click="onSaveResult" role="button">Button</a>
-        <div class="tab-content" id="audit-form-tab-content" wire:ignore>
+        <div class="tab-content" id="audit-form-tab-content" >
             @forelse ($category_list as $key => $data)
-                <div class="tab-pane fade show {{ $key == 0 ? 'active' : '' }}" id="cat{{ $data->id }}"
+                <div class="tab-pane fade show {{ $key == $active_index ? 'active' : '' }}" id="cat{{ $data->id }}"
                     role="tabpanel" aria-labelledby="cat{{ $data->id }}-tab">
-                    <div class="row g-4 mb-4">
+                    <div class="row g-4 mb-4" wire:ignore.self>
                         <div class="col-12  {{ $data->critical_deviation->isNotEmpty() ? 'col-lg-6' : 'col-lg-12' }}">
                             <div class="app-card app-card-chart  shadow-sm">
                                 <div class="app-card-header p-3">
@@ -63,7 +61,7 @@
                                                                     href="#{{ $sub['name'] }}">{{ $sub['name'] }}</a>
                                                             </td>
                                                             <td class="text-center">{{ $sub['base_score'] }}</td>
-                                                            <td class="text-center">{{ $sub['base_score'] }}</td>
+                                                            <td class="text-center">{{ $sub['total_points'] }}</td>
                                                             <td class="text-center"> {{ $sub['total_percent'] }}</td>
                                                         </tr>
                                                     @endforeach
@@ -72,10 +70,8 @@
                                                             <h5 class="app-card-title ">Total</h5>
                                                         </td>
                                                         <td class="text-center">
-                                                            {{ $data->sub_categ['total_base_score'] }}
                                                         </td>
                                                         <td class="text-center">
-                                                            {{ $data->sub_categ['total_base_score'] }}
                                                         </td>
                                                         <td class="text-center">
                                                             {{ $data->sub_categ['total_percentage'] }}
@@ -460,8 +456,8 @@
                                                                             name="points{{ $auditLabel['id'] }}"
                                                                             id="points{{ $auditLabel['id'] }}"
                                                                             value="{{ $auditLabel['points'] }}"
-                                                                            min="{{ $auditLabel['is_all_nothing'] ? $auditLabel['points'] : 0 }}"
-                                                                            max="{{ $auditLabel['is_all_nothing'] ? 0 : $auditLabel['points'] }}"
+                                                                            min="{{ $auditLabel['is_all_nothing'] ? $auditLabel['bp'] : 0 }}"
+                                                                            max="{{ $auditLabel['is_all_nothing'] ? 0 : $auditLabel['bp'] }}"
                                                                             wire:change.lazy="updatePoints(
                                                                             'points{{ $auditLabel['id'] }}',
                                                                             '{{ $loop->parent->parent->index }}',
