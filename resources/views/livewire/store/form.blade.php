@@ -61,7 +61,7 @@
                                                                     href="#{{ $sub['name'] }}">{{ $sub['name'] }}</a>
                                                             </td>
                                                             <td class="text-center">{{ $sub['base_score'] }}</td>
-                                                            <td class="text-center">{{ $sub['total_points'] }}</td>
+                                                            <td class="text-center">{{ $sub['total_point'] }}</td>
                                                             <td class="text-center"> {{ $sub['total_percent'] }}</td>
                                                         </tr>
                                                     @endforeach
@@ -70,8 +70,10 @@
                                                             <h5 class="app-card-title ">Total</h5>
                                                         </td>
                                                         <td class="text-center">
+                                                            {{ $sub['total_base'] }}
                                                         </td>
                                                         <td class="text-center">
+                                                            {{ $sub['total_point'] }}
                                                         </td>
                                                         <td class="text-center">
                                                             {{ $data->sub_categ['total_percentage'] }}

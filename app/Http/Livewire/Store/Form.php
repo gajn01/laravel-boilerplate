@@ -94,9 +94,10 @@ class Form extends Component
             $sub_category_id = 0;
             $sub_sub_category_id = 0;
             $total_bp = 0;
-            $total_points = 0;
+            $total_base = 100;
+            $total_score = 0;
             $sub_category = [
-                'data_items' => $subCategories->map(function ($subCategory) use (&$total_bp, &$category_id, &$sub_category_id, &$sub_sub_category_id, &$total_points) {
+                'data_items' => $subCategories->map(function ($subCategory) use (&$total_bp, &$category_id, &$sub_category_id, &$sub_sub_category_id, &$total_base, &$total_score) {
                     $sub_category_id = $subCategory->id;
                     $subCategoryData = [
                         'id' => $subCategory->id,
@@ -106,7 +107,7 @@ class Form extends Component
                         'total_point' => 0,
                         'total_percent' => 0,
                     ];
-                    $subCategoryData['sub_category'] = ($subCategory->is_sub == 0) ? $subCategory->subCategoryLabels->map(function ($label) use (&$total_bp, &$category_id, &$sub_category_id, &$sub_sub_category_id, &$total_points) {
+                    $subCategoryData['sub_category'] = ($subCategory->is_sub == 0) ? $subCategory->subCategoryLabels->map(function ($label) use (&$total_bp, &$category_id, &$sub_category_id, &$sub_sub_category_id, &$total_points, &$total_base, &$total_score) {
                         $sub_sub_category_id = $label->id;
                         $saved_point = 0;
                         $saved_remarks = '';
@@ -126,9 +127,13 @@ class Form extends Component
                             $saved_point = $label->bp;
                         }
                         $dropdownMenu = DropdownMenuModel::where('dropdown_id', $label->dropdown_id)->get()->toArray();
+
                         $isAllNothing = $label->is_all_nothing;
                         $total_bp += $label->bp;
                         $total_points += $saved_point;
+                        $total_base += $label->bp;
+                        $total_score += $saved_point;
+
                         return [
                             'id' => $label->id,
                             'name' => $label->name,
@@ -140,13 +145,16 @@ class Form extends Component
                             'deviation' => $saved_deviation,
                             'dropdown' => $dropdownMenu,
                         ];
-                    }) : $subCategory->subCategoryLabels->map(function ($label) use (&$total_bp, &$total_points) {
+                    }) : $subCategory->subCategoryLabels->map(function ($label) use (&$total_bp, &$total_points, &$total_base, &$total_score) {
                         $subLabels = SubSubCategoryLabelModel::where('sub_sub_category_id', $label->id)->get();
-                        $subLabelData = $subLabels->map(function ($subLabel) use (&$total_bp, &$total_points) {
+                        $subLabelData = $subLabels->map(function ($subLabel) use (&$total_bp, &$total_points, &$total_base, &$total_score) {
                             $dropdownMenu = DropdownMenuModel::where('dropdown_id', $subLabel->dropdown_id)->get()->toArray();
                             $isAllNothing = $subLabel->is_all_nothing;
                             $total_bp += $subLabel->bp;
                             $total_points += $subLabel->bp;
+                            $total_base += $subLabel->bp;
+                            $total_score += $subLabel->bp;
+
                             return [
                                 'id' => $subLabel->id,
                                 'name' => $subLabel->name,
@@ -158,20 +166,28 @@ class Form extends Component
                                 'dropdown' => $dropdownMenu,
                             ];
                         });
+
                         return [
                             'id' => $label->id,
                             'name' => $label->name,
                             'label' => $subLabelData,
                         ];
+
                     });
-                    $subCategoryData['total_points'] = $total_points;
+
+                    $subCategoryData['total_point'] = $total_points;
                     $subCategoryData['base_score'] = $total_bp;
+                    $subCategoryData['total_base'] = $total_base;
+                    $subCategoryData['total_score'] = $total_score;
                     $subCategoryData['total_percent'] = round(($total_points * 100 / $total_bp), 2);
                     $total_bp = 0;
                     $total_points = 0;
+
                     return $subCategoryData;
                 }),
-                'total_point' => 0,
+
+                'total_base' => $total_base,
+                'total_point' => $total_score,
                 'total_percentage' => '100',
             ];
             $category->sub_categ = $sub_category;
