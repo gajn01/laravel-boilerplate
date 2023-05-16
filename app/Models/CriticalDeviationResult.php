@@ -1,13 +1,17 @@
 <?php
 
+namespace App\Models;
+
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class AuditFormResultModel extends Model
+class CriticalDeviationResult extends Model
 {
+    use HasFactory;
     protected $table = 'critical_deviation_result';
-
     protected $fillable = [
         'form_id',
+        'critical_id',
         'critical_deviation_id',
         'remarks',
         'score',

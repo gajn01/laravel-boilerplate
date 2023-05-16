@@ -14,6 +14,7 @@ return new class extends Migration
         Schema::create('critical_deviation_result', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('form_id');
+            $table->unsignedBigInteger('deviation_id');
             $table->unsignedBigInteger('critical_deviation_id');
             $table->string('remarks')->nullable();
             $table->string('score')->nullable();
@@ -22,9 +23,6 @@ return new class extends Migration
             $table->string('product')->nullable();
             $table->string('dropdown')->nullable();
             $table->timestamps();
-
-            $table->foreign('form_id')->references('id')->on('audit_forms');
-            $table->foreign('critical_deviation_id')->references('id')->on('critical_deviation_menus');
         });
     }
     public function down()

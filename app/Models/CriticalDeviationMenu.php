@@ -8,7 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 class CriticalDeviationMenu extends Model
 {
     use HasFactory;
-    protected $table = 'critical_deviation_menu';
+    protected $table = 'critical_deviation_menus';
 
     protected $fillable = [
         'critical_deviation_id',

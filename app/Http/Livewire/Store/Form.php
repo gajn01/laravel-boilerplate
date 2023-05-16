@@ -10,6 +10,7 @@ use App\Models\SanitaryModel as SanitaryModel;
 use App\Models\CriticalDeviationMenu as CriticalDeviationMenuModel;
 use App\Models\AuditForm as AuditFormModel;
 use App\Models\AuditFormResult as AuditFormResultModel;
+use App\Models\CriticalDeviationResult as CriticalDeviationResultModel;
 
 use Illuminate\Support\Facades\Auth;
 use App\Helpers\CustomHelper;
@@ -339,25 +340,25 @@ class Form extends Component
     }
     public function onUpdateStatus()
     {
-        /* $timezone = new DateTimeZone('Asia/Manila');
+        $timezone = new DateTimeZone('Asia/Manila');
         $time = new DateTime('now', $timezone);
         $date_today = $time->format('Y-m-d');
         $audit_time = $time->format('h:i');
         $data = $this->audit_status ? false : true;
         StoreModel::where('id', $this->store_id)->update([
-        'audit_status' => $data,
+            'audit_status' => $data,
         ]);
         AuditFormModel::updateOrCreate(
-        ['id' => $this->audit_forms_id],
-        [
-        'store_id' => $this->store_id,
-        'date_of_visit' => $date_today,
-        'conducted_by_id' => Auth::user()->id,
-        'received_by' => '',
-        'time_of_audit' => $audit_time,
-        'audit_status' => $data,
-        ]
-        ); */
+            ['id' => $this->audit_forms_id],
+            [
+                'store_id' => $this->store_id,
+                'date_of_visit' => $date_today,
+                'conducted_by_id' => Auth::user()->id,
+                'received_by' => '',
+                'time_of_audit' => $audit_time,
+                'audit_status' => $data,
+            ]
+        );
         $this->onInitialSave();
     }
     public function onInitialSave()
@@ -398,14 +399,12 @@ class Form extends Component
             });
         })->flatten(1);
 
-
         $critical_deviation = collect($this->category_list)->flatMap(function ($data) {
             $deviations = CriticalDeviationMenuModel::where('critical_deviation_id', $data->critical_deviation)->get();
             return collect($deviations)->map(function ($dev) use ($data) {
-
                 $result = [
                     'form_id' => $this->audit_forms_id,
-                    'id' => $dev->id,
+                    'deviation_id' => $dev->id,
                     'critical_deviation_id' => $dev->critical_deviation_id,
                     'remarks' => '',
                     'score' => '',
@@ -418,14 +417,16 @@ class Form extends Component
             });
         })->flatten(1);
 
+        $critical_deviation->each(function ($result) {
+            if (is_array($result)) {
+                CriticalDeviationResultModel::create($result);
+            }
+        });
 
-
-        dd($critical_deviation);
-
-        /* $auditResults->each(function ($result) {
-        if (is_array($result)) {
-        AuditFormResultModel::create($result);
-        }
-        }); */
+        $auditResults->each(function ($result) {
+            if (is_array($result)) {
+                AuditFormResultModel::create($result);
+            }
+        });
     }
 }
