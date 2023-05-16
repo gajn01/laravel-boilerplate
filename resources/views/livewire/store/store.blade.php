@@ -7,7 +7,6 @@
         </ol>
     </nav>
     {{-- <h1 class="app-page-title">Store</h1> --}}
-
     <div class="page-utilities mb-3">
         <div class="row g-2 justify-content-start justify-content-md-end align-items-center">
             <div class="col-auto">
@@ -40,6 +39,7 @@
                             <th class="cell">Name</th>
                             <th class="cell">Type</th>
                             <th class="cell">Area</th>
+                            <th class="cell">Audit Status</th>
                             {{--   <th class="cell">Wave1</th>
                             <th class="cell">Wave2</th> --}}
                             <th class="cell table-action-sm">Action</th>
@@ -52,6 +52,7 @@
                             <td class="cell">{{ $store['name'] }}</td>
                             <td class="cell">{{ $store['type'] == 1 ? 'Cafe' : 'Kiosk' }}</td>
                             <td class="cell">{{ $store['area'] }}</td>
+                            <td class="cell">{{ $store['audit_status'] == 1 ? 'In-progress' : 'Pending' }}</td>
                             {{--  <td class="cell">{{ $store['wave1'] }}</td>
                     <td class="cell">{{ $store['wave2'] }}</td> --}}
                             <td class="cell table-action-sm">

@@ -41,6 +41,16 @@ class Form extends Component
         'category_list.*.sub_categ.data_items.*.name' => 'required',
         'category_list.*.sub_categ.data_items.*.sub_category.*.*' => 'required',
     ];
+    /*   public $message = '';
+    public $uppercaseMessage = '';
+    public function updated($propertyName)
+    {
+    if ($propertyName === 'message') {
+    // Update the $uppercaseMessage property whenever the $message property changes
+    $this->uppercaseMessage = strtoupper($this->message);
+    }
+    }
+    */
     public function setTime($data)
     {
         $timezone = new DateTimeZone('Asia/Manila');
@@ -191,7 +201,6 @@ class Form extends Component
                     });
                     $subCategoryData['base_score'] = $total_bp;
                     $subCategoryData['total_base'] = $total_base;
-
                     $subCategoryData['total_point'] = $total_points;
                     $subCategoryData['total_score'] = $total_score;
                     $subCategoryData['total_percent'] = round(($total_points * 100 / $total_bp), 2);
@@ -330,27 +339,25 @@ class Form extends Component
     }
     public function onUpdateStatus()
     {
-        $timezone = new DateTimeZone('Asia/Manila');
+        /* $timezone = new DateTimeZone('Asia/Manila');
         $time = new DateTime('now', $timezone);
         $date_today = $time->format('Y-m-d');
         $audit_time = $time->format('h:i');
         $data = $this->audit_status ? false : true;
-
         StoreModel::where('id', $this->store_id)->update([
-            'audit_status' => $data,
+        'audit_status' => $data,
         ]);
-
         AuditFormModel::updateOrCreate(
-            ['id' => $this->audit_forms_id],
-            [
-                'store_id' => $this->store_id,
-                'date_of_visit' => $date_today,
-                'conducted_by_id' => Auth::user()->id,
-                'received_by' => '',
-                'time_of_audit' => $audit_time,
-                'audit_status' => $data,
-            ]
-        );
+        ['id' => $this->audit_forms_id],
+        [
+        'store_id' => $this->store_id,
+        'date_of_visit' => $date_today,
+        'conducted_by_id' => Auth::user()->id,
+        'received_by' => '',
+        'time_of_audit' => $audit_time,
+        'audit_status' => $data,
+        ]
+        ); */
         $this->onInitialSave();
     }
     public function onInitialSave()
@@ -372,7 +379,6 @@ class Form extends Component
                         'sub_sub_remarks' => $child['remarks'] ?? null,
                         'sub_sub_file' => $child['tag'] ?? null,
                     ];
-
                     if (isset($child['label'])) {
                         return collect($child['label'])->map(function ($label) use ($result) {
                             return array_merge($result, [
@@ -387,15 +393,39 @@ class Form extends Component
                     } else {
                         return [$result];
                     }
+
                 });
             });
         })->flatten(1);
 
-        $auditResults->each(function ($result) {
-            if (is_array($result)) {
-                AuditFormResultModel::create($result);
-            }
-        });
-    }
 
+        $critical_deviation = collect($this->category_list)->flatMap(function ($data) {
+            $deviations = CriticalDeviationMenuModel::where('critical_deviation_id', $data->critical_deviation)->get();
+            return collect($deviations)->map(function ($dev) use ($data) {
+
+                $result = [
+                    'form_id' => $this->audit_forms_id,
+                    'id' => $dev->id,
+                    'critical_deviation_id' => $dev->critical_deviation_id,
+                    'remarks' => '',
+                    'score' => '',
+                    'sd' => '',
+                    'location' => '',
+                    'product' => '',
+                    'dropdown' => '',
+                ];
+                return [$result];
+            });
+        })->flatten(1);
+
+
+
+        dd($critical_deviation);
+
+        /* $auditResults->each(function ($result) {
+        if (is_array($result)) {
+        AuditFormResultModel::create($result);
+        }
+        }); */
+    }
 }

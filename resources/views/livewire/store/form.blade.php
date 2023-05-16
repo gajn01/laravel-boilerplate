@@ -6,6 +6,11 @@
             <li class="breadcrumb-item active" aria-current="page">{{ $store_name }}</li>
         </ol>
     </nav>
+{{--     <div>
+        <input type="text" wire:model="message">
+        <p>Message: {{ $message }}</p>
+        <p>Uppercase Message: {{ $uppercaseMessage }}</p>
+    </div> --}}
     <div class="page-utilities mb-3">
         <div class="row g-2 justify-content-start justify-content-md-end align-items-center">
             <div class="col-auto mb-3">
@@ -31,7 +36,6 @@
                 <p class="m-0 p-2">No category found!</p>
             @endforelse
         </nav>
-
         <div class="tab-content" id="audit-form-tab-content">
             @forelse ($category_list as $key => $data)
                 <div class="tab-pane fade show {{ $key == $active_index ? 'active' : '' }}" id="cat{{ $data->id }}"
@@ -86,7 +90,7 @@
                                 </div>
                             </div>
                         </div>
-                        {{--      @if ($data->critical_deviation->isNotEmpty())
+                             @if ($data->critical_deviation->isNotEmpty())
                             <div class="col-12 col-lg-6" wire:ignore>
                                 <div class="app-card app-card-chart h-100 shadow-sm">
                                     <div class="app-card-header p-3">
@@ -99,7 +103,7 @@
                                     <livewire:component.deviation :data="$data->critical_deviation">
                                 </div>
                             </div>
-                        @endif --}}
+                        @endif
                     </div>
                     <div class="app-card app-card-orders-table shadow-sm mb-5 bg-none">
                         <div class="app-card-body">
@@ -113,7 +117,7 @@
                                                 <h6 class="card-title product-name">Speed and Accuracy</h6>
                                             </button>
                                         </h2>
-                                        <div id="collapseOne" class="accordion-collapse collapse "
+                                        <div id="collapseOne" class="accordion-collapse collapse show "
                                             aria-labelledby="headingOne" data-bs-parent="#accordionExample">
                                             <div class="accordion-body">
                                                 <label for="" class="mb-3">Cashier TAT</label>
@@ -480,8 +484,7 @@
                                                                     <div
                                                                         class="col-sm-12 {{ $auditLabel['dropdown'] ? 'col-md-6' : 'col-md-12' }}">
                                                                         @if ($index == 0)
-                                                                            <label for="remarks"
-                                                                                class="form-label">Remarks</label>
+                                                                            <label for="remarks" class="form-label">Remarks</label>
                                                                         @endif
                                                                         <textarea class="form-control" name="remarks" id="remarks" rows="1"
                                                                             wire:change="updateRemarks(

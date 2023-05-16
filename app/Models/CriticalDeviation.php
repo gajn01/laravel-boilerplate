@@ -8,6 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 class CriticalDeviation extends Model
 {
     use HasFactory;
+    protected $table = 'critical_deviations';
 
     protected $fillable = [
         'name',
