@@ -11,7 +11,8 @@ class CriticalDeviationResult extends Model
     protected $table = 'critical_deviation_result';
     protected $fillable = [
         'form_id',
-        'critical_id',
+        'deviation_id',
+        'category_id',
         'critical_deviation_id',
         'remarks',
         'score',

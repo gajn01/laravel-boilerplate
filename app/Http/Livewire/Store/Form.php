@@ -52,33 +52,6 @@ class Form extends Component
     }
     }
     */
-    public function setTime($data)
-    {
-        $timezone = new DateTimeZone('Asia/Manila');
-        $time = new DateTime('now', $timezone);
-        $currentTime = $time->format('h:i A');
-        if ($data == 0) {
-            $this->cashier_tat[$this->currentIndex][$this->currentField] = $currentTime;
-        } else if ($data == 1) {
-            $this->server_cat[$this->currentIndex][$this->currentField] = $currentTime;
-        }
-    }
-    public function stopTimer()
-    {
-        if (empty($this->currentField)) {
-            return;
-        }
-        $currentTime = new DateTime('now', new DateTimeZone('Asia/Manila'));
-        $currentTime = date('H:i');
-        if ($this->currentField == "product_order_{$this->currentIndex}") {
-            $this->cashier_tat[$this->currentIndex]['ot'] = $currentTime;
-        }
-        $this->currentField = '';
-    }
-    public function mount($store_id = null)
-    {
-        $this->store_id = $store_id;
-    }
     public function render()
     {
         $sanitation_defect = SanitaryModel::select('id', 'title', 'code')->get();
@@ -217,12 +190,27 @@ class Form extends Component
             $critical_deviation = CriticalDeviationMenuModel::select('*')
                 ->where('critical_deviation_id', $category->critical_deviation)
                 ->get();
-            $category->critical_deviation = $critical_deviation->map(function ($cd) {
+            $category->critical_deviation = $critical_deviation->map(function ($cd) use ($category) {
                 $dropdownMenu = DropdownMenuModel::where('dropdown_id', $cd->dropdown_id)->get()->toArray();
                 $location_dropdownMenu = DropdownMenuModel::where('dropdown_id', $cd->location_dropdown_id)->get()->toArray();
                 $product_dropdownMenu = DropdownMenuModel::where('dropdown_id', $cd->product_dropdown_id)->get()->toArray();
+                if ($this->audit_status) {
+                    $data = CriticalDeviationResultModel::select('*')
+                        ->where('form_id', $this->audit_forms_id)
+                        ->where('category_id', $category->id)
+                        ->where('deviation_id', $cd->id)
+                        ->where('critical_deviation_id', $cd->critical_deviation_id)
+                        ->first();
+                    $saved_remarks = $data ? $data['remarks'] : null;
+                    $saved_sd = $data ? $data['sd'] : null;
+                    $saved_score = $data ? $data['score'] : null;
+                    $saved_location = $data ? $data['location'] : null;
+                    $saved_product = $data ? $data['product'] : null;
+                    $saved_dropdown = $data ? $data['dropdown'] : null;
+                }
                 return [
                     'id' => $cd->id,
+                    'category_id' => $category->id,
                     'critical_deviation_id' => $cd->critical_deviation_id,
                     'label' => $cd->label,
                     'remarks' => $cd->remarks,
@@ -235,6 +223,12 @@ class Form extends Component
                     'is_dropdown' => $cd->is_dropdown,
                     'dropdown_id' => $cd->dropdown_id,
                     'dropdown' => $dropdownMenu,
+                    'saved_remarks' => $saved_remarks,
+                    'saved_sd' => $saved_sd,
+                    'saved_score' => $saved_score,
+                    'saved_location' => $saved_location,
+                    'saved_product' => $saved_product,
+                    'saved_dropdown' => $saved_dropdown,
                 ];
             });
         }
@@ -242,6 +236,34 @@ class Form extends Component
         // dd($this->category_list);
         return view('livewire.store.form', ['sanitation_list' => $sanitation_defect])->extends('layouts.app');
     }
+    public function setTime($data)
+    {
+        $timezone = new DateTimeZone('Asia/Manila');
+        $time = new DateTime('now', $timezone);
+        $currentTime = $time->format('h:i A');
+        if ($data == 0) {
+            $this->cashier_tat[$this->currentIndex][$this->currentField] = $currentTime;
+        } else if ($data == 1) {
+            $this->server_cat[$this->currentIndex][$this->currentField] = $currentTime;
+        }
+    }
+    public function stopTimer()
+    {
+        if (empty($this->currentField)) {
+            return;
+        }
+        $currentTime = new DateTime('now', new DateTimeZone('Asia/Manila'));
+        $currentTime = date('H:i');
+        if ($this->currentField == "product_order_{$this->currentIndex}") {
+            $this->cashier_tat[$this->currentIndex]['ot'] = $currentTime;
+        }
+        $this->currentField = '';
+    }
+    public function mount($store_id = null)
+    {
+        $this->store_id = $store_id;
+    }
+
     public function setActive($index)
     {
         $this->active_index = $index;
@@ -394,17 +416,16 @@ class Form extends Component
                     } else {
                         return [$result];
                     }
-
                 });
             });
         })->flatten(1);
-
         $critical_deviation = collect($this->category_list)->flatMap(function ($data) {
             $deviations = CriticalDeviationMenuModel::where('critical_deviation_id', $data->critical_deviation)->get();
             return collect($deviations)->map(function ($dev) use ($data) {
                 $result = [
                     'form_id' => $this->audit_forms_id,
                     'deviation_id' => $dev->id,
+                    'category_id' => $data->id,
                     'critical_deviation_id' => $dev->critical_deviation_id,
                     'remarks' => '',
                     'score' => '',
@@ -416,13 +437,11 @@ class Form extends Component
                 return [$result];
             });
         })->flatten(1);
-
         $critical_deviation->each(function ($result) {
             if (is_array($result)) {
                 CriticalDeviationResultModel::create($result);
             }
         });
-
         $auditResults->each(function ($result) {
             if (is_array($result)) {
                 AuditFormResultModel::create($result);

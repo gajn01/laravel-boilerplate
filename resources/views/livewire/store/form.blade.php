@@ -100,7 +100,7 @@
                                             </div>
                                         </div>
                                     </div>
-                                    <livewire:component.deviation :data="$data->critical_deviation">
+                                    <livewire:component.deviation :data="$data->critical_deviation"  :status="$this->audit_status"  :id="$this->audit_forms_id"  >
                                 </div>
                             </div>
                         @endif

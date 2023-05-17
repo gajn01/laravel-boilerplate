@@ -15,6 +15,7 @@ return new class extends Migration
             $table->id();
             $table->unsignedBigInteger('form_id');
             $table->unsignedBigInteger('deviation_id');
+            $table->unsignedBigInteger('category_id');
             $table->unsignedBigInteger('critical_deviation_id');
             $table->string('remarks')->nullable();
             $table->string('score')->nullable();
