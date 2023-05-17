@@ -80,6 +80,7 @@ class Form extends Component
             $total_bp = 0;
             $total_base = 0;
             $total_score = 0;
+            $saved_critical_score = 0;
             $sub_category = [
                 'data_items' => $subCategories->map(function ($subCategory) use (&$total_bp, &$category_id, &$sub_category_id, &$sub_sub_category_id, &$total_base, &$total_score) {
                     $sub_category_id = $subCategory->id;
@@ -177,20 +178,21 @@ class Form extends Component
                     $subCategoryData['total_base'] = $total_base;
                     $subCategoryData['total_point'] = $total_points;
                     $subCategoryData['total_score'] = $total_score;
-                    $subCategoryData['total_percent'] = round(($total_points * 100 / $total_bp), 2);
+                    $subCategoryData['total_percent'] = round(($total_points * 100 / $total_bp), 0);
                     $total_bp = 0;
                     $total_points = 0;
                     return $subCategoryData;
                 }),
                 'total_base' => $total_base,
                 'total_point' => $total_score,
-                'total_percentage' => '100',
+                'total_percentage' => $total_base != 0 ? round(($total_score * 100 / $total_base), 0) : 0,
+                'overall_score' => ''
             ];
             $category->sub_categ = $sub_category;
             $critical_deviation = CriticalDeviationMenuModel::select('*')
                 ->where('critical_deviation_id', $category->critical_deviation)
                 ->get();
-            $category->critical_deviation = $critical_deviation->map(function ($cd) use ($category) {
+            $category->critical_deviation = $critical_deviation->map(function ($cd) use ($category, &$total_score, &$saved_critical_score) {
                 $dropdownMenu = DropdownMenuModel::where('dropdown_id', $cd->dropdown_id)->get()->toArray();
                 $location_dropdownMenu = DropdownMenuModel::where('dropdown_id', $cd->location_dropdown_id)->get()->toArray();
                 $product_dropdownMenu = DropdownMenuModel::where('dropdown_id', $cd->product_dropdown_id)->get()->toArray();
@@ -207,6 +209,10 @@ class Form extends Component
                     $saved_location = $data ? $data['location'] : null;
                     $saved_product = $data ? $data['product'] : null;
                     $saved_dropdown = $data ? $data['dropdown'] : null;
+                    if ($saved_score) {
+                        $percentageInt = intval(str_replace('%', '', $saved_score));
+                        $saved_critical_score += $percentageInt;
+                    }
                 }
                 return [
                     'id' => $cd->id,
@@ -231,6 +237,11 @@ class Form extends Component
                     'saved_dropdown' => $saved_dropdown,
                 ];
             });
+            // $sub_category['overall_score'] = $total_base != 0 ? round((($total_score - $saved_critical_score) * 100 / $total_base), 0) : 0;
+            $total_percentage = $total_base != 0 ? round(($total_score * 100 / $total_base), 0) : 0;
+            $sub_category['overall_score'] =  $total_percentage - $saved_critical_score;
+
+            $category->sub_categ = $sub_category;
         }
         $this->category_list = $data;
         // dd($this->category_list);
@@ -447,5 +458,28 @@ class Form extends Component
                 AuditFormResultModel::create($result);
             }
         });
+    }
+    public function updateCriticalDeviation($data = null, $value = null, $deviation = null)
+    {
+        if (!$this->audit_status) {
+            return;
+        }
+        $query = CriticalDeviationResultModel::where('form_id', $this->audit_forms_id)
+            ->where('category_id', $data['category_id'])
+            ->where('deviation_id', $data['id'])
+            ->where('critical_deviation_id', $data['critical_deviation_id']);
+        if ($deviation == "remarks") {
+            $query->update(['remarks' => $value]);
+        } else if ($deviation == "dropdown") {
+            $query->update(['dropdown' => $value]);
+        } else if ($deviation == "score") {
+            $query->update(['score' => $value]);
+        } else if ($deviation == "sd") {
+            $query->update(['sd' => $value]);
+        } else if ($deviation == "location") {
+            $query->update(['location' => $value]);
+        } else if ($deviation == "product") {
+            $query->update(['product' => $value]);
+        }
     }
 }
