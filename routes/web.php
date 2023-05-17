@@ -9,6 +9,7 @@ use App\Http\Livewire\Store\Store;
 use App\Http\Livewire\Store\StoreDetails;
 use App\Http\Livewire\Store\Form;
 use App\Http\Livewire\Store\ExecutiveSummary;
+use App\Http\Livewire\Store\AuditResult;
 /* User */
 use App\Http\Livewire\User\User;
 use App\Http\Livewire\User\UserDetails;
@@ -36,6 +37,7 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/store/form/{store_id?}', Form::class)->name('form');
     Route::get('/store/details/{store_id?}', StoreDetails::class)->name('details');
     Route::get('/store/form/{store_id?}/summary', ExecutiveSummary::class)->name('form.summary');
+    Route::get('/store/form/{store_id?}/result', AuditResult::class)->name('form.result');
     /* User */
     Route::get('/user', User::class)->name('user');
     Route::get('/user/information/{employee_id?}', UserDetails::class)->name('information');

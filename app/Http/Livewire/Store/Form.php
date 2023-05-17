@@ -11,10 +11,7 @@ use App\Models\CriticalDeviationMenu as CriticalDeviationMenuModel;
 use App\Models\AuditForm as AuditFormModel;
 use App\Models\AuditFormResult as AuditFormResultModel;
 use App\Models\CriticalDeviationResult as CriticalDeviationResultModel;
-
 use Illuminate\Support\Facades\Auth;
-use App\Helpers\CustomHelper;
-
 use DateTime;
 use DateTimeZone;
 
@@ -178,7 +175,7 @@ class Form extends Component
                     $subCategoryData['total_base'] = $total_base;
                     $subCategoryData['total_point'] = $total_points;
                     $subCategoryData['total_score'] = $total_score;
-                    $subCategoryData['total_percent'] = round(($total_points * 100 / $total_bp), 0);
+                    $subCategoryData['total_percent'] = $total_bp != 0 ? round(($total_points * 100 / $total_bp), 0) : 0;
                     $total_bp = 0;
                     $total_points = 0;
                     return $subCategoryData;
@@ -196,6 +193,12 @@ class Form extends Component
                 $dropdownMenu = DropdownMenuModel::where('dropdown_id', $cd->dropdown_id)->get()->toArray();
                 $location_dropdownMenu = DropdownMenuModel::where('dropdown_id', $cd->location_dropdown_id)->get()->toArray();
                 $product_dropdownMenu = DropdownMenuModel::where('dropdown_id', $cd->product_dropdown_id)->get()->toArray();
+                $saved_remarks = '';
+                $saved_sd = '';
+                $saved_score = '';
+                $saved_location = '';
+                $saved_product = '';
+                $saved_dropdown = '';
                 if ($this->audit_status) {
                     $data = CriticalDeviationResultModel::select('*')
                         ->where('form_id', $this->audit_forms_id)
@@ -239,8 +242,7 @@ class Form extends Component
             });
             // $sub_category['overall_score'] = $total_base != 0 ? round((($total_score - $saved_critical_score) * 100 / $total_base), 0) : 0;
             $total_percentage = $total_base != 0 ? round(($total_score * 100 / $total_base), 0) : 0;
-            $sub_category['overall_score'] =  $total_percentage - $saved_critical_score;
-
+            $sub_category['overall_score'] = $total_percentage - $saved_critical_score;
             $category->sub_categ = $sub_category;
         }
         $this->category_list = $data;
@@ -274,7 +276,6 @@ class Form extends Component
     {
         $this->store_id = $store_id;
     }
-
     public function setActive($index)
     {
         $this->active_index = $index;
@@ -306,7 +307,6 @@ class Form extends Component
             $query->update(['sub_sub_point' => $validated_points]);
         }
     }
-
     public function updateRemarks($categoryId = null, $subcategoryId = null, $childId = null, $labelId = null, $is_sub = null, $value = null)
     {
         if (!$this->audit_status) {
@@ -323,7 +323,6 @@ class Form extends Component
             $query->update(['sub_sub_remarks' => $value]);
         }
     }
-
     public function updateDeviation($categoryId = null, $subcategoryId = null, $childId = null, $labelId = null, $is_sub = null, $value = null)
     {
         if (!$this->audit_status) {

@@ -17,12 +17,12 @@ use Illuminate\Support\Facades\Auth;
 use DateTime;
 use DateTimeZone;
 
-class ExecutiveSummary extends Component
+class AuditResult extends Component
 {
     public $active_index = 0;
     protected $listeners = ['alert-sent' => 'onUpdateStatus', 'start-alert-sent' => 'onUpdateStatus'];
-    public $store ;
     public $store_id;
+    public $store_name;
     /* Audit Category */
     public $category_list;
     public $store_type;
@@ -58,7 +58,7 @@ class ExecutiveSummary extends Component
         $this->audit_forms_id = AuditFormModel::where('store_id', $this->store_id)->value('id');
         // dd($audit_result);
         $store = StoreModel::find($this->store_id);
-        $this->store = $store;
+        $this->store_name = $store->name;
         $this->store_type = $store->type;
         $this->audit_status = $store->audit_status;
         $this->actionTitle = $this->audit_status ? 'Complete' : 'Start';
@@ -249,7 +249,7 @@ class ExecutiveSummary extends Component
         }
         $this->category_list = $data;
         // dd($this->category_list);
-        return view('livewire.store.executive-summary', ['sanitation_list' => $sanitation_defect])->extends('layouts.app');
+        return view('livewire.store.audit-result', ['sanitation_list' => $sanitation_defect])->extends('layouts.app');
     }
     public function setTime($data)
     {

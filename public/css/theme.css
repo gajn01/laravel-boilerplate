@@ -53,3 +53,9 @@ button.secondary-bg:hover{
 .fw-500{
     font-weight: 500 !important;
 }
+.v-align-items-baseline{
+    vertical-align: baseline;
+}
+.webkit-right{
+    text-align: -webkit-right;
+}

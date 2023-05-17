@@ -1,23 +1,14 @@
-@section('title', 'Mary Grace Restaurant Operation System / Audit Forms')
+@section('title', 'Audit Result')
 <div class="container-xl">
     <nav aria-label="breadcrumb">
         <ol class="breadcrumb">
             <li class="breadcrumb-item"><a href="{{ route('store') }}">Store</a></li>
-            <li class="breadcrumb-item active" aria-current="page">{{ $store_name }}</li>
+            <li class="breadcrumb-item " aria-current="page"> <a href="{{ route('store') }}">{{ $store_name }}</a></li>
+            <li class="breadcrumb-item active" aria-current="page">Result</li>
         </ol>
     </nav>
-{{--     <div>
-        <input type="text" wire:model="message">
-        <p>Message: {{ $message }}</p>
-        <p>Uppercase Message: {{ $uppercaseMessage }}</p>
-    </div> --}}
+
     <div class="page-utilities mb-3">
-        <div class="row g-2 justify-content-start justify-content-md-end align-items-center">
-            <div class="col-auto mb-3">
-                <a class="btn app-btn-primary"
-                    wire:click="onStartAndComplete(true,'Are you sure?','warning')">{{ $actionTitle }}</a>
-            </div>
-        </div>
         <nav wire:ignore id="audit-form-tab"
             class="audit-form-tab app-nav-tabs nav shadow-sm flex-column flex-sm-row mb-4 justify-content-center">
             @forelse ($category_list as $key => $data)
@@ -40,7 +31,7 @@
             @forelse ($category_list as $key => $data)
                 <div class="tab-pane fade show {{ $key == $active_index ? 'active' : '' }}" id="cat{{ $data->id }}"
                     role="tabpanel" aria-labelledby="cat{{ $data->id }}-tab">
-                    <div class="row g-4 mb-4" wire:ignore.self>
+                    <div class="row g-4 mb-4">
                         <div class="col-12  {{ $data->critical_deviation->isNotEmpty() ? 'col-lg-6' : 'col-lg-12' }}">
                             <div class="app-card app-card-chart  shadow-sm">
                                 <div class="app-card-header p-3">
@@ -69,7 +60,6 @@
                                                             <td class="text-center"> {{ $sub['total_percent'] }}%</td>
                                                         </tr>
                                                         @if ($sub['name'])
-
                                                         @endif
                                                     @endforeach
                                                     <tr>
@@ -102,7 +92,7 @@
                                 </div>
                             </div>
                         </div>
-                             @if ($data->critical_deviation->isNotEmpty())
+                        @if ($data->critical_deviation->isNotEmpty())
                             <div class="col-12 col-lg-6" wire:ignore>
                                 <div class="app-card app-card-chart h-100 shadow-sm">
                                     <div class="app-card-header p-3">
@@ -112,6 +102,27 @@
                                             </div>
                                         </div>
                                     </div>
+                                    {{--                                     <div class="table-responsive">
+                                        <table class="table">
+                                            <thead>
+                                                <tr>
+                                                    <th scope="col">Label</th>
+                                                    <th scope="col">Deviation</th>
+                                                    <th scope="col">Ramerks</th>
+                                                    <th scope="col">Score</th>
+
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <tr class="">
+                                                    <td>R1C1</td>
+                                                    <td>R1C2</td>
+                                                    <td>R1C3</td>
+                                                    <td>R1C3</td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </div> --}}
                                     <div class="app-card-body p-3 p-lg-4">
                                         @foreach ($data->critical_deviation as $item)
                                             <label for="" class="form-label ">{{ $item['label'] }}</label>
@@ -119,19 +130,10 @@
                                                 <div class="row">
                                                     <div class="col-12">
                                                         <div class="mb-3">
-                                                            <select class="form-select form-select-md"
-                                                                wire:change="updateCriticalDeviation({{ json_encode($item) }},$event.target.value,'sd')"
-                                                                name="sd{{ $item['id'] }}" id="sd{{ $item['id'] }}">
-                                                                <option value="">Select sd</option>
-                                                                @forelse ($sanitation_list as $sanitation)
-                                                                    <option value="{{ $sanitation->code  }}"
-                                                                        {{ $sanitation->code === $item['saved_sd'] ? 'selected' : '' }}>
-                                                                        {{ $sanitation->code }}
-                                                                    </option>
-                                                                @empty
-                                                                    <option value="0">No data found!</option>
-                                                                @endforelse
-                                                            </select>
+                                                            <div class="mb-3">
+                                                                <input type="text" class="form-control" disabled
+                                                                    value="{{ $item['saved_sd'] }}">
+                                                            </div>
                                                         </div>
                                                     </div>
                                                 </div>
@@ -140,32 +142,14 @@
                                                 <div class="row">
                                                     <div class="col-sm-12 col-md-6">
                                                         <div class="mb-3">
-                                                            <select class="form-select form-select-md"
-                                                                wire:change="updateCriticalDeviation({{ json_encode($item) }},$event.target.value,'location')"
-                                                                name="location{{ $item['id'] }}" id="location{{ $item['id'] }}">
-                                                                <option selected hidden>Select location</option>
-                                                                @foreach ($item['location'] as $location_dropdown)
-                                                                    <option value="{{  $location_dropdown['name'] }}"
-                                                                        {{ $location_dropdown['name'] === $item['saved_location'] ? 'selected' : '' }}>
-                                                                        {{ $location_dropdown['name'] }}
-                                                                    </option>
-                                                                @endforeach
-                                                            </select>
+                                                            <input type="text" class="form-control" disabled
+                                                                value="{{ $item['saved_location'] }}">
                                                         </div>
                                                     </div>
                                                     <div class="col-sm-12 col-md-6">
                                                         <div class="mb-3">
-                                                            <select class="form-select form-select-md"
-                                                                wire:change="updateCriticalDeviation({{ json_encode($item) }},$event.target.value,'score')"
-                                                                name="loc_score{{ $item['id'] }}" id="loc_score{{ $item['id'] }}">
-                                                                <option selected value="">Select score</option>
-                                                                <option value="5%" {{ $item['saved_score'] == '5%' ? 'selected' : '' }}>5%
-                                                                </option>
-                                                                <option value="10%" {{ $item['saved_score'] == '10%' ? 'selected' : '' }}>10%
-                                                                </option>
-                                                                <option value="15%" {{ $item['saved_score'] == '15%' ? 'selected' : '' }}>15%
-                                                                </option>
-                                                            </select>
+                                                            <input type="text" class="form-control" disabled
+                                                                value="{{ $item['saved_score'] }}">
                                                         </div>
                                                     </div>
                                                 </div>
@@ -174,32 +158,14 @@
                                                 <div class="row">
                                                     <div class="col-sm-12 col-md-6">
                                                         <div class="mb-3">
-                                                            <select class="form-select form-select-md"
-                                                                wire:change="updateCriticalDeviation({{ json_encode($item) }},$event.target.value,'product')"
-                                                                name="product{{ $item['id'] }}" id="product{{ $item['id'] }}">
-                                                                <option selected value="">Select product</option>
-                                                                @foreach ($item['product'] as $product_dropdown)
-                                                                    <option value="{{ $product_dropdown['name'] }}"
-                                                                        {{ $product_dropdown['name'] === $item['saved_product'] ? 'selected' : '' }}>
-                                                                        {{ $product_dropdown['name'] }}
-                                                                    </option>
-                                                                @endforeach
-                                                            </select>
+                                                            <input type="text" class="form-control" disabled
+                                                                value="{{ $item['saved_product'] }}">
                                                         </div>
                                                     </div>
                                                     <div class="col-sm-12 col-md-6">
                                                         <div class="mb-3">
-                                                            <select class="form-select form-select-md"
-                                                                wire:change="updateCriticalDeviation({{ json_encode($item) }},$event.target.value,'score')"
-                                                                name="product_score{{ $item['id'] }}" id="product_score{{ $item['id'] }}">
-                                                                <option selected value="">Select score</option>
-                                                                <option value="5%" {{ $item['saved_score'] == '5%' ? 'selected' : '' }}>5%
-                                                                </option>
-                                                                <option value="10%" {{ $item['saved_score'] == '10%' ? 'selected' : '' }}>10%
-                                                                </option>
-                                                                <option value="15%" {{ $item['saved_score'] == '15%' ? 'selected' : '' }}>15%
-                                                                </option>
-                                                            </select>
+                                                            <input type="text" class="form-control" disabled
+                                                                value="{{ $item['saved_score'] }}">
                                                         </div>
                                                     </div>
                                                 </div>
@@ -208,54 +174,26 @@
                                                 <div class="row">
                                                     <div class="col-sm-12 col-md-6">
                                                         <div class="mb-3">
-                                                            <select class="form-select form-select-md"
-                                                                wire:change="updateCriticalDeviation({{ json_encode($item) }}, $event.target.value, 'dropdown')"
-                                                                name="dropdown{{ $item['id'] }}" id="dropdown{{ $item['id'] }}">
-                                                                <option value="">Select deviation</option>
-                                                                @foreach ($item['dropdown'] as $dropdown)
-                                                                    <option value="{{ $dropdown['name'] }}"
-                                                                        {{ $dropdown['name'] === $item['saved_dropdown'] ? 'selected' : '' }}>
-                                                                        {{ $dropdown['name'] }}
-                                                                    </option>
-                                                                @endforeach
-                                                            </select>
+                                                            <input type="text" class="form-control" disabled
+                                                                value="{{ $item['saved_dropdown'] }}">
                                                         </div>
                                                     </div>
                                                     <div class="col-sm-12 col-md-6">
                                                         <div class="mb-3">
-                                                            {{--  <input type="text" class="form-control"
-                                                                    wire:change="updateCriticalDeviation({{ json_encode($item) }},$event.target.value,'score')"
-                                                                    name="dp_score{{ $item['id'] }}" id="dp_score{{ $item['id'] }}" value="{{$item['saved_score']}}"> --}}
-
-                                                            <select class="form-select form-select-md"
-                                                                wire:change="updateCriticalDeviation({{ json_encode($item) }},$event.target.value,'score')"
-                                                                name="dp_score{{ $item['id'] }}" id="dp_score{{ $item['id'] }}">
-                                                                <option selected value="">Select score</option>
-                                                                <option value="3%" {{ $item['saved_score'] == '3%' ? 'selected' : '' }}>3%
-                                                                </option>
-                                                                <option value="5%" {{ $item['saved_score'] == '5%' ? 'selected' : '' }}>5%
-                                                                </option>
-                                                                <option value="10%" {{ $item['saved_score'] == '10%' ? 'selected' : '' }}>10%
-                                                                </option>
-                                                                <option value="15%" {{ $item['saved_score'] == '15%' ? 'selected' : '' }}>15%
-                                                                </option>
-                                                            </select>
+                                                            <input type="text" class="form-control" disabled
+                                                                value="{{ $item['saved_score'] }}">
                                                         </div>
                                                     </div>
                                                 </div>
                                             @endif
                                             @if ($item['remarks'])
                                                 <div class="mb-3">
-                                                    <textarea class="form-control"
-                                                        wire:change="updateCriticalDeviation({{ json_encode($item) }},$event.target.value,'remarks')"
-                                                        name="remarks{{ $item['id'] }}" id="remarks{{ $item['id'] }}" rows="2"
-                                                        placeholder="Enter remarks here...">{{ $item['saved_remarks'] }}</textarea>
+                                                    <textarea class="form-control" disabled name="remarks{{ $item['id'] }}" id="remarks{{ $item['id'] }}"
+                                                        rows="2">{{ $item['saved_remarks'] }}</textarea>
                                                 </div>
                                             @endif
                                         @endforeach
                                     </div>
-
-                                    {{-- <livewire:component.deviation :data="$data->critical_deviation"  :status="$this->audit_status"  :id="$this->audit_forms_id"  > --}}
                                 </div>
                             </div>
                         @endif
@@ -276,13 +214,6 @@
                                             aria-labelledby="headingOne" data-bs-parent="#accordionExample">
                                             <div class="accordion-body">
                                                 <label for="" class="mb-3">Cashier TAT</label>
-                                                <svg class="icon" wire:click="addInput(0)"
-                                                    xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512">
-                                                    <path
-                                                        d="M256 80c0-17.7-14.3-32-32-32s-32 14.3-32 32V224H48c-17.7 0-32 14.3-32 32s14.3 32 32 32H192V432c0 17.7 14.3 32 32 32s32-14.3 32-32V288H400c17.7 0 32-14.3 32-32s-14.3-32-32-32H256V80z" />
-                                                </svg>
-                                                <a class="btn app-btn-primary float-right" wire:ignore role="button"
-                                                    wire:click="setTime(0)">Set</a>
                                                 @foreach ($cashier_tat as $item)
                                                     <div class="row">
                                                         <div class="col-sm-12 col-md-9">
@@ -290,7 +221,7 @@
                                                                 <div class="col-4">
                                                                     <div class="mb-3">
                                                                         <input type="text" class="form-control"
-                                                                            name="cashier_name"
+                                                                            disabled name="cashier_name"
                                                                             placeholder="Cashier Name"
                                                                             id="name_{{ $loop->index }}"
                                                                             wire:model.lazy="cashier_tat.{{ $loop->index }}.name"
@@ -300,7 +231,7 @@
                                                                 <div class="col-4">
                                                                     <div class="mb-3">
                                                                         <input type="text" class="form-control"
-                                                                            name="time"
+                                                                            disabled name="time"
                                                                             id="time_{{ $loop->index }}"
                                                                             wire:model="cashier_tat.{{ $loop->index }}.time"
                                                                             wire:focus="$set('currentField', 'time')"
@@ -310,7 +241,7 @@
                                                                 <div class="col-4">
                                                                     <div class="mb-3">
                                                                         <input type="text" class="form-control"
-                                                                            name="product_order"
+                                                                            disabled name="product_order"
                                                                             id="product_order{{ $loop->index }}"
                                                                             wire:model="cashier_tat.{{ $loop->index }}.product_order"
                                                                             placeholder="Product Ordered">
@@ -324,7 +255,7 @@
                                                                             <div class="mb-3">
                                                                                 <label for=""
                                                                                     class="">OT</label>
-                                                                                <input type="text"
+                                                                                <input type="text" disabled
                                                                                     class="form-control"
                                                                                     id="ot"
                                                                                     wire:model="cashier_tat.{{ $loop->index }}.ot"
@@ -337,7 +268,7 @@
                                                                                 <label for=""
                                                                                     class="">Point
                                                                                 </label>
-                                                                                <input type="text"
+                                                                                <input type="text" disabled
                                                                                     class="form-control"
                                                                                     name="ot_point" id="ot_point"
                                                                                     wire:model="cashier_tat.{{ $loop->index }}.ot_point"
@@ -355,7 +286,7 @@
                                                                             <div class="mb-3">
                                                                                 <label for=""
                                                                                     class="">Time</label>
-                                                                                <input type="text"
+                                                                                <input type="text" disabled
                                                                                     class="form-control"
                                                                                     name="tat" id="tat"
                                                                                     wire:model="cashier_tat.{{ $loop->index }}.tat"
@@ -369,7 +300,7 @@
                                                                                 <label for=""
                                                                                     class="">Point
                                                                                 </label>
-                                                                                <input type="text"
+                                                                                <input type="text" disabled
                                                                                     class="form-control"
                                                                                     name="tat_point" id="tat_point"
                                                                                     wire:model="cashier_tat.{{ $loop->index }}.tat_point"
@@ -387,7 +318,7 @@
                                                                             <div class="mb-3">
                                                                                 <label for=""
                                                                                     class="">Time</label>
-                                                                                <input type="text"
+                                                                                <input type="text" disabled
                                                                                     class="form-control"
                                                                                     name="fst" id="fst"
                                                                                     wire:model="cashier_tat.{{ $loop->index }}.fst"
@@ -400,7 +331,7 @@
                                                                             <div class="mb-3">
                                                                                 <label for=""
                                                                                     class="">Point</label>
-                                                                                <input type="text"
+                                                                                <input type="text" disabled
                                                                                     class="form-control"
                                                                                     name="fst_point" id="fst_point"
                                                                                     wire:model="cashier_tat.{{ $loop->index }}.fst_point"
@@ -414,28 +345,21 @@
                                                         </div>
                                                         <div class="col-sm-12 col-md-3">
                                                             <div class="mb-3">
-                                                                <textarea class="form-control" name="" id="" rows="6" id="remarks_{{ $loop->index }}"
-                                                                    wire:model="cashier_tat.{{ $loop->index }}.remarks" placeholder="Remarks"></textarea>
+                                                                <textarea class="form-control" disabled name="" id="" rows="6"
+                                                                    id="remarks_{{ $loop->index }}" wire:model="cashier_tat.{{ $loop->index }}.remarks" placeholder="Remarks"></textarea>
                                                             </div>
                                                         </div>
                                                     </div>
                                                 @endforeach
                                                 <label for="" class="mb-3">Server CAT</label>
-                                                <svg class="icon" wire:click="addInput(1)"
-                                                    xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512">
-                                                    <path
-                                                        d="M256 80c0-17.7-14.3-32-32-32s-32 14.3-32 32V224H48c-17.7 0-32 14.3-32 32s14.3 32 32 32H192V432c0 17.7 14.3 32 32 32s32-14.3 32-32V288H400c17.7 0 32-14.3 32-32s-14.3-32-32-32H256V80z" />
-                                                </svg>
-                                                <a class="btn app-btn-primary float-right" wire:ignore role="button"
-                                                    wire:click="setTime(1)">Set</a>
                                                 @foreach ($server_cat as $item)
                                                     <div class="row">
                                                         <div class="col-sm-12 col-md-9">
                                                             <div class="row">
                                                                 <div class="col-4">
                                                                     <div class="mb-3">
-                                                                        <input type="text" class="form-control"
-                                                                            name="server_name"
+                                                                        <input type="text" disabled
+                                                                            class="form-control" name="server_name"
                                                                             placeholder="Server Name"
                                                                             id="name_{{ $loop->index }}"
                                                                             wire:model.lazy="server_cat.{{ $loop->index }}.name"
@@ -444,8 +368,8 @@
                                                                 </div>
                                                                 <div class="col-4">
                                                                     <div class="mb-3">
-                                                                        <input type="text" class="form-control"
-                                                                            name="time"
+                                                                        <input type="text" disabled
+                                                                            class="form-control" name="time"
                                                                             id="time_{{ $loop->index }}"
                                                                             wire:model="server_cat.{{ $loop->index }}.time"
                                                                             wire:focus="$set('currentField', 'time')"
@@ -454,8 +378,8 @@
                                                                 </div>
                                                                 <div class="col-4">
                                                                     <div class="mb-3">
-                                                                        <input type="text" class="form-control"
-                                                                            name="product_order"
+                                                                        <input type="text" disabled
+                                                                            class="form-control" name="product_order"
                                                                             id="product_order{{ $loop->index }}"
                                                                             wire:model="server_cat.{{ $loop->index }}.product_order"
                                                                             placeholder="Product Ordered">
@@ -469,7 +393,7 @@
                                                                             <div class="mb-3">
                                                                                 <label for=""
                                                                                     class="">OT</label>
-                                                                                <input type="text"
+                                                                                <input type="text" disabled
                                                                                     class="form-control"
                                                                                     id="ot"
                                                                                     wire:model="server_cat.{{ $loop->index }}.ot"
@@ -482,7 +406,7 @@
                                                                                 <label for=""
                                                                                     class="">Point
                                                                                 </label>
-                                                                                <input type="text"
+                                                                                <input type="text" disabled
                                                                                     class="form-control"
                                                                                     name="ot_point" id="ot_point"
                                                                                     wire:model="server_cat.{{ $loop->index }}.ot_point"
@@ -500,7 +424,7 @@
                                                                             <div class="mb-3">
                                                                                 <label for=""
                                                                                     class="">Time</label>
-                                                                                <input type="text"
+                                                                                <input type="text" disabled
                                                                                     class="form-control"
                                                                                     name="tat" id="tat"
                                                                                     wire:model="server_cat.{{ $loop->index }}.tat"
@@ -514,7 +438,7 @@
                                                                                 <label for=""
                                                                                     class="">Point
                                                                                 </label>
-                                                                                <input type="text"
+                                                                                <input type="text" disabled
                                                                                     class="form-control"
                                                                                     name="tat_point" id="tat_point"
                                                                                     wire:model="server_cat.{{ $loop->index }}.tat_point"
@@ -532,7 +456,7 @@
                                                                             <div class="mb-3">
                                                                                 <label for=""
                                                                                     class="">Time</label>
-                                                                                <input type="text"
+                                                                                <input type="text" disabled
                                                                                     class="form-control"
                                                                                     name="fst" id="fst"
                                                                                     wire:model="server_cat.{{ $loop->index }}.fst"
@@ -545,7 +469,7 @@
                                                                             <div class="mb-3">
                                                                                 <label for=""
                                                                                     class="">Point</label>
-                                                                                <input type="text"
+                                                                                <input type="text" disabled
                                                                                     class="form-control"
                                                                                     name="fst_point" id="fst_point"
                                                                                     wire:model="server_cat.{{ $loop->index }}.fst_point"
@@ -559,7 +483,7 @@
                                                         </div>
                                                         <div class="col-sm-12 col-md-3">
                                                             <div class="mb-3">
-                                                                <textarea class="form-control" name="" id="" rows="6" id="remarks_{{ $loop->index }}"
+                                                                <textarea class="form-control" disabled rows="6" id="remarks_{{ $loop->index }}"
                                                                     wire:model="server_cat.{{ $loop->index }}.remarks" placeholder="Remarks"></textarea>
                                                             </div>
                                                         </div>
@@ -604,33 +528,17 @@
                                                                             class="form-control text-center" disabled
                                                                             name="bp{{ $auditLabel['name'] }}"
                                                                             id="bp"
-                                                                            value="{{ $auditLabel['is_all_nothing'] ? $auditLabel['bp'] . '*' : $auditLabel['bp'] }}"
-                                                                            placeholder="">
+                                                                            value="{{ $auditLabel['is_all_nothing'] ? $auditLabel['bp'] . '*' : $auditLabel['bp'] }}">
+
                                                                     </div>
                                                                     <div class="col-sm-6 col-md-6">
                                                                         @if ($index == 0)
                                                                             <label for="points"
                                                                                 class="form-label">Point(s)</label>
                                                                         @endif
-                                                                        <input type="number"
-                                                                            class="form-control text-center"
-                                                                            name="points{{ $auditLabel['id'] }}"
-                                                                            id="points{{ $auditLabel['id'] }}"
-                                                                            value="{{ $auditLabel['points'] }}"
-                                                                            min="{{ $auditLabel['is_all_nothing'] ? $auditLabel['bp'] : 0 }}"
-                                                                            max="{{ $auditLabel['is_all_nothing'] ? 0 : $auditLabel['bp'] }}"
-                                                                            wire:change="updatePoints(
-                                                                            'points{{ $auditLabel['id'] }}',
-                                                                            '{{ $loop->parent->parent->index }}',
-                                                                            '{{ $loop->parent->index }}',
-                                                                            '{{ $loop->index }}',
-                                                                            '',
-                                                                            '{{ $category_list[$loop->parent->parent->index]['id'] }}',
-                                                                            '{{ $category_list[$loop->parent->parent->index]['sub_categ']['data_items'][$loop->parent->index]['id'] }}',
-                                                                            '{{ $category_list[$loop->parent->parent->index]['sub_categ']['data_items'][$loop->parent->index]['sub_category'][$loop->index]['id'] }}',
-                                                                            '',
-                                                                            '{{ $dataItem['is_sub'] }}',
-                                                                            $event.target.value )">
+                                                                        <input type="text"
+                                                                            class="form-control text-center" disabled
+                                                                            value="{{ $auditLabel['points'] }}">
                                                                     </div>
                                                                 </div>
                                                             </div>
@@ -639,16 +547,10 @@
                                                                     <div
                                                                         class="col-sm-12 {{ $auditLabel['dropdown'] ? 'col-md-6' : 'col-md-12' }}">
                                                                         @if ($index == 0)
-                                                                            <label for="remarks" class="form-label">Remarks</label>
+                                                                            <label for="remarks"
+                                                                                class="form-label">Remarks</label>
                                                                         @endif
-                                                                        <textarea class="form-control" name="remarks" id="remarks" rows="1"
-                                                                            wire:change="updateRemarks(
-                                                                            '{{ $category_list[$loop->parent->parent->index]['id'] }}',
-                                                                            '{{ $category_list[$loop->parent->parent->index]['sub_categ']['data_items'][$loop->parent->index]['id'] }}',
-                                                                            '{{ $category_list[$loop->parent->parent->index]['sub_categ']['data_items'][$loop->parent->index]['sub_category'][$loop->index]['id'] }}',
-                                                                            '',
-                                                                            '{{ $dataItem['is_sub'] }}',
-                                                                            $event.target.value )">{{ $category_list[$loop->parent->parent->index]['sub_categ']['data_items'][$loop->parent->index]['sub_category'][$loop->index]['remarks'] }}</textarea>
+                                                                        <textarea class="form-control" name="remarks" id="remarks" rows="1" disabled>{{ $category_list[$loop->parent->parent->index]['sub_categ']['data_items'][$loop->parent->index]['sub_category'][$loop->index]['remarks'] }}</textarea>
                                                                     </div>
                                                                     @if (!empty($auditLabel['dropdown']))
                                                                         <div
@@ -657,28 +559,10 @@
                                                                                 <label for=""
                                                                                     class="form-label">Deviation</label>
                                                                             @endif
-                                                                            <select class="form-select form-select-md"
-                                                                                wire:change="updateDeviation('{{ $category_list[$loop->parent->parent->index]['id'] }}',
-                                                                                '{{ $category_list[$loop->parent->parent->index]['sub_categ']['data_items'][$loop->parent->index]['id'] }}',
-                                                                                '{{ $category_list[$loop->parent->parent->index]['sub_categ']['data_items'][$loop->parent->index]['sub_category'][$loop->index]['id'] }}',
-                                                                                '',
-                                                                                '{{ $dataItem['is_sub'] }}',
-                                                                                $event.target.value )"
-                                                                                name="tag{{ $auditLabel['name'] }}"
-                                                                                id="tag">
-                                                                                <option value="0">Select a
-                                                                                    deviation</option>
-                                                                                @foreach ($auditLabel['dropdown'] as $result)
-                                                                                    @isset($result['name'])
-                                                                                        <option
-                                                                                            value="{{ $result['name'] }}"
-                                                                                            {{ $result['name'] === $auditLabel['deviation'] ? 'selected' : '' }}>
-                                                                                            {{ $result['name'] }}
-                                                                                        </option>
-                                                                                    @endisset
-                                                                                @endforeach
-                                                                            </select>
-
+                                                                            <input type="text"
+                                                                                class="form-control text-center"
+                                                                                disabled
+                                                                                value="{{ $auditLabel['deviation'] }}">
                                                                         </div>
                                                                     @endif
                                                                 </div>
@@ -724,7 +608,6 @@
                                                                                                 disabled
                                                                                                 name="bp{{ $auditLabel['name'] }}"
                                                                                                 id="bp"
-                                                                                                placeholder=""
                                                                                                 value="{{ $auditLabel['is_all_nothing'] ? $auditLabel['bp'] . '*' : $auditLabel['bp'] }}">
                                                                                         </div>
                                                                                         <div class="col-sm-6 col-md-6">
@@ -732,25 +615,10 @@
                                                                                                 <label for=""
                                                                                                     class="form-label">Point</label>
                                                                                             @endif
-                                                                                            <input type="number"
+                                                                                            <input type="text"
                                                                                                 class="form-control text-center"
-                                                                                                name="points{{ $auditLabel['id'] }}"
-                                                                                                id="points{{ $auditLabel['id'] }}"
-                                                                                                value="{{ $auditLabel['points'] }}"
-                                                                                                min="{{ $auditLabel['is_all_nothing'] ? $auditLabel['bp'] : 0 }}"
-                                                                                                max="{{ $auditLabel['is_all_nothing'] ? 0 : $auditLabel['bp'] }}"
-                                                                                                wire:change="updatePoints(
-                                                                                                'points{{ $auditLabel['id'] }}',
-                                                                                                '{{ $loop->parent->parent->parent->index }}',
-                                                                                                '{{ $loop->parent->parent->index }}',
-                                                                                                '{{ $loop->parent->index }}',
-                                                                                                '{{ $loop->index }}',
-                                                                                                '{{ $category_list[$loop->parent->parent->parent->index]['id'] }}',
-                                                                                                '{{ $category_list[$loop->parent->parent->parent->index]['sub_categ']['data_items'][$loop->parent->parent->index]['id'] }}',
-                                                                                                '{{ $category_list[$loop->parent->parent->parent->index]['sub_categ']['data_items'][$loop->parent->parent->index]['sub_category'][$loop->parent->index]['id'] }}',
-                                                                                                '{{ $category_list[$loop->parent->parent->parent->index]['sub_categ']['data_items'][$loop->parent->parent->index]['sub_category'][$loop->parent->index]['label'][$loop->index]['id'] }}',
-                                                                                                '{{ $dataItem['is_sub'] }}',
-                                                                                                $event.target.value )">
+                                                                                                disabled
+                                                                                                value="{{ $auditLabel['points'] }}">
                                                                                         </div>
                                                                                     </div>
                                                                                 </div>
@@ -763,14 +631,7 @@
                                                                                                 <label for=""
                                                                                                     class="form-label">Remarks</label>
                                                                                             @endif
-                                                                                            <textarea class="form-control" name="" id="" rows="1"
-                                                                                                wire:change="updateRemarks(
-                                                                                                '{{ $category_list[$loop->parent->parent->parent->index]['id'] }}',
-                                                                                                '{{ $category_list[$loop->parent->parent->parent->index]['sub_categ']['data_items'][$loop->parent->parent->index]['id'] }}',
-                                                                                                '{{ $category_list[$loop->parent->parent->parent->index]['sub_categ']['data_items'][$loop->parent->parent->index]['sub_category'][$loop->parent->index]['id'] }}',
-                                                                                                '{{ $category_list[$loop->parent->parent->parent->index]['sub_categ']['data_items'][$loop->parent->parent->index]['sub_category'][$loop->parent->index]['label'][$loop->index]['id'] }}',
-                                                                                                '{{ $dataItem['is_sub'] }}',
-                                                                                                $event.target.value )">{{ $category_list[$loop->parent->parent->parent->index]['sub_categ']['data_items'][$loop->parent->parent->index]['sub_category'][$loop->parent->index]['label'][$loop->index]['remarks'] }}</textarea>
+                                                                                            <textarea class="form-control" name="" id="" rows="1"disabled>{{ $category_list[$loop->parent->parent->parent->index]['sub_categ']['data_items'][$loop->parent->parent->index]['sub_category'][$loop->parent->index]['label'][$loop->index]['remarks'] }}</textarea>
                                                                                         </div>
                                                                                         @if (!empty($auditLabel['dropdown']))
                                                                                             <div
@@ -780,32 +641,10 @@
                                                                                                         for=""
                                                                                                         class="form-label">Deviation</label>
                                                                                                 @endif
-                                                                                                <select
-                                                                                                    class="form-select form-select-md"
-                                                                                                    wire:change="updateDeviation(
-                                                                                                    '{{ $category_list[$loop->parent->parent->parent->index]['id'] }}',
-                                                                                                    '{{ $category_list[$loop->parent->parent->parent->index]['sub_categ']['data_items'][$loop->parent->parent->index]['id'] }}',
-                                                                                                    '{{ $category_list[$loop->parent->parent->parent->index]['sub_categ']['data_items'][$loop->parent->parent->index]['sub_category'][$loop->parent->index]['id'] }}',
-                                                                                                    '{{ $category_list[$loop->parent->parent->parent->index]['sub_categ']['data_items'][$loop->parent->parent->index]['sub_category'][$loop->parent->index]['label'][$loop->index]['id'] }}',
-                                                                                                    '{{ $dataItem['is_sub'] }}',
-                                                                                                    $event.target.value )"
-                                                                                                    name="tag{{ $auditLabel['name'] }}"
-                                                                                                    id="tag">
-                                                                                                    <option
-                                                                                                        value="0">
-                                                                                                        Select a
-                                                                                                        deviation
-                                                                                                    </option>
-                                                                                                    @foreach ($auditLabel['dropdown'] as $result)
-                                                                                                        @isset($result['name'])
-                                                                                                            <option
-                                                                                                                value="{{ $result['name'] }}"
-                                                                                                                {{ $result['name'] === $auditLabel['deviation'] ? 'selected' : '' }}>
-                                                                                                                {{ $result['name'] }}
-                                                                                                            </option>
-                                                                                                        @endisset
-                                                                                                    @endforeach
-                                                                                                </select>
+                                                                                                <input type="text"
+                                                                                                    class="form-control text-center"
+                                                                                                    disabled
+                                                                                                    value="{{ $auditLabel['deviation'] }}">
                                                                                             </div>
                                                                                         @endif
                                                                                     </div>
