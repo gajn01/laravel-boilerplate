@@ -13,7 +13,10 @@ use App\Models\CriticalDeviationMenu as CriticalDeviationMenuModel;
 use App\Models\AuditForm as AuditFormModel;
 use App\Models\AuditFormResult as AuditFormResultModel;
 use App\Models\CriticalDeviationResult as CriticalDeviationResultModel;
+use App\Models\Summary as SummaryModel;
 use Illuminate\Support\Facades\Auth;
+use App\Helpers\CustomHelper;
+
 use DateTime;
 use DateTimeZone;
 
@@ -21,28 +24,30 @@ class ExecutiveSummary extends Component
 {
     public $active_index = 0;
     protected $listeners = ['alert-sent' => 'onUpdateStatus', 'start-alert-sent' => 'onUpdateStatus'];
-    public $store ;
+    public $store;
     public $store_id;
     /* Audit Category */
     public $category_list;
     public $store_type;
-    public $f_major_sd = [];
-    public $f_product;
     public $sanitation_defect;
     public $audit_status;
     public $audit_forms_id;
-    public $actionTitle = 'Complete';
-    public $currentField;
-    public $currentIndex;
-    public $cashier_tat = [['name' => null, 'time' => null, 'product_order' => null, 'ot' => null, 'ot_point' => 1, 'tat' => null, 'tat_point' => 1, 'fst' => null, 'fst_point' => 3, 'remarks' => null]];
-    public $server_cat = [['name' => null, 'time' => null, 'product_order' => null, 'ot' => null, 'ot_point' => 1, 'tat' => null, 'tat_point' => 1, 'fst' => null, 'fst_point' => 3, 'remarks' => null]];
-    protected $rules = [
-        'category_list.*.sub_categ.data_items.*.id' => 'required',
-        'category_list.*.sub_categ.data_items.*.name' => 'required',
-        'category_list.*.sub_categ.data_items.*.sub_category.*.*' => 'required',
-    ];
+    public $with;
+    public $conducted_by;
+    public $received_by;
+    public $dov;
+    public $toa;
+    public $strength;
+    public $improvement;
+    public $wave;
     public function render()
     {
+
+        $timezone = new DateTimeZone('Asia/Manila');
+        $time = new DateTime('now', $timezone);
+        $date_today = $time->format('Y-m-d');
+        $this->dov = $date_today;
+        $this->conducted_by = Auth::user()->name;
         $sanitation_defect = SanitaryModel::select('id', 'title', 'code')->get();
 
         $this->audit_forms_id = AuditFormModel::where('store_id', $this->store_id)->value('id');
@@ -238,29 +243,7 @@ class ExecutiveSummary extends Component
         // dd($this->category_list);
         return view('livewire.store.executive-summary', ['sanitation_list' => $sanitation_defect])->extends('layouts.app');
     }
-    public function setTime($data)
-    {
-        $timezone = new DateTimeZone('Asia/Manila');
-        $time = new DateTime('now', $timezone);
-        $currentTime = $time->format('h:i A');
-        if ($data == 0) {
-            $this->cashier_tat[$this->currentIndex][$this->currentField] = $currentTime;
-        } else if ($data == 1) {
-            $this->server_cat[$this->currentIndex][$this->currentField] = $currentTime;
-        }
-    }
-    public function stopTimer()
-    {
-        if (empty($this->currentField)) {
-            return;
-        }
-        $currentTime = new DateTime('now', new DateTimeZone('Asia/Manila'));
-        $currentTime = date('H:i');
-        if ($this->currentField == "product_order_{$this->currentIndex}") {
-            $this->cashier_tat[$this->currentIndex]['ot'] = $currentTime;
-        }
-        $this->currentField = '';
-    }
+
     public function mount($store_id = null)
     {
         $this->store_id = $store_id;
@@ -293,4 +276,49 @@ class ExecutiveSummary extends Component
         );
     }
 
+    public function onComplete()
+    {
+        $this->validate(
+            [
+                'with' => '',
+                'conducted_by' => '',
+                'received_by' => 'required',
+                'dov' => '',
+                'toa' => '',
+                'strength' => 'required',
+                'improvement' => 'required',
+                'wave' => 'required',
+            ]
+        );
+        SummaryModel::create([
+            'store_id' => strip_tags($this->store_id),
+            'name' => strip_tags($this->store->name),
+            'code' => strip_tags($this->store->code),
+            'type' => strip_tags($this->store->type),
+            'wave' => strip_tags($this->wave),
+            'with' => strip_tags($this->with),
+            'conducted_by' => strip_tags($this->conducted_by),
+            'received_by' => strip_tags($this->received_by),
+            'date_of_visit' => strip_tags($this->dov),
+            'time_of_audit' => strip_tags($this->toa),
+            'strength' => strip_tags($this->strength),
+            'improvement' => strip_tags($this->improvement),
+        ]);
+
+        StoreModel::where('id', $this->store_id)->update([
+            'audit_status' => 0,
+        ]);
+        $this->reset();
+        $this->onAlert(false, 'Success', 'Audit record saved successfully!', 'success');
+        return redirect()->route('details', ['store_id' => $this->store_id]);
+    }
+
+    public function onAlert($is_confirm = false, $title = null, $message = null, $type = null, $data = null)
+    {
+        CustomHelper::onShow($this, $is_confirm, $title, $message, $type, $data);
+    }
+    public function reset(...$properties)
+    {
+        $this->resetValidation();
+    }
 }

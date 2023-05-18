@@ -8,12 +8,7 @@
             <li class="breadcrumb-item active" aria-current="page">Executive Summary</li>
         </ol>
     </nav>
-    <div class="row g-2 justify-content-start justify-content-md-end align-items-center">
-        <div class="col-auto mb-3">
-            <a class="btn app-btn-primary"
-                wire:click="onStartAndComplete(true,'Are you sure?','warning')">{{ $actionTitle }}</a>
-        </div>
-    </div>
+
 
     <div class="card mb-3 ">
         <div class="card-body">
@@ -52,7 +47,7 @@
                                         <label class="form-label">WITH:</label>
                                     </td>
                                     <td class="pl-3">
-                                        <input type="text" class="form-control">
+                                        <input type="text" wire:model="with" class="form-control">
                                     </td>
                                 </tr>
                             </tbody>
@@ -69,23 +64,28 @@
                                         <label class="form-label">Conducted by:</label>
                                     </td>
                                     <td class="pl-3">
-                                        <input type="text" class="form-control" value="{{ Auth::user()->name }}">
+                                        <input type="text" wire:model="conducted_by" class="form-control">
                                     </td>
                                 </tr>
                                 <tr class="v-align-items-baseline">
                                     <td>
-                                        <label class="form-label">Received by:</label>
+                                        <label class="form-label">Received by: <span
+                                                class="text-danger">*</span></label>
                                     </td>
                                     <td class="pl-3">
-                                        <input type="text" class="form-control">
+                                        <input type="text" wire:model="received_by" class="form-control">
+                                        @error('received_by')
+                                            <span class="text-danger mt-1 ">{{ $message }}</span>
+                                        @enderror
                                     </td>
+
                                 </tr>
                                 <tr class="v-align-items-baseline">
                                     <td>
                                         <label class="form-label">Date of visit:</label>
                                     </td>
                                     <td class="pl-3">
-                                        <input type="date" class="form-control">
+                                        <input type="date" wire:model="dov" class="form-control">
 
                                     </td>
                                 </tr>
@@ -94,7 +94,7 @@
                                         <label class="form-label">Time of audit:</label>
                                     </td>
                                     <td class="pl-3">
-                                        <input type="time" class="form-control">
+                                        <input type="time" wire:model="toa" class="form-control">
                                     </td>
                                 </tr>
                             </tbody>
@@ -209,7 +209,6 @@
         </div>
     </div>
 
-
     <div class="row g-4 mb-4">
         <div class="col-12">
             <div class="app-card app-card-chart  shadow-sm">
@@ -220,14 +219,35 @@
                     <div class="row justify-content-between align-items-center">
                         <div class="col-12">
                             <div class="mb-3">
-                              <label for="" class="form-label">Areas of Strength</label>
-                              <textarea class="form-control" name="" id="" rows="3"></textarea>
+                                <label for="" class="form-label">Areas of Strength<span
+                                        class="text-danger">*</span></label>
+                                <textarea class="form-control" wire:model="strength" rows="3"></textarea>
+                                @error('strength')
+                                    <span class="text-danger mt-1 ">{{ $message }}</span>
+                                @enderror
                             </div>
 
                             <div class="mb-3">
-                                <label for="" class="form-label">Areas for Improvement</label>
-                                <textarea class="form-control" name="" id="" rows="3"></textarea>
-                              </div>
+                                <label for="" class="form-label">Areas for Improvement<span
+                                        class="text-danger">*</span></label>
+                                <textarea class="form-control" wire:model="improvement" rows="3"></textarea>
+                                @error('improvement')
+                                    <span class="text-danger mt-1 ">{{ $message }}</span>
+                                @enderror
+                            </div>
+
+                            <div class="mb-3 w-25">
+                                <label for="wave" class="form-label">Wave<span
+                                    class="text-danger">*</span></label>
+                                <select class="form-select form-select-md" name="wave" id="wave" wire:model="wave">
+                                    <option selected value="">Select wave</option>
+                                    <option value="Wave 1">Wave 1</option>
+                                    <option value="Wave 2">Wave 2</option>
+                                </select>
+                                @error('wave')
+                                <span class="text-danger mt-1 ">{{ $message }}</span>
+                            @enderror
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -235,5 +255,10 @@
         </div>
 
     </div>
-
+    <div class="row g-2 justify-content-start justify-content-md-end align-items-center">
+        <div class="col-auto mb-3">
+            <a class="btn app-btn-primary" wire:click="onComplete">Complete</a>
+            {{-- wire:click="onStartAndComplete(true,'Are you sure?','warning')">{{ $actionTitle }} --}}
+        </div>
+    </div>
 </div>

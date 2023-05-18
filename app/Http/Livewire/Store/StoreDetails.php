@@ -4,6 +4,7 @@ use Livewire\Component;
 use App\Models\Store as StoreModel;
 use App\Models\AuditDate as AuditDateModel;
 use App\Models\User as UserModel;
+use App\Models\Summary as SummaryModel;
 use App\Helpers\CustomHelper;
 use Livewire\WithPagination;
 use Illuminate\Support\Facades\DB;
@@ -40,6 +41,9 @@ class StoreDetails extends Component
     }
     public function render()
     {
+
+        $summary = SummaryModel::all('*')
+        ->where('store_id', $this->store_id);
         $data = UserModel::all('*')
             ->where('user_level', '!=', '0');
         $startDate = null;
@@ -72,7 +76,7 @@ class StoreDetails extends Component
 
         }
         $this->store = StoreModel::find($this->store_id);
-        return view('livewire.store.store-details', ['user_list' => $data, 'schedule_list' => $schedule])->extends('layouts.app');
+        return view('livewire.store.store-details', ['user_list' => $data, 'schedule_list' => $schedule, 'summary_list' => $summary])->extends('layouts.app');
     }
     public function onUpdate($boolean)
     {
