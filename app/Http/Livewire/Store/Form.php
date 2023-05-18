@@ -34,6 +34,8 @@ class Form extends Component
     public $currentIndex;
     public $cashier_tat = [['name' => null, 'time' => null, 'product_order' => null, 'ot' => null, 'ot_point' => 1, 'tat' => null, 'tat_point' => 1, 'fst' => null, 'fst_point' => 3, 'remarks' => null]];
     public $server_cat = [['name' => null, 'time' => null, 'product_order' => null, 'ot' => null, 'ot_point' => 1, 'tat' => null, 'tat_point' => 1, 'fst' => null, 'fst_point' => 3, 'remarks' => null]];
+    public $score = [ [ 'name' => '3%'], ['name' => '5%'],['name' => '10%'] ,['name' => '15%' ]
+    ];
     protected $rules = [
         'category_list.*.sub_categ.data_items.*.id' => 'required',
         'category_list.*.sub_categ.data_items.*.name' => 'required',
@@ -42,7 +44,6 @@ class Form extends Component
     public function render()
     {
         $sanitation_defect = SanitaryModel::select('id', 'title', 'code')->get();
-
         $this->audit_forms_id = AuditFormModel::where('store_id', $this->store_id)->value('id');
         $store = StoreModel::find($this->store_id);
         $this->store_name = $store->name;
@@ -366,7 +367,7 @@ class Form extends Component
         $date_today = $time->format('Y-m-d');
         $audit_time = $time->format('h:i');
         $data = $this->audit_status ? false : true;
-        if($data){
+        if ($data) {
             StoreModel::where('id', $this->store_id)->update([
                 'audit_status' => $data,
             ]);
@@ -382,7 +383,7 @@ class Form extends Component
                 ]
             );
             $this->onInitialSave();
-        }else{
+        } else {
             return redirect()->route('form.result', ['store_id' => $this->store_id]);
         }
     }
