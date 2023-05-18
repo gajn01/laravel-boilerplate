@@ -3,12 +3,33 @@
     <nav aria-label="breadcrumb">
         <ol class="breadcrumb">
             <li class="breadcrumb-item"><a href="{{ route('store') }}">Store</a></li>
-            <li class="breadcrumb-item " aria-current="page"> <a href="{{ route('store') }}">{{ $store_name }}</a></li>
+            <li class="breadcrumb-item"><a href="{{ route('form', [$store_id]) }}">{{ $store_name }}</a>
             <li class="breadcrumb-item active" aria-current="page">Result</li>
         </ol>
     </nav>
-
     <div class="page-utilities mb-3">
+
+
+        <div class="row g-2 justify-content-start justify-content-md-end align-items-center">
+            <div class="col-auto mb-3">
+                <a class="btn app-btn-primary" href="{{ route('form.summary', [$store_id]) }}">Go to Executive Summary</a>
+            </div>
+        </div>
+
+     {{--    @if ($audit_status)
+            <div class="row g-2 justify-content-start justify-content-md-end align-items-center">
+                <div class="col-auto mb-3">
+                    <a class="btn app-btn-primary"
+                        wire:click="onStartAndComplete(true,'Are you sure?','warning')">{{ $actionTitle }}</a>
+                </div>
+            </div>
+        @else
+            <div class="row g-2 justify-content-start justify-content-md-end align-items-center">
+                <div class="col-auto mb-3">
+                    <a class="btn app-btn-primary" href="{{ route('form.summary', [$store_id]) }}">Go to Executive Summary</a>
+                </div>
+            </div>
+        @endif --}}
         <nav wire:ignore id="audit-form-tab"
             class="audit-form-tab app-nav-tabs nav shadow-sm flex-column flex-sm-row mb-4 justify-content-center">
             @forelse ($category_list as $key => $data)
@@ -29,10 +50,10 @@
         </nav>
         <div class="tab-content" id="audit-form-tab-content">
             @forelse ($category_list as $key => $data)
-                <div class="tab-pane fade show {{ $key == $active_index ? 'active' : '' }}" id="cat{{ $data->id }}"
-                    role="tabpanel" aria-labelledby="cat{{ $data->id }}-tab">
+                <div class="tab-pane fade show {{ $key == $active_index ? 'active' : '' }}"
+                    id="cat{{ $data->id }}" role="tabpanel" aria-labelledby="cat{{ $data->id }}-tab">
                     <div class="row g-4 mb-4">
-                        <div class="col-12  {{ $data->critical_deviation->isNotEmpty() ? 'col-lg-6' : 'col-lg-12' }}">
+                        <div class="col-12 }}">
                             <div class="app-card app-card-chart  shadow-sm">
                                 <div class="app-card-header p-3">
                                     <h4 class="app-card-title">Overall Score</h4>
@@ -93,114 +114,51 @@
                             </div>
                         </div>
                         @if ($data->critical_deviation->isNotEmpty())
-                            <div class="col-12 col-lg-6" wire:ignore>
-                                <div class="app-card app-card-chart h-100 shadow-sm">
+                            <div class="col-12 }}">
+                                <div class="app-card app-card-chart  shadow-sm">
                                     <div class="app-card-header p-3">
                                         <div class="row justify-content-between align-items-center">
-                                            <div class="col-auto">
+                                            <div class="col-12">
                                                 <h4 class="app-card-title">Critical Deviation</h4>
                                             </div>
                                         </div>
                                     </div>
-                                    {{--                                     <div class="table-responsive">
-                                        <table class="table">
-                                            <thead>
-                                                <tr>
-                                                    <th scope="col">Label</th>
-                                                    <th scope="col">Deviation</th>
-                                                    <th scope="col">Ramerks</th>
-                                                    <th scope="col">Score</th>
-
-                                                </tr>
-                                            </thead>
-                                            <tbody>
-                                                <tr class="">
-                                                    <td>R1C1</td>
-                                                    <td>R1C2</td>
-                                                    <td>R1C3</td>
-                                                    <td>R1C3</td>
-                                                </tr>
-                                            </tbody>
-                                        </table>
-                                    </div> --}}
                                     <div class="app-card-body p-3 p-lg-4">
-                                        @foreach ($data->critical_deviation as $item)
-                                            <label for="" class="form-label ">{{ $item['label'] }}</label>
-                                            @if ($item['is_sd'])
-                                                <div class="row">
-                                                    <div class="col-12">
-                                                        <div class="mb-3">
-                                                            <div class="mb-3">
-                                                                <input type="text" class="form-control" disabled
-                                                                    value="{{ $item['saved_sd'] }}">
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            @endif
-                                            @if ($item['is_location'])
-                                                <div class="row">
-                                                    <div class="col-sm-12 col-md-6">
-                                                        <div class="mb-3">
-                                                            <input type="text" class="form-control" disabled
-                                                                value="{{ $item['saved_location'] }}">
-                                                        </div>
-                                                    </div>
-                                                    <div class="col-sm-12 col-md-6">
-                                                        <div class="mb-3">
-                                                            <input type="text" class="form-control" disabled
-                                                                value="{{ $item['saved_score'] }}">
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            @endif
-                                            @if ($item['is_product'])
-                                                <div class="row">
-                                                    <div class="col-sm-12 col-md-6">
-                                                        <div class="mb-3">
-                                                            <input type="text" class="form-control" disabled
-                                                                value="{{ $item['saved_product'] }}">
-                                                        </div>
-                                                    </div>
-                                                    <div class="col-sm-12 col-md-6">
-                                                        <div class="mb-3">
-                                                            <input type="text" class="form-control" disabled
-                                                                value="{{ $item['saved_score'] }}">
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            @endif
-                                            @if ($item['is_dropdown'])
-                                                <div class="row">
-                                                    <div class="col-sm-12 col-md-6">
-                                                        <div class="mb-3">
-                                                            <input type="text" class="form-control" disabled
-                                                                value="{{ $item['saved_dropdown'] }}">
-                                                        </div>
-                                                    </div>
-                                                    <div class="col-sm-12 col-md-6">
-                                                        <div class="mb-3">
-                                                            <input type="text" class="form-control" disabled
-                                                                value="{{ $item['saved_score'] }}">
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            @endif
-                                            @if ($item['remarks'])
-                                                <div class="mb-3">
-                                                    <textarea class="form-control" disabled name="remarks{{ $item['id'] }}" id="remarks{{ $item['id'] }}"
-                                                        rows="2">{{ $item['saved_remarks'] }}</textarea>
-                                                </div>
-                                            @endif
-                                        @endforeach
+                                        <div class="row justify-content-between align-items-center">
+                                            <div class="col-12">
+                                                <table class="table">
+                                                    <thead>
+                                                        <tr>
+                                                            <th scope="col"></th>
+                                                            <th scope="col">Deviation</th>
+                                                            <th scope="col">Ramerks</th>
+                                                            <th scope="col">Score</th>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                        @foreach ($data->critical_deviation as $item)
+                                                            <tr class="">
+                                                                <td>{{ $item['label'] }}</td>
+                                                                <td>{{ $item['saved_dropdown'] != null ? $item['saved_dropdown'] : 'n/a' }}
+                                                                </td>
+                                                                <td>{{ $item['saved_remarks'] != null ? $item['saved_remarks'] : 'n/a' }}
+                                                                </td>
+                                                                <td>{{ $item['saved_score'] != null ? $item['saved_score'] : 'n/a' }}
+                                                                </td>
+                                                            </tr>
+                                                        @endforeach
+                                                    </tbody>
+                                                </table>
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
                         @endif
                     </div>
-                    <div class="app-card app-card-orders-table shadow-sm mb-5 bg-none">
-                        <div class="app-card-body">
-                            @if ($key == 0)
+
+                    {{--     @if ($key == 0)
+
                                 <div class="accordion mb-3" id="accordionExample">
                                     <div class="accordion-item">
                                         <h2 class="accordion-header" id="headingOne">
@@ -493,179 +451,81 @@
                                         </div>
                                     </div>
                                 </div>
-                            @endif
-                            @forelse ($data->sub_categ['data_items'] as  $key =>  $dataItem)
-                                <div class="accordion mb-3" id="accordionCategory">
-                                    <div class="accordion-item">
-                                        <h2 class="accordion-header" id="{{ $dataItem['name'] }}">
-                                            <button class="accordion-button " type="button"
-                                                data-bs-toggle="collapse"
-                                                data-bs-target="#accrod{{ $dataItem['id'] }}" aria-expanded="true"
-                                                aria-controls="accrod{{ $dataItem['id'] }}">
-                                                <h6 class="card-title product-name">{{ $dataItem['name'] }}</h6>
-                                            </button>
-                                        </h2>
-                                        <div id="accrod{{ $dataItem['id'] }}"
-                                            class="accordion-collapse collapse show"
-                                            aria-labelledby="accrod{{ $dataItem['id'] }}"
-                                            data-bs-parent="#accordionCategory">
-                                            <div class="accordion-body">
-                                                @if ($dataItem['is_sub'] == 0)
-                                                    @foreach ($dataItem['sub_category'] as $index => $auditLabel)
-                                                        <div class="row mb-3">
-                                                            <div class="col-sm-12 col-md-4 col-lg-4">
-                                                                <p @class(['pt-4' => $index == 0])>
-                                                                    {{ $auditLabel['name'] }}</p>
-                                                            </div>
-                                                            <div class="col-sm-12 col-md-2">
-                                                                <div class="row">
-                                                                    <div class="col-sm-6 col-md-6">
-                                                                        @if ($index == 0)
-                                                                            <label for=""
-                                                                                class="form-label">BP</label>
-                                                                        @endif
-                                                                        <input type="text"
-                                                                            class="form-control text-center" disabled
-                                                                            name="bp{{ $auditLabel['name'] }}"
-                                                                            id="bp"
-                                                                            value="{{ $auditLabel['is_all_nothing'] ? $auditLabel['bp'] . '*' : $auditLabel['bp'] }}">
+                            @endif --}}
 
-                                                                    </div>
-                                                                    <div class="col-sm-6 col-md-6">
-                                                                        @if ($index == 0)
-                                                                            <label for="points"
-                                                                                class="form-label">Point(s)</label>
-                                                                        @endif
-                                                                        <input type="text"
-                                                                            class="form-control text-center" disabled
-                                                                            value="{{ $auditLabel['points'] }}">
-                                                                    </div>
-                                                                </div>
-                                                            </div>
-                                                            <div class="col-sm-12 col-md-6 col-lg-6">
-                                                                <div class="row">
-                                                                    <div
-                                                                        class="col-sm-12 {{ $auditLabel['dropdown'] ? 'col-md-6' : 'col-md-12' }}">
-                                                                        @if ($index == 0)
-                                                                            <label for="remarks"
-                                                                                class="form-label">Remarks</label>
-                                                                        @endif
-                                                                        <textarea class="form-control" name="remarks" id="remarks" rows="1" disabled>{{ $category_list[$loop->parent->parent->index]['sub_categ']['data_items'][$loop->parent->index]['sub_category'][$loop->index]['remarks'] }}</textarea>
-                                                                    </div>
-                                                                    @if (!empty($auditLabel['dropdown']))
-                                                                        <div
-                                                                            class="col-sm-12 col-md-6 {{ $auditLabel['dropdown'] ? '' : 'd-none' }}">
-                                                                            @if ($index == 0 || empty($auditLabel['dropdown']))
-                                                                                <label for=""
-                                                                                    class="form-label">Deviation</label>
-                                                                            @endif
-                                                                            <input type="text"
-                                                                                class="form-control text-center"
-                                                                                disabled
-                                                                                value="{{ $auditLabel['deviation'] }}">
-                                                                        </div>
-                                                                    @endif
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                    @endforeach
-                                                @else
-                                                    @foreach ($dataItem['sub_category'] as $sub_category)
-                                                        <div class="accordion accordion-flush mb-3"
-                                                            id="accordionFlushSubcategory">
-                                                            <div class="accordion-item">
-                                                                <h2 class="accordion-header" id="headingSub">
-                                                                    <button class="accordion-button collapsed"
-                                                                        type="button" data-bs-toggle="collapse"
-                                                                        data-bs-target="#flush-{{ $sub_category['id'] }}"
-                                                                        aria-expanded="true"
-                                                                        aria-controls="flush-{{ $sub_category['id'] }}">
-                                                                        {{ $sub_category['name'] }}
-                                                                    </button>
-                                                                </h2>
-                                                                <div id="flush-{{ $sub_category['id'] }}"
-                                                                    class="accordion-collapse "
-                                                                    aria-labelledby="flush-{{ $sub_category['id'] }}"
-                                                                    data-bs-parent="#accordionFlushSubcategory">
-                                                                    <div class="accordion-body">
-                                                                        @foreach ($sub_category['label'] as $index => $auditLabel)
-                                                                            <div class="row mb-3">
-                                                                                <div
-                                                                                    class="col-sm-12 col-md-4 col-lg-4">
-                                                                                    <p @class(['pt-4' => $index == 0])>
-                                                                                        {{ $auditLabel['name'] }}
-                                                                                    </p>
-                                                                                </div>
-                                                                                <div class="col-sm-12 col-md-2  ">
-                                                                                    <div class="row">
-                                                                                        <div class="col-sm-6 col-md-6">
-                                                                                            @if ($index == 0)
-                                                                                                <label for=""
-                                                                                                    class="form-label">BP</label>
-                                                                                            @endif
-                                                                                            <input type="text"
-                                                                                                class="form-control text-center"
-                                                                                                disabled
-                                                                                                name="bp{{ $auditLabel['name'] }}"
-                                                                                                id="bp"
-                                                                                                value="{{ $auditLabel['is_all_nothing'] ? $auditLabel['bp'] . '*' : $auditLabel['bp'] }}">
-                                                                                        </div>
-                                                                                        <div class="col-sm-6 col-md-6">
-                                                                                            @if ($index == 0)
-                                                                                                <label for=""
-                                                                                                    class="form-label">Point</label>
-                                                                                            @endif
-                                                                                            <input type="text"
-                                                                                                class="form-control text-center"
-                                                                                                disabled
-                                                                                                value="{{ $auditLabel['points'] }}">
-                                                                                        </div>
-                                                                                    </div>
-                                                                                </div>
-                                                                                <div
-                                                                                    class="col-sm-12 col-md-6 col-lg-6 ">
-                                                                                    <div class="row">
-                                                                                        <div
-                                                                                            class="col-sm-12 {{ $auditLabel['dropdown'] ? 'col-md-6' : 'col-md-12' }}">
-                                                                                            @if ($index == 0)
-                                                                                                <label for=""
-                                                                                                    class="form-label">Remarks</label>
-                                                                                            @endif
-                                                                                            <textarea class="form-control" name="" id="" rows="1"disabled>{{ $category_list[$loop->parent->parent->parent->index]['sub_categ']['data_items'][$loop->parent->parent->index]['sub_category'][$loop->parent->index]['label'][$loop->index]['remarks'] }}</textarea>
-                                                                                        </div>
-                                                                                        @if (!empty($auditLabel['dropdown']))
-                                                                                            <div
-                                                                                                class="col-sm-12 col-md-6 {{ $auditLabel['dropdown'] ? '' : 'd-none' }}">
-                                                                                                @if ($index == 0 || empty($auditLabel['dropdown']))
-                                                                                                    <label
-                                                                                                        for=""
-                                                                                                        class="form-label">Deviation</label>
-                                                                                                @endif
-                                                                                                <input type="text"
-                                                                                                    class="form-control text-center"
-                                                                                                    disabled
-                                                                                                    value="{{ $auditLabel['deviation'] }}">
-                                                                                            </div>
-                                                                                        @endif
-                                                                                    </div>
-                                                                                </div>
-                                                                            </div>
-                                                                        @endforeach
-                                                                    </div>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                    @endforeach
-                                                @endif
-                                            </div>
+
+                    @forelse ($data->sub_categ['data_items'] as  $key =>  $dataItem)
+                        <div class="row g-4 mb-4" id="{{ $dataItem['name'] }}">
+                            <div class="col-12 }}">
+                                <div class="app-card app-card-chart  shadow-sm">
+                                    <div class="app-card-header p-3">
+                                        <h5 class="app-card-title">{{ $dataItem['name'] }}</h5>
+                                    </div>
+                                    <div class="app-card-body p-3 p-lg-4">
+                                        <div class="table-responsive">
+                                            <table class="table white-bg">
+                                                <thead>
+                                                    <tr>
+                                                        <th scope="col"></th>
+                                                        <th scope="col">Score</th>
+                                                        <th scope="col">Remarks</th>
+                                                        <th scope="col">Deviation</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+
+                                                    @if ($dataItem['is_sub'] == 0)
+                                                        @foreach ($dataItem['sub_category'] as $index => $auditLabel)
+                                                            <tr>
+                                                                <td class="w-50">
+                                                                    <p @class(['pt-4' => $index == 0])>
+                                                                        {{ $auditLabel['name'] }}</p>
+                                                                </td>
+                                                                <td>{{ $auditLabel['points'] != null ? $auditLabel['points'] : '0' }}
+                                                                </td>
+                                                                <td>{{ $auditLabel['remarks'] != null ? $auditLabel['remarks'] : 'n/a' }}
+                                                                </td>
+                                                                <td>{{ $auditLabel['deviation'] != null ? $auditLabel['deviation'] : 'n/a' }}
+                                                                </td>
+                                                            </tr>
+                                                        @endforeach
+                                                    @else
+                                                        @foreach ($dataItem['sub_category'] as $sub_category)
+                                                            <tr>
+                                                                <td colspan="4">
+                                                                    <h6 class="app-card-title">
+                                                                        {{ $sub_category['name'] }}</h6>
+
+                                                                </td>
+                                                            </tr>
+                                                            @foreach ($sub_category['label'] as $index => $auditLabel)
+                                                                <tr>
+                                                                    <td class="w-50">
+                                                                        <p @class(['pt-4' => $index == 0])>
+                                                                            {{ $auditLabel['name'] }}</p>
+                                                                    </td>
+                                                                    <td>{{ $auditLabel['points'] != null ? $auditLabel['points'] : 'n/a' }}
+                                                                    </td>
+                                                                    <td>{{ $auditLabel['remarks'] != null ? $auditLabel['remarks'] : 'n/a' }}
+                                                                    </td>
+                                                                    <td>{{ $auditLabel['deviation'] != null ? $auditLabel['deviation'] : 'n/a' }}
+                                                                    </td>
+                                                                </tr>
+                                                            @endforeach
+                                                        @endforeach
+                                                    @endif
+
+                                                </tbody>
+                                            </table>
                                         </div>
+
                                     </div>
                                 </div>
-                            @empty
-                                <p class="m-0 p-2 text-center">No category found!</p>
-                            @endforelse
+                            </div>
                         </div>
-                    </div>
+                    @empty
+                        <p class="m-0 p-2 text-center">No category found!</p>
+                    @endforelse
                 </div>
             @empty
                 <p class="m-0 p-2">No category found!</p>

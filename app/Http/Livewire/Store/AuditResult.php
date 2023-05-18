@@ -248,7 +248,7 @@ class AuditResult extends Component
             $category->sub_categ = $sub_category;
         }
         $this->category_list = $data;
-        // dd($this->category_list);
+        // dd($data);
         return view('livewire.store.audit-result', ['sanitation_list' => $sanitation_defect])->extends('layouts.app');
     }
     public function setTime($data)
@@ -393,72 +393,7 @@ class AuditResult extends Component
                 'audit_status' => $data,
             ]
         );
-        $this->onInitialSave();
-    }
-    public function onInitialSave()
-    {
-        $this->audit_forms_id = AuditFormModel::where('store_id', $this->store_id)->value('id');
-        $auditResults = collect($this->category_list)->flatMap(function ($data) {
-            return collect($data->sub_categ['data_items'])->flatMap(function ($sub) use ($data) {
-                return collect($sub['sub_category'])->map(function ($child) use ($data, $sub) {
-                    $result = [
-                        'form_id' => $this->audit_forms_id,
-                        'category_id' => $data->id,
-                        'category_name' => $data->name,
-                        'sub_category_id' => $sub['id'],
-                        'sub_name' => $sub['name'],
-                        'sub_sub_category_id' => $child['id'],
-                        'sub_sub_name' => $child['name'],
-                        'sub_sub_base_point' => $child['bp'] ?? null,
-                        'sub_sub_point' => $child['points'] ?? null,
-                        'sub_sub_remarks' => $child['remarks'] ?? null,
-                        'sub_sub_file' => $child['tag'] ?? null,
-                    ];
-                    if (isset($child['label'])) {
-                        return collect($child['label'])->map(function ($label) use ($result) {
-                            return array_merge($result, [
-                                'label_id' => $label['id'],
-                                'label_name' => $label['name'],
-                                'label_base_point' => $label['bp'] ?? null,
-                                'label_point' => $label['points'] ?? null,
-                                'label_remarks' => $label['remarks'] ?? null,
-                                'label_file' => $label['tag'] ?? null,
-                            ]);
-                        });
-                    } else {
-                        return [$result];
-                    }
-                });
-            });
-        })->flatten(1);
-        $critical_deviation = collect($this->category_list)->flatMap(function ($data) {
-            $deviations = CriticalDeviationMenuModel::where('critical_deviation_id', $data->critical_deviation)->get();
-            return collect($deviations)->map(function ($dev) use ($data) {
-                $result = [
-                    'form_id' => $this->audit_forms_id,
-                    'deviation_id' => $dev->id,
-                    'category_id' => $data->id,
-                    'critical_deviation_id' => $dev->critical_deviation_id,
-                    'remarks' => '',
-                    'score' => '',
-                    'sd' => '',
-                    'location' => '',
-                    'product' => '',
-                    'dropdown' => '',
-                ];
-                return [$result];
-            });
-        })->flatten(1);
-        $critical_deviation->each(function ($result) {
-            if (is_array($result)) {
-                CriticalDeviationResultModel::create($result);
-            }
-        });
-        $auditResults->each(function ($result) {
-            if (is_array($result)) {
-                AuditFormResultModel::create($result);
-            }
-        });
+        return redirect()->route('form.summary', ['store_id' => $this->store_id]);
     }
     public function updateCriticalDeviation($data = null, $value = null, $deviation = null)
     {

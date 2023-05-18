@@ -39,27 +39,16 @@ class Form extends Component
         'category_list.*.sub_categ.data_items.*.name' => 'required',
         'category_list.*.sub_categ.data_items.*.sub_category.*.*' => 'required',
     ];
-    /*   public $message = '';
-    public $uppercaseMessage = '';
-    public function updated($propertyName)
-    {
-    if ($propertyName === 'message') {
-    // Update the $uppercaseMessage property whenever the $message property changes
-    $this->uppercaseMessage = strtoupper($this->message);
-    }
-    }
-    */
     public function render()
     {
         $sanitation_defect = SanitaryModel::select('id', 'title', 'code')->get();
 
         $this->audit_forms_id = AuditFormModel::where('store_id', $this->store_id)->value('id');
-        // dd($audit_result);
         $store = StoreModel::find($this->store_id);
         $this->store_name = $store->name;
         $this->store_type = $store->type;
         $this->audit_status = $store->audit_status;
-        $this->actionTitle = $this->audit_status ? 'Complete' : 'Start';
+        $this->actionTitle = $this->audit_status ? 'Save' : 'Start';
 
         $data = CategoryModel::select('id', 'name', 'type', 'critical_deviation')
             ->where('type', $this->store_type)
@@ -364,7 +353,7 @@ class Form extends Component
     public function onStartAndComplete($is_confirm = true, $title = 'Are you sure?', $type = null, $data = null)
     {
         if ($this->audit_status) {
-            $message = 'Are you sure you want to complete this audit?';
+            $message = 'Are you sure you want to save this audit?';
         } else {
             $message = 'Are you sure you want to start this audit?';
         }
@@ -377,21 +366,25 @@ class Form extends Component
         $date_today = $time->format('Y-m-d');
         $audit_time = $time->format('h:i');
         $data = $this->audit_status ? false : true;
-        StoreModel::where('id', $this->store_id)->update([
-            'audit_status' => $data,
-        ]);
-        AuditFormModel::updateOrCreate(
-            ['id' => $this->audit_forms_id],
-            [
-                'store_id' => $this->store_id,
-                'date_of_visit' => $date_today,
-                'conducted_by_id' => Auth::user()->id,
-                'received_by' => '',
-                'time_of_audit' => $audit_time,
+        if($data){
+            StoreModel::where('id', $this->store_id)->update([
                 'audit_status' => $data,
-            ]
-        );
-        $this->onInitialSave();
+            ]);
+            AuditFormModel::updateOrCreate(
+                ['id' => $this->audit_forms_id],
+                [
+                    'store_id' => $this->store_id,
+                    'date_of_visit' => $date_today,
+                    'conducted_by_id' => Auth::user()->id,
+                    'received_by' => '',
+                    'time_of_audit' => $audit_time,
+                    'audit_status' => $data,
+                ]
+            );
+            $this->onInitialSave();
+        }else{
+            return redirect()->route('form.result', ['store_id' => $this->store_id]);
+        }
     }
     public function onInitialSave()
     {

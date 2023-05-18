@@ -36,8 +36,8 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/store', Store::class)->name('store');
     Route::get('/store/form/{store_id?}', Form::class)->name('form');
     Route::get('/store/details/{store_id?}', StoreDetails::class)->name('details');
-    Route::get('/store/form/{store_id?}/summary', ExecutiveSummary::class)->name('form.summary');
     Route::get('/store/form/{store_id?}/result', AuditResult::class)->name('form.result');
+    Route::get('/store/form/{store_id?}/result/summary', ExecutiveSummary::class)->name('form.summary');
     /* User */
     Route::get('/user', User::class)->name('user');
     Route::get('/user/information/{employee_id?}', UserDetails::class)->name('information');
