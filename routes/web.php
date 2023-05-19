@@ -4,6 +4,10 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Livewire\Auth\Login;
 /* Dashboard */
 use App\Http\Livewire\Dashboard\Dashboard;
+/* Schedule */
+use App\Http\Livewire\Store\Schedule;
+
+
 /* Store */
 use App\Http\Livewire\Store\Store;
 use App\Http\Livewire\Store\StoreDetails;
@@ -26,12 +30,17 @@ use App\Http\Livewire\Settings\Dropdown;
 use App\Http\Livewire\Settings\DropdownMenu;
 use App\Http\Livewire\Settings\CriticalDeviation;
 use App\Http\Livewire\Settings\CriticalDeviationMenu;
+
 // $controller_path = 'App\Http\Livewire';
 /* Login */
 /* Dashboard */
 Route::get('/login', Login::class)->name('login');
 Route::middleware(['auth'])->group(function () {
     Route::get('/dashboard', Dashboard::class)->name('dashboard');
+
+    /* Schedule */
+    Route::get('/schedule', Schedule::class)->name('schedule');
+
     /* Audit */
     Route::get('/store', Store::class)->name('store');
     Route::get('/store/form/{store_id?}', Form::class)->name('form');
@@ -43,7 +52,6 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/user/information/{employee_id?}', UserDetails::class)->name('information');
     Route::get('/user/profile', Profile::class)->name('profile');
     Route::get('/user/change-password', ChangePassword::class)->name('change-password');
-
     /* Settings */
     Route::get('/settings/store-settings', StoreSettings::class)->name('settings');
     Route::get('/settings/category', Category::class)->name('category');

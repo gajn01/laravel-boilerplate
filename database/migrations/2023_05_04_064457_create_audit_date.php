@@ -13,9 +13,9 @@ return new class extends Migration
     {
         Schema::create('audit_date', function (Blueprint $table) {
             $table->id();
-            $table->string('auditor');
-            $table->string('store');
-            $table->string('date');
+            $table->string('store_id');
+            $table->string('audit_date');
+            $table->string('wave');
             $table->timestamps();
         });
     }

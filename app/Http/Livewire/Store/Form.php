@@ -34,7 +34,11 @@ class Form extends Component
     public $currentIndex;
     public $cashier_tat = [['name' => null, 'time' => null, 'product_order' => null, 'ot' => null, 'ot_point' => 1, 'tat' => null, 'tat_point' => 1, 'fst' => null, 'fst_point' => 3, 'remarks' => null]];
     public $server_cat = [['name' => null, 'time' => null, 'product_order' => null, 'ot' => null, 'ot_point' => 1, 'tat' => null, 'tat_point' => 1, 'fst' => null, 'fst_point' => 3, 'remarks' => null]];
-    public $score = [ [ 'name' => '3%'], ['name' => '5%'],['name' => '10%'] ,['name' => '15%' ]
+    public $score = [
+        ['name' => '3%'],
+        ['name' => '5%'],
+        ['name' => '10%'],
+        ['name' => '15%']
     ];
     protected $rules = [
         'category_list.*.sub_categ.data_items.*.id' => 'required',
@@ -452,6 +456,66 @@ class Form extends Component
             }
         });
     }
+    // public function onInitialSave()
+    // {
+    //     $auditFormsId = AuditFormModel::where('store_id', $this->store_id)->value('id');
+    //     $auditResults = collect($this->category_list)->flatMap(function ($data) use ($auditFormsId) {
+    //         return collect($data->sub_categ['data_items'])->flatMap(function ($sub) use ($data, $auditFormsId) {
+    //             return collect($sub['sub_category'])->flatMap(function ($child) use ($data, $sub, $auditFormsId) {
+    //                 $result = [
+    //                     'form_id' => $auditFormsId,
+    //                     'category_id' => $data->id,
+    //                     'category_name' => $data->name,
+    //                     'sub_category_id' => $sub['id'],
+    //                     'sub_name' => $sub['name'],
+    //                     'sub_sub_category_id' => $child['id'],
+    //                     'sub_sub_name' => $child['name'],
+    //                     'sub_sub_base_point' => $child['bp'] ?? null,
+    //                     'sub_sub_point' => $child['points'] ?? null,
+    //                     'sub_sub_remarks' => $child['remarks'] ?? null,
+    //                     'sub_sub_file' => $child['tag'] ?? null,
+    //                 ];
+
+    //                 if (isset($child['label'])) {
+    //                     return collect($child['label'])->map(function ($label) use ($result) {
+    //                         return array_merge($result, [
+    //                             'label_id' => $label['id'],
+    //                             'label_name' => $label['name'],
+    //                             'label_base_point' => $label['bp'] ?? null,
+    //                             'label_point' => $label['points'] ?? null,
+    //                             'label_remarks' => $label['remarks'] ?? null,
+    //                             'label_file' => $label['tag'] ?? null,
+    //                         ]);
+    //                     });
+    //                 } else {
+    //                     return $result;
+    //                 }
+    //             });
+    //         });
+    //     });
+
+    //     $criticalDeviations = collect($this->category_list)->flatMap(function ($data) use ($auditFormsId) {
+    //         $deviations = CriticalDeviationMenuModel::where('critical_deviation_id', $data->critical_deviation)->get();
+    //         return collect($deviations)->map(function ($dev) use ($data, $auditFormsId) {
+    //             return [
+    //                 'form_id' => $auditFormsId,
+    //                 'deviation_id' => $dev->id,
+    //                 'category_id' => $data->id,
+    //                 'critical_deviation_id' => $dev->critical_deviation_id,
+    //                 'remarks' => '',
+    //                 'score' => '',
+    //                 'sd' => '',
+    //                 'location' => '',
+    //                 'product' => '',
+    //                 'dropdown' => '',
+    //             ];
+    //         });
+    //     });
+
+    //     CriticalDeviationResultModel::insert($criticalDeviations->all());
+    //     AuditFormResultModel::insert($auditResults->all());
+    // }
+
     public function updateCriticalDeviation($data = null, $value = null, $deviation = null)
     {
         if (!$this->audit_status) {

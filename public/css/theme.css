@@ -59,3 +59,10 @@ button.secondary-bg:hover{
 .webkit-right{
     text-align: -webkit-right;
 }
+.disabled{
+    fill: gray;
+}
+.disabled:hover{
+    cursor:default;
+
+}
