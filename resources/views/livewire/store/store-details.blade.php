@@ -141,7 +141,7 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                @forelse ($schedule_list as $item)
+                          {{--       @forelse ($schedule_list as $item)
                                     <tr>
                                         <td class="cell">
                                             {{ \Carbon\Carbon::parse($item->audit_date)->format('F d Y') }}</td>
@@ -175,7 +175,7 @@
                                             </p>
                                         </td>
                                     </tr>
-                                @endforelse
+                                @endforelse --}}
                             </tbody>
                         </table>
                     </div>

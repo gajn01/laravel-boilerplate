@@ -48,7 +48,7 @@ class StoreDetails extends Component
             ->where('user_level', '!=', '0');
         $startDate = null;
         $endDate = null;
-        if ($this->date_filter == 'weekly') {
+      /*   if ($this->date_filter == 'weekly') {
             $startDate = Carbon::now()->startOfWeek();
             $endDate = Carbon::now()->endOfWeek();
         } elseif ($this->date_filter == 'monthly') {
@@ -73,10 +73,9 @@ class StoreDetails extends Component
                 ->where('audit_date.audit_date', $this->date_filter)
                 ->orderBy('audit_date', 'asc')
                 ->paginate($this->limit);
-
-        }
+        } */
         $this->store = StoreModel::find($this->store_id);
-        return view('livewire.store.store-details', ['user_list' => $data, 'schedule_list' => $schedule, 'summary_list' => $summary])->extends('layouts.app');
+        return view('livewire.store.store-details', ['user_list' => $data, 'summary_list' => $summary])->extends('layouts.app');
     }
     public function onUpdate($boolean)
     {

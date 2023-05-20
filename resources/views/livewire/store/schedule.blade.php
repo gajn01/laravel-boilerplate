@@ -7,7 +7,17 @@
     </nav>
     {{-- <h1 class="app-page-title">Store</h1> --}}
     <div class="page-utilities mb-3">
+
         <div class="row g-2 justify-content-start justify-content-md-end align-items-center">
+            <div class="col-auto">
+                    <select class="form-select form-select-sm ms-auto d-inline-flex w-auto"
+                        wire:model="date_filter">
+                        <option value="all" selected>All</option>
+                        <option value="{{ $today }}" >Today</option>
+                        <option value="weekly">This week</option>
+                        <option value="monthly">This month</option>
+                    </select>
+            </div>
             <div class="col-auto">
                 <a href="">
                     <svg class="icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
