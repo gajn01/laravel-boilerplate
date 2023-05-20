@@ -8,11 +8,15 @@ use Illuminate\Database\Eloquent\Model;
 class AuditDate extends Model
 {
     use HasFactory;
-
     protected $table = 'audit_date';
-    protected $fillable = ['id', 'store_id', 'audit_date', 'wave','created_at', 'updated_at'];
+    protected $fillable = ['id', 'store_id', 'audit_date', 'wave', 'created_at', 'updated_at'];
     public function subCategories()
     {
         return $this->hasMany(SubCategory::class);
+    }
+    public function auditors()
+    {
+        return $this->belongsToMany(Auditor::class, 'auditor_id', 'audit_date_id', 'auditor_name')
+            ->withTimestamps();
     }
 }

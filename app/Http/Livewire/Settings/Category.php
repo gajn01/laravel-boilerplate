@@ -39,7 +39,6 @@ class Category extends Component
         $this->modalTitle = $this->category_id ? 'Edit Category' : 'Add Category';
         $this->modalButtonText = $this->category_id ? 'Update' : 'Add';
         $this->reset();
-
     }
     public function onSave()
     {

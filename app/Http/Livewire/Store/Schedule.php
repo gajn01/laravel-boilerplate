@@ -1,6 +1,7 @@
 <?php
 
 namespace App\Http\Livewire\Store;
+
 use Livewire\Component;
 use App\Models\Store as StoreModel;
 use App\Models\User as UserModel;
@@ -38,7 +39,6 @@ class Schedule extends Component
             ->orWhere('stores.area', 'like', '%' . $searchTerm . '%')
             ->orderByRaw('ISNULL(audit_date.audit_date), audit_date.audit_date ASC')
             ->paginate($this->limit);
-
         /*   $store_schedule = DB::table('stores')
         ->leftJoin('audit_date', 'audit_date.store_id', '=', 'stores.id')
         ->select('stores.*', 'audit_date.*', 'audit_date.id as audit_id')
@@ -52,14 +52,20 @@ class Schedule extends Component
     public function addAuditor()
     {
         if ($this->auditor_id) {
-            $user = UserModel::find($this->auditor_id);
-            $add = [
-                'audit_date_id' => '',
-                'auditor_id' => $this->auditor_id,
-                'auditor_name' => $user->name
-            ];
-            $this->auditor_list[] = $add;
+            $isAdded = collect($this->auditor_list)->contains('auditor_id', $this->auditor_id);
+            if (!$isAdded) {
+                $user = UserModel::find($this->auditor_id);
+                $add = [
+                    'audit_date_id' => '',
+                    'auditor_id' => $this->auditor_id,
+                    'auditor_name' => $user->name
+                ];
+                $auditorListArray = $this->auditor_list->toArray();
+                array_push($auditorListArray, $add);
+                $this->auditor_list = collect($auditorListArray);
+            }
         }
+
     }
     public function removeAuditor($index)
     {
@@ -78,32 +84,31 @@ class Schedule extends Component
             'wave' => strip_tags($this->wave),
         ];
         $auditDate = AuditDateModel::updateOrCreate(['id' => $this->audit_date_id], $auditDateData);
-
         $this->onAlert(false, 'Success', 'Schedule saved successfully!', 'success');
         CustomHelper::onRemoveModal($this, '#store_schedule_modal');
-
-        $auditorListData = collect($this->auditor_list)->map(function ($value) use ($auditDate) {
-            $value['audit_date_id'] = $auditDate->id;
-            return $value;
-        });
-        AuditorListModel::insert($auditorListData->all());
-        $this->auditor_list = [];
+        if ($this->audit_date_id == null) {
+            $auditorListData = collect($this->auditor_list)->map(function ($value) use ($auditDate) {
+                $value['audit_date_id'] = $auditDate->id;
+                return $value;
+            });
+            AuditorListModel::insert($auditorListData->all());
+            $this->auditor_list = [];
+        }
     }
     public function showModal($id = null)
     {
         $this->audit_date_id = $id;
         $audit = AuditDateModel::find($id);
         $this->auditor_list = AuditorListModel::select('*')
-        ->where('audit_date_id' , $id)
-        ->get();
-        // $this->auditor_name = optional($audit)->auditor;
+            ->where('audit_date_id', $id)
+            ->get();
         $this->audit_date = optional($audit)->audit_date;
         $this->store_id = optional($audit)->store_id;
         $this->audit_date = optional($audit)->audit_date;
         $this->wave = optional($audit)->wave;
+        $this->resetValidation();
         $this->modalTitle = $this->audit_date_id ? 'Update' : 'Add';
         $this->modalButtonText = $this->audit_date_id ? 'Update' : 'Add';
-        $this->reset();
     }
     public function onAlert($is_confirm = false, $title = null, $message = null, $type = null, $data = null)
     {
@@ -112,6 +117,5 @@ class Schedule extends Component
     public function reset(...$properties)
     {
         $this->resetValidation();
-        $this->auditor_list =[];
     }
 }

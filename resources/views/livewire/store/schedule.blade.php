@@ -26,7 +26,7 @@
                 </form>
             </div>
             <div class="col-auto">
-                <a class="btn app-btn-primary" data-bs-toggle="modal" data-bs-target="#store_schedule_modal">Assign
+                <a class="btn app-btn-primary" data-bs-toggle="modal" data-bs-target="#store_schedule_modal"  wire:click="showModal">Assign
                     Schedule</a>
             </div>
         </div>

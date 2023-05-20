@@ -9,11 +9,14 @@ class auditor_list extends Model
 {
     use HasFactory;
     protected $table = 'auditor_list';
-
     protected $fillable = [
         'audit_date_id',
         'auditor_id',
         'auditor_name',
     ];
-
+    public function auditDates()
+    {
+        return $this->belongsToMany(AuditDate::class, 'store_id', 'audit_date', 'wave')
+            ->withTimestamps();
+    }
 }
