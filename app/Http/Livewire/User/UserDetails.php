@@ -43,31 +43,8 @@ class UserDetails extends Component
         $this->name = optional($user)->name;
         $this->email = optional($user)->email;
         $this->status = optional($user)->status;
-        $startDate = null;
-        $endDate = null;
-        if ($this->date_filter == 'weekly') {
-            $startDate = Carbon::now()->startOfWeek();
-            $endDate = Carbon::now()->endOfWeek();
-        } elseif ($this->date_filter == 'monthly') {
-            $startDate = Carbon::now()->startOfMonth();
-            $endDate = Carbon::now()->endOfMonth();
-        }
-        if ($startDate && $endDate) {
-            $schedule = DB::table('audit_date')
-                ->join('stores', 'audit_date.store', '=', 'stores.id')
-                ->select('audit_date.*', 'stores.name as store_name')
-                ->whereBetween('audit_date.audit_date', [$startDate, $endDate])
-                ->orderBy('audit_date', 'asc')
-                ->paginate($this->limit);
-        } else {
-            $schedule = DB::table('audit_date')
-                ->join('stores', 'audit_date.store', '=', 'stores.id')
-                ->select('audit_date.*', 'stores.name as store_name')
-                ->where('audit_date.audit_date', $this->date_filter)
-                ->orderBy('audit_date', 'asc')
-                ->paginate($this->limit);
-        }
-        return view('livewire.user.user-details', ['store_list' => $data, 'schedule_list' => $schedule])->extends('layouts.app');
+
+        return view('livewire.user.user-details', ['store_list' => $data])->extends('layouts.app');
     }
     public function mount($employee_id = null)
     {

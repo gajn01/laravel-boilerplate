@@ -128,6 +128,11 @@ class Schedule extends Component
             $this->auditor_list = [];
         }
     }
+    public function onDelete($id)
+    {
+        $schedule = AuditDateModel::find($id);
+        $schedule->delete();
+    }
     public function showModal($id = null)
     {
         $this->audit_date_id = $id;

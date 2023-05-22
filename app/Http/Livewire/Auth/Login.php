@@ -20,7 +20,11 @@ class Login extends Component
         ]);
         if (Auth::attempt(['email' => $this->email, 'password' => $this->password])) {
             CustomHelper::onShow($this, false, 'Success.', 'Successfully logged in!', 'success', '');
-            return redirect()->to('/dashboard');
+            if(Auth::user()->user_level == 0){
+                return redirect()->to('/dashboard');
+            }else{
+                return redirect()->to('/store');
+            }
         } else {
             CustomHelper::onShow($this, false, 'Invalid credentials.', 'Invalid email or password. Please try again.', 'error', '');
         }

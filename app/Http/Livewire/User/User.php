@@ -1,11 +1,13 @@
 <?php
 namespace App\Http\Livewire\User;
+
 use Livewire\Component;
 use Illuminate\Support\Facades\Hash;
 use Livewire\WithPagination;
 use App\Helpers\CustomHelper;
 use App\Models\User as UserModel;
 use App\Models\Store as StoreModel;
+
 class User extends Component
 {
     use WithPagination;
@@ -27,12 +29,16 @@ class User extends Component
     {
         $store = StoreModel::select('*')->get();
         $searchTerm = '%' . $this->searchTerm . '%';
-        $user_list = UserModel::select('id', 'name', 'employee_id', 'email', 'password', 'user_level','status')
-            ->where('name', 'like', $searchTerm)
-            ->orWhere('employee_id', 'like', $searchTerm)
-            ->orWhere('email', 'like', $searchTerm)
+        $user_list = UserModel::select('id', 'name', 'employee_id', 'email', 'password', 'user_level', 'status')
+            ->where('user_level', '!=', 0)
+            ->where(function ($query) use ($searchTerm) {
+                $query->orWhere('name', 'like', '%' . $searchTerm . '%')
+                    ->orWhere('employee_id', 'like', '%' . $searchTerm . '%')
+                    ->orWhere('email', 'like', '%' . $searchTerm . '%');
+            })
             ->paginate($this->limit);
-        return view('livewire.user.user', ['user_list' => $user_list,'store_list' => $store])->extends('layouts.app');
+
+        return view('livewire.user.user', ['user_list' => $user_list, 'store_list' => $store])->extends('layouts.app');
     }
     public function showModal($account_id = null)
     {
@@ -72,7 +78,7 @@ class User extends Component
         $this->onAlert(false, 'Success', 'Account saved successfully!', 'success');
         CustomHelper::onRemoveModal($this, '#user_modal');
     }
-    public function onAlert($is_confirm = false, $title = null, $message = null,  $type = null, $data = null)
+    public function onAlert($is_confirm = false, $title = null, $message = null, $type = null, $data = null)
     {
         CustomHelper::onShow($this, $is_confirm, $title, $message, $type, $data);
     }
