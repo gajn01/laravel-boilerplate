@@ -30,8 +30,8 @@ class Form extends Component
     public $actionTitle = 'Start';
     public $currentField;
     public $currentIndex;
-    public $cashier_tat = [['name' => null, 'time' => null, 'product_order' => null, 'ot' => null, 'ot_point' => 1, 'tat' => null, 'tat_point' => 1, 'fst' => null, 'fst_point' => 3, 'remarks' => null]];
-    public $server_cat = [['name' => null, 'time' => null, 'product_order' => null, 'ot' => null, 'ot_point' => 1, 'tat' => null, 'tat_point' => 1, 'fst' => null, 'fst_point' => 3, 'remarks' => null]];
+    public $cashier_tat = [['name' => null, 'time' => null, 'product_order' => null, 'ot' => null, 'assembly' => null, 'ac_point' => 1, 'tat' => null, 'tat_point' => 1, 'fst' => null, 'fst_point' => 3, 'remarks' => null]];
+    public $server_cat = [['name' => null, 'time' => null, 'product_order' => null, 'ot' => null, 'assembly' => null, 'ac_point' => 1, 'tat' => null, 'tat_point' => 1, 'fst' => null, 'fst_point' => 3, 'remarks' => null]];
     public $score = [
         ['name' => '3%'],
         ['name' => '5%'],
@@ -55,7 +55,7 @@ class Form extends Component
     public function render()
     {
         $sanitation_defect = SanitaryModel::select('id', 'title', 'code')->get();
-        $this->audit_forms_id = AuditFormModel::where('store_id', $this->store_id)->where('date_of_visit',  $this->date_today)->value('id');
+        $this->audit_forms_id = AuditFormModel::where('store_id', $this->store_id)->where('date_of_visit', $this->date_today)->value('id');
         $store = StoreModel::find($this->store_id);
         $this->store_name = $store->name;
         $this->store_type = $store->type;
@@ -429,7 +429,6 @@ class Form extends Component
                 });
             });
         })->flatten(1);
-
         $critical_deviation = collect($this->category_list)->flatMap(function ($data) {
             $deviations = CriticalDeviationMenuModel::where('critical_deviation_id', $data->critical_deviation)->get();
             return collect($deviations)->map(function ($dev) use ($data) {
