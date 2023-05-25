@@ -834,13 +834,14 @@ textarea.form-control{
 }
 
 .app-card-stat .stats-figure {
-    font-size: 2rem;
+    font-size: 1.8rem;
     color: #252930
 }
 
 .app-card-stat .stats-meta {
-    font-size: .875rem;
-    color: #828d9f
+    font-size: 1.5rem;
+    color: var(--cta-color)
+
 }
 
 .app-card-progress-list .item {
