@@ -64,8 +64,10 @@
                                                             <td class="core_name_total"><a
                                                                     href="#{{ $sub['name'] }}">{{ $sub['name'] }}</a>
                                                             </td>
-                                                            <td class="text-center">{{ $sub['base_score'] == 0 ? 'n/a' : $sub['base_score'] }}</td>
-                                                            <td class="text-center">{{ $sub['total_point']  }}</td>
+                                                            <td class="text-center">
+                                                                {{ $sub['base_score'] == 0 ? 'n/a' : $sub['base_score'] }}
+                                                            </td>
+                                                            <td class="text-center">{{ $sub['total_point'] }}</td>
                                                             <td class="text-center"> {{ $sub['total_percent'] }}%</td>
                                                         </tr>
                                                         @if ($sub['name'])
@@ -628,7 +630,6 @@
                                                                     '{{ $dataItem['is_sub'] }}',
                                                                     $event.target.value
                                                                 )">
-
                                                                 <label class="form-check-label"
                                                                     for="toggle-switch">n/a</label>
                                                             </div>
@@ -658,7 +659,7 @@
 
                                                                         <input type="number"
                                                                             class="form-control text-center"
-                                                                            @disabled( $auditLabel['is_na'] ? true : false )
+                                                                            @disabled($auditLabel['is_na'] ? true : false)
                                                                             name="points{{ $auditLabel['id'] }}"
                                                                             id="points{{ $auditLabel['id'] }}"
                                                                             value="{{ $auditLabel['points'] }}"
@@ -688,7 +689,7 @@
                                                                                 class="form-label">Remarks</label>
                                                                         @endif
 
-                                                                            <textarea class="form-control"  @disabled( $auditLabel['is_na'] ? true : false ) name="remarks" id="remarks" rows="1"
+                                                                        <textarea class="form-control" @disabled($auditLabel['is_na'] ? true : false) name="remarks" id="remarks" rows="1"
                                                                             wire:change="updateRemarks(
                                                                             '{{ $category_list[$loop->parent->parent->index]['id'] }}',
                                                                             '{{ $category_list[$loop->parent->parent->index]['sub_categ']['data_items'][$loop->parent->index]['id'] }}',
@@ -753,6 +754,26 @@
                                                                     <div class="accordion-body">
                                                                         @foreach ($sub_category['label'] as $index => $auditLabel)
                                                                             <div class="row mb-3">
+                                                                                <div class="form-check form-switch">
+                                                                                    <input class="form-check-input"
+                                                                                        type="checkbox"
+                                                                                        id="toggle-switch"
+                                                                                        wire:model="is_na.{{ $auditLabel['id'] }}"
+                                                                                        wire:change="updateNa(
+                                                                                        '{{ $auditLabel['id'] }}',
+                                                                                        '{{ $loop->parent->parent->parent->index }}',
+                                                                                        '{{ $loop->parent->parent->index }}',
+                                                                                        '{{ $loop->parent->index }}',
+                                                                                        '{{ $loop->index }}',
+                                                                                        '{{ $category_list[$loop->parent->parent->parent->index]['id'] }}',
+                                                                                        '{{ $category_list[$loop->parent->parent->parent->index]['sub_categ']['data_items'][$loop->parent->parent->index]['id'] }}',
+                                                                                        '{{ $category_list[$loop->parent->parent->parent->index]['sub_categ']['data_items'][$loop->parent->parent->index]['sub_category'][$loop->parent->index]['id'] }}',
+                                                                                        '{{ $category_list[$loop->parent->parent->parent->index]['sub_categ']['data_items'][$loop->parent->parent->index]['sub_category'][$loop->parent->index]['label'][$loop->index]['id'] }}',
+                                                                                        '{{ $dataItem['is_sub'] }}',
+                                                                                        $event.target.value )">
+                                                                                    <label class="form-check-label"
+                                                                                        for="toggle-switch">n/a</label>
+                                                                                </div>
                                                                                 <div
                                                                                     class="col-sm-12 col-md-4 col-lg-4">
                                                                                     <p @class(['pt-4' => $index == 0])>
@@ -781,6 +802,7 @@
                                                                                             @endif
                                                                                             <input type="number"
                                                                                                 class="form-control text-center"
+                                                                                                @disabled($auditLabel['is_na'] ? true : false)
                                                                                                 name="points{{ $auditLabel['id'] }}"
                                                                                                 id="points{{ $auditLabel['id'] }}"
                                                                                                 value="{{ $auditLabel['points'] }}"
@@ -810,7 +832,7 @@
                                                                                                 <label for=""
                                                                                                     class="form-label">Remarks</label>
                                                                                             @endif
-                                                                                            <textarea class="form-control" name="" id="" rows="1"
+                                                                                            <textarea class="form-control" name="" id="" rows="1" @disabled($auditLabel['is_na'] ? true : false)
                                                                                                 wire:change="updateRemarks(
                                                                                                 '{{ $category_list[$loop->parent->parent->parent->index]['id'] }}',
                                                                                                 '{{ $category_list[$loop->parent->parent->parent->index]['sub_categ']['data_items'][$loop->parent->parent->index]['id'] }}',
@@ -829,6 +851,7 @@
                                                                                                 @endif
                                                                                                 <select
                                                                                                     class="form-select form-select-md"
+                                                                                                    @disabled($auditLabel['is_na'] ? true : false)
                                                                                                     wire:change="updateDeviation(
                                                                                                     '{{ $category_list[$loop->parent->parent->parent->index]['id'] }}',
                                                                                                     '{{ $category_list[$loop->parent->parent->parent->index]['sub_categ']['data_items'][$loop->parent->parent->index]['id'] }}',

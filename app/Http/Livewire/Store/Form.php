@@ -172,6 +172,15 @@ class Form extends Component
 
                             $total_points += $saved_point;
                             $total_score += $saved_point;
+
+                            if ($saved_na) {
+                                $total_base -= $subLabel->bp;
+                                $total_bp -= $subLabel->bp;
+                                $total_points -= $saved_point;
+                                $total_score -= $subLabel->bp;
+                            }
+                            $this->is_na[$subLabel->id] = $saved_na ? true : false;
+
                             return [
                                 'id' => $subLabel->id,
                                 'name' => $subLabel->name,
