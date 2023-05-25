@@ -111,7 +111,6 @@
                 {{ $sub_category_list->onEachSide(0)->links() }}
             </nav>
             <!--//app-pagination-->
-
         </div>
     </div>
     <div wire:ignore.self class="modal fade" id="sub_category_label_modal" tabindex="-1" data-bs-backdrop="static"
@@ -140,7 +139,6 @@
                             <input class="form-check-input" type="checkbox" id="toggle-switch" wire:model="is_sub">
                             <label class="form-check-label" for="toggle-switch">Sub Sub-Category</label>
                         </div>
-
                     </form>
                 </div>
                 <div class="modal-footer">

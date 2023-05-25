@@ -26,6 +26,7 @@ class AuditFormResult extends Model
         'sub_sub_point',
         'sub_sub_remarks',
         'sub_sub_file',
+        'is_na',
         'label_id',
         'label_name',
         'label_base_point',

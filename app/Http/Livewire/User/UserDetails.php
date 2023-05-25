@@ -11,7 +11,6 @@ use Illuminate\Support\Facades\DB;
 use Carbon\Carbon;
 use DateTime;
 use DateTimeZone;
-
 class UserDetails extends Component
 {
     use WithPagination;

@@ -34,28 +34,24 @@ class AuditResult extends Component
     public $actionTitle = 'Start';
     public $currentField;
     public $currentIndex;
-    public $cashier_tat = [['name' => null, 'time' => null, 'product_order' => null, 'ot' => null, 'ot_point' => 1, 'tat' => null, 'tat_point' => 1, 'fst' => null, 'fst_point' => 3, 'remarks' => null]];
-    public $server_cat = [['name' => null, 'time' => null, 'product_order' => null, 'ot' => null, 'ot_point' => 1, 'tat' => null, 'tat_point' => 1, 'fst' => null, 'fst_point' => 3, 'remarks' => null]];
+    private $timezone;
+    private $time;
+    private $date_today;
     protected $rules = [
         'category_list.*.sub_categ.data_items.*.id' => 'required',
         'category_list.*.sub_categ.data_items.*.name' => 'required',
         'category_list.*.sub_categ.data_items.*.sub_category.*.*' => 'required',
     ];
-    /*   public $message = '';
-    public $uppercaseMessage = '';
-    public function updated($propertyName)
+    public function __construct()
     {
-    if ($propertyName === 'message') {
-    // Update the $uppercaseMessage property whenever the $message property changes
-    $this->uppercaseMessage = strtoupper($this->message);
+        $this->timezone = new DateTimeZone('Asia/Manila');
+        $this->time = new DateTime('now', $this->timezone);
+        $this->date_today = $this->time->format('Y-m-d');
     }
-    }
-    */
     public function render()
     {
         $sanitation_defect = SanitaryModel::select('id', 'title', 'code')->get();
-
-        $this->audit_forms_id = AuditFormModel::where('store_id', $this->store_id)->value('id');
+        $this->audit_forms_id = AuditFormModel::where('store_id', $this->store_id)->where('date_of_visit', $this->date_today)->value('id');
         // dd($audit_result);
         $store = StoreModel::find($this->store_id);
         $this->store_name = $store->name;

@@ -139,11 +139,11 @@
                                                         @foreach ($data->critical_deviation as $item)
                                                             <tr class="">
                                                                 <td>{{ $item['label'] }}</td>
-                                                                <td>{{ $item['saved_dropdown'] != null ? $item['saved_dropdown'] : 'n/a' }}
+                                                                <td>{{ $item['saved_dropdown'] }}
                                                                 </td>
-                                                                <td>{{ $item['saved_remarks'] != null ? $item['saved_remarks'] : 'n/a' }}
+                                                                <td>{{ $item['saved_remarks'] }}
                                                                 </td>
-                                                                <td>{{ $item['saved_score'] != null ? $item['saved_score'] : 'n/a' }}
+                                                                <td>{{ $item['saved_score'] }}
                                                                 </td>
                                                             </tr>
                                                         @endforeach
@@ -156,7 +156,6 @@
                             </div>
                         @endif
                     </div>
-
                     {{--     @if ($key == 0)
 
                                 <div class="accordion mb-3" id="accordionExample">
@@ -473,7 +472,6 @@
                                                     </tr>
                                                 </thead>
                                                 <tbody>
-
                                                     @if ($dataItem['is_sub'] == 0)
                                                         @foreach ($dataItem['sub_category'] as $index => $auditLabel)
                                                             <tr>
@@ -483,9 +481,9 @@
                                                                 </td>
                                                                 <td>{{ $auditLabel['points'] != null ? $auditLabel['points'] : '0' }}
                                                                 </td>
-                                                                <td>{{ $auditLabel['remarks'] != null ? $auditLabel['remarks'] : 'n/a' }}
+                                                                <td>{{ $auditLabel['remarks']  }}
                                                                 </td>
-                                                                <td>{{ $auditLabel['deviation'] != null ? $auditLabel['deviation'] : 'n/a' }}
+                                                                <td>{{ $auditLabel['deviation'] }}
                                                                 </td>
                                                             </tr>
                                                         @endforeach
@@ -504,11 +502,11 @@
                                                                         <p @class(['pt-4' => $index == 0])>
                                                                             {{ $auditLabel['name'] }}</p>
                                                                     </td>
-                                                                    <td>{{ $auditLabel['points'] != null ? $auditLabel['points'] : 'n/a' }}
+                                                                    <td>{{ $auditLabel['points'] != null ? $auditLabel['points'] : '0' }}
                                                                     </td>
-                                                                    <td>{{ $auditLabel['remarks'] != null ? $auditLabel['remarks'] : 'n/a' }}
+                                                                    <td>{{ $auditLabel['remarks']  }}
                                                                     </td>
-                                                                    <td>{{ $auditLabel['deviation'] != null ? $auditLabel['deviation'] : 'n/a' }}
+                                                                    <td>{{ $auditLabel['deviation'] }}
                                                                     </td>
                                                                 </tr>
                                                             @endforeach

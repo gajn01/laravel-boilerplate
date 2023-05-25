@@ -30,6 +30,8 @@ class Form extends Component
     public $actionTitle = 'Start';
     public $currentField;
     public $currentIndex;
+    public $is_na = [];
+
     public $cashier_tat = [['name' => null, 'time' => null, 'product_order' => null, 'ot' => null, 'assembly' => null, 'ac_point' => 1, 'tat' => null, 'tat_point' => 1, 'fst' => null, 'fst_point' => 3, 'remarks' => null]];
     public $server_cat = [['name' => null, 'time' => null, 'product_order' => null, 'ot' => null, 'assembly' => null, 'ac_point' => 1, 'tat' => null, 'tat_point' => 1, 'fst' => null, 'fst_point' => 3, 'remarks' => null]];
     public $score = [
@@ -61,7 +63,6 @@ class Form extends Component
         $this->store_type = $store->type;
         $this->audit_status = $store->audit_status;
         $this->actionTitle = $this->audit_status ? 'Save' : 'Start';
-
         $data = CategoryModel::select('id', 'name', 'type', 'critical_deviation')
             ->where('type', $this->store_type)
             ->with([
@@ -95,6 +96,7 @@ class Form extends Component
                         $saved_point = 0;
                         $saved_remarks = '';
                         $saved_deviation = '';
+                        $saved_na = '';
                         if ($this->audit_status) {
                             $data = AuditFormResultModel::select('*')
                                 ->where('form_id', $this->audit_forms_id)
@@ -105,6 +107,8 @@ class Form extends Component
                             $saved_point = $data ? $data['sub_sub_point'] : null;
                             $saved_remarks = $data ? $data['sub_sub_remarks'] : null;
                             $saved_deviation = $data ? $data['sub_sub_deviation'] : null;
+                            $saved_na = $data ? $data['is_na'] : 0;
+
                         } else {
                             $saved_point = $label->bp;
                         }
@@ -115,6 +119,15 @@ class Form extends Component
 
                         $total_points += $saved_point;
                         $total_score += $saved_point;
+
+                        if ($saved_na) {
+                            $total_base -= $label->bp;
+                            $total_bp -= $label->bp;
+                            $total_points -= $saved_point;
+                            $total_score -= $label->bp;
+                        }
+                        $this->is_na[$label->id] = $saved_na ? true : false;
+
                         return [
                             'id' => $label->id,
                             'name' => $label->name,
@@ -125,6 +138,7 @@ class Form extends Component
                             'tag' => '',
                             'deviation' => $saved_deviation,
                             'dropdown' => $dropdownMenu,
+                            'is_na' => $saved_na ? 1 : 0,
                         ];
                     }) : $subCategory->subCategoryLabels->map(function ($label) use (&$total_bp, &$total_points, &$total_base, &$total_score, &$category_id, &$sub_category_id, &$sub_sub_category_id, ) {
                         $subLabels = SubSubCategoryLabelModel::where('sub_sub_category_id', $label->id)->get();
@@ -134,6 +148,8 @@ class Form extends Component
                             $saved_point = 0;
                             $saved_remarks = '';
                             $saved_deviation = '';
+                            $saved_na = '';
+
                             if ($this->audit_status) {
                                 $data = AuditFormResultModel::select('*')
                                     ->where('form_id', $this->audit_forms_id)
@@ -145,6 +161,7 @@ class Form extends Component
                                 $saved_point = $data ? $data['label_point'] : null;
                                 $saved_remarks = $data ? $data['label_remarks'] : null;
                                 $saved_deviation = $data ? $data['label_deviation'] : null;
+                                $saved_na = $data ? $data['is_na'] : 0;
                             } else {
                                 $saved_point = $subLabel->bp;
                             }
@@ -164,6 +181,8 @@ class Form extends Component
                                 'remarks' => $saved_remarks,
                                 'deviation' => $saved_deviation,
                                 'dropdown' => $dropdownMenu,
+                                'is_na' => $saved_na,
+
                             ];
                         });
                         return [
@@ -278,6 +297,22 @@ class Form extends Component
     public function setActive($index)
     {
         $this->active_index = $index;
+    }
+    public function updateNa($id = null, $parentIndex = null, $subIndex = null, $childIndex = null, $labelIndex = null, $categoryId = null, $subcategoryId = null, $childId = null, $labelId = null, $is_sub = null, $value = null)
+    {
+        if (!$this->audit_status) {
+            return;
+        }
+        $query = AuditFormResultModel::where('form_id', $this->audit_forms_id)
+            ->where('category_id', $categoryId)
+            ->where('sub_category_id', $subcategoryId)
+            ->where('sub_sub_category_id', $childId);
+        if ($is_sub) {
+            $query->where('label_id', $labelId)
+                ->update(['is_na' => $this->is_na[$id] ? true : false]);
+        } else {
+            $query->update(['is_na' => $this->is_na[$id] ? true : false]);
+        }
     }
     public function updatePoints($id = null, $parentIndex = null, $subIndex = null, $childIndex = null, $labelIndex = null, $categoryId = null, $subcategoryId = null, $childId = null, $labelId = null, $is_sub = null, $value = null)
     {
@@ -411,6 +446,7 @@ class Form extends Component
                         'sub_sub_point' => $child['points'] ?? null,
                         'sub_sub_remarks' => $child['remarks'] ?? null,
                         'sub_sub_file' => $child['tag'] ?? null,
+                        'is_na' => '0'
                     ];
                     if (isset($child['label'])) {
                         return collect($child['label'])->map(function ($label) use ($result) {

@@ -64,8 +64,8 @@
                                                             <td class="core_name_total"><a
                                                                     href="#{{ $sub['name'] }}">{{ $sub['name'] }}</a>
                                                             </td>
-                                                            <td class="text-center">{{ $sub['base_score'] }}</td>
-                                                            <td class="text-center">{{ $sub['total_point'] }}</td>
+                                                            <td class="text-center">{{ $sub['base_score'] == 0 ? 'n/a' : $sub['base_score'] }}</td>
+                                                            <td class="text-center">{{ $sub['total_point']  }}</td>
                                                             <td class="text-center"> {{ $sub['total_percent'] }}%</td>
                                                         </tr>
                                                         @if ($sub['name'])
@@ -314,7 +314,8 @@
                                                                 </div>
                                                                 <div class="col-2">
                                                                     <div class="mb-3">
-                                                                        <label for="time_{{ $loop->index }}">Time </label>
+                                                                        <label for="time_{{ $loop->index }}">Time
+                                                                        </label>
                                                                         <input type="text" class="form-control"
                                                                             name="time"
                                                                             id="time_{{ $loop->index }}"
@@ -326,7 +327,8 @@
                                                                 <div class="col-3">
                                                                     <div class="mb-3">
                                                                         <label
-                                                                            for="product_order{{ $loop->index }}">Product Ordered </label>
+                                                                            for="product_order{{ $loop->index }}">Product
+                                                                            Ordered </label>
                                                                         <input type="text" class="form-control"
                                                                             name="product_order"
                                                                             id="product_order{{ $loop->index }}"
@@ -366,7 +368,8 @@
                                                                     </div>
                                                                 </div>
                                                                 <div class="col-3">
-                                                                    <label for="" class="">TAT (1pt.) </label>
+                                                                    <label for="" class="">TAT (1pt.)
+                                                                    </label>
                                                                     <div class="row">
                                                                         <div class="col-6">
                                                                             <div class="mb-3">
@@ -439,7 +442,8 @@
                                                 <label for="" class="mb-3">Server CAT</label>
                                                 <svg class="icon" wire:click="addInput(1)"
                                                     xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512">
-                                                    <path d="M256 80c0-17.7-14.3-32-32-32s-32 14.3-32 32V224H48c-17.7 0-32 14.3-32 32s14.3 32 32 32H192V432c0 17.7 14.3 32 32 32s32-14.3 32-32V288H400c17.7 0 32-14.3 32-32s-14.3-32-32-32H256V80z" />
+                                                    <path
+                                                        d="M256 80c0-17.7-14.3-32-32-32s-32 14.3-32 32V224H48c-17.7 0-32 14.3-32 32s14.3 32 32 32H192V432c0 17.7 14.3 32 32 32s32-14.3 32-32V288H400c17.7 0 32-14.3 32-32s-14.3-32-32-32H256V80z" />
                                                 </svg>
                                                 <a class="btn app-btn-primary float-right" wire:ignore role="button"
                                                     wire:click="setTime(1)">Set</a>
@@ -470,7 +474,8 @@
                                                                 </div>
                                                                 <div class="col-3">
                                                                     <div class="mb-3">
-                                                                        <label for="product_order">Product Ordered</label>
+                                                                        <label for="product_order">Product
+                                                                            Ordered</label>
                                                                         <input type="text" class="form-control"
                                                                             name="product_order"
                                                                             id="product_order{{ $loop->index }}"
@@ -592,8 +597,7 @@
                                 <div class="accordion mb-3" id="accordionCategory">
                                     <div class="accordion-item">
                                         <h2 class="accordion-header" id="{{ $dataItem['name'] }}">
-                                            <button class="accordion-button " type="button"
-                                                data-bs-toggle="collapse"
+                                            <button class="accordion-button" type="button" data-bs-toggle="collapse"
                                                 data-bs-target="#accrod{{ $dataItem['id'] }}" aria-expanded="true"
                                                 aria-controls="accrod{{ $dataItem['id'] }}">
                                                 <h6 class="card-title product-name">{{ $dataItem['name'] }}</h6>
@@ -607,6 +611,27 @@
                                                 @if ($dataItem['is_sub'] == 0)
                                                     @foreach ($dataItem['sub_category'] as $index => $auditLabel)
                                                         <div class="row mb-3">
+                                                            <div class="form-check form-switch">
+                                                                <input class="form-check-input" type="checkbox"
+                                                                    id="toggle-switch"
+                                                                    wire:model="is_na.{{ $auditLabel['id'] }}"
+                                                                    wire:change="updateNa(
+                                                                    '{{ $auditLabel['id'] }}',
+                                                                    '{{ $loop->parent->parent->index }}',
+                                                                    '{{ $loop->parent->index }}',
+                                                                    '{{ $loop->index }}',
+                                                                    '',
+                                                                    '{{ $category_list[$loop->parent->parent->index]['id'] }}',
+                                                                    '{{ $category_list[$loop->parent->parent->index]['sub_categ']['data_items'][$loop->parent->index]['id'] }}',
+                                                                    '{{ $category_list[$loop->parent->parent->index]['sub_categ']['data_items'][$loop->parent->index]['sub_category'][$loop->index]['id'] }}',
+                                                                    '',
+                                                                    '{{ $dataItem['is_sub'] }}',
+                                                                    $event.target.value
+                                                                )">
+
+                                                                <label class="form-check-label"
+                                                                    for="toggle-switch">n/a</label>
+                                                            </div>
                                                             <div class="col-sm-12 col-md-4 col-lg-4">
                                                                 <p @class(['pt-4' => $index == 0])>
                                                                     {{ $auditLabel['name'] }}</p>
@@ -630,8 +655,10 @@
                                                                             <label for="points"
                                                                                 class="form-label">Point(s)</label>
                                                                         @endif
+
                                                                         <input type="number"
                                                                             class="form-control text-center"
+                                                                            @disabled( $auditLabel['is_na'] ? true : false )
                                                                             name="points{{ $auditLabel['id'] }}"
                                                                             id="points{{ $auditLabel['id'] }}"
                                                                             value="{{ $auditLabel['points'] }}"
@@ -660,7 +687,8 @@
                                                                             <label for="remarks"
                                                                                 class="form-label">Remarks</label>
                                                                         @endif
-                                                                        <textarea class="form-control" name="remarks" id="remarks" rows="1"
+
+                                                                            <textarea class="form-control"  @disabled( $auditLabel['is_na'] ? true : false ) name="remarks" id="remarks" rows="1"
                                                                             wire:change="updateRemarks(
                                                                             '{{ $category_list[$loop->parent->parent->index]['id'] }}',
                                                                             '{{ $category_list[$loop->parent->parent->index]['sub_categ']['data_items'][$loop->parent->index]['id'] }}',
