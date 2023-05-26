@@ -14,7 +14,6 @@ class Summary extends Model
         'name',
         'code',
         'type',
-        'with',
         'conducted_by',
         'received_by',
         'date_of_visit',

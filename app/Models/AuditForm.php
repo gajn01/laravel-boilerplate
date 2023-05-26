@@ -10,5 +10,5 @@ class AuditForm extends Model
     use HasFactory;
 
     protected $table = 'audit_forms';
-    protected $fillable = ['store_id', 'date_of_visit', 'conducted_by_id', 'time_of_audit', 'audit_status', 'created_at', 'updated_at'];
+    protected $fillable = ['store_id', 'date_of_visit', 'conducted_by_id', 'time_of_audit', 'wave','audit_status', 'created_at', 'updated_at'];
 }

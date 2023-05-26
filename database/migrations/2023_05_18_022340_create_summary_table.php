@@ -13,7 +13,6 @@ return new class extends Migration
             $table->string('name');
             $table->string('code');
             $table->string('type');
-            $table->string('with');
             $table->string('conducted_by');
             $table->string('received_by');
             $table->date('date_of_visit');

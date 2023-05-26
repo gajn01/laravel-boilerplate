@@ -18,6 +18,7 @@ return new class extends Migration
             $table->string('conducted_by_id');
             $table->string('received_by');
             $table->timestamp('time_of_audit');
+            $table->integer('wave');
             $table->integer('audit_status');
             $table->timestamps();
         });

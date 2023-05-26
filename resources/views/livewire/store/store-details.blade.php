@@ -29,6 +29,7 @@
                     </thead>
                     <tbody>
                         @forelse ($summary_list as $item)
+                        <tr>
                             <td class="cell">{{ \Carbon\Carbon::parse($item->dov)->format('F d Y') }}</td>
                             <td class="cell">{{ $item->conducted_by }}</td>
                             <td class="cell">{{ $item->received_by }}</td>
@@ -41,6 +42,7 @@
                                     </svg>
                                 </a>
                             </td>
+                        </tr>
                         @empty
                         <tr>
                             <td colspan="5">

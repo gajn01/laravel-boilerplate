@@ -221,18 +221,6 @@
                                 @enderror
                             </div>
 
-                            <div class="mb-3 w-25">
-                                <label for="wave" class="form-label">Wave<span
-                                    class="text-danger">*</span></label>
-                                <select class="form-select form-select-md" name="wave" id="wave" wire:model="wave">
-                                    <option selected value="">Select wave</option>
-                                    <option value="Wave 1">Wave 1</option>
-                                    <option value="Wave 2">Wave 2</option>
-                                </select>
-                                @error('wave')
-                                <span class="text-danger mt-1 ">{{ $message }}</span>
-                            @enderror
-                            </div>
                         </div>
                     </div>
                 </div>
@@ -247,3 +235,6 @@
         </div>
     </div>
 </div>
+
+
+

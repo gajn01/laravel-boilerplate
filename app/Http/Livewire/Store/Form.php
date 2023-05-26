@@ -1,6 +1,7 @@
 <?php
 namespace App\Http\Livewire\Store;
 
+use App\Models\AuditDate;
 use Livewire\Component;
 use App\Models\Store as StoreModel;
 use App\Models\Category as CategoryModel;
@@ -11,6 +12,7 @@ use App\Models\CriticalDeviationMenu as CriticalDeviationMenuModel;
 use App\Models\AuditForm as AuditFormModel;
 use App\Models\AuditFormResult as AuditFormResultModel;
 use App\Models\CriticalDeviationResult as CriticalDeviationResultModel;
+use App\Models\AuditDate as AuditDateModel;
 use Illuminate\Support\Facades\Auth;
 use DateTime;
 use DateTimeZone;
@@ -31,6 +33,7 @@ class Form extends Component
     public $currentField;
     public $currentIndex;
     public $is_na = [];
+    public $wave ;
 
     public $cashier_tat = [['name' => null, 'time' => null, 'product_order' => null, 'ot' => null, 'assembly' => null, 'ac_point' => 1, 'tat' => null, 'tat_point' => 1, 'fst' => null, 'fst_point' => 3, 'remarks' => null]];
     public $server_cat = [['name' => null, 'time' => null, 'product_order' => null, 'ot' => null, 'assembly' => null, 'ac_point' => 1, 'tat' => null, 'tat_point' => 1, 'fst' => null, 'fst_point' => 3, 'remarks' => null]];
@@ -56,6 +59,13 @@ class Form extends Component
     }
     public function render()
     {
+
+        $this->wave = AuditDateModel::select('wave')
+        ->where('store_id', $this->store_id)
+        ->where('audit_date', $this->date_today)
+        ->get()
+        ->first()->wave;
+
         $sanitation_defect = SanitaryModel::select('id', 'title', 'code')->get();
         $this->audit_forms_id = AuditFormModel::where('store_id', $this->store_id)->where('date_of_visit', $this->date_today)->value('id');
         $store = StoreModel::find($this->store_id);
@@ -389,7 +399,8 @@ class Form extends Component
             'time' => '',
             'product_order' => '',
             'ot' => '',
-            'ot_point' => 1,
+            'assembly' => '',
+            'ac_point' => 1,
             'fst' => '',
             'fst_point' => 3,
             'remarks' => '',
@@ -427,6 +438,7 @@ class Form extends Component
                 'received_by' => '',
                 'time_of_audit' => $audit_time,
                 'audit_status' => $data,
+                'wave' => $this->wave,
             ]
         );
         if ($data) {

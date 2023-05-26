@@ -40,7 +40,7 @@ class ExecutiveSummary extends Component
     public $strength;
     public $improvement;
     public $wave;
-    public $time;
+    public $time_of_audit;
     public function render()
     {
         $timezone = new DateTimeZone('Asia/Manila');
@@ -49,16 +49,14 @@ class ExecutiveSummary extends Component
 
         $this->dov = $date_today;
 
-      /*   $audit = AuditFormModel::select('time_of_audit','wave')
+        $audit = AuditFormModel::select('time_of_audit','wave')
         ->where('store_id', $this->store_id)
         ->where('date_of_visit', $date_today)
         ->get()
         ->first();
 
-        dd($audit);
-
-        $this->time = $audit->time_of_audit;
-        $this->wave = $audit->wave; */
+        $this->time_of_audit = $audit->time_of_audit;
+        $this->wave = $audit->wave;
 
         $this->conducted_by = Auth::user()->name;
         $sanitation_defect = SanitaryModel::select('id', 'title', 'code')->get();
@@ -292,11 +290,9 @@ class ExecutiveSummary extends Component
     {
         $this->validate(
             [
-                'with' => '',
                 'conducted_by' => '',
                 'received_by' => 'required',
                 'dov' => '',
-                'toa' => '',
                 'strength' => 'required',
                 'improvement' => 'required',
                 'wave' => 'required',
@@ -308,11 +304,10 @@ class ExecutiveSummary extends Component
             'code' => strip_tags($this->store->code),
             'type' => strip_tags($this->store->type),
             'wave' => strip_tags($this->wave),
-            'with' => strip_tags($this->with),
             'conducted_by' => strip_tags($this->conducted_by),
             'received_by' => strip_tags($this->received_by),
             'date_of_visit' => strip_tags($this->dov),
-            'time_of_audit' => strip_tags($this->toa),
+            'time_of_audit' => strip_tags($this->time_of_audit),
             'strength' => strip_tags($this->strength),
             'improvement' => strip_tags($this->improvement),
         ]);
