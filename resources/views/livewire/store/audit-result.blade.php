@@ -55,10 +55,10 @@
                     <div class="row g-4 mb-4">
                         <div class="col-12 }}">
                             <div class="app-card app-card-chart  shadow-sm">
-                                <div class="app-card-header p-3">
+                                <div class="app-card-header p-2">
                                     <h4 class="app-card-title">Overall Score</h4>
                                 </div>
-                                <div class="app-card-body p-3 p-lg-4">
+                                <div class="app-card-body p-1 ">
                                     <div class="row justify-content-between align-items-center">
                                         <div class="col-12">
                                             <table class="table app-table-hover mb-0 text-left ">
@@ -116,14 +116,14 @@
                         @if ($data->critical_deviation->isNotEmpty())
                             <div class="col-12 }}">
                                 <div class="app-card app-card-chart  shadow-sm">
-                                    <div class="app-card-header p-3">
+                                    <div class="app-card-header p-2">
                                         <div class="row justify-content-between align-items-center">
                                             <div class="col-12">
                                                 <h4 class="app-card-title">Critical Deviation</h4>
                                             </div>
                                         </div>
                                     </div>
-                                    <div class="app-card-body p-3 p-lg-4">
+                                    <div class="app-card-body p-2 p-lg-4">
                                         <div class="row justify-content-between align-items-center">
                                             <div class="col-12">
                                                 <table class="table">
@@ -457,18 +457,18 @@
                         <div class="row g-4 mb-4" id="{{ $dataItem['name'] }}">
                             <div class="col-12 }}">
                                 <div class="app-card app-card-chart  shadow-sm">
-                                    <div class="app-card-header p-3">
+                                    <div class="app-card-header p-2">
                                         <h5 class="app-card-title">{{ $dataItem['name'] }}</h5>
                                     </div>
-                                    <div class="app-card-body p-3 p-lg-4">
+                                    <div class="app-card-body p-2 p-lg-4">
                                         <div class="table-responsive">
                                             <table class="table white-bg">
                                                 <thead>
                                                     <tr>
                                                         <th scope="col"></th>
-                                                        <th scope="col">Score</th>
-                                                        <th scope="col">Remarks</th>
-                                                        <th scope="col">Deviation</th>
+                                                        <th class="text-center" scope="col">Score</th>
+                                                        <th class="text-center" scope="col">Remarks</th>
+                                                        <th class="text-center" scope="col">Deviation</th>
                                                     </tr>
                                                 </thead>
                                                 <tbody>
@@ -479,11 +479,11 @@
                                                                     <p @class(['pt-4' => $index == 0])>
                                                                         {{ $auditLabel['name'] }}</p>
                                                                 </td>
-                                                                <td>{{ $auditLabel['points'] != null ? $auditLabel['points'] : '0' }}
+                                                                <td class="text-center">{{ $auditLabel['points'] != null ? $auditLabel['points'] : '0' }}
                                                                 </td>
-                                                                <td>{{ $auditLabel['remarks']  }}
+                                                                <td class="text-center">{{ $auditLabel['remarks']  }}
                                                                 </td>
-                                                                <td>{{ $auditLabel['deviation'] }}
+                                                                <td class="text-center">{{ $auditLabel['deviation'] }}
                                                                 </td>
                                                             </tr>
                                                         @endforeach
@@ -502,11 +502,11 @@
                                                                         <p @class(['pt-4' => $index == 0])>
                                                                             {{ $auditLabel['name'] }}</p>
                                                                     </td>
-                                                                    <td>{{ $auditLabel['points'] != null ? $auditLabel['points'] : '0' }}
+                                                                    <td class="text-center">{{ $auditLabel['points'] != null ? $auditLabel['points'] : '0' }}
                                                                     </td>
-                                                                    <td>{{ $auditLabel['remarks']  }}
+                                                                    <td class="text-center">{{ $auditLabel['remarks']  }}
                                                                     </td>
-                                                                    <td>{{ $auditLabel['deviation'] }}
+                                                                    <td class="text-center">{{ $auditLabel['deviation'] }}
                                                                     </td>
                                                                 </tr>
                                                             @endforeach

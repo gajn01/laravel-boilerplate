@@ -13,8 +13,7 @@
     @vite(['resources/css/app.scss'])
     <!-- Include custom CSS file -->
     <link rel="stylesheet" href="{{ url('css/app.css') }}">
-
-
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <!-- Include jQuery library -->
     <script src="https://code.jquery.com/jquery-3.6.2.min.js"
         integrity="sha256-2krYZKh//PcchRtd+H+VyyQoZ/e3EcrkxhM8ycwASPA=" crossorigin="anonymous"></script>
@@ -50,7 +49,7 @@
     @livewireScripts
     <script src="{{ url('js/app.js') }}"></script>
     <script src="{{ url('js/alert.js') }}"></script>
-
+    <script src="{{ url('js/charts-demo.js') }}"></script>
 </body>
 
 </html>

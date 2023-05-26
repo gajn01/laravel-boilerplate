@@ -10,6 +10,7 @@ class Summary extends Model
     use HasFactory;
     protected $table = 'summary';
     protected $fillable = [
+        'store_id',
         'name',
         'code',
         'type',

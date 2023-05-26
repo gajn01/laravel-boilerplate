@@ -40,13 +40,26 @@ class ExecutiveSummary extends Component
     public $strength;
     public $improvement;
     public $wave;
+    public $time;
     public function render()
     {
-
         $timezone = new DateTimeZone('Asia/Manila');
         $time = new DateTime('now', $timezone);
         $date_today = $time->format('Y-m-d');
+
         $this->dov = $date_today;
+
+      /*   $audit = AuditFormModel::select('time_of_audit','wave')
+        ->where('store_id', $this->store_id)
+        ->where('date_of_visit', $date_today)
+        ->get()
+        ->first();
+
+        dd($audit);
+
+        $this->time = $audit->time_of_audit;
+        $this->wave = $audit->wave; */
+
         $this->conducted_by = Auth::user()->name;
         $sanitation_defect = SanitaryModel::select('id', 'title', 'code')->get();
 
@@ -258,7 +271,6 @@ class ExecutiveSummary extends Component
         $timezone = new DateTimeZone('Asia/Manila');
         $time = new DateTime('now', $timezone);
         $date_today = $time->format('Y-m-d');
-        $audit_time = $time->format('h:i');
         $data = $this->audit_status ? false : true;
         StoreModel::where('id', $this->store_id)->update([
             'audit_status' => $data,
@@ -270,7 +282,7 @@ class ExecutiveSummary extends Component
                 'date_of_visit' => $date_today,
                 'conducted_by_id' => Auth::user()->id,
                 'received_by' => '',
-                'time_of_audit' => $audit_time,
+                'time_of_audit' =>$this->time,
                 'audit_status' => $data,
             ]
         );

@@ -42,14 +42,6 @@
                                             value="{{ $store->type == 1 ? 'Cafe' : 'Kiosk' }}">
                                     </td>
                                 </tr>
-                                <tr class="v-align-items-baseline">
-                                    <td>
-                                        <label class="form-label">WITH:</label>
-                                    </td>
-                                    <td class="pl-3">
-                                        <input type="text" wire:model="with" class="form-control">
-                                    </td>
-                                </tr>
                             </tbody>
                         </table>
                     </div>
@@ -89,14 +81,7 @@
 
                                     </td>
                                 </tr>
-                                <tr class="v-align-items-baseline">
-                                    <td>
-                                        <label class="form-label">Time of audit:</label>
-                                    </td>
-                                    <td class="pl-3">
-                                        <input type="time" wire:model="toa" class="form-control">
-                                    </td>
-                                </tr>
+
                             </tbody>
                         </table>
                     </div>

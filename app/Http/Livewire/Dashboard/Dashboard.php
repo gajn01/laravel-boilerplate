@@ -31,6 +31,8 @@ class Dashboard extends Component
             ->where('date_of_visit', 'LIKE', $this->year . '-%')
             ->groupBy('type')
             ->get();
+
+
         return view('livewire.dashboard.dashboard', ['storeCounts' => $storeCounts, 'completion' => $completion])
             ->extends('layouts.app');
     }
