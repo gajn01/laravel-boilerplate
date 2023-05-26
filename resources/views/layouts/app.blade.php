@@ -13,6 +13,8 @@
     @vite(['resources/css/app.scss'])
     <!-- Include custom CSS file -->
     <link rel="stylesheet" href="{{ url('css/app.css') }}">
+
+
     <!-- Include jQuery library -->
     <script src="https://code.jquery.com/jquery-3.6.2.min.js"
         integrity="sha256-2krYZKh//PcchRtd+H+VyyQoZ/e3EcrkxhM8ycwASPA=" crossorigin="anonymous"></script>
