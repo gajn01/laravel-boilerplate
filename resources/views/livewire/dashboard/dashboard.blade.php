@@ -35,21 +35,26 @@
         <div class="col-sm-6 col-lg-4">
             <div class="app-card app-card-stat shadow-sm h-100">
                 <div class="app-card-body p-3 p-lg-4">
-                    <h4 class="stats-type mb-1">Total Store</h4>
+                    <h4 class="stats-type mb-1">Total Stores</h4>
                     <div class="row">
-                        <div class="col-6">
-                            <div class="stats-figure">Cafe</div>
-                            <div class="stats-meta">
-                                {{ isset($store[0]) ? $store[0]['count'] : 0 }}</div>
-                        </div>
-                        <div class="col-6">
-                            <div class="stats-figure">Kiosk</div>
-                            <div class="stats-meta">
-                                {{ isset($store[1]) ? $store[1]['count'] : 0 }}</div>
-                        </div>
+                        @forelse ($storeCounts as $storeCount)
+                            <div class="col-6">
+                                <div class="stats-figure">{{ $storeCount->type ? 'Cafe' : 'Kiosk' }}</div>
+                                <div class="stats-meta">{{ $storeCount->count ? $storeCount->count : 0 }}</div>
+                            </div>
+                        @empty
+                            <div class="col-6">
+                                <div class="stats-figure">Cafe</div>
+                                <div class="stats-meta">0</div>
+                            </div>
+                            <div class="col-6">
+                                <div class="stats-figure">Kiosk</div>
+                                <div class="stats-meta">0</div>
+                            </div>
+                        @endforelse
                     </div>
                 </div>
-                <a class="app-card-link-mask" href="#"></a>
+                <a class="app-card-link-mask" href=""></a>
             </div>
         </div>
         <div class="col-sm-6  col-lg-4">
@@ -60,13 +65,13 @@
                         <div class="col-6">
                             <div class="stats-figure">Cafe</div>
                             <div class="stats-meta">
-                                {{ isset($completion[0]) && isset($store[0]) ? round(($completion[0]['count'] / $store[0]['count']) * 100, 0) . '%' : 0 }}
+                                {{ isset($completion[0]) ? round(($completion[0]->count / $storeCounts[0]->count) * 100, 0) . '%' : 0 }}
                             </div>
                         </div>
                         <div class="col-6">
                             <div class="stats-figure">Kiosk</div>
                             <div class="stats-meta">
-                                {{ isset($completion[1]) && isset($store[1]) ? round(($completion[1]['count'] / $store[1]['count']) * 100, 0) . '%' : 0 }}
+                                {{ isset($completion[1]) ? round(($completion[1]->count / $storeCounts[1]->count) * 100, 0) . '%' : 0 }}
                             </div>
                         </div>
                     </div>
@@ -82,14 +87,13 @@
                         <div class="col-6">
                             <div class="stats-figure">Cafe</div>
                             <div class="stats-meta">
-                                {{ (isset($completion[0]) ? $completion[0]['count'] : 0) . '/' . (isset($store[0]) ? $store[0]['count'] : 0) }}
+                                {{ (isset($completion[0]) ? $completion[0]->count : 0) . '/' . (isset($storeCounts[0]->count) ? $storeCounts[0]->count : 0) }}
                             </div>
                         </div>
                         <div class="col-6">
                             <div class="stats-figure">Kiosk</div>
                             <div class="stats-meta">
-                                {{ (isset($completion[1]) ? $completion[1]['count'] : 0) . '/' . (isset($store[1]) ? $store[1]['count'] : 0) }}
-
+                                {{ (isset($completion[1]) ? $completion[1]->count : 0) . '/' . (isset($storeCounts[1]->count) ? $storeCounts[1]->count : 0) }}
                             </div>
                         </div>
                     </div>

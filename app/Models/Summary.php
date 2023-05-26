@@ -19,7 +19,6 @@ class Summary extends Model
         'date_of_visit',
         'time_of_audit',
         'wave',
-        'overall_score',
         'strength',
         'improvement',
     ];
