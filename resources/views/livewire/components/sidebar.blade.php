@@ -47,7 +47,7 @@
 
 
                 <li class="nav-item">
-                    <a class="nav-link {{ Request::is('audit') || Request::is('store/form*') || Request::is('store/details*') ? 'active' : '' }}"
+                    <a class="nav-link {{ Request::is('audit') || Request::is('audit/form*') || Request::is('result*') || Request::is('result/summary*') ? 'active' : '' }}"
                         href="{{ url('audit') }}">
                         <span class="nav-icon">
 

@@ -68,8 +68,9 @@ Route::middleware(['auth'])->group(function () {
         Route::get('/audit', Audit::class)->name('audit');
         Route::get('/audit/details/{store_id?}', AuditDetails::class)->name('audit.details');
         Route::get('/audit/form/{store_id?}', AuditForm::class)->name('audit.form');
-        Route::get('/audit/form/{store_id?}/result', AuditResult::class)->name('audit.form.result');
-        Route::get('/audit/form/{store_id?}/result/summary', AuditSummary::class)->name('audit.form.summary');
+
+        Route::get('/result/{store_id?}', AuditResult::class)->name('audit.result');
+        Route::get('/result/{store_id?}/summary', AuditSummary::class)->name('audit.summary');
 
         /* store */
         /* Route::get('/audit', Store::class)->name('audit'); */

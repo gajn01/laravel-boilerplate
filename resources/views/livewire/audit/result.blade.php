@@ -2,34 +2,18 @@
 <div class="container-xl">
     <nav aria-label="breadcrumb">
         <ol class="breadcrumb">
-            <li class="breadcrumb-item"><a href="{{ route('audit') }}">Audit</a></li>
-            <li class="breadcrumb-item"><a href="{{ route('audit.form', [$store_id]) }}">{{ $store_name }}</a>
+            {{--             <li class="breadcrumb-item"><a href="{{ route('audit') }}">Audit</a></li>
+            <li class="breadcrumb-item"><a href="{{ route('audit.form', [$store_id]) }}">{{ $store_name }}</a> --}}
             <li class="breadcrumb-item active" aria-current="page">Result</li>
         </ol>
     </nav>
     <div class="page-utilities mb-3">
-
-
         <div class="row g-2 justify-content-start justify-content-md-end align-items-center">
             <div class="col-auto mb-3">
-                <a class="btn app-btn-primary" href="{{ route('audit.form.summary', [$store_id]) }}">Go to Executive Summary</a>
+                <a class="btn app-btn-primary" href="{{ route('audit.summary', [$store_id]) }}">Go to Executive
+                    Summary</a>
             </div>
         </div>
-
-     {{--    @if ($audit_status)
-            <div class="row g-2 justify-content-start justify-content-md-end align-items-center">
-                <div class="col-auto mb-3">
-                    <a class="btn app-btn-primary"
-                        wire:click="onStartAndComplete(true,'Are you sure?','warning')">{{ $actionTitle }}</a>
-                </div>
-            </div>
-        @else
-            <div class="row g-2 justify-content-start justify-content-md-end align-items-center">
-                <div class="col-auto mb-3">
-                    <a class="btn app-btn-primary" href="{{ route('form.summary', [$store_id]) }}">Go to Executive Summary</a>
-                </div>
-            </div>
-        @endif --}}
         <nav wire:ignore id="audit-form-tab"
             class="audit-form-tab app-nav-tabs nav shadow-sm flex-column flex-sm-row mb-4 justify-content-center">
             @forelse ($category_list as $key => $data)
@@ -39,8 +23,7 @@
                     'nav-link',
                     'active' => $key == $active_index,
                 ]) id="cat{{ $data->id }}-tab" data-bs-toggle="tab"
-                    wire:click="setActive({{ $key }})" href="#cat{{ $data->id }}" role="tab"
-                    aria-controls="cat{{ $data->id }}"
+                    href="#cat{{ $data->id }}" role="tab" aria-controls="cat{{ $data->id }}"
                     aria-selected="{{ $key == $active_index ? 'true' : 'false' }}">
                     {{ $data->name }}
                 </a>
@@ -50,8 +33,8 @@
         </nav>
         <div class="tab-content" id="audit-form-tab-content">
             @forelse ($category_list as $key => $data)
-                <div class="tab-pane fade show {{ $key == $active_index ? 'active' : '' }}"
-                    id="cat{{ $data->id }}" role="tabpanel" aria-labelledby="cat{{ $data->id }}-tab">
+                <div class="tab-pane fade show {{ $key == $active_index ? 'active' : '' }}" id="cat{{ $data->id }}"
+                    role="tabpanel" aria-labelledby="cat{{ $data->id }}-tab">
                     <div class="row g-4 mb-4">
                         <div class="col-12 }}">
                             <div class="app-card app-card-chart  shadow-sm">
@@ -479,9 +462,10 @@
                                                                     <p @class(['pt-4' => $index == 0])>
                                                                         {{ $auditLabel['name'] }}</p>
                                                                 </td>
-                                                                <td class="text-center">{{ $auditLabel['points'] != null ? $auditLabel['points'] : '0' }}
+                                                                <td class="text-center">
+                                                                    {{ $auditLabel['points'] != null ? $auditLabel['points'] : '0' }}
                                                                 </td>
-                                                                <td class="text-center">{{ $auditLabel['remarks']  }}
+                                                                <td class="text-center">{{ $auditLabel['remarks'] }}
                                                                 </td>
                                                                 <td class="text-center">{{ $auditLabel['deviation'] }}
                                                                 </td>
@@ -502,11 +486,14 @@
                                                                         <p @class(['pt-4' => $index == 0])>
                                                                             {{ $auditLabel['name'] }}</p>
                                                                     </td>
-                                                                    <td class="text-center">{{ $auditLabel['points'] != null ? $auditLabel['points'] : '0' }}
+                                                                    <td class="text-center">
+                                                                        {{ $auditLabel['points'] != null ? $auditLabel['points'] : '0' }}
                                                                     </td>
-                                                                    <td class="text-center">{{ $auditLabel['remarks']  }}
+                                                                    <td class="text-center">
+                                                                        {{ $auditLabel['remarks'] }}
                                                                     </td>
-                                                                    <td class="text-center">{{ $auditLabel['deviation'] }}
+                                                                    <td class="text-center">
+                                                                        {{ $auditLabel['deviation'] }}
                                                                     </td>
                                                                 </tr>
                                                             @endforeach

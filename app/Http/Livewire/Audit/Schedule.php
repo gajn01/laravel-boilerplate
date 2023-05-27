@@ -114,7 +114,7 @@ class Schedule extends Component
             ->where('audit_date', 'LIKE', $this->year . '-%')
             ->first();
         if ($check_schedule) {
-            $this->onAlert(false, 'Warning', 'The store has already been scheduled for the same year and wave.', 'warning');
+            $this->onAlert(false, 'Warning', 'The store has already been scheduled for this year for the same wave.', 'warning');
         } else {
             $auditDate = AuditDateModel::updateOrCreate(['id' => $this->audit_date_id], $auditDateData);
             $this->onAlert(false, 'Success', 'Schedule saved successfully!', 'success');

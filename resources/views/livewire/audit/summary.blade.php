@@ -2,9 +2,7 @@
 <div class="container-xl">
     <nav aria-label="breadcrumb">
         <ol class="breadcrumb">
-            <li class="breadcrumb-item"><a href="{{ route('audit') }}">Audit</a></li>
-            <li class="breadcrumb-item"><a href="{{ route('audit.form', [$store_id]) }}">{{ $store->name }}</a>
-            <li class="breadcrumb-item"><a href="{{ route('audit.form.result', [$store_id]) }}">Result</a>
+            <li class="breadcrumb-item"><a href="{{ route('audit.result', [$store_id]) }}">Result</a>
             <li class="breadcrumb-item active" aria-current="page">Executive Summary</li>
         </ol>
     </nav>
@@ -89,8 +87,6 @@
             </div>
         </div>
     </div>
-
-
     <div class="row g-4 mb-4">
         <div class="col-12 col-lg-6">
             <div class="app-card app-card-chart  shadow-sm">
@@ -114,7 +110,7 @@
                                             <td class="core_name_total"><a
                                                     href="#{{ $data['name'] }}">{{ $data['name'] }}</a>
                                             </td>
-                                            <td class="text-center">{{ $data->sub_categ['overall_score'] }}</td>
+                                            <td class="text-center {{ $data->sub_categ['overall_score'] < 80 ? 'text-danger' : '' }}">{{ $data->sub_categ['overall_score'] }}</td>
                                             @php
                                                 $overallScore = $data->sub_categ['overall_score'];
                                             @endphp
@@ -129,17 +125,15 @@
                                                 @break
 
                                                 @case($overallScore >= 70 && $overallScore <= 79)
-                                                    <td class="text-center">C</td>
+                                                    <td class="text-center text-danger">C</td>
                                                 @break
 
                                                 @case($overallScore >= 60 && $overallScore <= 69)
-                                                    <td class="text-center">D</td>
+                                                    <td class="text-center text-danger">D</td>
                                                 @break
-
                                                 @default
-                                                    <td class="text-center">E</td>
+                                                    <td class="text-center text-danger">E</td>
                                             @endswitch
-
                                         </tr>
                                     @endforeach
                                 </tbody>

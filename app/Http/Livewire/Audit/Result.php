@@ -21,26 +21,15 @@ class Result extends Component
     public $active_index = 0;
     protected $listeners = ['alert-sent' => 'onUpdateStatus', 'start-alert-sent' => 'onUpdateStatus'];
     public $store_id;
-    public $store_name;
-    /* Audit Category */
+    public $store;
     public $category_list;
     public $store_type;
-    public $f_major_sd = [];
-    public $f_product;
-    public $sanitation_defect;
     public $audit_status;
     public $audit_forms_id;
-    public $actionTitle = 'Start';
-    public $currentField;
-    public $currentIndex;
     private $timezone;
     private $time;
     private $date_today;
-    protected $rules = [
-        'category_list.*.sub_categ.data_items.*.id' => 'required',
-        'category_list.*.sub_categ.data_items.*.name' => 'required',
-        'category_list.*.sub_categ.data_items.*.sub_category.*.*' => 'required',
-    ];
+
     public function __construct()
     {
         $this->timezone = new DateTimeZone('Asia/Manila');
@@ -49,17 +38,13 @@ class Result extends Component
     }
     public function render()
     {
-        $sanitation_defect = SanitaryModel::select('id', 'title', 'code')->get();
         $this->audit_forms_id = AuditFormModel::where('store_id', $this->store_id)->where('date_of_visit', $this->date_today)->value('id');
         // dd($audit_result);
-        $store = StoreModel::find($this->store_id);
-        $this->store_name = $store->name;
-        $this->store_type = $store->type;
-        $this->audit_status = $store->audit_status;
-        $this->actionTitle = $this->audit_status ? 'Complete' : 'Start';
 
+        $store = StoreModel::find($this->store_id);
+        $this->store = $store;
         $data = CategoryModel::select('id', 'name', 'type', 'critical_deviation')
-            ->where('type', $this->store_type)
+            ->where('type', $this->store->type)
             ->with([
                 'subCategories.subCategoryLabels' => function ($query) {
                     $query->selectRaw('id, name, is_all_nothing, bp, sub_category_id, dropdown_id');
@@ -91,7 +76,7 @@ class Result extends Component
                         $saved_point = 0;
                         $saved_remarks = '';
                         $saved_deviation = '';
-                        if ($this->audit_status) {
+                        if ($this->store->audit_status) {
                             $data = AuditFormResultModel::select('*')
                                 ->where('form_id', $this->audit_forms_id)
                                 ->where('category_id', $category_id)
@@ -130,7 +115,7 @@ class Result extends Component
                             $saved_point = 0;
                             $saved_remarks = '';
                             $saved_deviation = '';
-                            if ($this->audit_status) {
+                            if ($this->store->audit_status) {
                                 $data = AuditFormResultModel::select('*')
                                     ->where('form_id', $this->audit_forms_id)
                                     ->where('category_id', $category_id)
@@ -196,7 +181,7 @@ class Result extends Component
                 $saved_location = '';
                 $saved_product = '';
                 $saved_dropdown = '';
-                if ($this->audit_status) {
+                if ($this->store->audit_status) {
                     $data = CriticalDeviationResultModel::select('*')
                         ->where('form_id', $this->audit_forms_id)
                         ->where('category_id', $category->id)
@@ -244,173 +229,11 @@ class Result extends Component
         }
         $this->category_list = $data;
         // dd($data);
-        return view('livewire.audit.result', ['sanitation_list' => $sanitation_defect])->extends('layouts.app');
-    }
-    public function setTime($data)
-    {
-        $timezone = new DateTimeZone('Asia/Manila');
-        $time = new DateTime('now', $timezone);
-        $currentTime = $time->format('h:i A');
-        if ($data == 0) {
-            $this->cashier_tat[$this->currentIndex][$this->currentField] = $currentTime;
-        } else if ($data == 1) {
-            $this->server_cat[$this->currentIndex][$this->currentField] = $currentTime;
-        }
-    }
-    public function stopTimer()
-    {
-        if (empty($this->currentField)) {
-            return;
-        }
-        $currentTime = new DateTime('now', new DateTimeZone('Asia/Manila'));
-        $currentTime = date('H:i');
-        if ($this->currentField == "product_order_{$this->currentIndex}") {
-            $this->cashier_tat[$this->currentIndex]['ot'] = $currentTime;
-        }
-        $this->currentField = '';
+        return view('livewire.audit.result')->extends('layouts.app');
     }
     public function mount($store_id = null)
     {
         $this->store_id = $store_id;
     }
-    public function setActive($index)
-    {
-        $this->active_index = $index;
-    }
-    public function updatePoints($id = null, $parentIndex = null, $subIndex = null, $childIndex = null, $labelIndex = null, $categoryId = null, $subcategoryId = null, $childId = null, $labelId = null, $is_sub = null, $value = null)
-    {
-        if (!$this->audit_status) {
-            return;
-        }
-        $dataItems = $this->category_list[$parentIndex]['sub_categ']['data_items'];
-        $subCategory = $dataItems[$subIndex]['sub_category'][$childIndex];
-        $bp = $is_sub ? $subCategory['label'][$labelIndex]['bp'] : $subCategory['bp'];
-        $is_all = $is_sub ? $subCategory['label'][$labelIndex]['is_all_nothing'] : $subCategory['is_all_nothing'];
-        $this->dispatchBrowserEvent('checkPoints', [
-            'id' => $id,
-            'value' => $value,
-            'points' => $bp,
-            'is_all' => $is_all,
-        ]);
-        $validated_points = max(0, min($value, $bp));
-        $query = AuditFormResultModel::where('form_id', $this->audit_forms_id)
-            ->where('category_id', $categoryId)
-            ->where('sub_category_id', $subcategoryId)
-            ->where('sub_sub_category_id', $childId);
-        if ($is_sub) {
-            $query->where('label_id', $labelId)
-                ->update(['label_point' => $validated_points]);
-        } else {
-            $query->update(['sub_sub_point' => $validated_points]);
-        }
-    }
-    public function updateRemarks($categoryId = null, $subcategoryId = null, $childId = null, $labelId = null, $is_sub = null, $value = null)
-    {
-        if (!$this->audit_status) {
-            return;
-        }
-        $query = AuditFormResultModel::where('form_id', $this->audit_forms_id)
-            ->where('category_id', $categoryId)
-            ->where('sub_category_id', $subcategoryId)
-            ->where('sub_sub_category_id', $childId);
-        if ($is_sub) {
-            $query->where('label_id', $labelId)
-                ->update(['label_remarks' => $value]);
-        } else {
-            $query->update(['sub_sub_remarks' => $value]);
-        }
-    }
-    public function updateDeviation($categoryId = null, $subcategoryId = null, $childId = null, $labelId = null, $is_sub = null, $value = null)
-    {
-        if (!$this->audit_status) {
-            return;
-        }
-        $query = AuditFormResultModel::where('form_id', $this->audit_forms_id)
-            ->where('category_id', $categoryId)
-            ->where('sub_category_id', $subcategoryId)
-            ->where('sub_sub_category_id', $childId);
-        if ($is_sub) {
-            $query->where('label_id', $labelId)
-                ->update(['label_deviation' => $value]);
-        } else {
-            $query->update(['sub_sub_deviation' => $value]);
-        }
-    }
-    public function addInput($data)
-    {
-        $add = [
-            'name' => '',
-            'time' => '',
-            'product_order' => '',
-            'ot' => '',
-            'ot_point' => 1,
-            'fst' => '',
-            'fst_point' => 3,
-            'remarks' => '',
-        ];
-        if ($data == 0) {
-            $add['tat'] = '';
-            $add['tat_point'] = 1;
-            array_push($this->cashier_tat, $add);
-        } else if ($data == 1) {
-            $add['cat'] = '';
-            $add['tat_point'] = 1;
-            array_push($this->server_cat, $add);
-        }
-    }
-    public function onStartAndComplete($is_confirm = true, $title = 'Are you sure?', $type = null, $data = null)
-    {
-        if ($this->audit_status) {
-            $message = 'Are you sure you want to complete this audit?';
-        } else {
-            $message = 'Are you sure you want to start this audit?';
-        }
-        $this->emit('onStartAlert', $message);
-    }
-    public function onUpdateStatus()
-    {
-        $timezone = new DateTimeZone('Asia/Manila');
-        $time = new DateTime('now', $timezone);
-        $date_today = $time->format('Y-m-d');
-        $audit_time = $time->format('h:i');
-        $data = $this->audit_status ? false : true;
-        StoreModel::where('id', $this->store_id)->update([
-            'audit_status' => $data,
-        ]);
-        AuditFormModel::updateOrCreate(
-            ['id' => $this->audit_forms_id],
-            [
-                'store_id' => $this->store_id,
-                'date_of_visit' => $date_today,
-                'conducted_by_id' => Auth::user()->id,
-                'received_by' => '',
-                'time_of_audit' => $audit_time,
-                'audit_status' => $data,
-            ]
-        );
-        return redirect()->route('form.summary', ['store_id' => $this->store_id]);
-    }
-    public function updateCriticalDeviation($data = null, $value = null, $deviation = null)
-    {
-        if (!$this->audit_status) {
-            return;
-        }
-        $query = CriticalDeviationResultModel::where('form_id', $this->audit_forms_id)
-            ->where('category_id', $data['category_id'])
-            ->where('deviation_id', $data['id'])
-            ->where('critical_deviation_id', $data['critical_deviation_id']);
-        if ($deviation == "remarks") {
-            $query->update(['remarks' => $value]);
-        } else if ($deviation == "dropdown") {
-            $query->update(['dropdown' => $value]);
-        } else if ($deviation == "score") {
-            $query->update(['score' => $value]);
-        } else if ($deviation == "sd") {
-            $query->update(['sd' => $value]);
-        } else if ($deviation == "location") {
-            $query->update(['location' => $value]);
-        } else if ($deviation == "product") {
-            $query->update(['product' => $value]);
-        }
-    }
+
 }

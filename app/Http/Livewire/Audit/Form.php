@@ -447,7 +447,7 @@ class Form extends Component
             StoreModel::where('id', $this->store_id)
                 ->update(['audit_status' => $data]);
         } else {
-            return redirect()->route('audit.form.result', ['store_id' => $this->store_id]);
+            return redirect()->route('audit.result', ['store_id' => $this->store_id]);
         }
     }
     public function onInitialSave()
