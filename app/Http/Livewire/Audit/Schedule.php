@@ -13,6 +13,7 @@ use Livewire\WithPagination;
 use DateTime;
 use DateTimeZone;
 use Carbon\Carbon;
+
 class Schedule extends Component
 {
     use WithPagination;
@@ -21,17 +22,18 @@ class Schedule extends Component
     public $searchTerm;
     public $limit = 10;
     public $audit_date_id;
-    public $store_id;
+    public $store_id = 1;
     public $auditor_id;
     public $auditor_list = [];
     public $audit_date;
-    public $wave;
+    public $wave = 1;
     public $modalTitle = "Add";
     public $modalButtonText;
     public $today;
     private $timezone;
     private $time;
     public $date_today;
+    public $year;
     public $date_filter;
 
     public function __construct()
@@ -39,6 +41,8 @@ class Schedule extends Component
         $this->timezone = new DateTimeZone('Asia/Manila');
         $this->time = new DateTime('now', $this->timezone);
         $this->date_today = $this->time->format('Y-m-d');
+        $this->year = $this->time->format('Y');
+
     }
     public function mount()
     {
@@ -46,18 +50,17 @@ class Schedule extends Component
     }
     public function render()
     {
+
         $user = UserModel::all('*')
             ->where('user_level', '!=', '0');
         $searchTerm = '%' . $this->searchTerm . '%';
         $store_list = StoreModel::all();
-
         $auditorsQuery = StoreModel::select('stores.*', 'stores.id as store_id', 'audit_date.id as audit_id', 'audit_date.audit_date', 'audit_date.wave')
-        ->join('audit_date', 'stores.id', '=', 'audit_date.store_id')
-        ->where('stores.name', 'like', $searchTerm)
-        ->where('stores.code', 'like', $searchTerm)
-        ->where('stores.area', 'like', '%' . $searchTerm . '%')
-        ->orderByRaw('ISNULL(audit_date.audit_date), audit_date.audit_date ASC');
-
+            ->join('audit_date', 'stores.id', '=', 'audit_date.store_id')
+            ->where('stores.name', 'like', $searchTerm)
+            ->where('stores.code', 'like', $searchTerm)
+            ->where('stores.area', 'like', '%' . $searchTerm . '%')
+            ->orderByRaw('ISNULL(audit_date.audit_date), audit_date.audit_date ASC');
 
         if ($this->date_filter == 'weekly') {
             $auditorsQuery->whereBetween('audit_date.audit_date', [Carbon::now()->startOfWeek(), Carbon::now()->endOfWeek()]);
@@ -68,44 +71,6 @@ class Schedule extends Component
         }
         $store_schedule = $auditorsQuery
             ->paginate($this->limit);
-
-/*         $startDate = null;
-        $endDate = null;
-        if ($this->date_filter == 'weekly') {
-            $startDate = Carbon::now()->startOfWeek();
-            $endDate = Carbon::now()->endOfWeek();
-        } elseif ($this->date_filter == 'monthly') {
-            $startDate = Carbon::now()->startOfMonth();
-            $endDate = Carbon::now()->endOfMonth();
-        }
-
-        if ($startDate && $endDate) {
-            $store_schedule = StoreModel::select('stores.*', 'stores.id as store_id', 'audit_date.id as audit_id', 'audit_date.audit_date', 'audit_date.wave')
-                ->join('audit_date', 'stores.id', '=', 'audit_date.store_id')
-                ->where('stores.name', 'like', $searchTerm)
-                ->where('stores.code', 'like', $searchTerm)
-                ->where('stores.area', 'like', '%' . $searchTerm . '%')
-                ->whereBetween('audit_date.audit_date', [$startDate, $endDate])
-                ->orderByRaw('ISNULL(audit_date.audit_date), audit_date.audit_date ASC')
-                ->paginate($this->limit);
-        } else if ($this->date_filter == 'all') {
-            $store_schedule = StoreModel::select('stores.*', 'stores.id as store_id', 'audit_date.id as audit_id', 'audit_date.audit_date', 'audit_date.wave')
-                ->join('audit_date', 'stores.id', '=', 'audit_date.store_id')
-                ->where('stores.name', 'like', $searchTerm)
-                ->where('stores.code', 'like', $searchTerm)
-                ->where('stores.area', 'like', '%' . $searchTerm . '%')
-                ->orderByRaw('ISNULL(audit_date.audit_date), audit_date.audit_date ASC')
-                ->paginate($this->limit);
-        } else {
-            $store_schedule = StoreModel::select('stores.*', 'stores.id as store_id', 'audit_date.id as audit_id', 'audit_date.audit_date', 'audit_date.wave')
-                ->join('audit_date', 'stores.id', '=', 'audit_date.store_id')
-                ->where('stores.name', 'like', $searchTerm)
-                ->where('stores.code', 'like', $searchTerm)
-                ->where('stores.area', 'like', '%' . $searchTerm . '%')
-                ->where('audit_date.audit_date', $this->date_filter)
-                ->orderByRaw('ISNULL(audit_date.audit_date), audit_date.audit_date ASC')
-                ->paginate($this->limit);
-        } */
         return view('livewire.audit.schedule', ['store_list' => $store_list, 'store_sched_list' => $store_schedule, 'user_list' => $user])->extends('layouts.app');
     }
     public function addAuditor()
@@ -131,6 +96,8 @@ class Schedule extends Component
     }
     public function saveSchedule()
     {
+
+
         $this->validate([
             'store_id' => 'required',
             'audit_date' => 'required',
@@ -141,18 +108,28 @@ class Schedule extends Component
             'audit_date' => strip_tags($this->audit_date),
             'wave' => strip_tags($this->wave),
         ];
-        $auditDate = AuditDateModel::updateOrCreate(['id' => $this->audit_date_id], $auditDateData);
-        $this->onAlert(false, 'Success', 'Schedule saved successfully!', 'success');
-        CustomHelper::onRemoveModal($this, '#store_schedule_modal');
-        if (empty($this->audit_date_id)) {
-            $auditorListData = collect($this->auditor_list)->map(function ($value) use ($auditDate) {
-                $value['audit_date_id'] = $auditDate->id;
-                return $value;
-            })->toArray();
-            AuditorListModel::insert($auditorListData);
-            $this->auditor_list = [];
+
+        $check_schedule = AuditDateModel::where('store_id', $this->store_id)
+            ->where('wave', $this->wave)
+            ->where('audit_date', 'LIKE', $this->year . '-%')
+            ->first();
+        if ($check_schedule) {
+            $this->onAlert(false, 'Warning', 'The store has already been scheduled for the same year and wave.', 'warning');
+        } else {
+            $auditDate = AuditDateModel::updateOrCreate(['id' => $this->audit_date_id], $auditDateData);
+            $this->onAlert(false, 'Success', 'Schedule saved successfully!', 'success');
+            CustomHelper::onRemoveModal($this, '#store_schedule_modal');
+            if (empty($this->audit_date_id)) {
+                $auditorListData = collect($this->auditor_list)->map(function ($value) use ($auditDate) {
+                    $value['audit_date_id'] = $auditDate->id;
+                    return $value;
+                })->toArray();
+                AuditorListModel::insert($auditorListData);
+                $this->auditor_list = [];
+            }
         }
     }
+
     public function onDelete($id)
     {
         $schedule = AuditDateModel::find($id);
@@ -182,4 +159,3 @@ class Schedule extends Component
         $this->resetValidation();
     }
 }
-
