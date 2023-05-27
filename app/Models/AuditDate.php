@@ -9,7 +9,7 @@ class AuditDate extends Model
 {
     use HasFactory;
     protected $table = 'audit_date';
-    protected $fillable = ['id', 'store_id', 'audit_date', 'wave', 'created_at', 'updated_at'];
+    protected $fillable = ['id', 'store_id', 'audit_date', 'wave', 'is_complete','created_at', 'updated_at'];
     public function subCategories()
     {
         return $this->hasMany(SubCategory::class);

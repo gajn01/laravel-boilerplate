@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Livewire\Store;
+namespace App\Http\Livewire\Audit;
 
 use Livewire\Component;
 use App\Models\SubCategory as SubCategoryModel;
@@ -13,60 +13,51 @@ use App\Models\CriticalDeviationMenu as CriticalDeviationMenuModel;
 use App\Models\AuditForm as AuditFormModel;
 use App\Models\AuditFormResult as AuditFormResultModel;
 use App\Models\CriticalDeviationResult as CriticalDeviationResultModel;
-use App\Models\Summary as SummaryModel;
-use App\Models\AuditDate as AuditDateModel;
 use Illuminate\Support\Facades\Auth;
-use App\Helpers\CustomHelper;
-
 use DateTime;
 use DateTimeZone;
-
-class ExecutiveSummary extends Component
+class Result extends Component
 {
     public $active_index = 0;
     protected $listeners = ['alert-sent' => 'onUpdateStatus', 'start-alert-sent' => 'onUpdateStatus'];
-    public $store;
     public $store_id;
+    public $store_name;
     /* Audit Category */
     public $category_list;
     public $store_type;
+    public $f_major_sd = [];
+    public $f_product;
     public $sanitation_defect;
     public $audit_status;
     public $audit_forms_id;
-    public $with;
-    public $conducted_by;
-    public $received_by;
-    public $dov;
-    public $toa;
-    public $strength;
-    public $improvement;
-    public $wave;
-    public $time_of_audit;
+    public $actionTitle = 'Start';
+    public $currentField;
+    public $currentIndex;
+    private $timezone;
+    private $time;
+    private $date_today;
+    protected $rules = [
+        'category_list.*.sub_categ.data_items.*.id' => 'required',
+        'category_list.*.sub_categ.data_items.*.name' => 'required',
+        'category_list.*.sub_categ.data_items.*.sub_category.*.*' => 'required',
+    ];
+    public function __construct()
+    {
+        $this->timezone = new DateTimeZone('Asia/Manila');
+        $this->time = new DateTime('now', $this->timezone);
+        $this->date_today = $this->time->format('Y-m-d');
+    }
     public function render()
     {
-        $timezone = new DateTimeZone('Asia/Manila');
-        $time = new DateTime('now', $timezone);
-        $date_today = $time->format('Y-m-d');
-
-        $this->dov = $date_today;
-
-        $audit = AuditFormModel::select('time_of_audit','wave')
-        ->where('store_id', $this->store_id)
-        ->where('date_of_visit', $date_today)
-        ->get()
-        ->first();
-
-        $this->time_of_audit = $audit->time_of_audit;
-        $this->wave = $audit->wave;
-
-        $this->conducted_by = Auth::user()->name;
         $sanitation_defect = SanitaryModel::select('id', 'title', 'code')->get();
-
-        $this->audit_forms_id = AuditFormModel::where('store_id', $this->store_id)->value('id');
+        $this->audit_forms_id = AuditFormModel::where('store_id', $this->store_id)->where('date_of_visit', $this->date_today)->value('id');
+        // dd($audit_result);
         $store = StoreModel::find($this->store_id);
-        $this->store = $store;
+        $this->store_name = $store->name;
         $this->store_type = $store->type;
         $this->audit_status = $store->audit_status;
+        $this->actionTitle = $this->audit_status ? 'Complete' : 'Start';
+
         $data = CategoryModel::select('id', 'name', 'type', 'critical_deviation')
             ->where('type', $this->store_type)
             ->with([
@@ -252,17 +243,128 @@ class ExecutiveSummary extends Component
             $category->sub_categ = $sub_category;
         }
         $this->category_list = $data;
-        // dd($this->category_list);
-        return view('livewire.store.executive-summary', ['sanitation_list' => $sanitation_defect])->extends('layouts.app');
+        // dd($data);
+        return view('livewire.audit.result', ['sanitation_list' => $sanitation_defect])->extends('layouts.app');
     }
-
+    public function setTime($data)
+    {
+        $timezone = new DateTimeZone('Asia/Manila');
+        $time = new DateTime('now', $timezone);
+        $currentTime = $time->format('h:i A');
+        if ($data == 0) {
+            $this->cashier_tat[$this->currentIndex][$this->currentField] = $currentTime;
+        } else if ($data == 1) {
+            $this->server_cat[$this->currentIndex][$this->currentField] = $currentTime;
+        }
+    }
+    public function stopTimer()
+    {
+        if (empty($this->currentField)) {
+            return;
+        }
+        $currentTime = new DateTime('now', new DateTimeZone('Asia/Manila'));
+        $currentTime = date('H:i');
+        if ($this->currentField == "product_order_{$this->currentIndex}") {
+            $this->cashier_tat[$this->currentIndex]['ot'] = $currentTime;
+        }
+        $this->currentField = '';
+    }
     public function mount($store_id = null)
     {
         $this->store_id = $store_id;
     }
+    public function setActive($index)
+    {
+        $this->active_index = $index;
+    }
+    public function updatePoints($id = null, $parentIndex = null, $subIndex = null, $childIndex = null, $labelIndex = null, $categoryId = null, $subcategoryId = null, $childId = null, $labelId = null, $is_sub = null, $value = null)
+    {
+        if (!$this->audit_status) {
+            return;
+        }
+        $dataItems = $this->category_list[$parentIndex]['sub_categ']['data_items'];
+        $subCategory = $dataItems[$subIndex]['sub_category'][$childIndex];
+        $bp = $is_sub ? $subCategory['label'][$labelIndex]['bp'] : $subCategory['bp'];
+        $is_all = $is_sub ? $subCategory['label'][$labelIndex]['is_all_nothing'] : $subCategory['is_all_nothing'];
+        $this->dispatchBrowserEvent('checkPoints', [
+            'id' => $id,
+            'value' => $value,
+            'points' => $bp,
+            'is_all' => $is_all,
+        ]);
+        $validated_points = max(0, min($value, $bp));
+        $query = AuditFormResultModel::where('form_id', $this->audit_forms_id)
+            ->where('category_id', $categoryId)
+            ->where('sub_category_id', $subcategoryId)
+            ->where('sub_sub_category_id', $childId);
+        if ($is_sub) {
+            $query->where('label_id', $labelId)
+                ->update(['label_point' => $validated_points]);
+        } else {
+            $query->update(['sub_sub_point' => $validated_points]);
+        }
+    }
+    public function updateRemarks($categoryId = null, $subcategoryId = null, $childId = null, $labelId = null, $is_sub = null, $value = null)
+    {
+        if (!$this->audit_status) {
+            return;
+        }
+        $query = AuditFormResultModel::where('form_id', $this->audit_forms_id)
+            ->where('category_id', $categoryId)
+            ->where('sub_category_id', $subcategoryId)
+            ->where('sub_sub_category_id', $childId);
+        if ($is_sub) {
+            $query->where('label_id', $labelId)
+                ->update(['label_remarks' => $value]);
+        } else {
+            $query->update(['sub_sub_remarks' => $value]);
+        }
+    }
+    public function updateDeviation($categoryId = null, $subcategoryId = null, $childId = null, $labelId = null, $is_sub = null, $value = null)
+    {
+        if (!$this->audit_status) {
+            return;
+        }
+        $query = AuditFormResultModel::where('form_id', $this->audit_forms_id)
+            ->where('category_id', $categoryId)
+            ->where('sub_category_id', $subcategoryId)
+            ->where('sub_sub_category_id', $childId);
+        if ($is_sub) {
+            $query->where('label_id', $labelId)
+                ->update(['label_deviation' => $value]);
+        } else {
+            $query->update(['sub_sub_deviation' => $value]);
+        }
+    }
+    public function addInput($data)
+    {
+        $add = [
+            'name' => '',
+            'time' => '',
+            'product_order' => '',
+            'ot' => '',
+            'ot_point' => 1,
+            'fst' => '',
+            'fst_point' => 3,
+            'remarks' => '',
+        ];
+        if ($data == 0) {
+            $add['tat'] = '';
+            $add['tat_point'] = 1;
+            array_push($this->cashier_tat, $add);
+        } else if ($data == 1) {
+            $add['cat'] = '';
+            $add['tat_point'] = 1;
+            array_push($this->server_cat, $add);
+        }
+    }
     public function onStartAndComplete($is_confirm = true, $title = 'Are you sure?', $type = null, $data = null)
     {
-        $message = 'Are you sure you want to complete this audit?';
+        if ($this->audit_status) {
+            $message = 'Are you sure you want to complete this audit?';
+        } else {
+            $message = 'Are you sure you want to start this audit?';
+        }
         $this->emit('onStartAlert', $message);
     }
     public function onUpdateStatus()
@@ -270,6 +372,7 @@ class ExecutiveSummary extends Component
         $timezone = new DateTimeZone('Asia/Manila');
         $time = new DateTime('now', $timezone);
         $date_today = $time->format('Y-m-d');
+        $audit_time = $time->format('h:i');
         $data = $this->audit_status ? false : true;
         StoreModel::where('id', $this->store_id)->update([
             'audit_status' => $data,
@@ -281,57 +384,33 @@ class ExecutiveSummary extends Component
                 'date_of_visit' => $date_today,
                 'conducted_by_id' => Auth::user()->id,
                 'received_by' => '',
-                'time_of_audit' =>$this->time,
+                'time_of_audit' => $audit_time,
                 'audit_status' => $data,
             ]
         );
+        return redirect()->route('form.summary', ['store_id' => $this->store_id]);
     }
-
-    public function onComplete()
+    public function updateCriticalDeviation($data = null, $value = null, $deviation = null)
     {
-        $this->validate(
-            [
-                'conducted_by' => '',
-                'received_by' => 'required',
-                'dov' => '',
-                'strength' => 'required',
-                'improvement' => 'required',
-                'wave' => 'required',
-            ]
-        );
-        SummaryModel::create([
-            'store_id' => strip_tags($this->store_id),
-            'name' => strip_tags($this->store->name),
-            'code' => strip_tags($this->store->code),
-            'type' => strip_tags($this->store->type),
-            'wave' => strip_tags($this->wave),
-            'conducted_by' => strip_tags($this->conducted_by),
-            'received_by' => strip_tags($this->received_by),
-            'date_of_visit' => strip_tags($this->dov),
-            'time_of_audit' => strip_tags($this->time_of_audit),
-            'strength' => strip_tags($this->strength),
-            'improvement' => strip_tags($this->improvement),
-        ]);
-        AuditDateModel::where('store_id', $this->store_id)
-        ->where('audit_date' , $this->dov)
-        ->update([
-            'is_complete' => 1,
-        ]);
-
-        StoreModel::where('id', $this->store_id)->update([
-            'audit_status' => 0,
-        ]);
-        $this->reset();
-        $this->onAlert(false, 'Success', 'Audit record saved successfully!', 'success');
-        return redirect()->route('details', ['store_id' => $this->store_id]);
-    }
-
-    public function onAlert($is_confirm = false, $title = null, $message = null, $type = null, $data = null)
-    {
-        CustomHelper::onShow($this, $is_confirm, $title, $message, $type, $data);
-    }
-    public function reset(...$properties)
-    {
-        $this->resetValidation();
+        if (!$this->audit_status) {
+            return;
+        }
+        $query = CriticalDeviationResultModel::where('form_id', $this->audit_forms_id)
+            ->where('category_id', $data['category_id'])
+            ->where('deviation_id', $data['id'])
+            ->where('critical_deviation_id', $data['critical_deviation_id']);
+        if ($deviation == "remarks") {
+            $query->update(['remarks' => $value]);
+        } else if ($deviation == "dropdown") {
+            $query->update(['dropdown' => $value]);
+        } else if ($deviation == "score") {
+            $query->update(['score' => $value]);
+        } else if ($deviation == "sd") {
+            $query->update(['sd' => $value]);
+        } else if ($deviation == "location") {
+            $query->update(['location' => $value]);
+        } else if ($deviation == "product") {
+            $query->update(['product' => $value]);
+        }
     }
 }

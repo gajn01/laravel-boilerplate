@@ -47,8 +47,8 @@
 
 
                 <li class="nav-item">
-                    <a class="nav-link {{ Request::is('store') || Request::is('store/form*') || Request::is('store/details*') ? 'active' : '' }}"
-                        href="{{ url('store') }}">
+                    <a class="nav-link {{ Request::is('audit') || Request::is('store/form*') || Request::is('store/details*') ? 'active' : '' }}"
+                        href="{{ url('audit') }}">
                         <span class="nav-icon">
 
                             <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"

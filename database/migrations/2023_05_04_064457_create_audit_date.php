@@ -16,6 +16,7 @@ return new class extends Migration
             $table->string('store_id');
             $table->string('audit_date');
             $table->string('wave');
+            $table->integer('is_complete');
             $table->timestamps();
         });
     }

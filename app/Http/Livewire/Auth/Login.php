@@ -23,7 +23,7 @@ class Login extends Component
             if(Auth::user()->user_level == 0){
                 return redirect()->to('/dashboard');
             }else{
-                return redirect()->to('/store');
+                return redirect()->to('/audit');
             }
         } else {
             CustomHelper::onShow($this, false, 'Invalid credentials.', 'Invalid email or password. Please try again.', 'error', '');

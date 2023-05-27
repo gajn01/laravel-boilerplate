@@ -9,11 +9,17 @@ use App\Http\Livewire\Store\Schedule;
 
 
 /* Store */
-use App\Http\Livewire\Store\Store;
+/* use App\Http\Livewire\Store\Store;
 use App\Http\Livewire\Store\StoreDetails;
 use App\Http\Livewire\Store\Form;
-use App\Http\Livewire\Store\ExecutiveSummary;
-use App\Http\Livewire\Store\AuditResult;
+use App\Http\Livewire\Store\ExecutiveSummary; */
+/* Audit */
+use App\Http\Livewire\Audit\Audit as Audit;
+use App\Http\Livewire\Audit\Form as AuditForm;
+use App\Http\Livewire\Audit\Summary as AuditSummary;
+use App\Http\Livewire\Audit\Result as AuditResult;
+use App\Http\Livewire\Audit\Schedule as AuditSchedule;
+use App\Http\Livewire\Audit\Details as AuditDetails;
 /* User */
 use App\Http\Livewire\User\User;
 use App\Http\Livewire\User\UserDetails;
@@ -37,14 +43,13 @@ use App\Http\Livewire\Settings\CriticalDeviationMenu;
 Route::get('/login', Login::class)->name('login');
 Route::redirect('/', '/dashboard');
 Route::middleware(['auth'])->group(function () {
-
-
     // Only users with user_level = 0 can access the following routes
     Route::middleware(['level:0'])->group(function () {
         /* Dashboard */
         Route::get('/dashboard', Dashboard::class)->name('dashboard');
         /* Schedule */
-        Route::get('/schedule', Schedule::class)->name('schedule');
+        Route::get('/schedule', AuditSchedule::class)->name('audit.schedule');
+
         /* Settings */
         Route::get('/settings/store-settings', StoreSettings::class)->name('settings');
         Route::get('/settings/category', Category::class)->name('category');
@@ -60,11 +65,18 @@ Route::middleware(['auth'])->group(function () {
     // Only users with user_level != 0 can access the following routes
     Route::middleware(['level:0,1,2,3'])->group(function () {
         /* Audit */
-        Route::get('/store', Store::class)->name('store');
-        Route::get('/store/form/{store_id?}', Form::class)->name('form');
+        Route::get('/audit', Audit::class)->name('audit');
+        Route::get('/audit/details/{store_id?}', AuditDetails::class)->name('audit.details');
+        Route::get('/audit/form/{store_id?}', AuditForm::class)->name('audit.form');
+        Route::get('/audit/form/{store_id?}/result', AuditResult::class)->name('audit.form.result');
+        Route::get('/audit/form/{store_id?}/result/summary', AuditSummary::class)->name('audit.form.summary');
+
+        /* store */
+        /* Route::get('/audit', Store::class)->name('audit'); */
+       /*  Route::get('/store/form/{store_id?}', Form::class)->name('form');
         Route::get('/store/details/{store_id?}', StoreDetails::class)->name('details');
         Route::get('/store/form/{store_id?}/result', AuditResult::class)->name('form.result');
-        Route::get('/store/form/{store_id?}/result/summary', ExecutiveSummary::class)->name('form.summary');
+        Route::get('/store/form/{store_id?}/result/summary', ExecutiveSummary::class)->name('form.summary'); */
         /* User */
         Route::get('/user', User::class)->name('user');
         Route::get('/user/information/{employee_id?}', UserDetails::class)->name('information');

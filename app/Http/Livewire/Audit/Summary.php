@@ -1,9 +1,8 @@
 <?php
 
-namespace App\Http\Livewire\Store;
+namespace App\Http\Livewire\Audit;
 
 use Livewire\Component;
-use App\Models\SubCategory as SubCategoryModel;
 use App\Models\SubSubCategoryLabel as SubSubCategoryLabelModel;
 use App\Models\DropdownMenu as DropdownMenuModel;
 use App\Models\Store as StoreModel;
@@ -21,16 +20,13 @@ use App\Helpers\CustomHelper;
 use DateTime;
 use DateTimeZone;
 
-class ExecutiveSummary extends Component
+class Summary extends Component
 {
-    public $active_index = 0;
-    protected $listeners = ['alert-sent' => 'onUpdateStatus', 'start-alert-sent' => 'onUpdateStatus'];
+    protected $listeners = ['start-alert-sent' => 'onComplete'];
     public $store;
     public $store_id;
     /* Audit Category */
     public $category_list;
-    public $store_type;
-    public $sanitation_defect;
     public $audit_status;
     public $audit_forms_id;
     public $with;
@@ -42,33 +38,32 @@ class ExecutiveSummary extends Component
     public $improvement;
     public $wave;
     public $time_of_audit;
+    private $timezone;
+    private $time;
+    private $date_today;
+
+    public function __construct()
+    {
+        $this->timezone = new DateTimeZone('Asia/Manila');
+        $this->time = new DateTime('now', $this->timezone);
+        $this->date_today = $this->time->format('Y-m-d');
+    }
     public function render()
     {
-        $timezone = new DateTimeZone('Asia/Manila');
-        $time = new DateTime('now', $timezone);
-        $date_today = $time->format('Y-m-d');
-
-        $this->dov = $date_today;
-
+        $this->dov = $this->date_today;
         $audit = AuditFormModel::select('time_of_audit','wave')
         ->where('store_id', $this->store_id)
-        ->where('date_of_visit', $date_today)
+        ->where('date_of_visit', $this->date_today)
         ->get()
         ->first();
-
         $this->time_of_audit = $audit->time_of_audit;
         $this->wave = $audit->wave;
-
         $this->conducted_by = Auth::user()->name;
-        $sanitation_defect = SanitaryModel::select('id', 'title', 'code')->get();
-
         $this->audit_forms_id = AuditFormModel::where('store_id', $this->store_id)->value('id');
         $store = StoreModel::find($this->store_id);
         $this->store = $store;
-        $this->store_type = $store->type;
-        $this->audit_status = $store->audit_status;
         $data = CategoryModel::select('id', 'name', 'type', 'critical_deviation')
-            ->where('type', $this->store_type)
+            ->where('type', $this->store->type)
             ->with([
                 'subCategories.subCategoryLabels' => function ($query) {
                     $query->selectRaw('id, name, is_all_nothing, bp, sub_category_id, dropdown_id');
@@ -100,7 +95,7 @@ class ExecutiveSummary extends Component
                         $saved_point = 0;
                         $saved_remarks = '';
                         $saved_deviation = '';
-                        if ($this->audit_status) {
+                        if ($this->store->audit_status) {
                             $data = AuditFormResultModel::select('*')
                                 ->where('form_id', $this->audit_forms_id)
                                 ->where('category_id', $category_id)
@@ -139,7 +134,7 @@ class ExecutiveSummary extends Component
                             $saved_point = 0;
                             $saved_remarks = '';
                             $saved_deviation = '';
-                            if ($this->audit_status) {
+                            if ($this->store->audit_status) {
                                 $data = AuditFormResultModel::select('*')
                                     ->where('form_id', $this->audit_forms_id)
                                     ->where('category_id', $category_id)
@@ -205,7 +200,7 @@ class ExecutiveSummary extends Component
                 $saved_location = '';
                 $saved_product = '';
                 $saved_dropdown = '';
-                if ($this->audit_status) {
+                if ($this->store->audit_status) {
                     $data = CriticalDeviationResultModel::select('*')
                         ->where('form_id', $this->audit_forms_id)
                         ->where('category_id', $category->id)
@@ -253,7 +248,7 @@ class ExecutiveSummary extends Component
         }
         $this->category_list = $data;
         // dd($this->category_list);
-        return view('livewire.store.executive-summary', ['sanitation_list' => $sanitation_defect])->extends('layouts.app');
+        return view('livewire.audit.summary')->extends('layouts.app');
     }
 
     public function mount($store_id = null)
@@ -265,28 +260,6 @@ class ExecutiveSummary extends Component
         $message = 'Are you sure you want to complete this audit?';
         $this->emit('onStartAlert', $message);
     }
-    public function onUpdateStatus()
-    {
-        $timezone = new DateTimeZone('Asia/Manila');
-        $time = new DateTime('now', $timezone);
-        $date_today = $time->format('Y-m-d');
-        $data = $this->audit_status ? false : true;
-        StoreModel::where('id', $this->store_id)->update([
-            'audit_status' => $data,
-        ]);
-        AuditFormModel::updateOrCreate(
-            ['id' => $this->audit_forms_id],
-            [
-                'store_id' => $this->store_id,
-                'date_of_visit' => $date_today,
-                'conducted_by_id' => Auth::user()->id,
-                'received_by' => '',
-                'time_of_audit' =>$this->time,
-                'audit_status' => $data,
-            ]
-        );
-    }
-
     public function onComplete()
     {
         $this->validate(
@@ -323,7 +296,7 @@ class ExecutiveSummary extends Component
         ]);
         $this->reset();
         $this->onAlert(false, 'Success', 'Audit record saved successfully!', 'success');
-        return redirect()->route('details', ['store_id' => $this->store_id]);
+        return redirect()->route('audit.details', ['store_id' => $this->store_id]);
     }
 
     public function onAlert($is_confirm = false, $title = null, $message = null, $type = null, $data = null)
