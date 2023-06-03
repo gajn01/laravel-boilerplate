@@ -105,14 +105,14 @@
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    @forelse ($category_list as $key => $data)
+                                    @forelse ($summary as $key => $data)
                                         <tr>
                                             <td class="core_name_total"><a
-                                                    href="#{{ $data['name'] }}">{{ $data['name'] }}</a>
+                                                    href="#{{ $data->category_name }}">{{ $data->category_name }}</a>
                                             </td>
-                                            <td class="text-center {{ $data->sub_categ['overall_score'] < 80 ? 'text-danger' : '' }}">{{ $data->sub_categ['overall_score'] }}</td>
+                                            <td class="text-center {{ $data->percentage < 80 ? 'text-danger' : '' }}">{{ $data->percentage }}</td>
                                             @php
-                                                $overallScore = $data->sub_categ['overall_score'];
+                                                $overallScore = $data->percentage;
                                             @endphp
 
                                             @switch(true)

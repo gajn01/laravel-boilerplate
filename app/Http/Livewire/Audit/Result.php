@@ -16,6 +16,7 @@ use App\Models\CriticalDeviationResult as CriticalDeviationResultModel;
 use Illuminate\Support\Facades\Auth;
 use DateTime;
 use DateTimeZone;
+
 class Result extends Component
 {
     public $active_index = 0;
@@ -39,8 +40,7 @@ class Result extends Component
     public function render()
     {
         $this->audit_forms_id = AuditFormModel::where('store_id', $this->store_id)->where('date_of_visit', $this->date_today)->value('id');
-        // dd($audit_result);
-
+        // dd($this->audit_forms_id);
         $store = StoreModel::find($this->store_id);
         $this->store = $store;
         $data = CategoryModel::select('id', 'name', 'type', 'critical_deviation')
@@ -231,9 +231,8 @@ class Result extends Component
         // dd($data);
         return view('livewire.audit.result')->extends('layouts.app');
     }
-    public function mount($store_id = null)
+    public function mount($store_id = null, $result_id = null)
     {
         $this->store_id = $store_id;
     }
-
 }

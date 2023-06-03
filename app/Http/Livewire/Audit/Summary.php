@@ -4,6 +4,7 @@ namespace App\Http\Livewire\Audit;
 
 use Livewire\Component;
 use App\Models\SubSubCategoryLabel as SubSubCategoryLabelModel;
+use App\Models\SubCategoryLabel as SubCategoryLabelModel;
 use App\Models\DropdownMenu as DropdownMenuModel;
 use App\Models\Store as StoreModel;
 use App\Models\Category as CategoryModel;
@@ -16,6 +17,8 @@ use App\Models\Summary as SummaryModel;
 use App\Models\AuditDate as AuditDateModel;
 use Illuminate\Support\Facades\Auth;
 use App\Helpers\CustomHelper;
+use Illuminate\Support\Facades\DB;
+
 
 use DateTime;
 use DateTimeZone;
@@ -25,6 +28,7 @@ class Summary extends Component
     protected $listeners = ['start-alert-sent' => 'onComplete'];
     public $store;
     public $store_id;
+    public $summary_id;
     /* Audit Category */
     public $category_list;
     public $audit_status;
@@ -50,16 +54,26 @@ class Summary extends Component
     }
     public function render()
     {
+        $summary = DB::table('audit_results')
+        ->select('category_id', 'category_name')
+        ->selectRaw('COALESCE(SUM(label_base_point), 0) + COALESCE(SUM(sub_sub_base_point), 0) AS total_base_points')
+        ->selectRaw('COALESCE(SUM(label_point), 0) + COALESCE(SUM(sub_sub_point), 0) AS total_points')
+        ->selectRaw('ROUND((COALESCE(SUM(label_point), 0) + COALESCE(SUM(sub_sub_point), 0)) / (COALESCE(SUM(label_base_point), 0) + COALESCE(SUM(sub_sub_base_point), 0)) * 100, 2) AS percentage')
+        ->where('form_id', 28)
+        ->groupBy('category_id', 'category_name')
+        ->get();
+
         $this->dov = $this->date_today;
-        $audit = AuditFormModel::select('time_of_audit','wave')
-        ->where('store_id', $this->store_id)
-        ->where('date_of_visit', $this->date_today)
-        ->get()
-        ->first();
+        $audit = AuditFormModel::select('time_of_audit', 'wave')
+            ->where('store_id', $this->store_id)
+            ->where('date_of_visit', $this->date_today)
+            ->get()
+            ->first();
         $this->time_of_audit = $audit->time_of_audit;
         $this->wave = $audit->wave;
         $this->conducted_by = Auth::user()->name;
         $this->audit_forms_id = AuditFormModel::where('store_id', $this->store_id)->value('id');
+        // dd($this->audit_forms_id);
         $store = StoreModel::find($this->store_id);
         $this->store = $store;
         $data = CategoryModel::select('id', 'name', 'type', 'critical_deviation')
@@ -176,14 +190,14 @@ class Summary extends Component
                     $subCategoryData['total_base'] = $total_base;
                     $subCategoryData['total_point'] = $total_points;
                     $subCategoryData['total_score'] = $total_score;
-                    $subCategoryData['total_percent'] = $total_bp != 0 ? round(($total_points * 100 / $total_bp), 0) : 0;
+                    $subCategoryData['total_percent'] = $total_bp != 0 ? round(($total_points * 100 / $total_bp), 2) : 0;
                     $total_bp = 0;
                     $total_points = 0;
                     return $subCategoryData;
                 }),
                 'total_base' => $total_base,
                 'total_point' => $total_score,
-                'total_percentage' => $total_base != 0 ? round(($total_score * 100 / $total_base), 0) : 0,
+                'total_percentage' => $total_base != 0 ? round(($total_score * 100 / $total_base), 2) : 0,
                 'overall_score' => ''
             ];
             $category->sub_categ = $sub_category;
@@ -242,18 +256,19 @@ class Summary extends Component
                 ];
             });
             // $sub_category['overall_score'] = $total_base != 0 ? round((($total_score - $saved_critical_score) * 100 / $total_base), 0) : 0;
-            $total_percentage = $total_base != 0 ? round(($total_score * 100 / $total_base), 0) : 0;
+            $total_percentage = $total_base != 0 ? round(($total_score * 100 / $total_base), 2) : 0;
             $sub_category['overall_score'] = $total_percentage - $saved_critical_score;
             $category->sub_categ = $sub_category;
         }
         $this->category_list = $data;
         // dd($this->category_list);
-        return view('livewire.audit.summary')->extends('layouts.app');
+        return view('livewire.audit.summary',['summary'=>$summary])->extends('layouts.app');
     }
 
-    public function mount($store_id = null)
+    public function mount($store_id = null,$summary_id = null)
     {
         $this->store_id = $store_id;
+        $this->summary_id = $summary_id;
     }
     public function onStartAndComplete($is_confirm = true, $title = 'Are you sure?', $type = null, $data = null)
     {
@@ -297,6 +312,8 @@ class Summary extends Component
         $this->reset();
         $this->onAlert(false, 'Success', 'Audit record saved successfully!', 'success');
         return redirect()->route('audit.details', ['store_id' => $this->store_id]);
+
+
     }
 
     public function onAlert($is_confirm = false, $title = null, $message = null, $type = null, $data = null)

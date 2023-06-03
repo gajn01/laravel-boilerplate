@@ -49,7 +49,6 @@ Route::middleware(['auth'])->group(function () {
         Route::get('/dashboard', Dashboard::class)->name('dashboard');
         /* Schedule */
         Route::get('/schedule', AuditSchedule::class)->name('audit.schedule');
-
         /* Settings */
         Route::get('/settings/store-settings', StoreSettings::class)->name('settings');
         Route::get('/settings/category', Category::class)->name('category');
@@ -68,16 +67,18 @@ Route::middleware(['auth'])->group(function () {
         Route::get('/audit', Audit::class)->name('audit');
         Route::get('/audit/details/{store_id?}', AuditDetails::class)->name('audit.details');
         Route::get('/audit/form/{store_id?}', AuditForm::class)->name('audit.form');
-
-        Route::get('/result/{store_id?}', AuditResult::class)->name('audit.result');
-        Route::get('/result/{store_id?}/summary', AuditSummary::class)->name('audit.summary');
-
+        Route::prefix('result/{store_id?}')->group(function () {
+            Route::get('/', AuditResult::class)->name('audit.result');
+            Route::get('/summary', AuditSummary::class)->name('audit.summary');
+            Route::get('/view/{result_id?}', AuditResult::class)->name('audit.view.result');
+            Route::get('/view/{result_id?}/summary/{summary_id?}', AuditSummary::class)->name('audit.view.summary');
+        });
         /* store */
         /* Route::get('/audit', Store::class)->name('audit'); */
-       /*  Route::get('/store/form/{store_id?}', Form::class)->name('form');
-        Route::get('/store/details/{store_id?}', StoreDetails::class)->name('details');
-        Route::get('/store/form/{store_id?}/result', AuditResult::class)->name('form.result');
-        Route::get('/store/form/{store_id?}/result/summary', ExecutiveSummary::class)->name('form.summary'); */
+        /*  Route::get('/store/form/{store_id?}', Form::class)->name('form');
+         Route::get('/store/details/{store_id?}', StoreDetails::class)->name('details');
+         Route::get('/store/form/{store_id?}/result', AuditResult::class)->name('form.result');
+         Route::get('/store/form/{store_id?}/result/summary', ExecutiveSummary::class)->name('form.summary'); */
         /* User */
         Route::get('/user', User::class)->name('user');
         Route::get('/user/information/{employee_id?}', UserDetails::class)->name('information');

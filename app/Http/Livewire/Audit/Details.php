@@ -79,6 +79,7 @@ class Details extends Component
                 ->paginate($this->limit);
         } */
         $this->store = StoreModel::find($this->store_id);
+        dd($summary);
         return view('livewire.audit.details', ['user_list' => $data, 'summary_list' => $summary])->extends('layouts.app');
     }
     public function onUpdate($boolean)
