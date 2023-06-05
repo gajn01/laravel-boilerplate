@@ -13,6 +13,7 @@ use App\Models\CriticalDeviationMenu as CriticalDeviationMenuModel;
 use App\Models\AuditForm as AuditFormModel;
 use App\Models\AuditFormResult as AuditFormResultModel;
 use App\Models\CriticalDeviationResult as CriticalDeviationResultModel;
+use App\Models\Summary as SummaryModel;
 use App\Models\AuditDate as AuditDateModel;
 use Illuminate\Support\Facades\Auth;
 use DateTime;
@@ -22,9 +23,11 @@ class Form extends Component
 {
     public $active_index = 0;
     protected $listeners = ['alert-sent' => 'onUpdateStatus', 'start-alert-sent' => 'onUpdateStatus'];
+    public $store;
     public $store_id;
     public $store_name;
     /* Audit Category */
+    public $dov;
     public $category_list;
     public $store_type;
     public $sanitation_defect;
@@ -60,16 +63,16 @@ class Form extends Component
     }
     public function render()
     {
-
+        $this->dov = $this->date_today;
         $result = AuditDateModel::select('wave')
             ->where('store_id', $this->store_id)
             ->where('audit_date', $this->date_today)
             ->first();
         $this->wave = $result ? $result->wave : null;
-
         $sanitation_defect = SanitaryModel::select('id', 'title', 'code')->get();
         $this->audit_forms_id = AuditFormModel::where('store_id', $this->store_id)->where('date_of_visit', $this->date_today)->value('id');
         $store = StoreModel::find($this->store_id);
+        $this->store = $store;
         $this->store_name = $store->name;
         $this->store_type = $store->type;
         $this->audit_status = $store->audit_status;
@@ -446,8 +449,36 @@ class Form extends Component
             $this->onInitialSave();
             StoreModel::where('id', $this->store_id)
                 ->update(['audit_status' => $data]);
+
+            AuditDateModel::where('store_id', $this->store_id)
+                ->where('audit_date', $this->date_today)
+                ->update([
+                    'is_complete' => 1,
+                ]);
+
         } else {
-            return redirect()->route('audit.result', ['store_id' => $this->store_id]);
+            SummaryModel::updateOrCreate(
+                [
+                    'form_id' => $this->audit_forms_id,
+                    'store_id' => $this->store_id,
+                    'date_of_visit' => $this->date_today,
+                ],
+                [
+                    'store_id' => $this->store_id,
+                    'form_id' => $this->audit_forms_id,
+                    'name' => $this->store->name,
+                    'code' => $this->store->code,
+                    'type' => $this->store->type,
+                    'wave' => $this->wave,
+                    'conducted_by' => Auth::user()->id,
+                    'received_by' => '',
+                    'date_of_visit' => $this->dov,
+                    'time_of_audit' => $audit_time,
+                    'strength' => '',
+                    'improvement' => '',
+                ]
+            );
+            redirect()->route('audit.view.result', ['store_id' => $this->store_id, 'result_id' => $this->audit_forms_id]);
         }
     }
     public function onInitialSave()

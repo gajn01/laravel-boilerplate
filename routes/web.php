@@ -6,8 +6,6 @@ use App\Http\Livewire\Auth\Login;
 use App\Http\Livewire\Dashboard\Dashboard;
 /* Schedule */
 use App\Http\Livewire\Store\Schedule;
-
-
 /* Store */
 /* use App\Http\Livewire\Store\Store;
 use App\Http\Livewire\Store\StoreDetails;
@@ -73,12 +71,6 @@ Route::middleware(['auth'])->group(function () {
             Route::get('/view/{result_id?}', AuditResult::class)->name('audit.view.result');
             Route::get('/view/{result_id?}/summary/{summary_id?}', AuditSummary::class)->name('audit.view.summary');
         });
-        /* store */
-        /* Route::get('/audit', Store::class)->name('audit'); */
-        /*  Route::get('/store/form/{store_id?}', Form::class)->name('form');
-         Route::get('/store/details/{store_id?}', StoreDetails::class)->name('details');
-         Route::get('/store/form/{store_id?}/result', AuditResult::class)->name('form.result');
-         Route::get('/store/form/{store_id?}/result/summary', ExecutiveSummary::class)->name('form.summary'); */
         /* User */
         Route::get('/user', User::class)->name('user');
         Route::get('/user/information/{employee_id?}', UserDetails::class)->name('information');

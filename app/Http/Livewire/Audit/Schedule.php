@@ -71,6 +71,9 @@ class Schedule extends Component
         }
         $store_schedule = $auditorsQuery
             ->paginate($this->limit);
+
+        // dd($store_schedule);
+
         return view('livewire.audit.schedule', ['store_list' => $store_list, 'store_sched_list' => $store_schedule, 'user_list' => $user])->extends('layouts.app');
     }
     public function addAuditor()

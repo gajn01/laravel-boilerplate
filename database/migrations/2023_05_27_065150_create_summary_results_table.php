@@ -12,6 +12,7 @@ return new class extends Migration
             $table->id();
             $table->unsignedBigInteger('summary_id');
             $table->unsignedBigInteger('store_id');
+            $table->unsignedBigInteger('form_id');
             $table->string('category');
             $table->integer('score');
             $table->integer('percentage');

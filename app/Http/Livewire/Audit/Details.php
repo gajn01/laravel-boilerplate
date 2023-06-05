@@ -41,17 +41,13 @@ class Details extends Component
         $time = new DateTime('now', $timezone);
         $this->today = $time->format('Y-m-d');
         $this->date_filter = $this->today;
-
     }
     public function render()
     {
-
         $summary = SummaryModel::all('*')
         ->where('store_id', $this->store_id);
         $data = UserModel::all('*')
             ->where('user_level', '!=', '0');
-        $startDate = null;
-        $endDate = null;
       /*   if ($this->date_filter == 'weekly') {
             $startDate = Carbon::now()->startOfWeek();
             $endDate = Carbon::now()->endOfWeek();
@@ -79,7 +75,7 @@ class Details extends Component
                 ->paginate($this->limit);
         } */
         $this->store = StoreModel::find($this->store_id);
-        dd($summary);
+        // dd($summary);
         return view('livewire.audit.details', ['user_list' => $data, 'summary_list' => $summary])->extends('layouts.app');
     }
     public function onUpdate($boolean)

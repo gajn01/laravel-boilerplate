@@ -10,11 +10,11 @@ use App\Models\Store as StoreModel;
 use App\Models\Category as CategoryModel;
 use App\Models\SanitaryModel as SanitaryModel;
 use App\Models\CriticalDeviationMenu as CriticalDeviationMenuModel;
-use App\Models\AuditForm as AuditFormModel;
 use App\Models\AuditFormResult as AuditFormResultModel;
 use App\Models\CriticalDeviationResult as CriticalDeviationResultModel;
 use App\Models\Summary as SummaryModel;
 use App\Models\AuditDate as AuditDateModel;
+use App\Models\AuditForm as AuditFormModel;
 use Illuminate\Support\Facades\Auth;
 use App\Helpers\CustomHelper;
 use Illuminate\Support\Facades\DB;
@@ -29,6 +29,7 @@ class Summary extends Component
     public $store;
     public $store_id;
     public $summary_id;
+    public $result_id;
     /* Audit Category */
     public $category_list;
     public $audit_status;
@@ -55,13 +56,18 @@ class Summary extends Component
     public function render()
     {
         $summary = DB::table('audit_results')
-        ->select('category_id', 'category_name')
-        ->selectRaw('COALESCE(SUM(label_base_point), 0) + COALESCE(SUM(sub_sub_base_point), 0) AS total_base_points')
-        ->selectRaw('COALESCE(SUM(label_point), 0) + COALESCE(SUM(sub_sub_point), 0) AS total_points')
-        ->selectRaw('ROUND((COALESCE(SUM(label_point), 0) + COALESCE(SUM(sub_sub_point), 0)) / (COALESCE(SUM(label_base_point), 0) + COALESCE(SUM(sub_sub_base_point), 0)) * 100, 2) AS percentage')
-        ->where('form_id', 28)
-        ->groupBy('category_id', 'category_name')
-        ->get();
+            ->select('category_id', 'category_name')
+            ->selectRaw('COALESCE(SUM(label_base_point), 0) + COALESCE(SUM(sub_sub_base_point), 0) AS total_base_points')
+            ->selectRaw('COALESCE(SUM(label_point), 0) + COALESCE(SUM(sub_sub_point), 0) AS total_points')
+            ->selectRaw('ROUND((COALESCE(SUM(label_point), 0) + COALESCE(SUM(sub_sub_point), 0)) / (COALESCE(SUM(label_base_point), 0) + COALESCE(SUM(sub_sub_base_point), 0)) * 100, 2) AS percentage')
+            ->where('form_id', $this->result_id)
+            ->groupBy('category_id', 'category_name')
+            ->get();
+
+        $store = StoreModel::find($this->store_id);
+        $this->store = $store;
+
+
 
         $this->dov = $this->date_today;
         $audit = AuditFormModel::select('time_of_audit', 'wave')
@@ -74,8 +80,7 @@ class Summary extends Component
         $this->conducted_by = Auth::user()->name;
         $this->audit_forms_id = AuditFormModel::where('store_id', $this->store_id)->value('id');
         // dd($this->audit_forms_id);
-        $store = StoreModel::find($this->store_id);
-        $this->store = $store;
+
         $data = CategoryModel::select('id', 'name', 'type', 'critical_deviation')
             ->where('type', $this->store->type)
             ->with([
@@ -262,14 +267,17 @@ class Summary extends Component
         }
         $this->category_list = $data;
         // dd($this->category_list);
-        return view('livewire.audit.summary',['summary'=>$summary])->extends('layouts.app');
+        return view('livewire.audit.summary', ['summary' => $summary])->extends('layouts.app');
     }
 
-    public function mount($store_id = null,$summary_id = null)
+    public function mount($store_id = null, $summary_id = null, $result_id = null)
     {
         $this->store_id = $store_id;
         $this->summary_id = $summary_id;
+        $this->result_id = $result_id;
+
     }
+
     public function onStartAndComplete($is_confirm = true, $title = 'Are you sure?', $type = null, $data = null)
     {
         $message = 'Are you sure you want to complete this audit?';
@@ -287,35 +295,26 @@ class Summary extends Component
                 'wave' => 'required',
             ]
         );
-        SummaryModel::create([
-            'store_id' => strip_tags($this->store_id),
-            'name' => strip_tags($this->store->name),
-            'code' => strip_tags($this->store->code),
-            'type' => strip_tags($this->store->type),
-            'wave' => strip_tags($this->wave),
-            'conducted_by' => strip_tags($this->conducted_by),
-            'received_by' => strip_tags($this->received_by),
-            'date_of_visit' => strip_tags($this->dov),
-            'time_of_audit' => strip_tags($this->time_of_audit),
-            'strength' => strip_tags($this->strength),
-            'improvement' => strip_tags($this->improvement),
-        ]);
+        SummaryModel::where('form_id', $this->result_id)
+            ->update([
+                'conducted_by' => $this->conducted_by,
+                'received_by' => $this->received_by,
+                'date_of_visit' => $this->dov,
+                'time_of_audit' => $this->time_of_audit,
+                'strength' => $this->strength,
+                'improvement' => $this->improvement,
+            ]);
         AuditDateModel::where('store_id', $this->store_id)
-        ->where('audit_date' , $this->dov)
-        ->update([
-            'is_complete' => 1,
-        ]);
-
-        StoreModel::where('id', $this->store_id)->update([
-            'audit_status' => 0,
-        ]);
+            ->where('audit_date', $this->date_today)
+            ->update([
+                'is_complete' => 2,
+            ]);
+        StoreModel::where('id', $this->store_id)
+            ->update(['audit_status' => 0]);
         $this->reset();
         $this->onAlert(false, 'Success', 'Audit record saved successfully!', 'success');
         return redirect()->route('audit.details', ['store_id' => $this->store_id]);
-
-
     }
-
     public function onAlert($is_confirm = false, $title = null, $message = null, $type = null, $data = null)
     {
         CustomHelper::onShow($this, $is_confirm, $title, $message, $type, $data);

@@ -22,6 +22,7 @@ class Result extends Component
     public $active_index = 0;
     protected $listeners = ['alert-sent' => 'onUpdateStatus', 'start-alert-sent' => 'onUpdateStatus'];
     public $store_id;
+    public $result_id;
     public $store;
     public $category_list;
     public $store_type;
@@ -234,5 +235,6 @@ class Result extends Component
     public function mount($store_id = null, $result_id = null)
     {
         $this->store_id = $store_id;
+        $this->result_id = $result_id;
     }
 }

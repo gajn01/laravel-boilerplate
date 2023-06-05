@@ -11,6 +11,7 @@ class Summary extends Model
     protected $table = 'summary';
     protected $fillable = [
         'store_id',
+        'form_id',
         'name',
         'code',
         'type',

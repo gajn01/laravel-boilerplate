@@ -2,12 +2,10 @@
 <div class="container-xl">
     <nav aria-label="breadcrumb">
         <ol class="breadcrumb">
-            <li class="breadcrumb-item"><a href="{{ route('audit.result', [$store_id]) }}">Result</a>
+            <li class="breadcrumb-item"><a href="{{ route('audit.view.result', [$store_id, $result_id]) }}">Result</a>
             <li class="breadcrumb-item active" aria-current="page">Executive Summary</li>
         </ol>
     </nav>
-
-
     <div class="card mb-3 ">
         <div class="card-body">
             <div class="row">
@@ -36,8 +34,7 @@
                                         <label class="form-label">Store Type:</label>
                                     </td>
                                     <td class="pl-3">
-                                        <input type="text" class="form-control" disabled
-                                            value="{{ $store->type == 1 ? 'Cafe' : 'Kiosk' }}">
+                                        <input type="text" class="form-control" disabled value="{{ $store->type == 1 ? 'Cafe' : 'Kiosk' }}">
                                     </td>
                                 </tr>
                             </tbody>
@@ -110,7 +107,8 @@
                                             <td class="core_name_total"><a
                                                     href="#{{ $data->category_name }}">{{ $data->category_name }}</a>
                                             </td>
-                                            <td class="text-center {{ $data->percentage < 80 ? 'text-danger' : '' }}">{{ $data->percentage }}</td>
+                                            <td class="text-center {{ $data->percentage < 80 ? 'text-danger' : '' }}">
+                                                {{ $data->percentage }}</td>
                                             @php
                                                 $overallScore = $data->percentage;
                                             @endphp
@@ -131,6 +129,7 @@
                                                 @case($overallScore >= 60 && $overallScore <= 69)
                                                     <td class="text-center text-danger">D</td>
                                                 @break
+
                                                 @default
                                                     <td class="text-center text-danger">E</td>
                                             @endswitch
@@ -225,13 +224,8 @@
     <div class="row g-2 justify-content-start justify-content-md-end align-items-center">
         <div class="col-auto mb-3">
             <a class="btn app-btn-primary"
-
-             wire:click="onStartAndComplete(true,'Are you sure?','warning')"
-             >Complete</a>
+                wire:click="onStartAndComplete(true,'Are you sure?','warning')">Complete</a>
             {{-- wire:click="onStartAndComplete(true,'Are you sure?','warning')">{{ $actionTitle }} --}}
         </div>
     </div>
 </div>
-
-
-

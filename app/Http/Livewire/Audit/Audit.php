@@ -28,7 +28,6 @@ class Audit extends Component
     public $date_today;
     public $date_filter;
 
-
     public function __construct()
     {
         $this->timezone = new DateTimeZone('Asia/Manila');
@@ -48,7 +47,7 @@ class Audit extends Component
 
         $auditorsQuery = AuditDateModel::join('auditor_list', 'auditor_list.audit_date_id', '=', 'audit_date.id')
             ->join('stores', 'audit_date.store_id', '=', 'stores.id')
-            ->select('auditor_list.audit_date_id', 'stores.*', 'audit_date.wave', 'audit_date.audit_date')
+            ->select('auditor_list.audit_date_id', 'stores.*', 'audit_date.wave', 'audit_date.audit_date','audit_date.is_complete')
             ->where(function ($query) use ($searchTerm) {
                 $query->where('stores.name', 'like', $searchTerm)
                     ->orWhere('stores.code', 'like', $searchTerm)
@@ -59,7 +58,6 @@ class Audit extends Component
         if (Auth::user()->user_level != 0) {
             $auditorsQuery->where('auditor_list.auditor_id', Auth::user()->id);
         }
-
         if ($this->date_filter == 'weekly') {
             $auditorsQuery->whereBetween('audit_date.audit_date', [Carbon::now()->startOfWeek(), Carbon::now()->endOfWeek()]);
         } elseif ($this->date_filter == 'monthly') {
@@ -70,8 +68,7 @@ class Audit extends Component
         $store_schedule = $auditorsQuery
             ->groupBy('auditor_list.audit_date_id')
             ->paginate($this->limit);
-
-
+        // dd($store_schedule);
         return view('livewire.audit.audit', ['store_list' => $store_list, 'store_sched_list' => $store_schedule, 'user_list' => $user])->extends('layouts.app');
     }
     public function onAlert($is_confirm = false, $title = null, $message = null, $type = null, $data = null)
