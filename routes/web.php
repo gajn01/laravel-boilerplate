@@ -6,11 +6,8 @@ use App\Http\Livewire\Auth\Login;
 use App\Http\Livewire\Dashboard\Dashboard;
 /* Schedule */
 use App\Http\Livewire\Store\Schedule;
-/* Store */
-/* use App\Http\Livewire\Store\Store;
-use App\Http\Livewire\Store\StoreDetails;
-use App\Http\Livewire\Store\Form;
-use App\Http\Livewire\Store\ExecutiveSummary; */
+/* report */
+use App\Http\Livewire\Report\Aggregate;
 /* Audit */
 use App\Http\Livewire\Audit\Audit as Audit;
 use App\Http\Livewire\Audit\Form as AuditForm;
@@ -71,6 +68,9 @@ Route::middleware(['auth'])->group(function () {
             Route::get('/view/{result_id?}', AuditResult::class)->name('audit.view.result');
             Route::get('/view/{result_id?}/summary/{summary_id?}', AuditSummary::class)->name('audit.view.summary');
         });
+        Route::get('/insight', Aggregate::class)->name('insight');
+
+
         /* User */
         Route::get('/user', User::class)->name('user');
         Route::get('/user/information/{employee_id?}', UserDetails::class)->name('information');
