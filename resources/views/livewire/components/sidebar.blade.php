@@ -166,8 +166,8 @@
                     @if (Auth::user()->user_level == 0)
                         <li class="nav-item has-submenu">
                             <a class="nav-link submenu-toggle {{ Request::routeIs('critical-deviation') || Request::routeIs('dropdown') || Request::routeIs('dropdown/menu*') || Request::routeIs('settings') || Request::routeIs('sanitary') || Request::routeIs('category') ? 'active' : '' }}"
-                                href="#" data-bs-toggle="collapse" data-bs-target="#submenu-3"
-                                aria-expanded="false" aria-controls="submenu-3">
+                                href="#" data-bs-toggle="collapse" data-bs-target="#submenu-4"
+                                aria-expanded="false" aria-controls="submenu-4">
                                 <span class="nav-icon">
                                     <svg viewBox="0 0 16 16" class="bi bi-columns-gap" fill="currentColor"
                                         xmlns="http://www.w3.org/2000/svg">
@@ -186,8 +186,8 @@
                                     </svg>
                                 </span>
                             </a>
-                            <div id="submenu-3" @class([
-                                'collapse submenu submenu-3',
+                            <div id="submenu-4" @class([
+                                'collapse submenu submenu-4',
                                 'show' =>
                                     Request::routeIs('dropdown') ||
                                     Request::routeIs('dropdown/menu*') ||

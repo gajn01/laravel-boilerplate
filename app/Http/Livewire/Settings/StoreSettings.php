@@ -24,7 +24,7 @@ class StoreSettings extends Component
     public function render()
     {
         $searchTerm = '%' . $this->searchTerm . '%';
-        $store_list = StoreModel::select('id', 'code', 'name', 'type', 'representative', 'area')
+        $store_list = StoreModel::select('id', 'code', 'name', 'type', 'area')
             ->where('name', 'like', $searchTerm)
             ->orWhere('code', 'like', $searchTerm)
             ->orWhere('area', 'like', '%' . $this->searchTerm . '%')

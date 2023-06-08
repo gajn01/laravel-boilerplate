@@ -15,10 +15,24 @@ class Aggregate extends Component
 
         $category = CategoryModel::all()->unique('name');
         $results_query = DB::table('audit_results')
-            ->join('audit_forms', 'audit_results.form_id', '=', 'audit_forms.id')
-            ->join('stores', 'audit_forms.store_id', '=', 'stores.id')
-            ->select('audit_forms.store_id', 'stores.name', 'audit_results.*')
-            ->whereNotNull('sub_sub_deviation');
+        ->join('audit_forms', 'audit_results.form_id', '=', 'audit_forms.id')
+        ->join('stores', 'audit_forms.store_id', '=', 'stores.id')
+        ->select('audit_forms.store_id', 'stores.name', 'audit_results.*')
+        ->where(function ($query) {
+            $query->where(function ($subQuery) {
+                $subQuery->whereNotNull('sub_sub_remarks')
+                    ->where('sub_sub_remarks', '<>', '');
+            })
+            ->orWhere(function ($subQuery) {
+                $subQuery->whereNotNull('sub_sub_deviation')
+                    ->where('sub_sub_deviation', '<>', '');
+            })
+            ->orWhere(function ($subQuery) {
+                $subQuery->whereNotNull('label_remarks')
+                    ->where('label_remarks', '<>', '');
+            });
+        });
+
         if ($this->category) {
             $results_query->where('audit_results.category_name', $this->category);
         }

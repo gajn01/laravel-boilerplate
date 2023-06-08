@@ -12,7 +12,6 @@ class Store extends Model
         'code',
         'name',
         'type',
-        'representative',
         'area',
         'audit_status'
     ];

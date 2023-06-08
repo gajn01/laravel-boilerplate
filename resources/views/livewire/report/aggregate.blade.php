@@ -43,6 +43,7 @@
                             <th class="cell">Category</th>
                             <th class="cell">Deviation</th>
                             <th class="cell">Remarks</th>
+                            <th class="cell">Deviation Details</th>
                             <th class="cell">Stores</th>
                             <th class="cell">Score</th>
                         </tr>
@@ -52,9 +53,10 @@
                             <tr>
                                 <td class="cell">{{ $results->category_name }}</td>
                                 <td class="cell">{{ $results->sub_sub_name }}</td>
-                                <td class="cell">{{ $results->sub_sub_deviation }}</td>
+                                <td class="cell">{{ $results->sub_sub_remarks ? $results->sub_sub_remarks : $results->label_remarks }}</td>
+                                <td class="cell">{{ $results->sub_sub_deviation ? $results->sub_sub_deviation : $results->label_deviation }}</td>
                                 <td class="cell">{{ $results->name }}</td>
-                                <td class="cell">{{ $results->sub_sub_point }}</td>
+                                <td class="cell">{{ $results->sub_sub_point != "" ? $results->sub_sub_point : $results->label_point  }}</td>
                             </tr>
                         @empty
                             <tr>

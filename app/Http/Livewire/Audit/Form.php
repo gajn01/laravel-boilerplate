@@ -526,12 +526,12 @@ class Form extends Component
                     'deviation_id' => $dev->id,
                     'category_id' => $data->id,
                     'critical_deviation_id' => $dev->critical_deviation_id,
-                    'remarks' => '',
-                    'score' => '',
-                    'sd' => '',
-                    'location' => '',
-                    'product' => '',
-                    'dropdown' => '',
+                    'remarks' => null,
+                    'score' => null,
+                    'sd' => null,
+                    'location' => null,
+                    'product' => null,
+                    'dropdown' => null,
                 ];
                 return [$result];
             });
