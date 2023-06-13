@@ -38,7 +38,6 @@ class Form extends Component
     public $currentIndex;
     public $is_na = [];
     public $wave;
-
     public $cashier_tat = [['name' => null, 'time' => null, 'product_order' => null, 'ot' => null, 'assembly' => null, 'ac_point' => 1, 'tat' => null, 'tat_point' => 1, 'fst' => null, 'fst_point' => 3, 'remarks' => null]];
     public $server_cat = [['name' => null, 'time' => null, 'product_order' => null, 'ot' => null, 'assembly' => null, 'ac_point' => 1, 'tat' => null, 'tat_point' => 1, 'fst' => null, 'fst_point' => 3, 'remarks' => null]];
     public $score = [
@@ -121,8 +120,7 @@ class Form extends Component
                             $saved_point = $data ? $data['sub_sub_point'] : null;
                             $saved_remarks = $data ? $data['sub_sub_remarks'] : null;
                             $saved_deviation = $data ? $data['sub_sub_deviation'] : null;
-                            $saved_na = $data ? $data['is_na'] : 0;
-
+                            $saved_na = $data['is_na'] ? 1 : 0;
                         } else {
                             $saved_point = $label->bp;
                         }
@@ -130,10 +128,8 @@ class Form extends Component
                         $isAllNothing = $label->is_all_nothing;
                         $total_base += $label->bp;
                         $total_bp += $label->bp;
-
                         $total_points += $saved_point;
                         $total_score += $saved_point;
-
                         if ($saved_na) {
                             $total_base -= $label->bp;
                             $total_bp -= $label->bp;
@@ -141,7 +137,6 @@ class Form extends Component
                             $total_score -= $label->bp;
                         }
                         $this->is_na[$label->id] = $saved_na ? true : false;
-
                         return [
                             'id' => $label->id,
                             'name' => $label->name,
@@ -436,8 +431,7 @@ class Form extends Component
             [
                 'store_id' => $this->store_id,
                 'date_of_visit' => $this->date_today,
-            ],
-            [
+            ],[
                 'conducted_by_id' => Auth::user()->id,
                 'received_by' => '',
                 'time_of_audit' => $audit_time,
