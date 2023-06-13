@@ -40,7 +40,6 @@ class Result extends Component
     }
     public function render()
     {
-        $this->audit_forms_id = AuditFormModel::where('store_id', $this->store_id)->where('date_of_visit', $this->date_today)->value('id');
         // dd($this->audit_forms_id);
         $store = StoreModel::find($this->store_id);
         $this->store = $store;
@@ -77,7 +76,7 @@ class Result extends Component
                         $saved_point = 0;
                         $saved_remarks = '';
                         $saved_deviation = '';
-                        if ($this->store->audit_status) {
+                        if ($this->audit_forms_id) {
                             $data = AuditFormResultModel::select('*')
                                 ->where('form_id', $this->audit_forms_id)
                                 ->where('category_id', $category_id)
@@ -116,7 +115,7 @@ class Result extends Component
                             $saved_point = 0;
                             $saved_remarks = '';
                             $saved_deviation = '';
-                            if ($this->store->audit_status) {
+                            if ($this->audit_forms_id) {
                                 $data = AuditFormResultModel::select('*')
                                     ->where('form_id', $this->audit_forms_id)
                                     ->where('category_id', $category_id)
@@ -182,7 +181,7 @@ class Result extends Component
                 $saved_location = '';
                 $saved_product = '';
                 $saved_dropdown = '';
-                if ($this->store->audit_status) {
+                if ($this->audit_forms_id) {
                     $data = CriticalDeviationResultModel::select('*')
                         ->where('form_id', $this->audit_forms_id)
                         ->where('category_id', $category->id)
@@ -235,6 +234,10 @@ class Result extends Component
     public function mount($store_id = null, $result_id = null)
     {
         $this->store_id = $store_id;
-        $this->result_id = $result_id;
+        if($result_id){
+            $this->audit_forms_id = $result_id;
+        }else{
+            $this->audit_forms_id = AuditFormModel::where('store_id', $this->store_id)->where('date_of_visit', $this->date_today)->value('id');
+        }
     }
 }
