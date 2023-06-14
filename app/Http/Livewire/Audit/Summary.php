@@ -68,21 +68,15 @@ class Summary extends Component
             ->groupBy('category_id', 'category_name')
             ->get();
 
-            $critical_deviations = CriticalDeviationResultModel::where('form_id', $this->result_id)
+        $critical_deviations = CriticalDeviationResultModel::where('form_id', $this->result_id)
             ->whereNotNull('score')
             ->get();
 
         foreach ($summary as $key => $value) {
-            $critical_deviation = $critical_deviations->first(function ($deviation) use ($value) {
-                return $deviation->category_id === $value->category_id;
-            });
-            if ($critical_deviation && $critical_deviation->score) {
-                $value->percentage -= $critical_deviation->score;
-            }
-
+            $critical_deviation = $critical_deviations->where('category_id', $value->category_id)->sum('score');
+                $value->percentage -= $critical_deviation;
             $value->percentage = round($value->percentage, 2);
         }
-
         $store = StoreModel::find($this->store_id);
         $this->store = $store;
         return view('livewire.audit.summary', ['summary' => $summary, 'critical_deviation' => $critical_deviations])->extends('layouts.app');
