@@ -55,14 +55,24 @@ class Summary extends Component
     }
     public function render()
     {
-        $summary = DB::table('audit_results')
-        ->select('category_id', 'category_name')
-        ->selectRaw('COALESCE(SUM(label_base_point), 0) + COALESCE(SUM(sub_sub_base_point), 0) AS total_base_points')
-        ->selectRaw('COALESCE(SUM(label_point), 0) + COALESCE(SUM(CASE WHEN is_na = 1 THEN sub_sub_base_point ELSE sub_sub_point END), 0) AS total_points')
-        ->selectRaw('ROUND((COALESCE(SUM(label_point), 0) + COALESCE(SUM(CASE WHEN is_na = 1 THEN sub_sub_base_point ELSE sub_sub_point END), 0)) / (COALESCE(SUM(label_base_point), 0) + COALESCE(SUM(sub_sub_base_point), 0)) * 100, 2) AS percentage')
-        ->where('form_id', $this->result_id)
-        ->groupBy('category_id', 'category_name')
-        ->get();
+   /*      $summary = DB::table('audit_results')
+            ->select('category_id', 'category_name')
+            ->selectRaw('COALESCE(SUM(label_base_point), 0) + COALESCE(SUM(sub_sub_base_point), 0) AS total_base_points')
+            ->selectRaw('COALESCE(SUM(CASE WHEN is_na = 1 THEN label_base_point ELSE label_point END), 0) +COALESCE(SUM(CASE WHEN is_na = 1 THEN sub_sub_base_point ELSE sub_sub_point END), 0) AS total_points')
+            ->selectRaw('ROUND((COALESCE(SUM(label_point), 0) + COALESCE(SUM(sub_sub_point), 0)) / (COALESCE(SUM(label_base_point), 0) + COALESCE(SUM(sub_sub_base_point), 0)) * 100, 2) AS percentage')
+            ->where('form_id', $this->result_id)
+            ->groupBy('category_id', 'category_name')
+            ->get();
+             */
+
+            $summary = DB::table('audit_results')
+            ->select('category_id', 'category_name')
+            ->selectRaw('COALESCE(SUM(label_base_point), 0) + COALESCE(SUM(sub_sub_base_point), 0) AS total_base_points')
+            ->selectRaw('COALESCE(SUM(CASE WHEN is_na = 1 THEN label_base_point ELSE label_point END), 0) + COALESCE(SUM(CASE WHEN is_na = 1 THEN sub_sub_base_point ELSE sub_sub_point END), 0) AS total_points')
+            ->selectRaw('ROUND((COALESCE(SUM(CASE WHEN is_na = 1 THEN label_base_point ELSE label_point END), 0) + COALESCE(SUM(CASE WHEN is_na = 1 THEN sub_sub_base_point ELSE sub_sub_point END), 0)) / (COALESCE(SUM(label_base_point), 0) + COALESCE(SUM(sub_sub_base_point), 0)) * 100, 2) AS percentage')
+            ->where('form_id', $this->result_id)
+            ->groupBy('category_id', 'category_name')
+            ->get();
 
 
         $store = StoreModel::find($this->store_id);
