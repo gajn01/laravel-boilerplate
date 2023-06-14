@@ -102,7 +102,7 @@ class Result extends Component
                             $total_base -= $label->bp;
                             $total_bp -= $label->bp;
                             $total_points -= $saved_point;
-                            $total_score -= $label->bp;
+                            $total_score -= $label->points;
                         }
                         return [
                             'id' => $label->id,

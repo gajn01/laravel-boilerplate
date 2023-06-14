@@ -134,7 +134,8 @@ class Form extends Component
                             $total_base -= $label->bp;
                             $total_bp -= $label->bp;
                             $total_points -= $saved_point;
-                            $total_score -= $label->bp;
+                            $total_score -= $label->points;
+
                         }
                         // $this->is_na[$label->id] = $saved_na;
                         return [
@@ -184,7 +185,7 @@ class Form extends Component
                                 $total_base -= $subLabel->bp;
                                 $total_bp -= $subLabel->bp;
                                 $total_points -= $saved_point;
-                                $total_score -= $subLabel->bp;
+                                $total_score -= $subLabel->points;
                             }
                             $this->is_na[$subLabel->id] = $saved_na ? true : false;
 
