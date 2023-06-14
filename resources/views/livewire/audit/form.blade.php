@@ -103,7 +103,7 @@
                                 </div>
                             </div>
                         </div>
-                        @if ($data->critical_deviation->isNotEmpty())
+                    {{--     @if ($data->critical_deviation->isNotEmpty())
                             <div class="col-12 col-lg-6">
                                 <div class="app-card app-card-chart h-100 shadow-sm">
                                     <div class="app-card-header p-3">
@@ -274,11 +274,11 @@
                                     </div>
                                 </div>
                             </div>
-                        @endif
+                        @endif --}}
                     </div>
                     <div class="app-card app-card-orders-table shadow-sm mb-5 bg-none">
                         <div class="app-card-body">
-                            @if ($key == 0)
+                        {{--     @if ($key == 0)
                                 <div class="accordion mb-3" id="accordionExample">
                                     <div class="accordion-item">
                                         <h2 class="accordion-header" id="headingOne">
@@ -594,7 +594,7 @@
                                         </div>
                                     </div>
                                 </div>
-                            @endif
+                            @endif --}}
                             @forelse ($data->sub_categ['data_items'] as  $key =>  $dataItem)
                                 <div class="accordion mb-3" id="accordionCategory">
                                     <div class="accordion-item">
@@ -616,7 +616,7 @@
                                                             <div class="form-check form-switch">
                                                                 <input class="form-check-input" type="checkbox"
                                                                     id="toggle-switch"
-                                                                    wire:model="is_na.{{ $auditLabel['id'] }}"
+                                                                    @checked($category_list[$loop->parent->parent->index]['sub_categ']['data_items'][$loop->parent->index]['sub_category'][$loop->index]['is_na'] ? true : false)
                                                                     wire:change="updateNa(
                                                                     '{{ $auditLabel['id'] }}',
                                                                     '{{ $loop->parent->parent->index }}',
@@ -628,10 +628,9 @@
                                                                     '{{ $category_list[$loop->parent->parent->index]['sub_categ']['data_items'][$loop->parent->index]['sub_category'][$loop->index]['id'] }}',
                                                                     '',
                                                                     '{{ $dataItem['is_sub'] }}',
-                                                                    $event.target.value
+                                                                    $event.target.checked ? 1 : 0
                                                                 )">
-                                                                <label class="form-check-label"
-                                                                    for="toggle-switch">n/a</label>
+                                                                <label class="form-check-label" for="toggle-switch">n/a</label>
                                                             </div>
                                                             <div class="col-sm-12 col-md-4 col-lg-4">
                                                                 <p @class(['pt-4' => $index == 0])>

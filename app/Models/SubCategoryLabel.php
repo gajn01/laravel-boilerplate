@@ -14,15 +14,10 @@ class SubCategoryLabel extends Model
 
     public function subCategory()
     {
-        return $this->belongsTo(SubCategory::class);
+        return $this->belongsTo(subCategory::class,'sub_category_id','id');
     }
-
-    public function subSubCategoryLabels()
+    public function subSubCategoryLabel()
     {
-        return $this->hasMany(SubSubCategoryLabel::class);
-    }
-    public function labels()
-    {
-        return $this->hasMany(SubSubCategoryLabel::class);
+        return $this->hasMany(SubSubCategoryLabel::class,'sub_sub_category_id','id');
     }
 }
