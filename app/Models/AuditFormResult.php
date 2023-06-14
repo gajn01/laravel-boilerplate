@@ -34,4 +34,8 @@ class AuditFormResult extends Model
         'label_remarks',
         'label_file',
     ];
+
+    public function criticaDeviation(){
+        return $this->hasMany(CriticalDeviationResult::class, 'form_id', 'form_id');
+    }
 }

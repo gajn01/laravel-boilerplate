@@ -24,9 +24,13 @@ class CriticalDeviationMenu extends Model
         'dropdown_id',
     ];
 
-    public function deviation()
+    public function criticalDeviation()
     {
-        return $this->belongsTo(CriticalDeviation::class, 'critical_deviation_id');
+        return $this->belongsTo(CriticalDeviation::class, 'critical_deviation_id','id');
+    }
+
+    public function CriticalDeviationResult(){
+        return $this->hasMany(CriticalDeviationResult::class, 'deviation_id');
     }
 
     public function scoreDropdown()

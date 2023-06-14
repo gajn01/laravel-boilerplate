@@ -41,10 +41,10 @@ class Form extends Component
     public $cashier_tat = [['name' => null, 'time' => null, 'product_order' => null, 'ot' => null, 'assembly' => null, 'ac_point' => 1, 'tat' => null, 'tat_point' => 1, 'fst' => null, 'fst_point' => 3, 'remarks' => null]];
     public $server_cat = [['name' => null, 'time' => null, 'product_order' => null, 'ot' => null, 'assembly' => null, 'ac_point' => 1, 'tat' => null, 'tat_point' => 1, 'fst' => null, 'fst_point' => 3, 'remarks' => null]];
     public $score = [
-        ['name' => '3%'],
-        ['name' => '5%'],
-        ['name' => '10%'],
-        ['name' => '15%']
+        ['name' => '3'],
+        ['name' => '5'],
+        ['name' => '10'],
+        ['name' => '15']
     ];
     private $timezone;
     private $time;

@@ -103,7 +103,7 @@
                                 </div>
                             </div>
                         </div>
-                        {{--     @if ($data->critical_deviation->isNotEmpty())
+                            @if ($data->critical_deviation->isNotEmpty())
                             <div class="col-12 col-lg-6">
                                 <div class="app-card app-card-chart h-100 shadow-sm">
                                     <div class="app-card-header p-3">
@@ -172,7 +172,7 @@
                                                                 @foreach ($score as $scores)
                                                                     <option value="{{ $scores['name'] }}"
                                                                         {{ $scores['name'] === $item['saved_score'] ? 'selected' : '' }}>
-                                                                        {{ $scores['name'] }}
+                                                                        {{ $scores['name'].'%' }}
                                                                     </option>
                                                                 @endforeach
                                                             </select>
@@ -211,8 +211,8 @@
                                                                     Select score</option>
                                                                 @foreach ($score as $scores)
                                                                     <option value="{{ $scores['name'] }}"
-                                                                        {{ $scores['name'] === $item['saved_score'] ? 'selected' : '' }}>
-                                                                        {{ $scores['name'] }}
+                                                                    {{ $scores['name'] === $item['saved_score'] ? 'selected' : '' }}>
+                                                                    {{ $scores['name'].'%' }}
                                                                     </option>
                                                                 @endforeach
                                                             </select>
@@ -252,8 +252,8 @@
 
                                                                 @foreach ($score as $scores)
                                                                     <option value="{{ $scores['name'] }}"
-                                                                        {{ $scores['name'] === $item['saved_score'] ? 'selected' : '' }}>
-                                                                        {{ $scores['name'] }}
+                                                                    {{ $scores['name'] === $item['saved_score'] ? 'selected' : '' }}>
+                                                                    {{ $scores['name'].'%' }}
                                                                     </option>
                                                                 @endforeach
                                                             </select>
@@ -274,7 +274,7 @@
                                     </div>
                                 </div>
                             </div>
-                        @endif --}}
+                        @endif
                     </div>
                     <div class="app-card app-card-orders-table shadow-sm mb-5 bg-none">
                         <div class="app-card-body">

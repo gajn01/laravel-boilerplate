@@ -185,6 +185,43 @@
                 </div>
             </div>
         </div>
+
+        <div class="col-12">
+            <div class="app-card app-card-chart h-100 shadow-sm">
+                <div class="app-card-header p-3">
+                    <div class="row justify-content-between align-items-center">
+                        <div class="col-auto">
+                            <h4 class="app-card-title">Critical Deviation</h4>
+                        </div>
+                    </div>
+                </div>
+                <div class="app-card-body p-3 p-lg-4">
+                    <table class="table app-table-hover mb-0 text-left ">
+                        <thead>
+                            <tr>
+                                <th class="cell">Category</th>
+                                <th class="cell">Deviation</th>
+                                <th class="cell">Score</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @forelse ($critical_deviation as $deviation)
+                                <tr>
+                                    <td>{{$deviation->category->name}}</td>
+                                    <td>{{$deviation->CriticalDeviationMenu->label}}</td>
+                                    <td>{{$deviation->score}}</td>
+                                </tr>
+                            @empty
+                                <tr>
+                                    <td class="text-danger text-center" colspan="3">No Critical Deviation</td>
+                                </tr>
+                            @endforelse
+
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
     </div>
 
     <div class="row g-4 mb-4">
