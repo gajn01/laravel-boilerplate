@@ -147,7 +147,7 @@ class Form extends Component
                             'tag' => '',
                             'deviation' => $saved_deviation,
                             'dropdown' => $dropdownMenu,
-                            'is_na' => $saved_na ,
+                            'is_na' => $saved_na,
                         ];
                     }) : $subCategory->subCategoryLabels->map(function ($label) use (&$total_bp, &$total_points, &$total_base, &$total_score, &$category_id, &$sub_category_id, &$sub_sub_category_id, ) {
                         $subLabels = SubSubCategoryLabelModel::where('sub_sub_category_id', $label->id)->get();
@@ -178,10 +178,8 @@ class Form extends Component
                             $isAllNothing = $subLabel->is_all_nothing;
                             $total_bp += $subLabel->bp;
                             $total_base += $subLabel->bp;
-
                             $total_points += $saved_point;
                             $total_score += $saved_point;
-
                             if ($saved_na) {
                                 $total_base -= $subLabel->bp;
                                 $total_bp -= $subLabel->bp;
@@ -316,20 +314,20 @@ class Form extends Component
     {
         $this->active_index = $index;
     }
-    public function updateNa($id = null, $parentIndex = null, $subIndex = null, $childIndex = null, $labelIndex = null, $categoryId = null, $subcategoryId = null, $childId = null, $labelId = null, $is_sub = null, $value = null)
+    public function updateNa($id = null, $parentIndex = null, $subIndex = null, $childIndex = null, $labelIndex = null, $categoryId = null, $subcategoryId = null, $childId = null, $labelId = null, $points = null, $is_sub = null, $value = null)
     {
+        $val = $value ? 0 : $points;
         if ($this->audit_status) {
             $query = AuditFormResultModel::where('form_id', $this->audit_forms_id)
                 ->where('category_id', $categoryId)
                 ->where('sub_category_id', $subcategoryId)
                 ->where('sub_sub_category_id', $childId)
-                ->update(['is_na' => $value]);
-
+                ->update(['is_na' => $value, 'sub_sub_point' => $val]);
             if ($is_sub) {
-                $query->where('label_id', $labelId);
+                $query->where('label_id', $labelId)
+                    ->update(['is_na' => $value, 'label_point' => $val]);
             }
         }
-
     }
     public function updatePoints($id = null, $parentIndex = null, $subIndex = null, $childIndex = null, $labelIndex = null, $categoryId = null, $subcategoryId = null, $childId = null, $labelId = null, $is_sub = null, $value = null)
     {
@@ -430,7 +428,8 @@ class Form extends Component
             [
                 'store_id' => $this->store_id,
                 'date_of_visit' => $this->date_today,
-            ],[
+            ],
+            [
                 'conducted_by_id' => Auth::user()->id,
                 'received_by' => '',
                 'time_of_audit' => $audit_time,

@@ -103,7 +103,7 @@
                                 </div>
                             </div>
                         </div>
-                    {{--     @if ($data->critical_deviation->isNotEmpty())
+                        {{--     @if ($data->critical_deviation->isNotEmpty())
                             <div class="col-12 col-lg-6">
                                 <div class="app-card app-card-chart h-100 shadow-sm">
                                     <div class="app-card-header p-3">
@@ -278,7 +278,7 @@
                     </div>
                     <div class="app-card app-card-orders-table shadow-sm mb-5 bg-none">
                         <div class="app-card-body">
-                        {{--     @if ($key == 0)
+                            {{--     @if ($key == 0)
                                 <div class="accordion mb-3" id="accordionExample">
                                     <div class="accordion-item">
                                         <h2 class="accordion-header" id="headingOne">
@@ -605,36 +605,41 @@
                                                 <h6 class="card-title product-name">{{ $dataItem['name'] }}</h6>
                                             </button>
                                         </h2>
-                                        <div id="accrod{{ $dataItem['id'] }}"
-                                            class="accordion-collapse collapse show"
+                                        <div id="accrod{{ $dataItem['id'] }}" class="accordion-collapse collapse show"
                                             aria-labelledby="accrod{{ $dataItem['id'] }}"
                                             data-bs-parent="#accordionCategory">
                                             <div class="accordion-body">
                                                 @if ($dataItem['is_sub'] == 0)
                                                     @foreach ($dataItem['sub_category'] as $index => $auditLabel)
                                                         <div class="row mb-3">
-                                                            <div class="form-check form-switch">
-                                                                <input class="form-check-input" type="checkbox"
-                                                                    id="toggle-switch"
-                                                                    @checked($category_list[$loop->parent->parent->index]['sub_categ']['data_items'][$loop->parent->index]['sub_category'][$loop->index]['is_na'] ? true : false)
-                                                                    wire:change="updateNa(
-                                                                    '{{ $auditLabel['id'] }}',
-                                                                    '{{ $loop->parent->parent->index }}',
-                                                                    '{{ $loop->parent->index }}',
-                                                                    '{{ $loop->index }}',
-                                                                    '',
-                                                                    '{{ $category_list[$loop->parent->parent->index]['id'] }}',
-                                                                    '{{ $category_list[$loop->parent->parent->index]['sub_categ']['data_items'][$loop->parent->index]['id'] }}',
-                                                                    '{{ $category_list[$loop->parent->parent->index]['sub_categ']['data_items'][$loop->parent->index]['sub_category'][$loop->index]['id'] }}',
-                                                                    '',
-                                                                    '{{ $dataItem['is_sub'] }}',
-                                                                    $event.target.checked ? 1 : 0
-                                                                )">
-                                                                <label class="form-check-label" for="toggle-switch">n/a</label>
-                                                            </div>
-                                                            <div class="col-sm-12 col-md-4 col-lg-4">
-                                                                <p @class(['pt-4' => $index == 0])>
-                                                                    {{ $auditLabel['name'] }}</p>
+                                                            <div class="col-sm-12 col-md-5 col-lg-5">
+                                                                <div class="form-check form-switch">
+                                                                    <input class="form-check-input" type="checkbox"
+                                                                        id="toggle-switch" @checked(
+                                                                            $category_list[$loop->parent->parent->index]['sub_categ']['data_items'][$loop->parent->index]['sub_category'][
+                                                                                $loop->index
+                                                                            ]['is_na']
+                                                                                ? true
+                                                                                : false)
+                                                                        wire:change="updateNa(
+                                                                        '{{ $auditLabel['id'] }}',
+                                                                        '{{ $loop->parent->parent->index }}',
+                                                                        '{{ $loop->parent->index }}',
+                                                                        '{{ $loop->index }}',
+                                                                        '',
+                                                                        '{{ $category_list[$loop->parent->parent->index]['id'] }}',
+                                                                        '{{ $category_list[$loop->parent->parent->index]['sub_categ']['data_items'][$loop->parent->index]['id'] }}',
+                                                                        '{{ $category_list[$loop->parent->parent->index]['sub_categ']['data_items'][$loop->parent->index]['sub_category'][$loop->index]['id'] }}',
+                                                                        '',
+                                                                        '{{ $auditLabel['bp'] }}',
+                                                                        '{{ $dataItem['is_sub'] }}',
+                                                                        $event.target.checked ? 1 : 0
+                                                                    )">
+                                                                </div>
+                                                                <label class="form-check-label"
+                                                                    @class(['pt-4' => $index == 0]) for="toggle-switch">
+                                                                    {{ $auditLabel['name'] }}</label>
+
                                                             </div>
                                                             <div class="col-sm-12 col-md-2">
                                                                 <div class="row">
@@ -679,7 +684,7 @@
                                                                     </div>
                                                                 </div>
                                                             </div>
-                                                            <div class="col-sm-12 col-md-6 col-lg-6">
+                                                            <div class="col-sm-12 col-md-5 col-lg-5">
                                                                 <div class="row">
                                                                     <div
                                                                         class="col-sm-12 {{ $auditLabel['dropdown'] ? 'col-md-6' : 'col-md-12' }}">
@@ -768,6 +773,7 @@
                                                                                         '{{ $category_list[$loop->parent->parent->parent->index]['sub_categ']['data_items'][$loop->parent->parent->index]['id'] }}',
                                                                                         '{{ $category_list[$loop->parent->parent->parent->index]['sub_categ']['data_items'][$loop->parent->parent->index]['sub_category'][$loop->parent->index]['id'] }}',
                                                                                         '{{ $category_list[$loop->parent->parent->parent->index]['sub_categ']['data_items'][$loop->parent->parent->index]['sub_category'][$loop->parent->index]['label'][$loop->index]['id'] }}',
+                                                                                        '{{ $auditLabel['bp'] }}',
                                                                                         '{{ $dataItem['is_sub'] }}',
                                                                                         $event.target.value )">
                                                                                     <label class="form-check-label"

@@ -76,6 +76,8 @@ class Result extends Component
                         $saved_point = 0;
                         $saved_remarks = '';
                         $saved_deviation = '';
+                        $saved_na = '';
+
                         if ($this->audit_forms_id) {
                             $data = AuditFormResultModel::select('*')
                                 ->where('form_id', $this->audit_forms_id)
@@ -86,6 +88,7 @@ class Result extends Component
                             $saved_point = $data ? $data['sub_sub_point'] : null;
                             $saved_remarks = $data ? $data['sub_sub_remarks'] : null;
                             $saved_deviation = $data ? $data['sub_sub_deviation'] : null;
+                            $saved_na = $data['is_na'];
                         } else {
                             $saved_point = $label->bp;
                         }
@@ -93,9 +96,14 @@ class Result extends Component
                         $isAllNothing = $label->is_all_nothing;
                         $total_base += $label->bp;
                         $total_bp += $label->bp;
-
                         $total_points += $saved_point;
                         $total_score += $saved_point;
+                        if ($saved_na) {
+                            $total_base -= $label->bp;
+                            $total_bp -= $label->bp;
+                            $total_points -= $saved_point;
+                            $total_score -= $label->bp;
+                        }
                         return [
                             'id' => $label->id,
                             'name' => $label->name,
@@ -106,6 +114,8 @@ class Result extends Component
                             'tag' => '',
                             'deviation' => $saved_deviation,
                             'dropdown' => $dropdownMenu,
+                            'is_na' => $saved_na ,
+
                         ];
                     }) : $subCategory->subCategoryLabels->map(function ($label) use (&$total_bp, &$total_points, &$total_base, &$total_score, &$category_id, &$sub_category_id, &$sub_sub_category_id, ) {
                         $subLabels = SubSubCategoryLabelModel::where('sub_sub_category_id', $label->id)->get();
@@ -115,6 +125,8 @@ class Result extends Component
                             $saved_point = 0;
                             $saved_remarks = '';
                             $saved_deviation = '';
+                            $saved_na = '';
+
                             if ($this->audit_forms_id) {
                                 $data = AuditFormResultModel::select('*')
                                     ->where('form_id', $this->audit_forms_id)
@@ -126,6 +138,7 @@ class Result extends Component
                                 $saved_point = $data ? $data['label_point'] : null;
                                 $saved_remarks = $data ? $data['label_remarks'] : null;
                                 $saved_deviation = $data ? $data['label_deviation'] : null;
+                                $saved_na = $data ? $data['is_na'] : 0;
                             } else {
                                 $saved_point = $subLabel->bp;
                             }
@@ -133,9 +146,14 @@ class Result extends Component
                             $isAllNothing = $subLabel->is_all_nothing;
                             $total_bp += $subLabel->bp;
                             $total_base += $subLabel->bp;
-
                             $total_points += $saved_point;
                             $total_score += $saved_point;
+                            if ($saved_na) {
+                                $total_base -= $subLabel->bp;
+                                $total_bp -= $subLabel->bp;
+                                $total_points -= $saved_point;
+                                $total_score -= $subLabel->bp;
+                            }
                             return [
                                 'id' => $subLabel->id,
                                 'name' => $subLabel->name,
@@ -145,6 +163,7 @@ class Result extends Component
                                 'remarks' => $saved_remarks,
                                 'deviation' => $saved_deviation,
                                 'dropdown' => $dropdownMenu,
+                                'is_na' => $saved_na,
                             ];
                         });
                         return [
