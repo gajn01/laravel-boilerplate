@@ -40,6 +40,7 @@ class Summary extends Component
     private $timezone;
     private $time;
     private $date_today;
+    public $summary_details;
 
     public function __construct()
     {
@@ -59,6 +60,13 @@ class Summary extends Component
                  ->get();
                   */
 
+        $this->conducted_by = auth()->user()->name;
+        $this->dov = $this->date_today;
+
+        $this->summary_details = SummaryModel::find($this->result_id);
+        // dd($this->summary_details);
+        // $this->received_by = $this->summary_details->received_by? $this->summary_details->received_by : null;
+
         $summary = DB::table('audit_results')
             ->select('category_id', 'category_name')
             ->selectRaw('COALESCE(SUM(label_base_point), 0) + COALESCE(SUM(sub_sub_base_point), 0) AS total_base_points')
@@ -74,7 +82,7 @@ class Summary extends Component
 
         foreach ($summary as $key => $value) {
             $critical_deviation = $critical_deviations->where('category_id', $value->category_id)->sum('score');
-                $value->percentage -= $critical_deviation;
+            $value->percentage -= $critical_deviation;
             $value->percentage = round($value->percentage, 2);
         }
         $store = StoreModel::find($this->store_id);
@@ -101,8 +109,7 @@ class Summary extends Component
                 'received_by' => 'required',
                 'dov' => '',
                 'strength' => 'required',
-                'improvement' => 'required',
-                'wave' => 'required',
+                'improvement' => 'required'
             ]
         );
         SummaryModel::where('form_id', $this->result_id)
@@ -123,7 +130,7 @@ class Summary extends Component
             ->update(['audit_status' => 0]);
         $this->reset();
         $this->onAlert(false, 'Success', 'Audit record saved successfully!', 'success');
-        return redirect()->route('audit.details', ['store_id' => $this->store_id]);
+        redirect()->route('audit.details', ['store_id' => $this->store_id]);
     }
     public function onAlert($is_confirm = false, $title = null, $message = null, $type = null, $data = null)
     {
