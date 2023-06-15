@@ -10,6 +10,7 @@ use App\Models\Store as StoreModel;
 use App\Models\Category as CategoryModel;
 use App\Models\SanitaryModel as SanitaryModel;
 use App\Models\CriticalDeviationMenu as CriticalDeviationMenuModel;
+use App\Models\Summary as SummaryModel;
 use App\Models\AuditForm as AuditFormModel;
 use App\Models\AuditFormResult as AuditFormResultModel;
 use App\Models\CriticalDeviationResult as CriticalDeviationResultModel;
@@ -28,9 +29,12 @@ class Result extends Component
     public $store_type;
     public $audit_status;
     public $audit_forms_id;
+    public $summary_id;
+    public $summary_details;
     private $timezone;
     private $time;
     private $date_today;
+
 
     public function __construct()
     {
@@ -40,6 +44,9 @@ class Result extends Component
     }
     public function render()
     {
+
+        $this->summary_details = SummaryModel::find($this->result_id);
+        $this->audit_forms_id = $this->summary_details->form_id;
         // dd($this->audit_forms_id);
         $store = StoreModel::find($this->store_id);
         $this->store = $store;
@@ -254,7 +261,7 @@ class Result extends Component
     {
         $this->store_id = $store_id;
         if($result_id){
-            $this->audit_forms_id = $result_id;
+            $this->summary_id = $result_id;
         }else{
             $this->audit_forms_id = AuditFormModel::where('store_id', $this->store_id)->where('date_of_visit', $this->date_today)->value('id');
         }

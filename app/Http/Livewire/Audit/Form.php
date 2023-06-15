@@ -464,7 +464,7 @@ class Form extends Component
                     'code' => $this->store->code,
                     'type' => $this->store->type,
                     'wave' => $this->wave,
-                    'conducted_by' => Auth::user()->id,
+                    'conducted_by' => Auth::user()->name,
                     'received_by' => '',
                     'date_of_visit' => $this->dov,
                     'time_of_audit' => $audit_time,

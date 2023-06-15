@@ -23,7 +23,6 @@ class Summary extends Component
     public $store;
     public $store_id;
     public $summary_id;
-    public $result_id;
     /* Audit Category */
     public $category_list;
     public $audit_status;
@@ -50,33 +49,21 @@ class Summary extends Component
     }
     public function render()
     {
-        /*      $summary = DB::table('audit_results')
-                 ->select('category_id', 'category_name')
-                 ->selectRaw('COALESCE(SUM(label_base_point), 0) + COALESCE(SUM(sub_sub_base_point), 0) AS total_base_points')
-                 ->selectRaw('COALESCE(SUM(CASE WHEN is_na = 1 THEN label_base_point ELSE label_point END), 0) +COALESCE(SUM(CASE WHEN is_na = 1 THEN sub_sub_base_point ELSE sub_sub_point END), 0) AS total_points')
-                 ->selectRaw('ROUND((COALESCE(SUM(label_point), 0) + COALESCE(SUM(sub_sub_point), 0)) / (COALESCE(SUM(label_base_point), 0) + COALESCE(SUM(sub_sub_base_point), 0)) * 100, 2) AS percentage')
-                 ->where('form_id', $this->result_id)
-                 ->groupBy('category_id', 'category_name')
-                 ->get();
-                  */
-
         $this->conducted_by = auth()->user()->name;
-        $this->dov = $this->date_today;
-
-        $this->summary_details = SummaryModel::find($this->result_id);
-        // dd($this->summary_details);
-        // $this->received_by = $this->summary_details->received_by? $this->summary_details->received_by : null;
+        $this->summary_details = SummaryModel::find($this->summary_id);
+        $this->received_by = $this->summary_details->received_by? $this->summary_details->received_by : null;
+        $this->audit_forms_id = $this->summary_details->form_id;
 
         $summary = DB::table('audit_results')
             ->select('category_id', 'category_name')
             ->selectRaw('COALESCE(SUM(label_base_point), 0) + COALESCE(SUM(sub_sub_base_point), 0) AS total_base_points')
             ->selectRaw('COALESCE(SUM(CASE WHEN is_na = 1 THEN label_base_point ELSE label_point END), 0) + COALESCE(SUM(CASE WHEN is_na = 1 THEN sub_sub_base_point ELSE sub_sub_point END), 0) AS total_points')
             ->selectRaw('ROUND((COALESCE(SUM(CASE WHEN is_na = 1 THEN label_base_point ELSE label_point END), 0) + COALESCE(SUM(CASE WHEN is_na = 1 THEN sub_sub_base_point ELSE sub_sub_point END), 0)) / (COALESCE(SUM(label_base_point), 0) + COALESCE(SUM(sub_sub_base_point), 0)) * 100, 2) AS percentage')
-            ->where('form_id', $this->result_id)
+            ->where('form_id', $this->audit_forms_id)
             ->groupBy('category_id', 'category_name')
             ->get();
 
-        $critical_deviations = CriticalDeviationResultModel::where('form_id', $this->result_id)
+        $critical_deviations = CriticalDeviationResultModel::where('form_id', $this->audit_forms_id)
             ->whereNotNull('score')
             ->get();
 
@@ -90,11 +77,10 @@ class Summary extends Component
         return view('livewire.audit.summary', ['summary' => $summary, 'critical_deviation' => $critical_deviations])->extends('layouts.app');
     }
 
-    public function mount($store_id = null, $summary_id = null, $result_id = null)
+    public function mount($store_id = null, $result_id = null)
     {
         $this->store_id = $store_id;
-        $this->summary_id = $summary_id;
-        $this->result_id = $result_id;
+        $this->summary_id = $result_id;
     }
     public function onStartAndComplete($is_confirm = true, $title = 'Are you sure?', $type = null, $data = null)
     {
@@ -107,17 +93,14 @@ class Summary extends Component
             [
                 'conducted_by' => '',
                 'received_by' => 'required',
-                'dov' => '',
                 'strength' => 'required',
                 'improvement' => 'required'
             ]
         );
-        SummaryModel::where('form_id', $this->result_id)
+        SummaryModel::where('form_id', $this->audit_forms_id)
             ->update([
                 'conducted_by' => $this->conducted_by,
                 'received_by' => $this->received_by,
-                'date_of_visit' => $this->dov,
-                'time_of_audit' => $this->time_of_audit,
                 'strength' => $this->strength,
                 'improvement' => $this->improvement,
             ]);
