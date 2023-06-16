@@ -11,9 +11,9 @@ class AuditDate extends Model
     protected $table = 'audit_date';
     protected $fillable = ['id', 'store_id', 'audit_date', 'wave', 'is_complete','created_at', 'updated_at'];
 
-
-
-
+    public function store(){
+        return $this->belongsTo(Store::class,'store_id','id');
+    }
     public function getStatusStringAttribute()
     {
         $status_label = array("Pending", "In-progess", "Completed");
@@ -29,4 +29,6 @@ class AuditDate extends Model
         return $this->belongsToMany(Auditor::class, 'auditor_id', 'audit_date_id', 'auditor_name')
             ->withTimestamps();
     }
+
+
 }

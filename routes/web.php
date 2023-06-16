@@ -4,8 +4,6 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Livewire\Auth\Login;
 /* Dashboard */
 use App\Http\Livewire\Dashboard\Dashboard;
-/* Schedule */
-use App\Http\Livewire\Store\Schedule;
 /* report */
 use App\Http\Livewire\Report\Aggregate;
 /* Audit */
@@ -31,9 +29,10 @@ use App\Http\Livewire\Settings\Dropdown;
 use App\Http\Livewire\Settings\DropdownMenu;
 use App\Http\Livewire\Settings\CriticalDeviation;
 use App\Http\Livewire\Settings\CriticalDeviationMenu;
+/*  */
+use App\Http\Livewire\Store\Store;
+use App\Http\Livewire\Store\StoreDetails;
 
-// $controller_path = 'App\Http\Livewire';
-/* Login */
 /* Dashboard */
 Route::get('/login', Login::class)->name('login');
 Route::redirect('/', '/dashboard');
@@ -44,6 +43,9 @@ Route::middleware(['auth'])->group(function () {
         Route::get('/dashboard', Dashboard::class)->name('dashboard');
         /* Schedule */
         Route::get('/schedule', AuditSchedule::class)->name('audit.schedule');
+
+        Route::get('/store', Store::class)->name('store');
+        Route::get('/store/details/{store_id?}', StoreDetails::class)->name('store-details');
         /* Settings */
         Route::get('/settings/store-settings', StoreSettings::class)->name('settings');
         Route::get('/settings/category', Category::class)->name('category');
@@ -66,7 +68,7 @@ Route::middleware(['auth'])->group(function () {
             Route::get('/', AuditResult::class)->name('audit.result');
             Route::get('/summary', AuditSummary::class)->name('audit.summary');
             Route::get('/view/{result_id?}', AuditResult::class)->name('audit.view.result');
-            Route::get('/view/{result_id?}/summary/{summary_id?}', AuditSummary::class)->name('audit.view.summary');
+            Route::get('/view/{result_id?}/summary', AuditSummary::class)->name('audit.view.summary');
         });
         Route::get('/insight', Aggregate::class)->name('insight');
 

@@ -216,7 +216,7 @@
                                 </tr>
                             @empty
                                 <tr>
-                                    <td class="text-danger text-center" colspan="3">No Critical Deviation</td>
+                                    <td class="text-danger text-center" colspan="4">No Critical Deviation</td>
                                 </tr>
                             @endforelse
 

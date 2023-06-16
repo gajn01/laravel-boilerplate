@@ -63,70 +63,27 @@
                     </a>
 
                 </li>
-                {{--    <li class="nav-item has-submenu">
-                    <a @class([
-                        'nav-link submenu-toggle',
-                        'active' => Request::is('user') || Request::is('user/information*'),
-                    ]) href="#" data-bs-toggle="collapse" data-bs-target="#submenu-2"
-                        aria-expanded="false" aria-controls="submenu-2">
+                <li class="nav-item">
+                    <a class="nav-link {{ Request::is('store') || Request::is('store/details*') ? 'active' : '' }}"
+                        href="{{ url('store') }}">
                         <span class="nav-icon">
-                            <svg viewBox="0 0 16 16" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
+                                class="bi bi-shop" viewBox="0 0 16 16">
                                 <path
-                                    d="M15 14s1 0 1-1-1-4-5-4-5 3-5 4 1 1 1 1h8Zm-7.978-1A.261.261 0 0 1 7 12.996c.001-.264.167-1.03.76-1.72C8.312 10.629 9.282 10 11 10c1.717 0 2.687.63 3.24 1.276.593.69.758 1.457.76 1.72l-.008.002a.274.274 0 0 1-.014.002H7.022ZM11 7a2 2 0 1 0 0-4 2 2 0 0 0 0 4Zm3-2a3 3 0 1 1-6 0 3 3 0 0 1 6 0ZM6.936 9.28a5.88 5.88 0 0 0-1.23-.247A7.35 7.35 0 0 0 5 9c-4 0-5 3-5 4 0 .667.333 1 1 1h4.216A2.238 2.238 0 0 1 5 13c0-1.01.377-2.042 1.09-2.904.243-.294.526-.569.846-.816ZM4.92 10A5.493 5.493 0 0 0 4 13H1c0-.26.164-1.03.76-1.724.545-.636 1.492-1.256 3.16-1.275ZM1.5 5.5a3 3 0 1 1 6 0 3 3 0 0 1-6 0Zm3-2a2 2 0 1 0 0 4 2 2 0 0 0 0-4Z" />
+                                    d="M2.97 1.35A1 1 0 0 1 3.73 1h8.54a1 1 0 0 1 .76.35l2.609 3.044A1.5 1.5 0 0 1 16 5.37v.255a2.375 2.375 0 0 1-4.25 1.458A2.371 2.371 0 0 1 9.875 8 2.37 2.37 0 0 1 8 7.083 2.37 2.37 0 0 1 6.125 8a2.37 2.37 0 0 1-1.875-.917A2.375 2.375 0 0 1 0 5.625V5.37a1.5 1.5 0 0 1 .361-.976l2.61-3.045zm1.78 4.275a1.375 1.375 0 0 0 2.75 0 .5.5 0 0 1 1 0 1.375 1.375 0 0 0 2.75 0 .5.5 0 0 1 1 0 1.375 1.375 0 1 0 2.75 0V5.37a.5.5 0 0 0-.12-.325L12.27 2H3.73L1.12 5.045A.5.5 0 0 0 1 5.37v.255a1.375 1.375 0 0 0 2.75 0 .5.5 0 0 1 1 0zM1.5 8.5A.5.5 0 0 1 2 9v6h1v-5a1 1 0 0 1 1-1h3a1 1 0 0 1 1 1v5h6V9a.5.5 0 0 1 1 0v6h.5a.5.5 0 0 1 0 1H.5a.5.5 0 0 1 0-1H1V9a.5.5 0 0 1 .5-.5zM4 15h3v-5H4v5zm5-5a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1v3a1 1 0 0 1-1 1h-2a1 1 0 0 1-1-1v-3zm3 0h-2v3h2v-3z" />
                             </svg>
                         </span>
-                        <span class="nav-link-text">Account Management</span>
-                        <span class="submenu-arrow">
-                            <svg width="1em" height="1em" viewBox="0 0 16 16" class="bi bi-chevron-down"
-                                fill="currentColor" xmlns="http://www.w3.org/2000/svg">
-                                <path fill-rule="evenodd"
-                                    d="M1.646 4.646a.5.5 0 0 1 .708 0L8 10.293l5.646-5.647a.5.5 0 0 1 .708.708l-6 6a.5.5 0 0 1-.708 0l-6-6a.5.5 0 0 1 0-.708z" />
-                            </svg>
-                        </span>
+                        <span class="nav-link-text">Store Management</span>
                     </a>
-                    <div id="submenu-2" @class([
-                        'collapse submenu submenu-2',
-                        'show' => Request::is('user') || Request::is('user/information*'),
-                    ]) data-bs-parent="#menu-accordion">
-                        <ul class="submenu-list list-unstyled">
-                            <li class="submenu-item"><a @class([
-                                'submenu-link',
-                                'active' => Request::is('user') || Request::is('user/information*'),
-                            ])
-                                    href="{{ url('user') }}">Auditor</a></li>
-                            <li class="submenu-item"><a class="submenu-link" href="{{ url('user') }}">Store</a></li>
-                        </ul>
-                    </div>
-                </li> --}}
-                {{--     <li class="nav-item">
-                    <a class="nav-link {{ Request::routeIs('user') || Request::is('user/information*') ? 'active' : '' }}"
-                        href="{{ url('user') }}">
-                        <span class="nav-icon">
-                            <svg viewBox="0 0 16 16" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
-                                <path
-                                    d="M15 14s1 0 1-1-1-4-5-4-5 3-5 4 1 1 1 1h8Zm-7.978-1A.261.261 0 0 1 7 12.996c.001-.264.167-1.03.76-1.72C8.312 10.629 9.282 10 11 10c1.717 0 2.687.63 3.24 1.276.593.69.758 1.457.76 1.72l-.008.002a.274.274 0 0 1-.014.002H7.022ZM11 7a2 2 0 1 0 0-4 2 2 0 0 0 0 4Zm3-2a3 3 0 1 1-6 0 3 3 0 0 1 6 0ZM6.936 9.28a5.88 5.88 0 0 0-1.23-.247A7.35 7.35 0 0 0 5 9c-4 0-5 3-5 4 0 .667.333 1 1 1h4.216A2.238 2.238 0 0 1 5 13c0-1.01.377-2.042 1.09-2.904.243-.294.526-.569.846-.816ZM4.92 10A5.493 5.493 0 0 0 4 13H1c0-.26.164-1.03.76-1.724.545-.636 1.492-1.256 3.16-1.275ZM1.5 5.5a3 3 0 1 1 6 0 3 3 0 0 1-6 0Zm3-2a2 2 0 1 0 0 4 2 2 0 0 0 0-4Z" />
-                            </svg>
-                        </span>
-                        <span class="nav-link-text">User Management</span>
-                    </a>
-                </li> --}}
-           {{--      <li class="nav-item">
-                    <a class="nav-link {{ Request::routeIs('insight') ? 'active' : '' }}">
-                        <span class="nav-icon">
-                            <svg viewBox="0 0 16 16" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
-                                <path
-                                    d="M9.828 4a3 3 0 0 1-2.12-.879l-.83-.828A1 1 0 0 0 6.173 2H2.5a1 1 0 0 0-1 .981L1.546 4h-1L.5 3a2 2 0 0 1 2-2h3.672a2 2 0 0 1 1.414.586l.828.828A2 2 0 0 0 9.828 3v1z" />
-                                <path fill-rule="evenodd"
-                                    d="M13.81 4H2.19a1 1 0 0 0-.996 1.09l.637 7a1 1 0 0 0 .995.91h10.348a1 1 0 0 0 .995-.91l.637-7A1 1 0 0 0 13.81 4zM2.19 3A2 2 0 0 0 .198 5.181l.637 7A2 2 0 0 0 2.826 14h10.348a2 2 0 0 0 1.991-1.819l.637-7A2 2 0 0 0 13.81 3H2.19z" />
-                            </svg>
-                        </span>
-                        <span class="nav-link-text">Reports</span>
-                    </a>
-                </li> --}}
+
+                </li>
+
+
+
                 <li class="nav-item has-submenu">
-                    <a class="nav-link submenu-toggle {{ Request::routeIs('insight')  ? 'active' : '' }}"
-                        href="#" data-bs-toggle="collapse" data-bs-target="#submenu-3"
-                        aria-expanded="false" aria-controls="submenu-3">
+                    <a class="nav-link submenu-toggle {{ Request::routeIs('insight') ? 'active' : '' }}" href="#"
+                        data-bs-toggle="collapse" data-bs-target="#submenu-3" aria-expanded="false"
+                        aria-controls="submenu-3">
                         <span class="nav-icon">
                             <svg viewBox="0 0 16 16" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
                                 <path
@@ -146,8 +103,7 @@
                     </a>
                     <div id="submenu-3" @class([
                         'collapse submenu submenu-3',
-                        'show' =>
-                            Request::routeIs('insight')
+                        'show' => Request::routeIs('insight'),
                     ]) data-bs-parent="#menu-accordion">
                         <ul class="submenu-list list-unstyled">
                             <li class="submenu-item"><a
@@ -199,24 +155,11 @@
                                 <ul class="submenu-list list-unstyled">
                                     <li class="submenu-item "><a @class(['submenu-link', 'active' => Request::routeIs('user')])
                                             href="{{ url('user') }}">Account Management</a></li>
-                                    <li class="submenu-item"><a
-                                            class="submenu-link {{ Request::routeIs('settings') ? 'active' : '' }}"
-                                            href="{{ url('settings/store-settings') }}">Store</a></li>
                                     <li class="submenu-item "><a @class(['submenu-link', 'active' => Request::routeIs('category')])
                                             href="{{ url('settings/category') }}">Category</a></li>
-
-                                    <li class="submenu-item"><a @class([
-                                        'submenu-link',
-                                        'active' => Request::routeIs('critical-deviation'),
-                                    ])
-                                            href="{{ url('settings/critical-deviation') }}">Critical Deviation</a>
-                                    </li>
-                                    <li class="submenu-item"><a
-                                            class="submenu-link {{ Request::routeIs('sanitary') ? 'active' : '' }}"
-                                            href="{{ url('settings/sanitary') }}">Sanitation Defect</a></li>
-                                    <li class="submenu-item"><a
-                                            class="submenu-link {{ Request::routeIs('dropdown') || Request::is('dropdown/menu*') ? 'active' : '' }}"
-                                            href="{{ url('settings/dropdown') }}">Dropdown</a></li>
+                                    <li class="submenu-item"><a @class(['submenu-link','active' => Request::routeIs('critical-deviation'),]) href="{{ url('settings/critical-deviation') }}">Critical Deviation</a> </li>
+                                    <li class="submenu-item"><a class="submenu-link {{ Request::routeIs('sanitary') ? 'active' : '' }}"  href="{{ url('settings/sanitary') }}">Sanitation Defect</a></li>
+                                    <li class="submenu-item"><a class="submenu-link {{ Request::routeIs('dropdown') || Request::is('dropdown/menu*') ? 'active' : '' }}" href="{{ url('settings/dropdown') }}">Dropdown</a></li>
                                 </ul>
                             </div>
                         </li>

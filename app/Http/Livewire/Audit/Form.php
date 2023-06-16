@@ -451,7 +451,7 @@ class Form extends Component
                 ]);
 
         } else {
-            SummaryModel::updateOrCreate(
+           $summary =  SummaryModel::updateOrCreate(
                 [
                     'form_id' => $this->audit_forms_id,
                     'store_id' => $this->store_id,
@@ -472,7 +472,7 @@ class Form extends Component
                     'improvement' => '',
                 ]
             );
-            redirect()->route('audit.view.result', ['store_id' => $this->store_id, 'result_id' => $this->audit_forms_id]);
+            redirect()->route('audit.view.result', ['store_id' => $this->store_id, 'result_id' => $summary->id]);
         }
     }
     public function onInitialSave()

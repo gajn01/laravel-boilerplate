@@ -114,7 +114,7 @@
                                                         <tr>
                                                             <th scope="col"></th>
                                                             <th scope="col">Deviation</th>
-                                                            <th scope="col">Ramerks</th>
+                                                            <th scope="col">Remarks</th>
                                                             <th scope="col">Score</th>
                                                         </tr>
                                                     </thead>

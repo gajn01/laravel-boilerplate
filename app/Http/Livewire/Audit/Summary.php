@@ -51,7 +51,10 @@ class Summary extends Component
     {
         $this->conducted_by = auth()->user()->name;
         $this->summary_details = SummaryModel::find($this->summary_id);
-        $this->received_by = $this->summary_details->received_by? $this->summary_details->received_by : null;
+        if($this->summary_details->received_by){
+            $this->received_by = $this->summary_details->received_by;
+        }
+        $this->dov = $this->summary_details->date_of_visit;
         $this->audit_forms_id = $this->summary_details->form_id;
 
         $summary = DB::table('audit_results')

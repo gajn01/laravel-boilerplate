@@ -69,11 +69,7 @@ class Schedule extends Component
         } elseif ($this->date_filter == $this->date_today) {
             $auditorsQuery->where('audit_date.audit_date', $this->date_today);
         }
-        $store_schedule = $auditorsQuery
-            ->paginate($this->limit);
-
-        // dd($store_schedule);
-
+        $store_schedule = $auditorsQuery->paginate($this->limit);
         return view('livewire.audit.schedule', ['store_list' => $store_list, 'store_sched_list' => $store_schedule, 'user_list' => $user])->extends('layouts.app');
     }
     public function addAuditor()
@@ -99,8 +95,6 @@ class Schedule extends Component
     }
     public function saveSchedule()
     {
-
-
         $this->validate([
             'store_id' => 'required',
             'audit_date' => 'required',
@@ -112,7 +106,7 @@ class Schedule extends Component
             'wave' => strip_tags($this->wave),
         ];
 
-        $check_schedule = AuditDateModel::where('store_id', $this->store_id)
+     /*    $check_schedule = AuditDateModel::where('store_id', $this->store_id)
             ->where('wave', $this->wave)
             ->where('audit_date', 'LIKE', $this->year . '-%')
             ->first();
@@ -130,6 +124,17 @@ class Schedule extends Component
                 AuditorListModel::insert($auditorListData);
                 $this->auditor_list = [];
             }
+        } */
+        $auditDate = AuditDateModel::updateOrCreate(['id' => $this->audit_date_id], $auditDateData);
+        $this->onAlert(false, 'Success', 'Schedule saved successfully!', 'success');
+        CustomHelper::onRemoveModal($this, '#store_schedule_modal');
+        if (empty($this->audit_date_id)) {
+            $auditorListData = collect($this->auditor_list)->map(function ($value) use ($auditDate) {
+                $value['audit_date_id'] = $auditDate->id;
+                return $value;
+            })->toArray();
+            AuditorListModel::insert($auditorListData);
+            $this->auditor_list = [];
         }
     }
 

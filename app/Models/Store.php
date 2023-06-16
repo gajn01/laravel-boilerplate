@@ -17,4 +17,5 @@ class Store extends Model
     ];
 
     protected $dates = ['created_at'];
+
 }

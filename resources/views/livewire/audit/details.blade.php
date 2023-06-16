@@ -7,14 +7,9 @@
             <li class="breadcrumb-item active" aria-current="page">{{ $store->name }}</li>
         </ol>
     </nav>
+    <h4 class="app-card-title">Audit Records</h4>
+
     <div class="app-card app-card-orders-table shadow-sm mb-5 p-3">
-        <div class="app-card-header p-3">
-            <div class="row justify-content-between align-items-center">
-                <div class="col-auto">
-                    <h4 class="app-card-title">Audit Records</h4>
-                </div>
-            </div>
-        </div>
         <div class="app-card-body">
             <div class="table-responsive">
                 <table class="table app-table-hover mb-0 text-left">
