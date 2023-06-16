@@ -104,6 +104,9 @@ class Form extends Component
                         'total_point' => 0,
                         'total_percent' => 0,
                     ];
+                    $subCategoryData['accuracy'] =[];
+                    // dd($subCategoryData);
+
                     $subCategoryData['sub_category'] = ($subCategory->is_sub == 0) ? $subCategory->subCategoryLabels->map(function ($label) use (&$total_bp, &$category_id, &$sub_category_id, &$sub_sub_category_id, &$total_points, &$total_base, &$total_score) {
                         $sub_sub_category_id = $label->id;
                         $saved_point = 0;
