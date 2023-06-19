@@ -66,7 +66,6 @@ class Audit extends Component
             $auditorsQuery->where('audit_date.audit_date', $this->date_today);
         }
         $store_schedule = $auditorsQuery
-            ->groupBy('auditor_list.audit_date_id')
             ->paginate($this->limit);
         // dd($store_schedule);
         return view('livewire.audit.audit', ['store_list' => $store_list, 'store_sched_list' => $store_schedule, 'user_list' => $user])->extends('layouts.app');

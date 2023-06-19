@@ -396,6 +396,7 @@
                                                                                 '{{ $dataItem['is_sub'] }}',
                                                                                 $event.target.value )"
                                                                                 name="tag{{ $auditLabel['name'] }}"
+                                                                                @disabled($auditLabel['is_na'] ? true : false)
                                                                                 id="tag">
                                                                                 <option value="0">Select a
                                                                                     deviation</option>
@@ -437,7 +438,7 @@
                                                                         @if ($sub_category['name'] == "Cashier TAT" )
                                                                             <div class="row">
                                                                                 <div class="col-12">
-                                                                                    <svg class="icon" wire:click="addInput(0)" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512">
+                                                                                    <svg class="icon" wire:click="addInput(1)" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512">
                                                                                         <path
                                                                                             d="M256 80c0-17.7-14.3-32-32-32s-32 14.3-32 32V224H48c-17.7 0-32 14.3-32 32s14.3 32 32 32H192V432c0 17.7 14.3 32 32 32s32-14.3 32-32V288H400c17.7 0 32-14.3 32-32s-14.3-32-32-32H256V80z" />
                                                                                         </svg>
@@ -584,12 +585,13 @@
                                                                                             </div>
                                                                                         </div>
                                                                                     </div>
+                                                                                    <hr>
                                                                                 @endforeach
                                                                             </div>
                                                                         @elseif($sub_category['name'] == "Server CAT")
                                                                         <div class="row">
                                                                             <div class="col-12">
-                                                                                <svg class="icon" wire:click="addInput(1)" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512">
+                                                                                <svg class="icon" wire:click="addInput(0)" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512">
                                                                                     <path
                                                                                         d="M256 80c0-17.7-14.3-32-32-32s-32 14.3-32 32V224H48c-17.7 0-32 14.3-32 32s14.3 32 32 32H192V432c0 17.7 14.3 32 32 32s32-14.3 32-32V288H400c17.7 0 32-14.3 32-32s-14.3-32-32-32H256V80z" />
                                                                                     </svg>
@@ -737,6 +739,7 @@
                                                                                     </div>
                                                                                 </div>
                                                                             </div>
+                                                                            <hr>
                                                                         @endforeach
                                                                         @else
                                                                         @forelse ($sub_category['label'] as $index => $auditLabel)

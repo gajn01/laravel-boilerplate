@@ -15,6 +15,7 @@ use App\Models\AuditFormResult as AuditFormResultModel;
 use App\Models\CriticalDeviationResult as CriticalDeviationResultModel;
 use App\Models\Summary as SummaryModel;
 use App\Models\AuditDate as AuditDateModel;
+use App\Models\ServiceSpeed as ServiceSpeedModel;
 use Illuminate\Support\Facades\Auth;
 use DateTime;
 use DateTimeZone;
@@ -38,8 +39,8 @@ class Form extends Component
     public $currentIndex;
     public $is_na = [];
     public $wave;
-    public $cashier_tat = [['name' => null, 'time' => null, 'product_order' => null, 'ot' => null, 'assembly' => null, 'ac_point' => 1, 'tat' => null, 'tat_point' => 1, 'fst' => null, 'fst_point' => 3, 'remarks' => null]];
-    public $server_cat = [['name' => null, 'time' => null, 'product_order' => null, 'ot' => null, 'assembly' => null, 'ac_point' => 1, 'tat' => null, 'tat_point' => 1, 'fst' => null, 'fst_point' => 3, 'remarks' => null]];
+    public $cashier_tat;
+    public $server_cat;
     public $score = [
         ['name' => '3'],
         ['name' => '5'],
@@ -62,6 +63,14 @@ class Form extends Component
     }
     public function render()
     {
+        $service = ServiceSpeedModel::where('form_id', $this->audit_forms_id)
+            ->whereIn('is_cashier', [0, 1])
+            ->get();
+
+        $this->cashier_tat = $service->where('is_cashier', 1);
+        $this->server_cat = $service->where('is_cashier', 0);
+
+
         $this->dov = $this->date_today;
         $result = AuditDateModel::select('wave')
             ->where('store_id', $this->store_id)
@@ -104,9 +113,9 @@ class Form extends Component
                         'total_point' => 0,
                         'total_percent' => 0,
                     ];
-                    $subCategoryData['accuracy'] =[];
+                    $subCategoryData['accuracy'] = [];
                     // dd($subCategoryData);
-
+    
                     $subCategoryData['sub_category'] = ($subCategory->is_sub == 0) ? $subCategory->subCategoryLabels->map(function ($label) use (&$total_bp, &$category_id, &$sub_category_id, &$sub_sub_category_id, &$total_points, &$total_base, &$total_score) {
                         $sub_sub_category_id = $label->id;
                         $saved_point = 0;
@@ -311,6 +320,8 @@ class Form extends Component
     public function mount($store_id = null)
     {
         $this->store_id = $store_id;
+        $this->audit_forms_id = AuditFormModel::where('store_id', $this->store_id)->where('date_of_visit', $this->date_today)->value('id');
+
     }
     public function setActive($index)
     {
@@ -327,9 +338,9 @@ class Form extends Component
                 ->where('sub_sub_category_id', $childId);
             if ($is_sub) {
                 $query->where('label_id', $labelId)
-                    ->update(['is_na' => $value ? 0: 1, 'label_point' => $val]);
-            }else{
-                $query->update(['is_na' => $value ? 0: 1, 'sub_sub_point' => $val]);
+                    ->update(['is_na' => $value ? 0 : 1, 'label_point' => $val]);
+            } else {
+                $query->update(['is_na' => $value ? 0 : 1, 'sub_sub_point' => $val]);
             }
         }
     }
@@ -395,26 +406,9 @@ class Form extends Component
     }
     public function addInput($data)
     {
-        $add = [
-            'name' => '',
-            'time' => '',
-            'product_order' => '',
-            'ot' => '',
-            'assembly' => '',
-            'ac_point' => 1,
-            'fst' => '',
-            'fst_point' => 3,
-            'remarks' => '',
-        ];
-        if ($data == 0) {
-            $add['tat'] = '';
-            $add['tat_point'] = 1;
-            array_push($this->cashier_tat, $add);
-        } else if ($data == 1) {
-            $add['cat'] = '';
-            $add['tat_point'] = 1;
-            array_push($this->server_cat, $add);
-        }
+
+        $data = ['form_id' => $this->audit_forms_id, 'is_cashier' => $data, 'name' => null, 'time' => null, 'product_order' => null, 'ot' => null, 'assembly' => null, 'ac_point' => 1, 'tat' => null, 'tat_point' => 1, 'fst' => null, 'fst_point' => 3, 'remarks' => null];
+        ServiceSpeedModel::create($data);
     }
     public function onStartAndComplete($is_confirm = true, $title = 'Are you sure?', $type = null, $data = null)
     {
@@ -454,7 +448,7 @@ class Form extends Component
                 ]);
 
         } else {
-           $summary =  SummaryModel::updateOrCreate(
+            $summary = SummaryModel::updateOrCreate(
                 [
                     'form_id' => $this->audit_forms_id,
                     'store_id' => $this->store_id,
@@ -480,7 +474,6 @@ class Form extends Component
     }
     public function onInitialSave()
     {
-        $this->audit_forms_id = AuditFormModel::where('store_id', $this->store_id)->where('date_of_visit', $this->date_today)->value('id');
         $auditResults = collect($this->category_list)->flatMap(function ($data) {
             return collect($data->sub_categ['data_items'])->flatMap(function ($sub) use ($data) {
                 return collect($sub['sub_category'])->map(function ($child) use ($data, $sub) {
@@ -543,6 +536,16 @@ class Form extends Component
                 AuditFormResultModel::create($result);
             }
         });
+
+        $cashier_tat = [['form_id' => $this->audit_forms_id, 'is_cashier' => 1, 'name' => null, 'time' => null, 'product_order' => null, 'ot' => null, 'assembly' => null, 'ac_point' => 1, 'tat' => null, 'tat_point' => 1, 'fst' => null, 'fst_point' => 3, 'remarks' => null]];
+        $server_cat = [['form_id' => $this->audit_forms_id, 'is_cashier' => 0, 'name' => null, 'time' => null, 'product_order' => null, 'ot' => null, 'assembly' => null, 'ac_point' => 1, 'tat' => null, 'tat_point' => 1, 'fst' => null, 'fst_point' => 3, 'remarks' => null]];
+        foreach ([$cashier_tat, $server_cat] as $array) {
+            if (is_array($array[0])) {
+                foreach ($array as $result) {
+                    ServiceSpeedModel::create($result);
+                }
+            }
+        }
     }
     public function updateCriticalDeviation($data = null, $value = null, $deviation = null)
     {
