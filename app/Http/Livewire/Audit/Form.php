@@ -63,13 +63,13 @@ class Form extends Component
     }
     public function render()
     {
+
         $service = ServiceSpeedModel::where('form_id', $this->audit_forms_id)
             ->whereIn('is_cashier', [0, 1])
             ->get();
 
         $this->cashier_tat = $service->where('is_cashier', 1);
         $this->server_cat = $service->where('is_cashier', 0);
-
 
         $this->dov = $this->date_today;
         $result = AuditDateModel::select('wave')
@@ -78,7 +78,6 @@ class Form extends Component
             ->first();
         $this->wave = $result ? $result->wave : null;
         $sanitation_defect = SanitaryModel::select('id', 'title', 'code')->get();
-        $this->audit_forms_id = AuditFormModel::where('store_id', $this->store_id)->where('date_of_visit', $this->date_today)->value('id');
         $store = StoreModel::find($this->store_id);
         $this->store = $store;
         $this->store_name = $store->name;
@@ -113,11 +112,11 @@ class Form extends Component
                         'total_point' => 0,
                         'total_percent' => 0,
                     ];
-                    $subCategoryData['accuracy'] = [];
-                    // dd($subCategoryData);
-    
+
+
                     $subCategoryData['sub_category'] = ($subCategory->is_sub == 0) ? $subCategory->subCategoryLabels->map(function ($label) use (&$total_bp, &$category_id, &$sub_category_id, &$sub_sub_category_id, &$total_points, &$total_base, &$total_score) {
                         $sub_sub_category_id = $label->id;
+
                         $saved_point = 0;
                         $saved_remarks = '';
                         $saved_deviation = '';
@@ -136,6 +135,12 @@ class Form extends Component
                         } else {
                             $saved_point = $label->bp;
                         }
+
+                        /*    $totalPoints = ServiceSpeedModel::selectRaw('is_cashier, SUM(assembly_points + tat_points + fst_points) AS total_points, SUM(base_assembly_points + base_tat_points + base_fst_points) AS base_total')
+                               ->groupBy('is_cashier')
+                               ->get();
+                           dd($totalPoints); */
+
                         $dropdownMenu = DropdownMenuModel::where('dropdown_id', $label->dropdown_id)->get()->toArray();
                         $isAllNothing = $label->is_all_nothing;
                         $total_base += $label->bp;
@@ -218,11 +223,24 @@ class Form extends Component
                             'label' => $subLabelData,
                         ];
                     });
+
+
                     $subCategoryData['base_score'] = $total_bp;
-                    $subCategoryData['total_base'] = $total_base;
                     $subCategoryData['total_point'] = $total_points;
-                    $subCategoryData['total_score'] = $total_score;
                     $subCategoryData['total_percent'] = $total_bp != 0 ? round(($total_points * 100 / $total_bp), 0) : 0;
+                    $service_points = ServiceSpeedModel::selectRaw(' SUM(assembly_points + tat_points + fst_points) AS total_points, SUM(base_assembly_points + base_tat_points + base_fst_points) AS base_total')->where('form_id', $this->audit_forms_id)->first();
+                  
+                    if ($subCategory->name == "Speed and Accuracy") {
+
+                        $total_base += $service_points->base_total ? $service_points->base_total : 0;
+                        $total_score += $service_points->base_total ? $service_points->total_points : 0;
+                        $subCategoryData['base_score'] = $service_points->base_total ? $service_points->base_total : 0;
+                        $subCategoryData['total_point'] = $service_points->base_total ? $service_points->total_points : 0;
+                        $subCategoryData['total_percent'] = $service_points->base_total != 0 ? round(($service_points->total_points * 100 / $service_points->base_total), 0) : 0;
+                    }
+                    $subCategoryData['total_base'] = $total_base;
+                    $subCategoryData['total_score'] = $total_score;
+
                     $total_bp = 0;
                     $total_points = 0;
                     return $subCategoryData;
@@ -321,7 +339,6 @@ class Form extends Component
     {
         $this->store_id = $store_id;
         $this->audit_forms_id = AuditFormModel::where('store_id', $this->store_id)->where('date_of_visit', $this->date_today)->value('id');
-
     }
     public function setActive($index)
     {
@@ -406,8 +423,7 @@ class Form extends Component
     }
     public function addInput($data)
     {
-
-        $data = ['form_id' => $this->audit_forms_id, 'is_cashier' => $data, 'name' => null, 'time' => null, 'product_order' => null, 'ot' => null, 'assembly' => null, 'ac_point' => 1, 'tat' => null, 'tat_point' => 1, 'fst' => null, 'fst_point' => 3, 'remarks' => null];
+        $data = ['form_id' => $this->audit_forms_id, 'is_cashier' => $data, 'name' => null, 'time' => null, 'product_order' => null, 'ot' => null, 'base_assembly_points' => 1, 'assembly_points' => 1, 'tat' => null, 'base_tat_points' => 1, 'tat_points' => 1, 'fst' => null, 'base_fst_points' => 3, 'fst_points' => 3, 'remarks' => null, 'serving_time' => '10:00'];
         ServiceSpeedModel::create($data);
     }
     public function onStartAndComplete($is_confirm = true, $title = 'Are you sure?', $type = null, $data = null)
@@ -536,16 +552,14 @@ class Form extends Component
                 AuditFormResultModel::create($result);
             }
         });
-
-        $cashier_tat = [['form_id' => $this->audit_forms_id, 'is_cashier' => 1, 'name' => null, 'time' => null, 'product_order' => null, 'ot' => null, 'assembly' => null, 'ac_point' => 1, 'tat' => null, 'tat_point' => 1, 'fst' => null, 'fst_point' => 3, 'remarks' => null]];
-        $server_cat = [['form_id' => $this->audit_forms_id, 'is_cashier' => 0, 'name' => null, 'time' => null, 'product_order' => null, 'ot' => null, 'assembly' => null, 'ac_point' => 1, 'tat' => null, 'tat_point' => 1, 'fst' => null, 'fst_point' => 3, 'remarks' => null]];
-        foreach ([$cashier_tat, $server_cat] as $array) {
-            if (is_array($array[0])) {
-                foreach ($array as $result) {
-                    ServiceSpeedModel::create($result);
-                }
-            }
+        $data = [
+            ['form_id' => $this->audit_forms_id, 'is_cashier' => 1, 'name' => null, 'time' => null, 'product_order' => null, 'ot' => null, 'base_assembly_points' => 1, 'assembly_points' => 1, 'tat' => null, 'base_tat_point' => 1, 'tat_point' => 1, 'fst' => null, 'base_fst_point' => 3, 'fst_point' => 3, 'remarks' => null],
+            ['form_id' => $this->audit_forms_id, 'is_cashier' => 0, 'name' => null, 'time' => null, 'product_order' => null, 'ot' => null, 'base_assembly_points' => 1, 'assembly_points' => 1, 'tat' => null, 'base_tat_point' => 1, 'tat_point' => 1, 'fst' => null, 'base_fst_point' => 3, 'fst_point' => 3, 'remarks' => null],
+        ];
+        foreach ($data as $result) {
+            ServiceSpeedModel::create($result);
         }
+
     }
     public function updateCriticalDeviation($data = null, $value = null, $deviation = null)
     {
