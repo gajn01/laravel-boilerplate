@@ -446,7 +446,7 @@
                                                                                 </div>
                                                                             </div>
                                                                             <div class="row">
-                                                                                @foreach ($cashier_tat as $item)
+                                                                                @foreach ($cashier_tat  as $index => $item)
                                                                                     <div class="col-sm-12 col-md-12">
                                                                                         <div class="row">
                                                                                             <div class="col-3">
@@ -456,7 +456,7 @@
                                                                                                     <input type="text" class="form-control"
                                                                                                         name="cashier_name"
                                                                                                         id="name_{{ $loop->index }}"
-                                                                                                        wire:model.lazy="cashier_tat.{{ $loop->index }}.name"
+                                                                                                        value="{{$cashier_tat[$index]['name']}}"
                                                                                                         wire:focus="$set('currentIndex', '{{ $loop->index }}')">
                                                                                                 </div>
                                                                                             </div>
@@ -598,7 +598,6 @@
                                                                                     <a class="btn app-btn-primary float-right" wire:ignore role="button" wire:click="setTime(1)">Set</a>
                                                                             </div>
                                                                         </div>
-
                                                                         @foreach ($server_cat as $item)
                                                                             <div class="row">
                                                                                 <div class="col-sm-12">
@@ -652,7 +651,7 @@
                                                                                                         <input type="text"
                                                                                                             class="form-control"
                                                                                                             name="assembly" id="assembly"
-                                                                                                            wire:model="cashier_tat.{{ $loop->index }}.assembly">
+                                                                                                            wire:model="cashier_tat.{{ $loop->index }}.assembly_points">
                                                                                                     </div>
                                                                                                 </div>
                                                                                                 <div class="col-4">

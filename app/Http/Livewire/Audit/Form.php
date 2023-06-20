@@ -55,6 +55,8 @@ class Form extends Component
         'category_list.*.sub_categ.data_items.*.name' => 'required',
         'category_list.*.sub_categ.data_items.*.sub_category.*.*' => 'required',
     ];
+
+    
     public function __construct()
     {
         $this->timezone = new DateTimeZone('Asia/Manila');
