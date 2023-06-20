@@ -26,9 +26,7 @@ class AuditDate extends Model
     }
     public function auditors()
     {
-        return $this->belongsToMany(Auditor::class, 'auditor_id', 'audit_date_id', 'auditor_name')
-            ->withTimestamps();
+        return $this->hasMany(AuditorList::class,'audit_date_id', 'id');
     }
-
 
 }

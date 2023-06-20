@@ -56,10 +56,10 @@
                     <tbody>
                         @forelse ($store_sched_list as $store)
                             <tr>
-                                <td class="cell">{{ $store->code }}</td>
-                                <td class="cell">{{ $store->name }}</td>
-                                <td class="cell">{{ $store->type == 1 ? 'Cafe' : 'Kiosk' }}</td>
-                                <td class="cell">{{ $store->area }}</td>
+                                <td class="cell">{{ $store->store->code }}</td>
+                                <td class="cell">{{ $store->store->name }}</td>
+                                <td class="cell">{{ $store->store->TypeString}}</td>
+                                <td class="cell">{{ $store->store->area }}</td>
                                 <td class="cell">
                                     {{ $store->audit_date != null ? \Carbon\Carbon::parse($store->audit_date)->format('F d Y') : 'No schedule' }}
                                 </td>
@@ -68,7 +68,7 @@
 
                                 <td class="cell table-action-sm">
                                     @if ($store->is_complete != 2)
-                                        <a href="{{ route('audit.form', ['store_id' => $store->id]) }}">
+                                        <a href="{{ route('audit.form', ['store_id' => $store->store->id]) }}">
                                             <svg class="icon" xmlns="http://www.w3.org/2000/svg"
                                                 viewBox="0 0 512 512">
                                                 <path

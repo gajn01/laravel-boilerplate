@@ -5,7 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class auditor_list extends Model
+class AuditorList extends Model
 {
     use HasFactory;
     protected $table = 'auditor_list';
@@ -16,7 +16,7 @@ class auditor_list extends Model
     ];
     public function auditDates()
     {
-        return $this->belongsToMany(AuditDate::class, 'store_id', 'audit_date', 'wave')
+        return $this->belongsTo(AuditDate::class, 'audit_date_id', 'id')
             ->withTimestamps();
     }
 }

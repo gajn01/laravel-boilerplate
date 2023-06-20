@@ -14,7 +14,7 @@ class Dashboard extends Component
     private $timezone;
     private $time;
     private $year;
-    public $wave = 'Wave 1';
+    public $wave = 1;
     public function __construct()
     {
         $this->timezone = new DateTimeZone('Asia/Manila');
@@ -29,6 +29,7 @@ class Dashboard extends Component
         $completion = SummaryModel::select('type', \DB::raw('count(*) as count'))
             ->where('wave', $this->wave)
             ->where('date_of_visit', 'LIKE', $this->year . '-%')
+            ->whereNotNull('received_by')
             ->groupBy('type')
             ->get();
 
