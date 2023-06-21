@@ -19,6 +19,7 @@ class ServiceSpeed extends Model
         'time',
         'product_ordered',
         'ot',
+        'assembly',
         'base_assembly_points',
         'assembly_points',
         'tat',

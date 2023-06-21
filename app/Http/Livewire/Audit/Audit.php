@@ -35,11 +35,8 @@ class Audit extends Component
     }
     public function render()
     {
-        $user = UserModel::all('*')
-            ->where('user_level', '!=', '0');
-
+        $user = UserModel::all('*')->where('user_level', '!=', '0');
         $store_list = StoreModel::all();
-
         #region Schedule query
             $schedule = AuditDateModel::where(function ($q) {
                 $q->whereHas('store', function ($q) {
@@ -49,7 +46,6 @@ class Audit extends Component
                     $q->orWhere('stores.area', 'like', '%' . $searchTerm . '%');
                 });
             })->orderByRaw('ISNULL(audit_date.audit_date), audit_date.audit_date ASC');
-
             if (Auth::user()->user_level != 0) {
                 $schedule->where('auditor_list.auditor_id', Auth::user()->id);
             }

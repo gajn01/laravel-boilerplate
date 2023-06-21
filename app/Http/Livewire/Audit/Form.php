@@ -55,8 +55,6 @@ class Form extends Component
         'category_list.*.sub_categ.data_items.*.name' => 'required',
         'category_list.*.sub_categ.data_items.*.sub_category.*.*' => 'required',
     ];
-
-    
     public function __construct()
     {
         $this->timezone = new DateTimeZone('Asia/Manila');
@@ -231,7 +229,7 @@ class Form extends Component
                     $subCategoryData['total_point'] = $total_points;
                     $subCategoryData['total_percent'] = $total_bp != 0 ? round(($total_points * 100 / $total_bp), 0) : 0;
                     $service_points = ServiceSpeedModel::selectRaw(' SUM(assembly_points + tat_points + fst_points) AS total_points, SUM(base_assembly_points + base_tat_points + base_fst_points) AS base_total')->where('form_id', $this->audit_forms_id)->first();
-                  
+
                     if ($subCategory->name == "Speed and Accuracy") {
 
                         $total_base += $service_points->base_total ? $service_points->base_total : 0;
@@ -318,6 +316,7 @@ class Form extends Component
     }
     public function setTime($data)
     {
+        dd($this->curentIndex);
         $currentTime = $this->time->format('h:i A');
         if ($data == 0) {
             $this->cashier_tat[$this->currentIndex][$this->currentField] = $currentTime;
@@ -363,7 +362,6 @@ class Form extends Component
             }
         }
     }
-
     public function updatePoints($id = null, $parentIndex = null, $subIndex = null, $childIndex = null, $labelIndex = null, $categoryId = null, $subcategoryId = null, $childId = null, $labelId = null, $is_sub = null, $value = null)
     {
         if (!$this->audit_status) {
@@ -584,6 +582,15 @@ class Form extends Component
             $query->update(['location' => $value]);
         } else if ($deviation == "product") {
             $query->update(['product' => $value]);
+        }
+    }
+    public function updateService($data, $key,$value)
+    {
+        $query = ServiceSpeedModel::find($data);
+        if ($query) {
+            $query->update([
+                $key => $value
+            ]);
         }
     }
 }

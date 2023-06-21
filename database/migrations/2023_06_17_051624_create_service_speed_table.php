@@ -20,10 +20,13 @@ return new class extends Migration
             $table->string('product_ordered')->nullable();
             $table->boolean('ot')->nullable();
             $table->boolean('assembly')->nullable();
+            $table->integer('base_assembly_points')->nullable();
             $table->integer('assembly_points')->nullable();
             $table->time('tat')->nullable();
+            $table->integer('base_tat_points')->nullable();
             $table->integer('tat_points')->nullable();
             $table->boolean('fst')->nullable();
+            $table->integer('base_fst_points')->nullable();
             $table->integer('fst_points')->nullable();
             $table->string('remarks')->nullable();
             $table->dateTime('serving_time')->nullable();
