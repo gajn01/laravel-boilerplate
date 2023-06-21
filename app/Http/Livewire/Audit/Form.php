@@ -584,13 +584,21 @@ class Form extends Component
             $query->update(['product' => $value]);
         }
     }
-    public function updateService($data, $key,$value)
+    public function updateService($data, $key, $value)
     {
-        $query = ServiceSpeedModel::find($data);
+        $query = ServiceSpeedModel::find($data['id']);
         if ($query) {
-            $query->update([
-                $key => $value
-            ]);
+            if ($value >= 0) {
+                $newValue = isset($data['base_' . $key]) && intval($value) > $data['base_' . $key] ? $data['base_' . $key] : $value;
+                $query->update([
+                    $key => $newValue
+                ]);
+            }
         }
+    }
+    
+    public function removeService($id)
+    {
+
     }
 }
