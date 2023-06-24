@@ -437,14 +437,17 @@ class Form extends Component
     }
     public function onUpdateStatus()
     {
+        $auditData = AuditDateModel::where('store_id', $this->store_id)
+            ->where('audit_date', $this->date_today)->first();
         $audit_time = $this->time->format('h:i');
         $data = $this->audit_status ? false : true;
-        AuditFormModel::updateOrCreate(
+        $audit_form = AuditFormModel::updateOrCreate(
             [
                 'store_id' => $this->store_id,
-                'date_of_visit' => $this->date_today,
+                'date_of_visit' => $this->date_today
             ],
             [
+                'audit_date_id' => $auditData['id'],
                 'conducted_by_id' => Auth::user()->id,
                 'received_by' => '',
                 'time_of_audit' => $audit_time,
@@ -452,17 +455,14 @@ class Form extends Component
                 'wave' => $this->wave,
             ]
         );
+        $this->audit_forms_id = $audit_form->id;
         if ($data) {
             $this->onInitialSave();
             StoreModel::where('id', $this->store_id)
                 ->update(['audit_status' => $data]);
-
-            AuditDateModel::where('store_id', $this->store_id)
-                ->where('audit_date', $this->date_today)
-                ->update([
-                    'is_complete' => 1,
-                ]);
-
+            $auditData->update([
+                'is_complete' => 1,
+            ]);
         } else {
             $summary = SummaryModel::updateOrCreate(
                 [
@@ -552,14 +552,13 @@ class Form extends Component
                 AuditFormResultModel::create($result);
             }
         });
-        $data = [
-            ['form_id' => $this->audit_forms_id, 'is_cashier' => 1, 'name' => null, 'time' => null, 'product_order' => null, 'ot' => null, 'base_assembly_points' => 1, 'assembly_points' => 1, 'tat' => null, 'base_tat_point' => 1, 'tat_point' => 1, 'fst' => null, 'base_fst_point' => 3, 'fst_point' => 3, 'remarks' => null],
-            ['form_id' => $this->audit_forms_id, 'is_cashier' => 0, 'name' => null, 'time' => null, 'product_order' => null, 'ot' => null, 'base_assembly_points' => 1, 'assembly_points' => 1, 'tat' => null, 'base_tat_point' => 1, 'tat_point' => 1, 'fst' => null, 'base_fst_point' => 3, 'fst_point' => 3, 'remarks' => null],
-        ];
-        foreach ($data as $result) {
-            ServiceSpeedModel::create($result);
-        }
-
+        /*         $data = [
+                    ['form_id' => $this->audit_forms_id, 'is_cashier' => 1, 'name' => null, 'time' => null, 'product_order' => null, 'ot' => null, 'base_assembly_points' => 1, 'assembly_points' => 1, 'tat' => null, 'base_tat_points' => 1, 'tat_points' => 1, 'fst' => null, 'base_fst_points' => 3, 'fst_points' => 3, 'remarks' => null],
+                    ['form_id' => $this->audit_forms_id, 'is_cashier' => 0, 'name' => null, 'time' => null, 'product_order' => null, 'ot' => null, 'base_assembly_points' => 1, 'assembly_points' => 1, 'tat' => null, 'base_tat_points' => 1, 'tat_points' => 1, 'fst' => null, 'base_fst_points' => 3, 'fst_points' => 3, 'remarks' => null],
+                ];
+                foreach ($data as $speed) {
+                    ServiceSpeedModel::create($speed);
+                } */
     }
     public function updateCriticalDeviation($data = null, $value = null, $deviation = null)
     {
@@ -596,9 +595,7 @@ class Form extends Component
             }
         }
     }
-    
     public function removeService($id)
     {
-
     }
 }

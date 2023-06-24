@@ -14,6 +14,7 @@ return new class extends Migration
         Schema::create('audit_forms', function (Blueprint $table) {
             $table->id();
             $table->integer('store_id');
+            $table->integer('audit_date_id');
             $table->timestamp('date_of_visit');
             $table->string('conducted_by_id');
             $table->string('received_by');

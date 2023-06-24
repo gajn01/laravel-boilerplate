@@ -1,5 +1,4 @@
 <?php
-
 namespace App\Http\Livewire\Audit;
 
 use Livewire\Component;
@@ -7,6 +6,7 @@ use App\Models\Store as StoreModel;
 use App\Models\User as UserModel;
 use App\Models\AuditDate as AuditDateModel;
 use App\Models\AuditorList as AuditorListModel;
+use App\Models\AuditForm as AuditFormModel;
 use App\Helpers\CustomHelper;
 use Illuminate\Support\Facades\Auth;
 use Livewire\WithPagination;
@@ -35,14 +35,12 @@ class Schedule extends Component
     public $date_today;
     public $year;
     public $date_filter;
-
     public function __construct()
     {
         $this->timezone = new DateTimeZone('Asia/Manila');
         $this->time = new DateTime('now', $this->timezone);
         $this->date_today = $this->time->format('Y-m-d');
         $this->year = $this->time->format('Y');
-
     }
     public function mount()
     {
@@ -50,13 +48,8 @@ class Schedule extends Component
     }
     public function render()
     {
-
-        $user = UserModel::all('*')
-            ->where('user_level', '!=', '0');
-
+        $user = UserModel::all('*')->where('user_level', '!=', '0');
         $store_list = StoreModel::all();
-
-
         #region Schedule query
         $schedule = AuditDateModel::where(function ($q) {
             $q->whereHas('store', function ($q) {
@@ -107,15 +100,14 @@ class Schedule extends Component
         $this->validate([
             'store_id' => 'required',
             'audit_date' => 'required',
-            'wave' => 'required',
+            'wave' => 'required', 
         ]);
         $auditDateData = [
             'store_id' => strip_tags($this->store_id),
             'audit_date' => strip_tags($this->audit_date),
             'wave' => strip_tags($this->wave),
         ];
-
-        /*    $check_schedule = AuditDateModel::where('store_id', $this->store_id)
+        /*$check_schedule = AuditDateModel::where('store_id', $this->store_id)
                ->where('wave', $this->wave)
                ->where('audit_date', 'LIKE', $this->year . '-%')
                ->first();
@@ -145,8 +137,9 @@ class Schedule extends Component
             AuditorListModel::insert($auditorListData);
             $this->auditor_list = [];
         }
+       /*  $auditForms = AuditFormModel::where()
+        ->update(); */
     }
-
     public function onDelete($id)
     {
         $schedule = AuditDateModel::find($id);
@@ -157,8 +150,8 @@ class Schedule extends Component
         $this->audit_date_id = $id;
         $audit = AuditDateModel::find($id);
         $this->auditor_list = AuditorListModel::select('*')
-            ->where('audit_date_id', $id)
-            ->get();
+        ->where('audit_date_id', $id)
+        ->get();
         $this->audit_date = optional($audit)->audit_date;
         $this->store_id = optional($audit)->store_id;
         $this->audit_date = optional($audit)->audit_date;

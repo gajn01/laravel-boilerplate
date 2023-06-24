@@ -3,7 +3,6 @@
 namespace App\Http\Livewire\Audit;
 
 use Livewire\Component;
-use App\Models\SubCategory as SubCategoryModel;
 use App\Models\SubSubCategoryLabel as SubSubCategoryLabelModel;
 use App\Models\DropdownMenu as DropdownMenuModel;
 use App\Models\Store as StoreModel;
@@ -14,10 +13,8 @@ use App\Models\Summary as SummaryModel;
 use App\Models\AuditForm as AuditFormModel;
 use App\Models\AuditFormResult as AuditFormResultModel;
 use App\Models\CriticalDeviationResult as CriticalDeviationResultModel;
-use Illuminate\Support\Facades\Auth;
 use DateTime;
 use DateTimeZone;
-
 class Result extends Component
 {
     public $active_index = 0;
@@ -34,8 +31,6 @@ class Result extends Component
     private $timezone;
     private $time;
     private $date_today;
-
-
     public function __construct()
     {
         $this->timezone = new DateTimeZone('Asia/Manila');
@@ -44,7 +39,6 @@ class Result extends Component
     }
     public function render()
     {
-
         $this->summary_details = SummaryModel::find($this->result_id);
         $this->audit_forms_id = $this->summary_details->form_id;
         // dd($this->audit_forms_id);
