@@ -13,8 +13,11 @@ use App\Models\Summary as SummaryModel;
 use App\Models\AuditForm as AuditFormModel;
 use App\Models\AuditFormResult as AuditFormResultModel;
 use App\Models\CriticalDeviationResult as CriticalDeviationResultModel;
+use App\Models\ServiceSpeed as ServiceSpeedModel;
+
 use DateTime;
 use DateTimeZone;
+
 class Result extends Component
 {
     public $active_index = 0;
@@ -31,6 +34,8 @@ class Result extends Component
     private $timezone;
     private $time;
     private $date_today;
+    public $cashier_tat;
+    public $server_cat;
     public function __construct()
     {
         $this->timezone = new DateTimeZone('Asia/Manila');
@@ -41,6 +46,14 @@ class Result extends Component
     {
         $this->summary_details = SummaryModel::find($this->result_id);
         $this->audit_forms_id = $this->summary_details->form_id;
+
+        $service = ServiceSpeedModel::where('form_id', $this->audit_forms_id)
+            ->whereIn('is_cashier', [0, 1])
+            ->get();
+
+        $this->cashier_tat = $service->where('is_cashier', 1);
+        $this->server_cat = $service->where('is_cashier', 0);
+
         // dd($this->audit_forms_id);
         $store = StoreModel::find($this->store_id);
         $this->store = $store;
@@ -115,7 +128,7 @@ class Result extends Component
                             'tag' => '',
                             'deviation' => $saved_deviation,
                             'dropdown' => $dropdownMenu,
-                            'is_na' => $saved_na ,
+                            'is_na' => $saved_na,
 
                         ];
                     }) : $subCategory->subCategoryLabels->map(function ($label) use (&$total_bp, &$total_points, &$total_base, &$total_score, &$category_id, &$sub_category_id, &$sub_sub_category_id, ) {
@@ -173,11 +186,23 @@ class Result extends Component
                             'label' => $subLabelData,
                         ];
                     });
+
                     $subCategoryData['base_score'] = $total_bp;
-                    $subCategoryData['total_base'] = $total_base;
                     $subCategoryData['total_point'] = $total_points;
-                    $subCategoryData['total_score'] = $total_score;
                     $subCategoryData['total_percent'] = $total_bp != 0 ? round(($total_points * 100 / $total_bp), 0) : 0;
+                    $service_points = ServiceSpeedModel::selectRaw(' SUM(assembly_points + tat_points + fst_points) AS total_points, SUM(base_assembly_points + base_tat_points + base_fst_points) AS base_total')->where('form_id', $this->audit_forms_id)->first();
+
+                    if ($subCategory->name == "Speed and Accuracy") {
+
+                        $total_base += $service_points->base_total ? $service_points->base_total : 0;
+                        $total_score += $service_points->base_total ? $service_points->total_points : 0;
+                        $subCategoryData['base_score'] = $service_points->base_total ? $service_points->base_total : 0;
+                        $subCategoryData['total_point'] = $service_points->base_total ? $service_points->total_points : 0;
+                        $subCategoryData['total_percent'] = $service_points->base_total != 0 ? round(($service_points->total_points * 100 / $service_points->base_total), 0) : 0;
+                    }
+                    $subCategoryData['total_base'] = $total_base;
+                    $subCategoryData['total_score'] = $total_score;
+
                     $total_bp = 0;
                     $total_points = 0;
                     return $subCategoryData;
@@ -254,9 +279,9 @@ class Result extends Component
     public function mount($store_id = null, $result_id = null)
     {
         $this->store_id = $store_id;
-        if($result_id){
+        if ($result_id) {
             $this->summary_id = $result_id;
-        }else{
+        } else {
             $this->audit_forms_id = AuditFormModel::where('store_id', $this->store_id)->where('date_of_visit', $this->date_today)->value('id');
         }
     }

@@ -137,8 +137,8 @@ class Schedule extends Component
             AuditorListModel::insert($auditorListData);
             $this->auditor_list = [];
         }
-       /*  $auditForms = AuditFormModel::where()
-        ->update(); */
+        AuditFormModel::where('audit_date_id', $this->audit_date_id)
+        ->update(['date_of_visit' => $this->audit_date]);
     }
     public function onDelete($id)
     {

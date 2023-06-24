@@ -137,8 +137,7 @@
             <div class="modal-content">
                 <div class="modal-header">
                     <h5 class="modal-title" id="modalTitleId">{{ $modalTitle }} Store Schedule</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"
-                        wire:click="reset"></button>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" wire:click="reset"></button>
                 </div>
                 <div class="modal-body">
                     <form wire:submit.prevent="saveSchedule">
