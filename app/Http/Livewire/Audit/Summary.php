@@ -9,6 +9,7 @@ use App\Models\CriticalDeviationResult as CriticalDeviationResultModel;
 use App\Models\Summary as SummaryModel;
 use App\Models\AuditDate as AuditDateModel;
 use App\Models\AuditFormResult as AuditFormResultModel;
+use App\Models\ServiceSpeed as ServiceSpeedModel;
 use Illuminate\Support\Facades\Auth;
 use App\Helpers\CustomHelper;
 use Illuminate\Support\Facades\DB;
@@ -57,6 +58,11 @@ class Summary extends Component
         $this->dov = $this->summary_details->date_of_visit;
         $this->audit_forms_id = $this->summary_details->form_id;
 
+        
+        $critical_deviations = CriticalDeviationResultModel::where('form_id', $this->audit_forms_id)
+            ->whereNotNull('score')
+            ->get();
+
         $summary = DB::table('audit_results')
             ->select('category_id', 'category_name')
             ->selectRaw('COALESCE(SUM(label_base_point), 0) + COALESCE(SUM(sub_sub_base_point), 0) AS total_base_points')
@@ -66,17 +72,23 @@ class Summary extends Component
             ->groupBy('category_id', 'category_name')
             ->get();
 
-        $critical_deviations = CriticalDeviationResultModel::where('form_id', $this->audit_forms_id)
-            ->whereNotNull('score')
-            ->get();
+        $service_points = ServiceSpeedModel::selectRaw(' SUM(assembly_points + tat_points + fst_points) AS total_points, SUM(base_assembly_points + base_tat_points + base_fst_points) AS base_total')->where('form_id', $this->audit_forms_id)->first();
 
         foreach ($summary as $key => $value) {
+
+            if($value->category_name == 'Service'){
+                $value->total_base_points += $service_points->base_total;
+                $value->total_points += $service_points->total_points;
+                $value->percentage = round(($value->total_points * 100 / $value->total_base_points), 0);
+            }
             $critical_deviation = $critical_deviations->where('category_id', $value->category_id)->sum('score');
-            $value->percentage -= $critical_deviation;
+            $value->percentage -= $critical_deviation ? $critical_deviation : 0;
             $value->percentage = round($value->percentage, 2);
         }
         $store = StoreModel::find($this->store_id);
         $this->store = $store;
+        // dd($summary);
+
         return view('livewire.audit.summary', ['summary' => $summary, 'critical_deviation' => $critical_deviations])->extends('layouts.app');
     }
 

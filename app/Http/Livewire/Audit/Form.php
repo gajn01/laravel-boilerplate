@@ -113,7 +113,6 @@ class Form extends Component
                         'total_percent' => 0,
                     ];
 
-
                     $subCategoryData['sub_category'] = ($subCategory->is_sub == 0) ? $subCategory->subCategoryLabels->map(function ($label) use (&$total_bp, &$category_id, &$sub_category_id, &$sub_sub_category_id, &$total_points, &$total_base, &$total_score) {
                         $sub_sub_category_id = $label->id;
 
