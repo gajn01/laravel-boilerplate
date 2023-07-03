@@ -11,8 +11,7 @@ return new class extends Migration
             $table->string('code');
             $table->string('name');
             $table->integer('type');
-            $table->string('representative');
-            $table->string('area');
+            $table->string('area')->nullable();
             $table->boolean('audit_status')->default(false);
             $table->timestamps();
         });

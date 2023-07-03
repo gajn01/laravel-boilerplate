@@ -87,8 +87,6 @@ class Summary extends Component
         }
         $store = StoreModel::find($this->store_id);
         $this->store = $store;
-        // dd($summary);
-
         return view('livewire.audit.summary', ['summary' => $summary, 'critical_deviation' => $critical_deviations])->extends('layouts.app');
     }
 

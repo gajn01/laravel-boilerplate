@@ -19,12 +19,12 @@ return new class extends Migration
             $table->string('label');
             $table->text('remarks')->nullable();
             $table->foreignId('score_dropdown_id')->nullable()->constrained('score_dropdowns')->onDelete('cascade');
-            $table->boolean('is_location')->default(false);
+            $table->boolean('is_location')->nullable()->default(false);
             $table->foreignId('location_dropdown_id')->nullable()->constrained('dropdowns')->onDelete('cascade');
-            $table->boolean('is_product')->default(false);
+            $table->boolean('is_product')->nullable()->default(false);
             $table->foreignId('product_dropdown_id')->nullable()->constrained('dropdowns')->onDelete('cascade');
-            $table->boolean('is_sd')->default(false);
-            $table->boolean('is_dropdown')->default(false);
+            $table->boolean('is_sd')->nullable()->default(false);
+            $table->boolean('is_dropdown')->nullable()->default(false);
             $table->foreignId('dropdown_id')->nullable()->constrained('dropdowns')->onDelete('cascade');
             $table->timestamps();
         });
