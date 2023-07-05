@@ -529,7 +529,7 @@ class Form extends Component
             });
         })->flatten(1);
         $critical_deviation = collect($this->category_list)->flatMap(function ($data) {
-            $deviations = CriticalDeviationMenuModel::where('critical_deviation_id', $data->critical_deviation)->get();
+            $deviations = CriticalDeviationMenuModel::where('critical_deviation_id', $data->critical_deviation_id)->get();
             return collect($deviations)->map(function ($dev) use ($data) {
                 $result = [
                     'form_id' => $this->audit_forms_id,

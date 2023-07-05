@@ -57,7 +57,7 @@ class Result extends Component
         // dd($this->audit_forms_id);
         $store = StoreModel::find($this->store_id);
         $this->store = $store;
-        $data = CategoryModel::select('id', 'name', 'type', 'critical_deviation')
+        $data = CategoryModel::select('id', 'name', 'type', 'critical_deviation_id')
             ->where('type', $this->store->type)
             ->with([
                 'subCategories.subCategoryLabels' => function ($query) {
@@ -214,7 +214,7 @@ class Result extends Component
             ];
             $category->sub_categ = $sub_category;
             $critical_deviation = CriticalDeviationMenuModel::select('*')
-                ->where('critical_deviation_id', $category->critical_deviation)
+                ->where('critical_deviation_id', $category->critical_deviation_id)
                 ->get();
             $category->critical_deviation = $critical_deviation->map(function ($cd) use ($category, &$total_score, &$saved_critical_score) {
                 $dropdownMenu = DropdownMenuModel::where('dropdown_id', $cd->dropdown_id)->get()->toArray();
