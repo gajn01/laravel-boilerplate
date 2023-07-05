@@ -147,7 +147,7 @@
                             <select class="form-select form-select-md" wire:model="store_id" id="store_id">
                                 <option selected hidden>Select store</option>
                                 @foreach ($store_list as $item)
-                                    <option value="{{ $item->id }}">{{ $item->name }}</option>
+                                    <option value="{{ $item->id }}">{{ $item->TypeString }} - {{ $item->name }}</option>
                                 @endforeach
                             </select>
                             @error('store_id')

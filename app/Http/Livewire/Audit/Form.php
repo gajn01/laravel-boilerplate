@@ -84,7 +84,7 @@ class Form extends Component
         $this->store_type = $store->type;
         $this->audit_status = $store->audit_status;
         $this->actionTitle = $this->audit_status ? 'Save' : 'Start';
-        $data = CategoryModel::select('id', 'name', 'type', 'critical_deviation')
+        $data = CategoryModel::select('id', 'name', 'type', 'critical_deviation_id')
             ->where('type', $this->store_type)
             ->with([
                 'subCategories.subCategoryLabels' => function ($query) {
@@ -93,6 +93,7 @@ class Form extends Component
             ])
             ->get();
         foreach ($data as $category) {
+
             $subCategories = $category->subCategories;
             $category_id = $category->id;
             $sub_category_id = 0;
@@ -251,7 +252,7 @@ class Form extends Component
             ];
             $category->sub_categ = $sub_category;
             $critical_deviation = CriticalDeviationMenuModel::select('*')
-                ->where('critical_deviation_id', $category->critical_deviation)
+                ->where('critical_deviation_id', $category->critical_deviation_id)
                 ->get();
             $category->critical_deviation = $critical_deviation->map(function ($cd) use ($category, &$total_score, &$saved_critical_score) {
                 $dropdownMenu = DropdownMenuModel::where('dropdown_id', $cd->dropdown_id)->get()->toArray();
@@ -438,8 +439,12 @@ class Form extends Component
     {
         $auditData = AuditDateModel::where('store_id', $this->store_id)
             ->where('audit_date', $this->date_today)->first();
+        if($auditData){
+
+        }
         $audit_time = $this->time->format('h:i');
         $data = $this->audit_status ? false : true;
+
         $audit_form = AuditFormModel::updateOrCreate(
             [
                 'store_id' => $this->store_id,

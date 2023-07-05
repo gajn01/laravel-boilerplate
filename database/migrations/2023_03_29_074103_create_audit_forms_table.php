@@ -17,8 +17,8 @@ return new class extends Migration
             $table->integer('audit_date_id');
             $table->timestamp('date_of_visit');
             $table->string('conducted_by_id');
-            $table->string('received_by');
-            $table->timestamp('time_of_audit');
+            $table->string('received_by')->nullable();
+            $table->time('time_of_audit');
             $table->integer('wave');
             $table->integer('audit_status');
             $table->timestamps();

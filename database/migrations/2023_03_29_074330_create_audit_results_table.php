@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('audit_results', function (Blueprint $table) {
             $table->id();
             $table->integer('form_id');
-            $table->integer('category_id')->unique();
+            $table->integer('category_id');
             $table->string('category_name');
             $table->integer('sub_category_id')->nullable();
             $table->string('sub_name')->nullable();
@@ -35,7 +35,7 @@ return new class extends Migration
             $table->integer('label_point')->nullable();
             $table->string('label_remarks')->nullable();
             $table->string('label_file')->nullable();
-
+            $table->timestamps();
         });
     }
 

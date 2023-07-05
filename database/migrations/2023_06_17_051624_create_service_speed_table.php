@@ -29,7 +29,7 @@ return new class extends Migration
             $table->integer('base_fst_points')->nullable();
             $table->integer('fst_points')->nullable();
             $table->string('remarks')->nullable();
-            $table->dateTime('serving_time')->nullable();
+            $table->time('serving_time')->nullable();
             $table->timestamps();
 
         });
