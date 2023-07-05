@@ -4,6 +4,7 @@ namespace Database\Seeders;
 
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
+use App\Models\User;
 
 class UserSeeder extends Seeder
 {
@@ -13,7 +14,7 @@ class UserSeeder extends Seeder
     public function run(): void
     {
         //
-        \App\Models\User::factory()->create([
+        User::create([
             'name' => 'Super User',
             'employee_id' => 1,
             'email' => 'su@example.com',

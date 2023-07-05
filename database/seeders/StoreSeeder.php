@@ -5,883 +5,507 @@ namespace Database\Seeders;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 use App\Models\Store;
+
 class StoreSeeder extends Seeder
 {
-    /**
-     * Run the database seeds.
-     */
-    public function run(): void
-    {
-        $store_list = [
-            [
-                'code' => 'C001',
-                'name' => 'Serendra',
-                'type' => '1',
-                'area' => '',
-             ],
-             [
-                'code' => 'C002',
-                'name' => 'Trinoma',
-                'type' => '1',
-                'area' => '',
-             ],
-             [
-                'code' => 'C003',
-                'name' => 'Alabang Town Center',
-                'type' => '1',
-                'area' => '',
-             ],
-             [
-                'code' => 'C004',
-                'name' => 'Rockwell Business Center',
-                'type' => '1',
-                'area' => '',
-             ],
-             [
-                'code' => 'C005',
-                'name' => 'Greenbelt 2',
-                'type' => '1',
-                'area' => '',
-             ],
-             [
-                'code' => 'C006',
-                'name' => 'Lucky China Town',
-                'type' => '1',
-                'area' => '',
-             ],
-             [
-                'code' => 'C007',
-                'name' => 'SM North EDSA',
-                'type' => '1',
-                'area' => '',
-             ],
-             [
-                'code' => 'C008',
-                'name' => 'Steps',
-                'type' => '1',
-                'area' => '',
-             ],
-             [
-                'code' => 'C009',
-                'name' => 'SM Aura',
-                'type' => '1',
-                'area' => '',
-             ],
-             [
-                'code' => 'C010',
-                'name' => 'SMBF',
-                'type' => '1',
-                'area' => '',
-             ],
-             [
-                'code' => 'C011',
-                'name' => 'Ayala Fairview Terreces',
-                'type' => '1',
-                'area' => '',
-             ],
-             [
-                'code' => 'C012',
-                'name' => 'Gateway',
-                'type' => '1',
-                'area' => '',
-             ],
-             [
-                'code' => 'C013',
-                'name' => 'St. Luke\'s',
-                'type' => '1',
-                'area' => '',
-             ],
-             [
-                'code' => 'C014',
-                'name' => 'Shangri-La Mall',
-                'type' => '1',
-                'area' => '',
-             ],
-             [
-                'code' => 'C015',
-                'name' => 'Century City Mall',
-                'type' => '1',
-                'area' => '',
-             ],
-             [
-                'code' => 'C016',
-                'name' => 'SM Fairview',
-                'type' => '1',
-                'area' => '',
-             ],
-             [
-                'code' => 'C017',
-                'name' => 'NAIA Terminal 3',
-                'type' => '1',
-                'area' => '',
-             ],
-             [
-                'code' => 'C018',
-                'name' => 'Enterprise',
-                'type' => '1',
-                'area' => '',
-             ],
-             [
-                'code' => 'C019',
-                'name' => 'Estancia',
-                'type' => '1',
-                'area' => '',
-             ],
-             [
-                'code' => 'C020',
-                'name' => 'Uptown BGC',
-                'type' => '1',
-                'area' => '',
-             ],
-             [
-                'code' => 'C021',
-                'name' => 'SM Manila',
-                'type' => '1',
-                'area' => '',
-             ],
-             [
-                'code' => 'C022',
-                'name' => 'Venetian Mall',
-                'type' => '1',
-                'area' => '',
-             ],
-             [
-                'code' => 'C023',
-                'name' => 'MAAX',
-                'type' => '1',
-                'area' => '',
-             ],
-             [
-                'code' => 'C024',
-                'name' => 'Unimart',
-                'type' => '1',
-                'area' => '',
-             ],
-             [
-                'code' => 'C025',
-                'name' => 'Festival',
-                'type' => '1',
-                'area' => '',
-             ],
-             [
-                'code' => 'C026',
-                'name' => 'SM San Lazaro',
-                'type' => '1',
-                'area' => '',
-             ],
-             [
-                'code' => 'C027',
-                'name' => 'SM Mall of Asia',
-                'type' => '1',
-                'area' => '',
-             ],
-             [
-                'code' => 'C028',
-                'name' => 'Rob Galleria',
-                'type' => '1',
-                'area' => '',
-             ],
-             [
-                'code' => 'C029',
-                'name' => 'Southwoods',
-                'type' => '1',
-                'area' => '',
-             ],
-             [
-                'code' => 'C030',
-                'name' => 'Ayala Feliz',
-                'type' => '1',
-                'area' => '',
-             ],
-             [
-                'code' => 'C031',
-                'name' => 'Powerplant Mall',
-                'type' => '1',
-                'area' => '',
-             ],
-             [
-                'code' => 'C032',
-                'name' => 'SM Southmall',
-                'type' => '1',
-                'area' => '',
-             ],
-             [
-                'code' => 'C033',
-                'name' => 'Rob Place Midtown',
-                'type' => '1',
-                'area' => '',
-             ],
-             [
-                'code' => 'C034',
-                'name' => 'Eastwood',
-                'type' => '1',
-                'area' => '',
-             ],
-             [
-                'code' => 'C035',
-                'name' => 'One Bonifacio High Street',
-                'type' => '1',
-                'area' => '',
-             ],
-             [
-                'code' => 'C036',
-                'name' => 'U.P. Town Center',
-                'type' => '1',
-                'area' => '',
-             ],
-             [
-                'code' => 'C037',
-                'name' => 'Robinsons Magnolia',
-                'type' => '1',
-                'area' => '',
-             ],
-             [
-                'code' => 'C038',
-                'name' => 'Rob Galleria South',
-                'type' => '1',
-                'area' => '',
-             ],
-             [
-                'code' => 'C039',
-                'name' => 'SM East Ortigas',
-                'type' => '1',
-                'area' => '',
-             ],
-             [
-                'code' => 'C040',
-                'name' => 'SM Marikina',
-                'type' => '1',
-                'area' => '',
-             ],
-             [
-                'code' => 'C041',
-                'name' => 'Resorts World Manila',
-                'type' => '1',
-                'area' => '',
-             ],
-             [
-                'code' => 'C042',
-                'name' => 'Promenade',
-                'type' => '1',
-                'area' => '',
-             ],
-             [
-                'code' => 'C043',
-                'name' => 'Ayala 30th',
-                'type' => '1',
-                'area' => '',
-             ],
-             [
-                'code' => 'C044',
-                'name' => 'Baymall',
-                'type' => '1',
-                'area' => '',
-             ],
-             [
-                'code' => 'C045',
-                'name' => 'Ayala Malls Cloverleaf',
-                'type' => '1',
-                'area' => '',
-             ],
-             [
-                'code' => 'C046',
-                'name' => 'SM Makati',
-                'type' => '1',
-                'area' => '',
-             ],
-             [
-                'code' => 'C048',
-                'name' => 'Amphitheater',
-                'type' => '1',
-                'area' => '',
-             ],
-             [
-                'code' => 'C049',
-                'name' => 'New Clark',
-                'type' => '1',
-                'area' => '',
-             ],
-             [
-                'code' => 'C050',
-                'name' => 'SM Sucat',
-                'type' => '1',
-                'area' => '',
-             ],
-             [
-                'code' => 'C051',
-                'name' => 'City of Dreams',
-                'type' => '1',
-                'area' => '',
-             ],
-             [
-                'code' => 'C052',
-                'name' => 'Rob Tagaytay',
-                'type' => '1',
-                'area' => '',
-             ],
-             [
-                'code' => 'C053',
-                'name' => 'Nuvali Solenad',
-                'type' => '1',
-                'area' => '',
-             ],
-             [
-                'code' => 'C054',
-                'name' => 'Twinlakes',
-                'type' => '1',
-                'area' => '',
-             ],
-             [
-                'code' => 'C055',
-                'name' => 'SM G. Central',
-                'type' => '1',
-                'area' => '',
-             ],
-             [
-                'code' => 'C056',
-                'name' => 'Sta. Mesa',
-                'type' => '1',
-                'area' => '',
-             ],
-             [
-                'code' => 'C057',
-                'name' => 'SM Masinag',
-                'type' => '1',
-                'area' => '',
-             ],
-             [
-                'code' => 'C058',
-                'name' => 'Rob La Union',
-                'type' => '1',
-                'area' => '',
-             ],
-             [
-                'code' => 'C059',
-                'name' => 'Rob Antipolo',
-                'type' => '1',
-                'area' => '',
-             ],
-             [
-                'code' => 'C060',
-                'name' => 'SM Baguio',
-                'type' => '1',
-                'area' => '',
-             ],
-             [
-                'code' => 'C061',
-                'name' => 'SM Tanza',
-                'type' => '1',
-                'area' => '',
-             ],
-             [
-                'code' => 'C062',
-                'name' => 'SM Pasig',
-                'type' => '1',
-                'area' => '',
-             ],
-             [
-                'code' => 'C063',
-                'name' => 'Okada',
-                'type' => '1',
-                'area' => '',
-             ],
-             [
-                'code' => 'C064',
-                'name' => 'Cash & Carry',
-                'type' => '1',
-                'area' => '',
-             ],
-             [
-                'code' => 'C065',
-                'name' => 'Arcovia',
-                'type' => '1',
-                'area' => '',
-             ],
-             [
-                'code' => 'C066',
-                'name' => 'Asian Hospital',
-                'type' => '1',
-                'area' => '',
-             ],
-             [
-                'code' => 'C067',
-                'name' => 'Parqal Aseana',
-                'type' => '1',
-                'area' => '',
-             ],
-             [
-                'code' => 'C068',
-                'name' => 'Ayala Marquee Mall',
-                'type' => '1',
-                'area' => '',
-             ],
-             [
-                'code' => 'C069',
-                'name' => 'Outlets Lipa',
-                'type' => '1',
-                'area' => '',
-             ],
-             [
-                'code' => 'C070',
-                'name' => 'Paseo de Sta. Rosa',
-                'type' => '1',
-                'area' => '',
-             ],
-             [
-                'code' => 'K001',
-                'name' => 'Glorietta 4',
-                'type' => '2',
-                'area' => '',
-             ],
-             [
-                'code' => 'K002',
-                'name' => 'Rockwell PP',
-                'type' => '2',
-                'area' => '',
-             ],
-             [
-                'code' => 'K003',
-                'name' => 'RCBC Plaza',
-                'type' => '2',
-                'area' => '',
-             ],
-             [
-                'code' => 'K004',
-                'name' => 'Mall of Asia',
-                'type' => '2',
-                'area' => '',
-             ],
-             [
-                'code' => 'K005',
-                'name' => 'Makati Medical',
-                'type' => '2',
-                'area' => '',
-             ],
-             [
-                'code' => 'K006',
-                'name' => 'Gateway',
-                'type' => '2',
-                'area' => '',
-             ],
-             [
-                'code' => 'K007',
-                'name' => 'Mega Mall',
-                'type' => '2',
-                'area' => '',
-             ],
-             [
-                'code' => 'K008',
-                'name' => 'SM Pasig',
-                'type' => '2',
-                'area' => '',
-             ],
-             [
-                'code' => 'K009',
-                'name' => 'Cash and Carry',
-                'type' => '2',
-                'area' => '',
-             ],
-             [
-                'code' => 'K010',
-                'name' => 'Okada Manila',
-                'type' => '2',
-                'area' => '',
-             ],
-             [
-                'code' => 'K011',
-                'name' => 'SM Sucat',
-                'type' => '2',
-                'area' => '',
-             ],
-             [
-                'code' => 'K012',
-                'name' => 'Ayala 30th',
-                'type' => '2',
-                'area' => '',
-             ],
-             [
-                'code' => 'K013',
-                'name' => 'SM Masinag',
-                'type' => '2',
-                'area' => '',
-             ],
-             [
-                'code' => 'K014',
-                'name' => 'SM Sta. Rosa',
-                'type' => '2',
-                'area' => '',
-             ],
-             [
-                'code' => 'K015',
-                'name' => 'Double Dragon',
-                'type' => '2',
-                'area' => '',
-             ],
-             [
-                'code' => 'K016',
-                'name' => 'Ayala Circuit',
-                'type' => '2',
-                'area' => '',
-             ],
-             [
-                'code' => 'K017',
-                'name' => 'SM Bicutan',
-                'type' => '2',
-                'area' => '',
-             ],
-             [
-                'code' => 'K018',
-                'name' => 'SM North',
-                'type' => '2',
-                'area' => '',
-             ],
-             [
-                'code' => 'K019',
-                'name' => 'Ayala Cloverleaf',
-                'type' => '2',
-                'area' => '',
-             ],
-             [
-                'code' => 'K020',
-                'name' => 'Waltermart Makati',
-                'type' => '2',
-                'area' => '',
-             ],
-             [
-                'code' => 'K021',
-                'name' => 'ATC',
-                'type' => '2',
-                'area' => '',
-             ],
-             [
-                'code' => 'K022',
-                'name' => 'Central Square',
-                'type' => '2',
-                'area' => '',
-             ],
-             [
-                'code' => 'K023',
-                'name' => 'Fishermall',
-                'type' => '2',
-                'area' => '',
-             ],
-             [
-                'code' => 'K024',
-                'name' => 'VMall',
-                'type' => '2',
-                'area' => '',
-             ],
-             [
-                'code' => 'K025',
-                'name' => 'Shangrilla',
-                'type' => '2',
-                'area' => '',
-             ],
-             [
-                'code' => 'K026',
-                'name' => 'Ayala Vertis',
-                'type' => '2',
-                'area' => '',
-             ],
-             [
-                'code' => 'K027',
-                'name' => 'Festival',
-                'type' => '2',
-                'area' => '',
-             ],
-             [
-                'code' => 'K028',
-                'name' => 'Trinoma',
-                'type' => '2',
-                'area' => '',
-             ],
-             [
-                'code' => 'K029',
-                'name' => 'SM Bacoor',
-                'type' => '2',
-                'area' => '',
-             ],
-             [
-                'code' => 'K030',
-                'name' => 'SM Pampanga',
-                'type' => '2',
-                'area' => '',
-             ],
-             [
-                'code' => 'K031',
-                'name' => 'SM Molino',
-                'type' => '2',
-                'area' => '',
-             ],
-             [
-                'code' => 'K032',
-                'name' => 'SM Marilao',
-                'type' => '2',
-                'area' => '',
-             ],
-             [
-                'code' => 'K033',
-                'name' => 'Rob. Malolos',
-                'type' => '2',
-                'area' => '',
-             ],
-             [
-                'code' => 'K034',
-                'name' => 'Waltermart North EDSA',
-                'type' => '2',
-                'area' => '',
-             ],
-             [
-                'code' => 'K035',
-                'name' => 'Lucky Chinatown',
-                'type' => '2',
-                'area' => '',
-             ],
-             [
-                'code' => 'K036',
-                'name' => 'SM Baliwag',
-                'type' => '2',
-                'area' => '',
-             ],
-             [
-                'code' => 'K037',
-                'name' => 'Ayala Marquee',
-                'type' => '2',
-                'area' => '',
-             ],
-             [
-                'code' => 'K038',
-                'name' => 'SM Calamba',
-                'type' => '2',
-                'area' => '',
-             ],
-             [
-                'code' => 'K039',
-                'name' => 'SM Batangas',
-                'type' => '2',
-                'area' => '',
-             ],
-             [
-                'code' => 'K040',
-                'name' => 'Rob. Antipolo',
-                'type' => '2',
-                'area' => '',
-             ],
-             [
-                'code' => 'K041',
-                'name' => 'SM Valenzuela',
-                'type' => '2',
-                'area' => '',
-             ],
-             [
-                'code' => 'K042',
-                'name' => 'Walter Macapagal',
-                'type' => '2',
-                'area' => '',
-             ],
-             [
-                'code' => 'K043',
-                'name' => 'SM Marilao Atrium',
-                'type' => '2',
-                'area' => '',
-             ],
-             [
-                'code' => 'K044',
-                'name' => 'Market Market',
-                'type' => '2',
-                'area' => '',
-             ],
-             [
-                'code' => 'K045',
-                'name' => 'Rob Lipa Batangas',
-                'type' => '2',
-                'area' => '',
-             ],
-             [
-                'code' => 'K046',
-                'name' => 'Ayala Baymall',
-                'type' => '2',
-                'area' => '',
-             ],
-             [
-                'code' => 'K047',
-                'name' => 'SM Lipa Batangas',
-                'type' => '2',
-                'area' => '',
-             ],
-             [
-                'code' => 'K048',
-                'name' => 'SM Clark',
-                'type' => '2',
-                'area' => '',
-             ],
-             [
-                'code' => 'K049',
-                'name' => 'SM Southmall',
-                'type' => '2',
-                'area' => '',
-             ],
-             [
-                'code' => 'K050',
-                'name' => 'Rob Pampanga',
-                'type' => '2',
-                'area' => '',
-             ],
-             [
-                'code' => 'K051',
-                'name' => 'SM Olongapo',
-                'type' => '2',
-                'area' => '',
-             ],
-             [
-                'code' => 'K052',
-                'name' => 'Rob. La Union',
-                'type' => '2',
-                'area' => '',
-             ],
-             [
-                'code' => 'K053',
-                'name' => 'SM Tarlac',
-                'type' => '2',
-                'area' => '',
-             ],
-             [
-                'code' => 'K054',
-                'name' => 'SM Telabastagan',
-                'type' => '2',
-                'area' => '',
-             ],
-             [
-                'code' => 'K055',
-                'name' => 'SM Pulilan',
-                'type' => '2',
-                'area' => '',
-             ],
-             [
-                'code' => 'K056',
-                'name' => 'SM Taytay B',
-                'type' => '2',
-                'area' => '',
-             ],
-             [
-                'code' => 'K057',
-                'name' => 'SM San Pablo',
-                'type' => '2',
-                'area' => '',
-             ],
-             [
-                'code' => 'K058',
-                'name' => 'SM Dasma',
-                'type' => '2',
-                'area' => '',
-             ],
-             [
-                'code' => 'K059',
-                'name' => 'SM Cabanatuan',
-                'type' => '2',
-                'area' => '',
-             ],
-             [
-                'code' => 'K060',
-                'name' => 'SM Baguio',
-                'type' => '2',
-                'area' => '',
-             ],
-             [
-                'code' => 'K061',
-                'name' => 'Rob Magnolia',
-                'type' => '2',
-                'area' => '',
-             ],
-             [
-                'code' => 'K062',
-                'name' => 'SM Rosario',
-                'type' => '2',
-                'area' => '',
-             ],
-             [
-                'code' => 'K063',
-                'name' => 'SM Rosales',
-                'type' => '2',
-                'area' => '',
-             ],
-             [
-                'code' => 'K064',
-                'name' => 'SM Urdaneta',
-                'type' => '2',
-                'area' => '',
-             ],
-             [
-                'code' => 'K065',
-                'name' => 'SM Lucena',
-                'type' => '2',
-                'area' => '',
-             ],
-             [
-                'code' => 'K066',
-                'name' => 'SM Taytay A',
-                'type' => '2',
-                'area' => '',
-             ],
-             [
-                'code' => 'K067',
-                'name' => 'The Podium',
-                'type' => '2',
-                'area' => '',
-             ],
-             [
-                'code' => 'K068',
-                'name' => 'Trece',
-                'type' => '2',
-                'area' => '',
-             ],
-             [
-                'code' => 'K069',
-                'name' => 'Gentri',
-                'type' => '2',
-                'area' => '',
-             ],
-             [
-                'code' => 'K070',
-                'name' => 'SM San Mateo',
-                'type' => '2',
-                'area' => '',
-             ],
-             [
-                'code' => 'K071',
-                'name' => 'Evergutesco',
-                'type' => '2',
-                'area' => '',
-             ],
-             [
-                'code' => 'K072',
-                'name' => 'Santa Lucia',
-                'type' => '2',
-                'area' => '',
-             ],
-             [
-                'code' => 'K073',
-                'name' => 'Glorietta 1',
-                'type' => '2',
-                'area' => '',
-             ],
-             [
-                'code' => 'K074',
-                'name' => 'Rob. Calacio',
-                'type' => '2',
-                'area' => '',
-             ]
-        ];
-        foreach ($store_list as $store) {
-            Store::create([
-                'code' => $store['code'],
-                'name' => $store['name'],
-                'type' => $store['type'],
-                'area' => $store['area'],
-                'audit_status' => 0,
-                'created_at' => now(),
-                'updated_at' => now(),
-            ]);
-        }
-    }
+   /**
+    * Run the database seeds.
+    */
+   public function run(): void
+   {
+      $store_list = [
+         ['code' => 'C001', 'name' => 'SERENDRA', 'type' => 1, 'area' => 'MFO'],
+         ['code' => 'C002', 'name' => 'TRINOMA', 'type' => 1, 'area' => 'North'],
+         ['code' => 'C003', 'name' => 'ALABANG TOWN CENTER', 'type' => 1, 'area' => 'South'],
+         ['code' => 'C004', 'name' => 'ROCKWELL BUSINESS CENTER', 'type' => 1, 'area' => 'MFO'],
+         ['code' => 'C005', 'name' => 'GREENBELT 2', 'type' => 1, 'area' => 'MFO'],
+         ['code' => 'C006', 'name' => 'LUCKY CHINA TOWN', 'type' => 1, 'area' => 'South'],
+         ['code' => 'C007', 'name' => 'SM North EDSA', 'type' => 1, 'area' => 'North'],
+         ['code' => 'C008', 'name' => 'STEPS', 'type' => 1, 'area' => 'MFO'],
+         ['code' => 'C009', 'name' => 'SM AURA', 'type' => 1, 'area' => 'MFO'],
+         ['code' => 'C010', 'name' => 'SMBF', 'type' => 1, 'area' => 'South'],
+         ['code' => 'C011', 'name' => 'AYALA FAIRVIEW TERRACES', 'type' => 1, 'area' => 'North'],
+         ['code' => 'C012', 'name' => 'GATEWAY', 'type' => 1, 'area' => 'North'],
+         ['code' => 'C013', 'name' => 'ST. LUKES', 'type' => 1, 'area' => 'MFO'],
+         ['code' => 'C014', 'name' => 'SHANGRI-LA MALL', 'type' => 1, 'area' => 'MFO'],
+         ['code' => 'C015', 'name' => 'CENTURY CITY MALL', 'type' => 1, 'area' => 'MFO'],
+         ['code' => 'C016', 'name' => 'SM FAIRVIEW', 'type' => 1, 'area' => 'North'],
+         ['code' => 'C017', 'name' => 'NAIA TERMINAL 3', 'type' => 1, 'area' => 'South'],
+         ['code' => 'C018', 'name' => 'ENTERPRISE', 'type' => 1, 'area' => 'MFO'],
+         ['code' => 'C019', 'name' => 'ESTANCIA', 'type' => 1, 'area' => 'MFO'],
+         ['code' => 'C020', 'name' => 'UPTOWN BGC', 'type' => 1, 'area' => 'MFO'],
+         ['code' => 'C021', 'name' => 'SM MANILA', 'type' => 1, 'area' => 'South'],
+         ['code' => 'C022', 'name' => 'VENETIAN MALL', 'type' => 1, 'area' => 'MFO'],
+         ['code' => 'C023', 'name' => 'MAAX', 'type' => 1, 'area' => 'South'],
+         ['code' => 'C024', 'name' => 'UNIMART', 'type' => 1, 'area' => 'North'],
+         ['code' => 'C025', 'name' => 'FESTIVAL', 'type' => 1, 'area' => 'South'],
+         ['code' => 'C026', 'name' => 'SM SAN LAZARO', 'type' => 1, 'area' => 'North'],
+         ['code' => 'C027', 'name' => 'SM MALL OF ASIA', 'type' => 1, 'area' => 'South'],
+         ['code' => 'C028', 'name' => 'ROB GALLERIA', 'type' => 1, 'area' => 'MFO'],
+         ['code' => 'C029', 'name' => 'SouthWOODS', 'type' => 1, 'area' => 'South'],
+         ['code' => 'C030', 'name' => 'AYALA FELIZ', 'type' => 1, 'area' => 'North'],
+         ['code' => 'C031', 'name' => 'POWERPLANT MALL', 'type' => 1, 'area' => 'MFO'],
+         ['code' => 'C032', 'name' => 'SM SouthMALL', 'type' => 1, 'area' => 'South'],
+         ['code' => 'C033', 'name' => 'ROB PLACE MIDTOWN', 'type' => 1, 'area' => 'South'],
+         ['code' => 'C034', 'name' => 'EASTWOOD', 'type' => 1, 'area' => 'North'],
+         ['code' => 'C035', 'name' => 'ONE BONIFACIO HIGH STREET', 'type' => 1, 'area' => 'MFO'],
+         ['code' => 'C036', 'name' => 'U.P. TOWN CENTER', 'type' => 1, 'area' => 'North'],
+         ['code' => 'C037', 'name' => 'ROBINSONS MAGNOLIA', 'type' => 1, 'area' => 'MFO'],
+         ['code' => 'C038', 'name' => 'ROB GALLERIA South', 'type' => 1, 'area' => 'South'],
+         ['code' => 'C039', 'name' => 'SM EAST ORTIGAS', 'type' => 1, 'area' => 'North'],
+         ['code' => 'C040', 'name' => 'SM MARIKINA', 'type' => 1, 'area' => 'North'],
+         ['code' => 'C041', 'name' => 'RESORTS WORLD MANILA', 'type' => 1, 'area' => 'South'],
+         ['code' => 'C042', 'name' => 'PROMENADE', 'type' => 1, 'area' => 'North'],
+         ['code' => 'C043', 'name' => 'AYALA 30TH', 'type' => 1, 'area' => 'MFO'],
+         ['code' => 'C044', 'name' => 'BAYMALL', 'type' => 1, 'area' => 'South'],
+         ['code' => 'C045', 'name' => 'AYALA MALLS CLOVERLEAF', 'type' => 1, 'area' => 'North'],
+         ['code' => 'C046', 'name' => 'SM MAKATI', 'type' => 1, 'area' => 'MFO'],
+         ['code' => 'C048', 'name' => 'AMPHITHEATHER', 'type' => 1, 'area' => 'MFO'],
+         ['code' => 'C049', 'name' => 'NEW CLARK', 'type' => 1, 'area' => 'North'],
+         ['code' => 'C050', 'name' => 'SM SUCAT', 'type' => 1, 'area' => 'South'],
+         ['code' => 'C051', 'name' => 'CITY OF DREAMS', 'type' => 1, 'area' => 'South'],
+         ['code' => 'C052', 'name' => 'ROB TAGAYTAY', 'type' => 1, 'area' => 'South'],
+         ['code' => 'C053', 'name' => 'NUVALI SOLENAD', 'type' => 1, 'area' => 'South'],
+         ['code' => 'C054', 'name' => 'TWINLAKES', 'type' => 1, 'area' => 'South'],
+         ['code' => 'C055', 'name' => 'SM G. CENTRAL', 'type' => 1, 'area' => 'North'],
+         ['code' => 'C056', 'name' => 'STA. MESA', 'type' => 1, 'area' => 'MFO'],
+         ['code' => 'C057', 'name' => 'SM MASINAG', 'type' => 1, 'area' => 'North'],
+         ['code' => 'C058', 'name' => 'ROBINSONS LA UNION', 'type' => 1, 'area' => 'North'],
+         ['code' => 'C059', 'name' => 'SM BAGUIO', 'type' => 1, 'area' => 'North'],
+         ['code' => 'C060', 'name' => 'SM TANZA', 'type' => 1, 'area' => 'South'],
+         ['code' => 'C061', 'name' => 'OKADA', 'type' => 1, 'area' => 'South'],
+         ['code' => 'C062', 'name' => 'SM PASIG', 'type' => 1, 'area' => 'MFO'],
+         [
+            "type"=> 2,
+            "area"=> "MFO",
+            "code"=> "K001",
+            "name"=> "GLORIETTA 4"
+        ],
+        [
+            "type"=> 2,
+            "area"=> "MFO",
+            "code"=> "K002",
+            "name"=> "ROCKWELL"
+        ],
+        [
+            "type"=> 2,
+            "area"=> "MFO",
+            "code"=> "K003",
+            "name"=> "RCBC"
+        ],
+        [
+            "type"=> 2,
+            "area"=> "SOUTH",
+            "code"=> "K004",
+            "name"=> "MOA"
+        ],
+        [
+            "type"=> 2,
+            "area"=> "MFO",
+            "code"=> "K005",
+            "name"=> "MAKATI MED"
+        ],
+        [
+            "type"=> 2,
+            "area"=> "NORTH",
+            "code"=> "K006",
+            "name"=> "GATEWAY"
+        ],
+        [
+            "type"=> 2,
+            "area"=> "MFO",
+            "code"=> "K007",
+            "name"=> "MEGAMALL"
+        ],
+        [
+            "type"=> 2,
+            "area"=> "MFO",
+            "code"=> "K009",
+            "name"=> "CASH AND CARRY"
+        ],
+        [
+            "type"=> 2,
+            "area"=> "SOUTH",
+            "code"=> "K011",
+            "name"=> "SM SUCAT"
+        ],
+        [
+            "type"=> 2,
+            "area"=> "MFO",
+            "code"=> "K012",
+            "name"=> "AYALA 30TH"
+        ],
+        [
+            "type"=> 2,
+            "area"=> "SOUTH",
+            "code"=> "K014",
+            "name"=> "SM STA ROSA"
+        ],
+        [
+            "type"=> 2,
+            "area"=> "SOUTH",
+            "code"=> "K015",
+            "name"=> "DOUBLE DRAGON"
+        ],
+        [
+            "type"=> 2,
+            "area"=> "MFO",
+            "code"=> "K016",
+            "name"=> "AYALA CIRCUIT"
+        ],
+        [
+            "type"=> 2,
+            "area"=> "SOUTH",
+            "code"=> "K017",
+            "name"=> "SM BICUTAN"
+        ],
+        [
+            "type"=> 2,
+            "area"=> "NORTH",
+            "code"=> "K018",
+            "name"=> "SM NORTH EDSA"
+        ],
+        [
+            "type"=> 2,
+            "area"=> "NORTH",
+            "code"=> "K019",
+            "name"=> "ACL"
+        ],
+        [
+            "type"=> 2,
+            "area"=> "MFO",
+            "code"=> "K020",
+            "name"=> "WALTER MAKATI"
+        ],
+        [
+            "type"=> 2,
+            "area"=> "SOUTH",
+            "code"=> "K021",
+            "name"=> "ATC"
+        ],
+        [
+            "type"=> 2,
+            "area"=> "MFO",
+            "code"=> "K022",
+            "name"=> "CENTRAL SQUARE"
+        ],
+        [
+            "type"=> 2,
+            "area"=> "NORTH",
+            "code"=> "K023",
+            "name"=> "FISHERMALL"
+        ],
+        [
+            "type"=> 2,
+            "area"=> "NORTH",
+            "code"=> "K024",
+            "name"=> "VMALL"
+        ],
+        [
+            "type"=> 2,
+            "area"=> "MFO",
+            "code"=> "K025",
+            "name"=> "SHANGRILA"
+        ],
+        [
+            "type"=> 2,
+            "area"=> "NORTH",
+            "code"=> "K026",
+            "name"=> "VERTIS"
+        ],
+        [
+            "type"=> 2,
+            "area"=> "SOUTH",
+            "code"=> "K027",
+            "name"=> "FESTIVAL"
+        ],
+        [
+            "type"=> 2,
+            "area"=> "NORTH",
+            "code"=> "K028",
+            "name"=> "TRINOMA"
+        ],
+        [
+            "type"=> 2,
+            "area"=> "SOUTH",
+            "code"=> "K029",
+            "name"=> "SM BACOOR"
+        ],
+        [
+            "type"=> 2,
+            "area"=> "NORTH",
+            "code"=> "K030",
+            "name"=> "SM PAMPANGA"
+        ],
+        [
+            "type"=> 2,
+            "area"=> "SOUTH",
+            "code"=> "K031",
+            "name"=> "SM MOLINO"
+        ],
+        [
+            "type"=> 2,
+            "area"=> "NORTH",
+            "code"=> "K032",
+            "name"=> "SM MARILAO HYPERMARKET"
+        ],
+        [
+            "type"=> 2,
+            "area"=> "NORTH",
+            "code"=> "K033",
+            "name"=> "ROBINSONS MALOLOS"
+        ],
+        [
+            "type"=> 2,
+            "area"=> "NORTH",
+            "code"=> "K034",
+            "name"=> "WALTER NORTH EDSA"
+        ],
+        [
+            "type"=> 2,
+            "area"=> "SOUTH",
+            "code"=> "K035",
+            "name"=> "LCM"
+        ],
+        [
+            "type"=> 2,
+            "area"=> "NORTH",
+            "code"=> "K036",
+            "name"=> "SM BALIWAG"
+        ],
+        [
+            "type"=> 2,
+            "area"=> "NORTH",
+            "code"=> "K037",
+            "name"=> "MARQUEE MALL"
+        ],
+        [
+            "type"=> 2,
+            "area"=> "SOUTH",
+            "code"=> "K038",
+            "name"=> "SM CALAMBA"
+        ],
+        [
+            "type"=> 2,
+            "area"=> "SOUTH",
+            "code"=> "K039",
+            "name"=> "SM BATANGAS"
+        ],
+        [
+            "type"=> 2,
+            "area"=> "NORTH",
+            "code"=> "K040",
+            "name"=> "ROB ANTIPOLO"
+        ],
+        [
+            "type"=> 2,
+            "area"=> "NORTH",
+            "code"=> "K041",
+            "name"=> "SM VALENZUELA"
+        ],
+        [
+            "type"=> 2,
+            "area"=> "SOUTH",
+            "code"=> "K042",
+            "name"=> "WALTERMART MACAPAGAL"
+        ],
+        [
+            "type"=> 2,
+            "area"=> "NORTH",
+            "code"=> "K043",
+            "name"=> "SM MARILAO ATRIUM"
+        ],
+        [
+            "type"=> 2,
+            "area"=> "MFO",
+            "code"=> "K044",
+            "name"=> "MARKET MARKET"
+        ],
+        [
+            "type"=> 2,
+            "area"=> "SOUTH",
+            "code"=> "K045",
+            "name"=> "ROBINSONS LIPA"
+        ],
+        [
+            "type"=> 2,
+            "area"=> "SOUTH",
+            "code"=> "K046",
+            "name"=> "AYALA BAYMALL"
+        ],
+        [
+            "type"=> 2,
+            "area"=> "SOUTH",
+            "code"=> "K047",
+            "name"=> "SM LIPA"
+        ],
+        [
+            "type"=> 2,
+            "area"=> "NORTH",
+            "code"=> "K048",
+            "name"=> "SM CLARK"
+        ],
+        [
+            "type"=> 2,
+            "area"=> "SOUTH",
+            "code"=> "K049",
+            "name"=> "SM SOUTHMALL"
+        ],
+        [
+            "type"=> 2,
+            "area"=> "NORTH",
+            "code"=> "K050",
+            "name"=> "ROBINSONS STARMILLS"
+        ],
+        [
+            "type"=> 2,
+            "area"=> "NORTH",
+            "code"=> "K051",
+            "name"=> "SM OLONGAPO"
+        ],
+        [
+            "type"=> 2,
+            "area"=> "NORTH",
+            "code"=> "K053",
+            "name"=> "SM TARLAC"
+        ],
+        [
+            "type"=> 2,
+            "area"=> "NORTH",
+            "code"=> "K054",
+            "name"=> "SM TELABASTAGAN"
+        ],
+        [
+            "type"=> 2,
+            "area"=> "NORTH",
+            "code"=> "K055",
+            "name"=> "SM PULILAN"
+        ],
+        [
+            "type"=> 2,
+            "area"=> "NORTH",
+            "code"=> "K056",
+            "name"=> "SM TAYTAY B"
+        ],
+        [
+            "type"=> 2,
+            "area"=> "SOUTH",
+            "code"=> "K057",
+            "name"=> "SM SAN PABLO"
+        ],
+        [
+            "type"=> 2,
+            "area"=> "SOUTH",
+            "code"=> "K058",
+            "name"=> "SM DASMA"
+        ],
+        [
+            "type"=> 2,
+            "area"=> "NORTH",
+            "code"=> "K059",
+            "name"=> "SM CABANATUAN"
+        ],
+        [
+            "type"=> 2,
+            "area"=> "NORTH",
+            "code"=> "K060",
+            "name"=> "SM BAGUIO"
+        ],
+        [
+            "type"=> 2,
+            "area"=> "MFO",
+            "code"=> "K061",
+            "name"=> "ROB MAGNOLIA"
+        ],
+        [
+            "type"=> 2,
+            "area"=> "SOUTH",
+            "code"=> "K062",
+            "name"=> "SM ROSARIO"
+        ],
+        [
+            "type"=> 2,
+            "area"=> "NORTH",
+            "code"=> "K063",
+            "name"=> "SM ROSALES"
+        ],
+        [
+            "type"=> 2,
+            "area"=> "NORTH",
+            "code"=> "K064",
+            "name"=> "SM URDANETA"
+        ],
+        [
+            "type"=> 2,
+            "area"=> "SOUTH",
+            "code"=> "K065",
+            "name"=> "SM LUCENA"
+        ],
+        [
+            "type"=> 2,
+            "area"=> "NORTH",
+            "code"=> "K066",
+            "name"=> "SM TAYTAY A"
+        ],
+        [
+            "type"=> 2,
+            "area"=> "MFO",
+            "code"=> "K067",
+            "name"=> "THE PODIUM"
+        ],
+        [
+            "type"=> 2,
+            "area"=> "SOUTH",
+            "code"=> "K068",
+            "name"=> "SM TRECE"
+        ],
+        [
+            "type"=> 2,
+            "area"=> "SOUTH",
+            "code"=> "K069",
+            "name"=> "ROB GENTRI"
+        ],
+        [
+            "type"=> 2,
+            "area"=> "NORTH",
+            "code"=> "K070",
+            "name"=> "SM SAN MATEO"
+        ],
+        [
+            "type"=> 2,
+            "area"=> "NORTH",
+            "code"=> "K071",
+            "name"=> "EVER GOTESCO"
+        ],
+        [
+            "type"=> 2,
+            "area"=> "NORTH",
+            "code"=> "K072",
+            "name"=> "STA. LUCIA"
+        ],
+        [
+            "type"=> 2,
+            "area"=> "NORTH",
+            "code"=> "",
+            "name"=> "ROBINSONS CALASIAO"
+        ],
+        [
+            "type"=> 2,
+            "area"=> "MFO",
+            "code"=> "",
+            "name"=> "GLORIETTA 1"
+        ]
+      ];
+      foreach ($store_list as $store) {
+         Store::create([
+            'code' => $store['code'],
+            'name' => $store['name'],
+            'type' => $store['type'],
+            'area' => $store['area'],
+            'audit_status' => 0,
+            'created_at' => now(),
+            'updated_at' => now(),
+         ]);
+      }
+   }
 }

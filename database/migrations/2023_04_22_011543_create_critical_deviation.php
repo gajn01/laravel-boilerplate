@@ -15,17 +15,17 @@ return new class extends Migration
         });
         Schema::create('critical_deviation_menu', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('critical_deviation_id')->constrained('critical_deviations')->onDelete('cascade');
+            $table->foreignId('critical_deviation_id');
             $table->string('label');
             $table->text('remarks')->nullable();
-            $table->foreignId('score_dropdown_id')->nullable()->constrained('score_dropdowns')->onDelete('cascade');
+            $table->foreignId('score_dropdown_id')->nullable();
             $table->boolean('is_location')->nullable()->default(false);
-            $table->foreignId('location_dropdown_id')->nullable()->constrained('dropdowns')->onDelete('cascade');
+            $table->foreignId('location_dropdown_id')->nullable();
             $table->boolean('is_product')->nullable()->default(false);
-            $table->foreignId('product_dropdown_id')->nullable()->constrained('dropdowns')->onDelete('cascade');
+            $table->foreignId('product_dropdown_id')->nullable();
             $table->boolean('is_sd')->nullable()->default(false);
             $table->boolean('is_dropdown')->nullable()->default(false);
-            $table->foreignId('dropdown_id')->nullable()->constrained('dropdowns')->onDelete('cascade');
+            $table->foreignId('dropdown_id')->nullable();
             $table->timestamps();
         });
     }

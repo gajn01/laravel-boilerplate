@@ -30,10 +30,10 @@ class Store extends Component
     public function render()
     {
         $searchTerm = '%' . $this->searchTerm . '%';
-        $store_list = StoreModel::select('id', 'code', 'name', 'type', 'area')
-            ->where('name', 'like', $searchTerm)
+        $store_list = StoreModel::where('name', 'like', $searchTerm)
             ->orWhere('code', 'like', $searchTerm)
             ->orWhere('area', 'like', '%' . $this->searchTerm . '%')
+            ->orderBy('code', 'ASC')
             ->paginate($this->limit);
         return view('livewire.store.store', ['store_list' => $store_list])->extends('layouts.app');
     }

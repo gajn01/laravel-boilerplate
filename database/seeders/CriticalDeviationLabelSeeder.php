@@ -109,7 +109,7 @@ class CriticalDeviationLabelSeeder extends Seeder
         foreach ($critical_deviation_label as $deviation) {
             CriticalDeviationMenu::create([
                 'critical_deviation_id' => $deviation['critical_deviation_id'],
-                'label' => $deviation['name'],
+                'label' => $deviation['label'],
                 'remarks' => $deviation['remarks'],
                 'score_dropdown_id' => $deviation['score_dropdown_id'],
                 'is_sd' => $deviation['is_sd'],

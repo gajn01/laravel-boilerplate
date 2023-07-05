@@ -25,6 +25,8 @@ class DatabaseSeeder extends Seeder
         $this->call([CriticalDeviationSeeder::class]);
         $this->call([CriticalDeviationLabelSeeder::class]);
         $this->call([CategorySeeder::class]);
+        $this->call([DropdownMenuSeeder::class]);
+        $this->call([StoreSeeder::class]);
 
     }
 }

@@ -3,7 +3,7 @@
 <div class="container-xl">
     <nav aria-label="breadcrumb">
         <ol class="breadcrumb">
-            <li class="breadcrumb-item"><a href="{{ route('audit.schedule') }}">Audit</a></li>
+            <li class="breadcrumb-item"><a href="{{ route('store') }}">Store</a></li>
             <li class="breadcrumb-item active" aria-current="page">{{ $store->name }}</li>
         </ol>
     </nav>

@@ -47,7 +47,6 @@ class SanitarySeeder extends Seeder
             ['code' => 'SD21', 'title' => 'Black Soot Particles'],
             ['code' => 'SD22', 'title' => 'Stones']
         ];
-            
         foreach ($sanitaryDefects as $defect) {
             SanitaryModel::create([
                 'code' => $defect['code'],

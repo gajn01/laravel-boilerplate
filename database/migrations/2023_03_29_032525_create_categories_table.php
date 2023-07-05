@@ -12,7 +12,7 @@ return new class extends Migration
             $table->id();
             $table->string('name');
             $table->integer('type');
-            $table->foreignId('critical_deviation_id');
+            $table->foreignId('critical_deviation_id')->nullable();
             $table->timestamps();
         });
     }
