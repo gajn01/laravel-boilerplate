@@ -16,7 +16,7 @@ class CriticalDeviationSeeder extends Seeder
         $critical_deviation = [
             ['name' => 'Service'],
             ['name' => 'Food'],
-            ['name' => 'Cleanliness & Condition'],
+            ['name' => 'Cleanliness & Condition']
         ];
         foreach ($critical_deviation as $deviation) {
             CriticalDeviation::create([

@@ -316,7 +316,6 @@ class Form extends Component
     }
     public function setTime($data)
     {
-        dd($this->curentIndex);
         $currentTime = $this->time->format('h:i A');
         if ($data == 0) {
             $this->cashier_tat[$this->currentIndex][$this->currentField] = $currentTime;
@@ -482,7 +481,7 @@ class Form extends Component
                     'type' => $this->store->type,
                     'wave' => $this->wave,
                     'conducted_by' => Auth::user()->name,
-                    'received_by' => '',
+                    'received_by' => null,
                     'date_of_visit' => $this->dov,
                     'time_of_audit' => $audit_time,
                     'strength' => '',

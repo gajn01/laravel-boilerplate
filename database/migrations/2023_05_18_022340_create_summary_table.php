@@ -16,7 +16,7 @@ return new class extends Migration
             $table->string('code');
             $table->string('type');
             $table->string('conducted_by');
-            $table->string('received_by');
+            $table->string('received_by')->nullable();
             $table->date('date_of_visit');
             $table->time('time_of_audit');
             $table->string('wave');

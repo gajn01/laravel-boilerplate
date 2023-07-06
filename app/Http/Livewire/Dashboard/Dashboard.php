@@ -4,7 +4,6 @@ namespace App\Http\Livewire\Dashboard;
 use App\Models\Store as StoreModel;
 use App\Models\Summary as SummaryModel;
 use Illuminate\Support\Facades\DB;
-
 use Livewire\Component;
 use DateTime;
 use DateTimeZone;
@@ -32,8 +31,6 @@ class Dashboard extends Component
             ->whereNotNull('received_by')
             ->groupBy('type')
             ->get();
-
-
         return view('livewire.dashboard.dashboard', ['storeCounts' => $storeCounts, 'completion' => $completion])
             ->extends('layouts.app');
     }
