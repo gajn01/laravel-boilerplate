@@ -19,6 +19,7 @@
                             <th class="cell">Conducted by</th>
                             <th class="cell">Recieved by</th>
                             <th class="cell">Wave</th>
+                            <th class="cell">Status</th>
                             <th class="cell">Action</th>
                         </tr>
                     </thead>
@@ -29,6 +30,9 @@
                             <td class="cell">{{ $item->conducted_by }}</td>
                             <td class="cell">{{ $item->received_by }}</td>
                             <td class="cell">{{ $item->wave }}</td>
+                            <td class="cell">
+                                <span class="badge  {{ $item->audit_form->StatusBadge }}">{{ $item->audit_form->StatusLabel }}</span>
+                            </td>
                             <td class="cell">
                                 <a  data-toggle="tooltip" data-placement="top" title="View" href="{{ route('audit.view.result', ['store_id' => $item->store_id, 'result_id' => $item->id]) }}">
                                     <svg class="icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512">

@@ -62,7 +62,9 @@
                                     {{ $store->audit_date != null ? \Carbon\Carbon::parse($store->audit_date)->format('F d Y') : 'No schedule' }}
                                 </td>
                                 <td class="cell">{{ $store->wave }}</td>
-                                <td class="cell">{{ $store->StatusString }}</td>
+                                <td class="cell">
+                                    <span class="badge  {{ $store->StatusBadge }}">{{ $store->StatusString }}</span>
+                                </td>
                                 <td class="cell table-action-sm">
                                     @if ($store->is_complete != 2)
                                         <a href="{{ route('audit.form', ['store_id' => $store->store->id]) }}">
@@ -115,6 +117,4 @@
             </nav>
         </div>
     </div>
-
-
 </div>

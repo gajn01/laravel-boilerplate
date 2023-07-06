@@ -63,7 +63,9 @@
                                 <td class="cell">{{ $store->store->area }}</td>
                                 <td class="cell">{{ date('F d Y', strtotime($store->audit_date)) }}</td>
                                 <td class="cell">{{ $store->wave }}</td>
-                                <td class="cell">{{ $store->StatusString }}</td>
+                                <td class="cell">
+                                    <span class="badge  {{ $store->StatusBadge }}">{{ $store->StatusString }}</span>
+                                </td>
                                 <td class="cell table-action-sm">
                                     {{-- <a href="{{ route('audit.details', ['store_id' => $store->id]) }}">
                                         <svg class="icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512">

@@ -20,6 +20,11 @@ class AuditDate extends Model
 
         return $status_label[$this->is_complete];
     }
+    public function getStatusBadgeAttribute()
+    {
+        $status_badge = array("bg-warning", "bg-primary", "bg-success");
+        return $status_badge[$this->is_complete];
+    }
     public function subCategories()
     {
         return $this->hasMany(SubCategory::class);
