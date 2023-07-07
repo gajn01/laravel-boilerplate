@@ -17,6 +17,7 @@ use App\Models\Summary as SummaryModel;
 use App\Models\AuditDate as AuditDateModel;
 use App\Models\ServiceSpeed as ServiceSpeedModel;
 use Illuminate\Support\Facades\Auth;
+use App\Helpers\CustomHelper;
 use DateTime;
 use DateTimeZone;
 
@@ -438,8 +439,8 @@ class Form extends Component
     {
         $auditData = AuditDateModel::where('store_id', $this->store_id)
             ->where('audit_date', $this->date_today)->first();
-        if($auditData){
-
+        if(!$auditData){
+             return $this->onAlert(false, 'Warning', 'The store is not scheduled for today`s audit. Please proceed with regular operations!', 'warning');
         }
         $audit_time = $this->time->format('h:i');
         $data = $this->audit_status ? false : true;
@@ -600,5 +601,10 @@ class Form extends Component
     }
     public function removeService($id)
     {
+    }
+
+    public function onAlert($is_confirm = false, $title = null, $message = null, $type = null, $data = null)
+    {
+        CustomHelper::onShow($this, $is_confirm, $title, $message, $type, $data);
     }
 }

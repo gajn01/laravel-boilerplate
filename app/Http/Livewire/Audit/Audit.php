@@ -41,14 +41,16 @@ class Audit extends Component
             $schedule = AuditDateModel::where(function ($q) {
                 $q->whereHas('store', function ($q) {
                     $searchTerm = '%' . $this->searchTerm . '%';
-                    $q->where('stores.name', 'like', '%' . $searchTerm . '%');
-                    $q->orWhere('stores.code', 'like', '%' . $searchTerm . '%');
-                    $q->orWhere('stores.area', 'like', '%' . $searchTerm . '%');
+                    $q->where('stores.name', 'like',$searchTerm);
+                    $q->orWhere('stores.code', 'like',$searchTerm);
+                    $q->orWhere('stores.area', 'like',$searchTerm);
                 });
-            })->orderByRaw('ISNULL(audit_date.audit_date), audit_date.audit_date ASC');
-            if (Auth::user()->user_level != 0) {
-                $schedule->where('auditor_list.auditor_id', Auth::user()->id);
-            }
+            })
+            ->when(Auth::user()->user_level != 0, function ($q){
+                    $q->whereHas('auditors',function ($q){
+                     $q->where('auditor_list.auditor_id', auth()->user()->id);
+                });
+            });
             if ($this->date_filter == 'weekly') {
                 $schedule->whereBetween('audit_date.audit_date', [Carbon::now()->startOfWeek(), Carbon::now()->endOfWeek()]);
             } elseif ($this->date_filter == 'monthly') {

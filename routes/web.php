@@ -35,15 +35,15 @@ use App\Http\Livewire\Store\StoreDetails;
 
 /* Dashboard */
 Route::get('/login', Login::class)->name('login');
-Route::redirect('/', '/dashboard');
 Route::middleware(['auth'])->group(function () {
     // Only users with user_level = 0 can access the following routes
     Route::middleware(['level:0'])->group(function () {
+        Route::redirect('/', '/dashboard');
+
         /* Dashboard */
         Route::get('/dashboard', Dashboard::class)->name('dashboard');
         /* Schedule */
         Route::get('/schedule', AuditSchedule::class)->name('audit.schedule');
-
         Route::get('/store', Store::class)->name('store');
         Route::get('/store/details/{store_id?}', StoreDetails::class)->name('store-details');
         /* Settings */
@@ -60,6 +60,7 @@ Route::middleware(['auth'])->group(function () {
     });
     // Only users with user_level != 0 can access the following routes
     Route::middleware(['level:0,1,2,3'])->group(function () {
+        Route::redirect('/', '/audit');
         /* Audit */
         Route::get('/audit', Audit::class)->name('audit');
         Route::get('/store/details/{store_id?}', AuditDetails::class)->name('audit.details');
@@ -71,8 +72,7 @@ Route::middleware(['auth'])->group(function () {
             Route::get('/view/{result_id?}/summary', AuditSummary::class)->name('audit.view.summary');
         });
         Route::get('/insight', Aggregate::class)->name('insight');
-
-
+        // Route::get('/store', Store::class)->name('store');
         /* User */
         Route::get('/user', User::class)->name('user');
         Route::get('/user/information/{employee_id?}', UserDetails::class)->name('information');

@@ -54,7 +54,7 @@
                                 <td class="cell">{{ $results->category_name }}</td>
                                 <td class="cell">{{ $results->sub_sub_name }}</td>
                                 <td class="cell">{{ $results->sub_sub_remarks ? $results->sub_sub_remarks : $results->label_remarks }}</td>
-                                <td class="cell">{{ $results->sub_sub_deviation ? $results->sub_sub_deviation : $results->label_deviation }}</td>
+                                <td class="cell">{{ $results->sub_sub_deviation ? $results->sub_sub_deviation : $results->label_name }}</td>
                                 <td class="cell">{{ $results->name }}</td>
                                 <td class="cell">{{ $results->sub_sub_point != "" ? $results->sub_sub_point : $results->label_point  }}</td>
                             </tr>
