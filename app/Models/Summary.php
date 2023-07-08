@@ -23,19 +23,16 @@ class Summary extends Model
         'strength',
         'improvement',
     ];
-
-
-
     public function store()
     {
         return $this->belongsTo(Store::class,'store_id','id');
     }
-
     public function audit_form()
     {
         return $this->belongsTo(AuditForm::class,'form_id','id');
     }
-
-
-
+    public function audit_date()
+    {
+        return $this->belongsTo(AuditDate::class,'store_id','store_id');
+    }
 }

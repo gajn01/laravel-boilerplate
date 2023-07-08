@@ -28,10 +28,10 @@
                         <tr>
                             <td class="cell">{{ \Carbon\Carbon::parse($item->date_of_visit)->format('F d Y') }}</td>
                             <td class="cell">{{ $item->conducted_by }}</td>
-                            <td class="cell">{{ $item->received_by }}</td>
+                            <td class="cell">{{ $item->received_by ? $item->received_by : 'N/A'  }}</td>
                             <td class="cell">{{ $item->wave }}</td>
                             <td class="cell">
-                                <span class="badge  {{ $item->audit_form->StatusBadge }}">{{ $item->audit_form->StatusLabel }}</span>
+                                <span class="badge  {{ $item->audit_date->StatusBadge }}">{{ $item->audit_date->StatusString }}</span>
                             </td>
                             <td class="cell">
                                 <a  data-toggle="tooltip" data-placement="top" title="View" href="{{ route('audit.view.result', ['store_id' => $item->store_id, 'result_id' => $item->id]) }}">

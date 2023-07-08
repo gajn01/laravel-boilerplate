@@ -22,17 +22,14 @@ class Dashboard extends Component
     }
     public function render()
     {
-        $storeCounts = StoreModel::select('type', \DB::raw('count(*) as count'))
-            ->groupBy('type')
-            ->get();
+        $passingRate = SummaryModel::select('type', \DB::raw('count(overall_score) as count'))->where('overall_score', 1)->groupBy('type')->get();
+        $storeCounts = StoreModel::select('type', \DB::raw('count(*) as count'))->groupBy('type')->get();
         $completion = SummaryModel::select('type', \DB::raw('count(*) as count'))
             ->where('wave', $this->wave)
             ->where('date_of_visit', 'LIKE', $this->year . '-%')
             ->whereNotNull('received_by')
             ->groupBy('type')
             ->get();
-        return view('livewire.dashboard.dashboard', ['storeCounts' => $storeCounts, 'completion' => $completion])
-            ->extends('layouts.app');
+        return view('livewire.dashboard.dashboard', ['storeCounts' => $storeCounts, 'completion' => $completion, 'passingRate' => $passingRate])->extends('layouts.app');
     }
-
 }

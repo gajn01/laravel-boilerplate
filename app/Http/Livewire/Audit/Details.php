@@ -44,8 +44,7 @@ class Details extends Component
     }
     public function render()
     {
-        $summary = SummaryModel::all('*')
-        ->where('store_id', $this->store_id);
+        $summary = SummaryModel::where('store_id', $this->store_id)->get();
         $data = UserModel::all('*')
             ->where('user_level', '!=', '0');
       /*   if ($this->date_filter == 'weekly') {

@@ -87,13 +87,13 @@
                         <div class="col-6">
                             <div class="stats-figure">Cafe</div>
                             <div class="stats-meta">
-                                {{ (isset($completion[0]) ? $completion[0]->count : 0) . '/' . (isset($storeCounts[0]->count) ? $storeCounts[0]->count : 0) }}
+                                {{ (isset($passingRate[0]) ? $passingRate[0]->count : 0) . '/' . (isset($storeCounts[0]->count) ? $storeCounts[0]->count : 0) }}
                             </div>
                         </div>
                         <div class="col-6">
                             <div class="stats-figure">Kiosk</div>
                             <div class="stats-meta">
-                                {{ (isset($completion[1]) ? $completion[1]->count : 0) . '/' . (isset($storeCounts[1]->count) ? $storeCounts[1]->count : 0) }}
+                                {{ (isset($passingRate[1]) ? $passingRate[1]->count : 0) . '/' . (isset($storeCounts[1]->count) ? $storeCounts[1]->count : 0) }}
                             </div>
                         </div>
                     </div>

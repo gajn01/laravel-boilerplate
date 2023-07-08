@@ -444,7 +444,6 @@ class Form extends Component
         }
         $audit_time = $this->time->format('h:i');
         $data = $this->audit_status ? false : true;
-
         $audit_form = AuditFormModel::updateOrCreate(
             [
                 'store_id' => $this->store_id,
