@@ -450,7 +450,7 @@
                                                                                                     <input type="text" class="form-control"
                                                                                                         name="cashier_name"
                                                                                                         id="name_{{ $loop->index }}"
-                                                                                                        value="{{$cashier_tat[$index]->name}}"
+                                                                                                        value="{{$item->name}}"
                                                                                                         wire:change="updateService({{ $item }} ,'name', $event.target.value)"
                                                                                                         wire:focus="$set('currentIndex', '{{ $loop->index }}')">
                                                                                                 </div>
@@ -461,7 +461,7 @@
                                                                                                     <input type="text" class="form-control"
                                                                                                         name="time"
                                                                                                         id="time_{{ $loop->index }}"
-                                                                                                        value="{{$cashier_tat[$index]->time}}"
+                                                                                                        value="{{$item->time}}"
                                                                                                         wire:change="updateService({{ $item }} ,'time', $event.target.value)"
                                                                                                         wire:focus="$set('currentField', 'time')"
                                                                                                         placeholder="hh:mm">
@@ -637,8 +637,7 @@
                                                                                         </div>
                                                                                         <div class="col-3">
                                                                                             <div class="mb-3">
-                                                                                                <label for="product_order">Product
-                                                                                                    Ordered</label>
+                                                                                                <label for="product_order">Product Ordered</label>
                                                                                                 <input type="text" class="form-control"
                                                                                                     name="product_ordered"
                                                                                                     id="product_ordered{{ $loop->index }}"
@@ -753,7 +752,7 @@
                                                                                             <div class="row">
                                                                                                 <div class="col-12">
                                                                                                     <div class="mb-3">
-                                                                                                        <label for="" class="">Serving Time</label>
+                                                                                                        <label for="" class="">AT Time</label>
                                                                                                         <input type="text"
                                                                                                             class="form-control"
                                                                                                             name="serving_time" id="serving_time"

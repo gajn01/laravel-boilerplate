@@ -25,7 +25,7 @@ return new class extends Migration
             $table->time('tat')->nullable();
             $table->integer('base_tat_points')->nullable();
             $table->integer('tat_points')->nullable();
-            $table->string('fst')->nullable();
+            $table->time('fst')->nullable();
             $table->integer('base_fst_points')->nullable();
             $table->integer('fst_points')->nullable();
             $table->string('remarks')->nullable();

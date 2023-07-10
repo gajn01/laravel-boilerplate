@@ -91,10 +91,8 @@ class Form extends Component
                 'subCategories.subCategoryLabels' => function ($query) {
                     $query->selectRaw('id, name, is_all_nothing, bp, sub_category_id, dropdown_id');
                 },
-            ])
-            ->get();
+            ])->get();
         foreach ($data as $category) {
-
             $subCategories = $category->subCategories;
             $category_id = $category->id;
             $sub_category_id = 0;
@@ -317,12 +315,13 @@ class Form extends Component
     }
     public function setTime($data)
     {
-        $currentTime = $this->time->format('h:i A');
+        $currentTime = $this->time->format('h:i');
         if ($data == 0) {
             $this->cashier_tat[$this->currentIndex][$this->currentField] = $currentTime;
         } else if ($data == 1) {
             $this->server_cat[$this->currentIndex][$this->currentField] = $currentTime;
         }
+        $this->updateService($this->cashier_tat[$this->currentIndex] , $this->currentField,$this->cashier_tat[$this->currentIndex][$this->currentField]);
     }
     public function stopTimer()
     {
