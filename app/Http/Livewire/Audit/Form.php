@@ -315,6 +315,20 @@ class Form extends Component
     }
     public function setTime($data)
     {
+
+
+        $currentTime = $this->time->format('h:i');
+        $targetTime = '2:50'; // Replace with the target time you want to compare against
+
+        $currentDateTime = DateTime::createFromFormat('H:i', $currentTime);
+        $targetDateTime = DateTime::createFromFormat('H:i', $targetTime);
+
+        $diff = $currentDateTime->diff($targetDateTime);
+        $diffInSeconds = $diff->s + ($diff->i * 60); // Convert minutes to seconds
+
+        dd($diffInSeconds);
+
+
         $currentTime = $this->time->format('h:i');
         if ($data == 0) {
             $this->cashier_tat[$this->currentIndex][$this->currentField] = $currentTime;

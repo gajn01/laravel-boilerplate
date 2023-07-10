@@ -51,26 +51,26 @@ class Schedule extends Component
         $user = UserModel::all('*')->where('user_level', '!=', '0');
         $store_list = StoreModel::all();
         #region Schedule query
-        $schedule = AuditDateModel::where(function ($q) {
-            $q->whereHas('store', function ($q) {
-                $searchTerm = '%' . $this->searchTerm . '%';
-                $q->where('stores.name', 'like', '%' . $searchTerm . '%');
-                $q->orWhere('stores.code', 'like', '%' . $searchTerm . '%');
-                $q->orWhere('stores.area', 'like', '%' . $searchTerm . '%');
-            });
-        })->orderByRaw('ISNULL(audit_date.audit_date), audit_date.audit_date ASC');
+            $schedule = AuditDateModel::where(function ($q) {
+                $q->whereHas('store', function ($q) {
+                    $searchTerm = '%' . $this->searchTerm . '%';
+                    $q->where('stores.name', 'like', '%' . $searchTerm . '%');
+                    $q->orWhere('stores.code', 'like', '%' . $searchTerm . '%');
+                    $q->orWhere('stores.area', 'like', '%' . $searchTerm . '%');
+                });
+            })->orderByRaw('ISNULL(audit_date.audit_date), audit_date.audit_date ASC');
 
-        if (Auth::user()->user_level != 0) {
-            $schedule->where('auditor_list.auditor_id', Auth::user()->id);
-        }
-        if ($this->date_filter == 'weekly') {
-            $schedule->whereBetween('audit_date.audit_date', [Carbon::now()->startOfWeek(), Carbon::now()->endOfWeek()]);
-        } elseif ($this->date_filter == 'monthly') {
-            $schedule->whereBetween('audit_date.audit_date', [Carbon::now()->startOfMonth(), Carbon::now()->endOfMonth()]);
-        } elseif ($this->date_filter == $this->date_today) {
-            $schedule->where('audit_date.audit_date', $this->date_today);
-        }
-        $store_schedule = $schedule->paginate($this->limit);
+            if (Auth::user()->user_level != 0) {
+                $schedule->where('auditor_list.auditor_id', Auth::user()->id);
+            }
+            if ($this->date_filter == 'weekly') {
+                $schedule->whereBetween('audit_date.audit_date', [Carbon::now()->startOfWeek(), Carbon::now()->endOfWeek()]);
+            } elseif ($this->date_filter == 'monthly') {
+                $schedule->whereBetween('audit_date.audit_date', [Carbon::now()->startOfMonth(), Carbon::now()->endOfMonth()]);
+            } elseif ($this->date_filter == $this->date_today) {
+                $schedule->where('audit_date.audit_date', $this->date_today);
+            }
+            $store_schedule = $schedule->paginate($this->limit);
         #endregion
         return view('livewire.audit.schedule', ['store_list' => $store_list, 'store_sched_list' => $store_schedule, 'user_list' => $user])->extends('layouts.app');
     }
@@ -150,8 +150,7 @@ class Schedule extends Component
     {
         $this->audit_date_id = $id;
         $audit = AuditDateModel::find($id);
-        $this->auditor_list = AuditorListModel::select('*')
-        ->where('audit_date_id', $id)
+        $this->auditor_list = AuditorListModel::where('audit_date_id', $id)
         ->get();
         $this->audit_date = optional($audit)->audit_date;
         $this->store_id = optional($audit)->store_id;

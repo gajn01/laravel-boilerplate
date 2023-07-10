@@ -11,8 +11,8 @@ return new class extends Migration
         Schema::create('summary', function (Blueprint $table) {
             $table->id();
             $table->string('name');
-            $table->int('form_id');
-            $table->int('store_id');
+            $table->integer('form_id');
+            $table->integer('store_id');
             $table->string('code');
             $table->string('type');
             $table->string('conducted_by');
