@@ -16,6 +16,8 @@ class Category extends Component
     public $name;
     public $type;
     public $critical_deviation;
+    public $order;
+    public $ros;
     public $searchTerm;
     public $modalTitle;
     public $modalButtonText;
@@ -24,8 +26,9 @@ class Category extends Component
     {
         $deviation = CriticalDeviationModel::all('id', 'name');
         $searchTerm = '%' . $this->searchTerm . '%';
-        $category_list = CategoryModel::select('id', 'name','type')
-            ->where('name', 'like', $searchTerm)
+        $category_list = CategoryModel::where('name', 'like', $searchTerm)
+            ->orderBy('type', 'DESC')
+            ->orderBy('order', 'ASC')
             ->paginate($this->limit);
         return view('livewire.settings.category', ['category_list' => $category_list, 'deviation_list' => $deviation])->extends('layouts.app');
     }
@@ -33,7 +36,9 @@ class Category extends Component
     {
         $category = CategoryModel::find($category_id);
         $this->name = optional($category)->name;
+        $this->order = optional($category)->order;
         $this->type = optional($category)->type;
+        $this->ros = optional($category)->ros;
         $this->critical_deviation = optional($category)->critical_deviation;
         $this->category_id = $category_id;
         $this->modalTitle = $this->category_id ? 'Edit Category' : 'Add Category';
@@ -45,12 +50,16 @@ class Category extends Component
         $this->validate([
             'name' => 'required|max:255',
             'type' => 'required|in:0,1',
+            'order' => 'required',
+            'ros' => '',
             'critical_deviation' => '',
         ]);
         CategoryModel::updateOrCreate(
             ['id' => $this->category_id ?? null],
             [
                 'name' => strip_tags($this->name),
+                'order' => strip_tags($this->order),
+                'type' => strip_tags($this->type),
                 'type' => strip_tags($this->type),
                 'critical_deviation' => strip_tags($this->critical_deviation),
             ]

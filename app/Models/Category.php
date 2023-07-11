@@ -10,9 +10,15 @@ class Category extends Model
     use HasFactory;
 
     protected $table = 'categories';
-    protected $fillable = ['id', 'name', 'type','critical_deviation_id'];
+    protected $fillable = ['id', 'name', 'type','order','ros','critical_deviation_id'];
     public function subCategories()
     {
         return $this->hasMany(SubCategory::class);
+    }
+
+    public function getLabelAttribute()
+    {
+        $ros_label = array("Primary", "Secondary");
+        return $ros_label[$this->ros];
     }
 }

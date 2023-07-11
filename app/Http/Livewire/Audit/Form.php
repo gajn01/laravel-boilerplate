@@ -64,14 +64,11 @@ class Form extends Component
     }
     public function render()
     {
-
         $service = ServiceSpeedModel::where('form_id', $this->audit_forms_id)
             ->whereIn('is_cashier', [0, 1])
             ->get();
-
         $this->cashier_tat = $service->where('is_cashier', 1);
         $this->server_cat = $service->where('is_cashier', 0);
-
         $this->dov = $this->date_today;
         $result = AuditDateModel::select('wave')
             ->where('store_id', $this->store_id)
@@ -85,8 +82,9 @@ class Form extends Component
         $this->store_type = $store->type;
         $this->audit_status = $store->audit_status;
         $this->actionTitle = $this->audit_status ? 'Save' : 'Start';
-        $data = CategoryModel::select('id', 'name', 'type', 'critical_deviation_id')
-            ->where('type', $this->store_type)
+        $data = CategoryModel::where('type', $this->store_type)
+            ->orderBy('type', 'DESC')
+            ->orderBy('order', 'ASC')
             ->with([
                 'subCategories.subCategoryLabels' => function ($query) {
                     $query->selectRaw('id, name, is_all_nothing, bp, sub_category_id, dropdown_id');
@@ -315,9 +313,7 @@ class Form extends Component
     }
     public function setTime($data)
     {
-
-
-        $currentTime = $this->time->format('h:i');
+   /*      $currentTime = $this->time->format('h:i');
         $targetTime = '2:50'; // Replace with the target time you want to compare against
 
         $currentDateTime = DateTime::createFromFormat('H:i', $currentTime);
@@ -325,10 +321,8 @@ class Form extends Component
 
         $diff = $currentDateTime->diff($targetDateTime);
         $diffInSeconds = $diff->s + ($diff->i * 60); // Convert minutes to seconds
-
-        dd($diffInSeconds);
-
-
+ */
+        // dd($diffInSeconds);
         $currentTime = $this->time->format('h:i');
         if ($data == 0) {
             $this->cashier_tat[$this->currentIndex][$this->currentField] = $currentTime;

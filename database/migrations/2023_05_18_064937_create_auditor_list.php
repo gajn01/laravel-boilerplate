@@ -15,6 +15,7 @@ return new class extends Migration
             $table->id();
             $table->unsignedBigInteger('audit_date_id');
             $table->unsignedBigInteger('auditor_id');
+            $table->string('auditor_name');
             $table->timestamps();
 
             // Define foreign key constraints, if applicable

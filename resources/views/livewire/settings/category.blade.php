@@ -37,6 +37,8 @@
                     <thead>
                         <tr>
                             <th class="cell">Category</th>
+                            <th class="cell">Order</th>
+                            <th class="cell">ROS</th>
                             <th class="cell">Type</th>
                             <th class="cell table-action-sm">Action</th>
                         </tr>
@@ -44,8 +46,10 @@
                     <tbody>
                         @forelse ($category_list as $category)
                             <tr>
-                                <td class="cell">{{ $category['name'] }}</td>
-                                <td class="cell">{{ $category['type'] == 1 ? 'Cafe' : 'Kiosk' }}</td>
+                                <td class="cell">{{ $category->name }}</td>
+                                <td class="cell">{{ $category->order}}</td>
+                                <td class="cell">{{ $category->ros == 1 ? 'Secondary' : 'Primary'  }}</td>
+                                <td class="cell">{{ $category->type == 1 ? 'Cafe' : 'Kiosk' }}</td>
                                 <td class="cell table-action-sm">
                                     <a href="{{ route('category-details', ['category_id' => $category['id']]) }}"><svg
                                             class="icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512">
@@ -134,6 +138,13 @@
                             @enderror
                         </div>
                         <div class="mb-3">
+                            <label for="order" class="form-label">Order<span class="text-danger">*</span></label>
+                            <input type="text" class="form-control" wire:model="order" id="order">
+                            @error('order')
+                                <span class="text-danger">{{ $message }}</span>
+                            @enderror
+                        </div>
+                        <div class="mb-3">
                             <label for="type" class="form-label">Type<span class="text-danger">*</span></label>
                             <select class="form-select form-select-md" wire:model="type" id="type">
                                 <option selected hidden>Select one</option>
@@ -143,6 +154,14 @@
                             @error('type')
                                 <span class="text-danger">{{ $message }}</span>
                             @enderror
+                        </div>
+                        <div class="mb-3">
+                            <label for="ros" class="form-label">ROS<span class="text-danger">*</span></label>
+                            <select class="form-select form-select-md" wire:model="ros" id="ros">
+                                <option selected hidden>Select one</option>
+                                    <option value="0">Primary</option>
+                                    <option value="1">Secondary</option>
+                            </select>
                         </div>
                         <div class="mb-3">
                             <label for="critical_deviation" class="form-label">Critical Deviation<span
