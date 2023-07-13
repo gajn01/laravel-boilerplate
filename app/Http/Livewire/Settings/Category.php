@@ -15,7 +15,7 @@ class Category extends Component
     public $category_id;
     public $name;
     public $type;
-    public $critical_deviation;
+    public $critical_deviation_id;
     public $order;
     public $ros;
     public $searchTerm;
@@ -39,7 +39,7 @@ class Category extends Component
         $this->order = optional($category)->order;
         $this->type = optional($category)->type;
         $this->ros = optional($category)->ros;
-        $this->critical_deviation = optional($category)->critical_deviation;
+        $this->critical_deviation_id = optional($category)->critical_deviation_id;
         $this->category_id = $category_id;
         $this->modalTitle = $this->category_id ? 'Edit Category' : 'Add Category';
         $this->modalButtonText = $this->category_id ? 'Update' : 'Add';
@@ -51,8 +51,6 @@ class Category extends Component
             'name' => 'required|max:255',
             'type' => 'required|in:0,1',
             'order' => 'required',
-            'ros' => '',
-            'critical_deviation' => '',
         ]);
         CategoryModel::updateOrCreate(
             ['id' => $this->category_id ?? null],
@@ -60,8 +58,8 @@ class Category extends Component
                 'name' => strip_tags($this->name),
                 'order' => strip_tags($this->order),
                 'type' => strip_tags($this->type),
-                'type' => strip_tags($this->type),
-                'critical_deviation' => strip_tags($this->critical_deviation),
+                'ros' => strip_tags($this->ros),
+                'critical_deviation_id' => $this->critical_deviation_id ? $this->critical_deviation_id : null,
             ]
         );
         $this->reset();

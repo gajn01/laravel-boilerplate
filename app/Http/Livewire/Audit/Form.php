@@ -37,7 +37,7 @@ class Form extends Component
     public $audit_forms_id;
     public $actionTitle = 'Start';
     public $currentField;
-    public $currentIndex;
+    public $currentIndex = 0;
     public $is_na = [];
     public $wave;
     public $cashier_tat;
@@ -313,23 +313,39 @@ class Form extends Component
     }
     public function setTime($data)
     {
-   /*      $currentTime = $this->time->format('h:i');
-        $targetTime = '2:50'; // Replace with the target time you want to compare against
-
-        $currentDateTime = DateTime::createFromFormat('H:i', $currentTime);
-        $targetDateTime = DateTime::createFromFormat('H:i', $targetTime);
-
-        $diff = $currentDateTime->diff($targetDateTime);
-        $diffInSeconds = $diff->s + ($diff->i * 60); // Convert minutes to seconds
- */
-        // dd($diffInSeconds);
-        $currentTime = $this->time->format('h:i');
+        $currentTime = $this->time->format('H:i');
+        $targetDateTime = $data == 0 ? $this->cashier_tat[$this->currentIndex][$this->currentField] : $this->server_cat[$this->currentIndex][$this->currentField];
         if ($data == 0) {
             $this->cashier_tat[$this->currentIndex][$this->currentField] = $currentTime;
-        } else if ($data == 1) {
+            $this->updateService($this->cashier_tat[$this->currentIndex] , $this->currentField, $this->cashier_tat[$this->currentIndex][$this->currentField]);
+            if($this->currentField == 'tat'){
+                $targetTimestamp = strtotime($this->cashier_tat[$this->currentIndex]['time']);
+                $diff = strtotime($targetDateTime) - $targetTimestamp;
+                $pts = ($diff > 60) ? 0 : 1;
+                $this->updateService($this->cashier_tat[$this->currentIndex], 'tat_points', $pts);
+            }else if($this->currentField == 'fst'){
+                $serving_time = $this->cashier_tat[$this->currentIndex]['serving_time'];
+                $targetTimestamp = strtotime($this->cashier_tat[$this->currentIndex]['tat']);
+                $diff = strtotime($targetDateTime) - $targetTimestamp;
+                $pts = ($diff >  ($serving_time - 1)  * 60) ? 0 : 3;
+                $this->updateService($this->cashier_tat[$this->currentIndex], 'fst_points', $pts);
+            }
+        }else{
             $this->server_cat[$this->currentIndex][$this->currentField] = $currentTime;
+            $this->updateService($this->server_cat[$this->currentIndex] , $this->currentField, $this->server_cat[$this->currentIndex][$this->currentField]);
+            if($this->currentField == 'tat'){
+                $targetTimestamp = strtotime($this->server_cat[$this->currentIndex]['time']);
+                $diff = strtotime($targetDateTime) - $targetTimestamp;
+                $pts = ($diff > 60) ? 0 : 1;
+                $this->updateService($this->server_cat[$this->currentIndex], 'tat_points', $pts);
+            }else if($this->currentField == 'fst'){
+                $serving_time = $this->server_cat[$this->currentIndex]['serving_time'];
+                $targetTimestamp = strtotime($this->server_cat[$this->currentIndex]['tat']);
+                $diff = strtotime($targetDateTime) - $targetTimestamp;
+                $pts = ($diff >  ($serving_time - 1)  * 60) ? 0 : 3;
+                $this->updateService($this->server_cat[$this->currentIndex], 'fst_points', $pts);
+            }
         }
-        $this->updateService($this->cashier_tat[$this->currentIndex] , $this->currentField,$this->cashier_tat[$this->currentIndex][$this->currentField]);
     }
     public function stopTimer()
     {
@@ -430,7 +446,7 @@ class Form extends Component
     }
     public function addInput($data)
     {
-        $data = ['form_id' => $this->audit_forms_id, 'is_cashier' => $data, 'name' => null, 'time' => null, 'product_order' => null, 'ot' => null, 'base_assembly_points' => 1, 'assembly_points' => 1, 'tat' => null, 'base_tat_points' => 1, 'tat_points' => 1, 'fst' => null, 'base_fst_points' => 3, 'fst_points' => 3, 'remarks' => null, 'serving_time' => '10:00'];
+        $data = ['form_id' => $this->audit_forms_id, 'is_cashier' => $data, 'name' => null, 'time' => null, 'product_order' => null, 'ot' => null, 'base_assembly_points' => 1, 'assembly_points' => 1, 'tat' => null, 'base_tat_points' => 1, 'tat_points' => 1, 'fst' => null, 'base_fst_points' => 3, 'fst_points' => 3, 'remarks' => null, 'serving_time' => '5'];
         ServiceSpeedModel::create($data);
     }
     public function onStartAndComplete($is_confirm = true, $title = 'Are you sure?', $type = null, $data = null)

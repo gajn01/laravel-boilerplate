@@ -123,7 +123,7 @@
         <div class="modal-dialog modal-dialog-scrollable modal-dialog-centered modal-md" role="document">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="">Add Category</h5>
+                    <h5 class="modal-title" id="">{{$modalTitle}}</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"
                         wire:click="reset"></button>
                 </div>
@@ -164,10 +164,10 @@
                             </select>
                         </div>
                         <div class="mb-3">
-                            <label for="critical_deviation" class="form-label">Critical Deviation<span
+                            <label for="critical_deviation_id" class="form-label">Critical Deviation<span
                                     class="text-danger">*</span></label>
-                            <select class="form-select form-select-md" wire:model="critical_deviation"
-                                id="critical_deviation">
+                            <select class="form-select form-select-md" wire:model="critical_deviation_id"
+                                id="critical_deviation_id">
                                 <option selected hidden>Select one</option>
                                 @foreach ($deviation_list as $critical_deviation)
                                     <option value="{{ $critical_deviation['id'] }}">{{ $critical_deviation['name'] }}

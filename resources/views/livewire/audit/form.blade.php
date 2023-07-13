@@ -541,6 +541,23 @@
                                                                                                     </div>
                                                                                                 </div>
                                                                                             </div>
+                                                                                            <div class="col-2">
+                                                                                                <label for="" class=""></label>
+                                                                                                <div class="row">
+                                                                                                    <div class="col-12">
+                                                                                                        <div class="mb-3">
+                                                                                                            <label for="" class="">Serving Time</label>
+                                                                                                            <input type="text"
+                                                                                                                class="form-control"
+                                                                                                                name="serving_time" id="serving_time"
+                                                                                                                wire:focus="$set('currentField', 'serving_time')"
+                                                                                                                placeholder="minutes"
+                                                                                                                value="{{$cashier_tat[$index]->serving_time}}"
+                                                                                                                wire:change="updateService({{ $item }} ,'serving_time', $event.target.value)">
+                                                                                                        </div>
+                                                                                                    </div>
+                                                                                                </div>
+                                                                                            </div>
                                                                                             <div class="col-3">
                                                                                                 <label for="" class="">FST (3 pts.)</label>
                                                                                                 <div class="row">
@@ -570,23 +587,7 @@
                                                                                                     </div>
                                                                                                 </div>
                                                                                             </div>
-                                                                                            <div class="col-2">
-                                                                                                <label for="" class=""></label>
-                                                                                                <div class="row">
-                                                                                                    <div class="col-12">
-                                                                                                        <div class="mb-3">
-                                                                                                            <label for="" class="">Serving Time</label>
-                                                                                                            <input type="text"
-                                                                                                                class="form-control"
-                                                                                                                name="serving_time" id="serving_time"
-                                                                                                                wire:focus="$set('currentField', 'serving_time')"
-                                                                                                                placeholder="hh:mm"
-                                                                                                                value="{{$cashier_tat[$index]->serving_time}}"
-                                                                                                                wire:change="updateService({{ $item }} ,'serving_time', $event.target.value)">
-                                                                                                        </div>
-                                                                                                    </div>
-                                                                                                </div>
-                                                                                            </div>
+                                                                                            
                                                                                             <div class="col-4">
                                                                                                 <div class="mb-3">
                                                                                                     <label>Remarks </label>
@@ -617,7 +618,7 @@
                                                                                                 <input type="text" class="form-control"
                                                                                                     name="server_name"
                                                                                                     id="name_{{ $loop->index }}"
-                                                                                                    value="{{$server_cat[$index]->name}}"
+                                                                                                    value="{{$item->name}}"
                                                                                                     wire:change="updateService({{ $item }} ,'name', $event.target.value)"
                                                                                                     wire:focus="$set('currentIndex', '{{ $loop->index }}')">
                                                                                             </div>
@@ -628,7 +629,7 @@
                                                                                                 <input type="text" class="form-control"
                                                                                                     name="time"
                                                                                                     id="time_{{ $loop->index }}"
-                                                                                                    wire:model="server_cat.{{ $loop->index }}.time"
+                                                                                                    value="{{$item->time}}"
                                                                                                     wire:focus="$set('currentField', 'time')"
                                                                                                     value="{{$server_cat[$index]->time}}"
                                                                                                     wire:change="updateService({{ $item->id }} ,'time', $event.target.value)"
@@ -641,7 +642,7 @@
                                                                                                 <input type="text" class="form-control"
                                                                                                     name="product_ordered"
                                                                                                     id="product_ordered{{ $loop->index }}"
-                                                                                                    value="{{$server_cat[$index]->product_ordered}}"
+                                                                                                    value="{{$item->product_ordered}}"
                                                                                                     wire:change="updateService({{ $item->id }} ,'product_ordered', $event.target.value)"
                                                                                                     placeholder="Product Ordered">
                                                                                             </div>
@@ -654,7 +655,7 @@
                                                                                                         <input type="text"
                                                                                                             class="form-control"
                                                                                                             id="ot"
-                                                                                                            value="{{$server_cat[$index]->ot}}"
+                                                                                                            value="{{$item->ot}}"
                                                                                                             wire:change="updateService({{ $item->id }} ,'ot', $event.target.value)">
                                                                                                     </div>
                                                                                                 </div>
@@ -664,7 +665,7 @@
                                                                                                         <input type="text"
                                                                                                             class="form-control"
                                                                                                             name="assembly" id="assembly"
-                                                                                                            value="{{$server_cat[$index]->assembly}}"
+                                                                                                            value="{{$item->assembly}}"
                                                                                                             wire:change="updateService({{ $item->id }} ,'assembly', $event.target.value)">
                                                                                                     </div>
                                                                                                 </div>
@@ -674,7 +675,7 @@
                                                                                                         <input type="text"
                                                                                                             class="form-control"
                                                                                                             name="assembly_points" id="assembly_points"
-                                                                                                            value="{{$server_cat[$index]->assembly_points}}"
+                                                                                                            value="{{$item->assembly_points}}"
                                                                                                             wire:change="updateService({{ $item->id }} ,'assembly_points', $event.target.value)"
                                                                                                             placeholder="Point">
                                                                                                     </div>
@@ -692,7 +693,7 @@
                                                                                                         <input type="text"
                                                                                                             class="form-control"
                                                                                                             name="tat" id="tat"
-                                                                                                            value="{{$server_cat[$index]->tat}}"
+                                                                                                            value="{{$item->tat}}"
                                                                                                             wire:change="updateService({{ $item->id }} ,'tat', $event.target.value)"
                                                                                                             wire:focus="$set('currentField', 'tat')"
                                                                                                             placeholder="hh:mm">
@@ -714,6 +715,23 @@
                                                                                                 </div>
                                                                                             </div>
                                                                                         </div>
+                                                                                        <div class="col-2">
+                                                                                            <label for="" class=""></label>
+                                                                                            <div class="row">
+                                                                                                <div class="col-12">
+                                                                                                    <div class="mb-3">
+                                                                                                        <label for="" class="">Serving Time</label>
+                                                                                                        <input type="text"
+                                                                                                            class="form-control"
+                                                                                                            name="serving_time" id="serving_time"
+                                                                                                            wire:focus="$set('currentField', 'serving_time')"
+                                                                                                            placeholder="hh:mm"
+                                                                                                            value="{{$server_cat[$index]->serving_time}}"
+                                                                                                            wire:change="updateService({{ $item->id }} ,'serving_time', $event.target.value)">
+                                                                                                    </div>
+                                                                                                </div>
+                                                                                            </div>
+                                                                                        </div>
                                                                                         <div class="col-3">
                                                                                             <label for="" class="">FST (3 pts.)
                                                                                             </label>
@@ -725,7 +743,7 @@
                                                                                                         <input type="text"
                                                                                                             class="form-control"
                                                                                                             name="fst" id="fst"
-                                                                                                            value="{{$server_cat[$index]->fst}}"
+                                                                                                            value="{{$item->fst}}"
                                                                                                             wire:change="updateService({{ $item->id }} ,'fst', $event.target.value)"
                                                                                                             wire:focus="$set('currentField', 'fst')"
                                                                                                             placeholder="hh:mm">
@@ -747,23 +765,7 @@
                                                                                                 </div>
                                                                                             </div>
                                                                                         </div>
-                                                                                        <div class="col-2">
-                                                                                            <label for="" class=""></label>
-                                                                                            <div class="row">
-                                                                                                <div class="col-12">
-                                                                                                    <div class="mb-3">
-                                                                                                        <label for="" class="">AT Time</label>
-                                                                                                        <input type="text"
-                                                                                                            class="form-control"
-                                                                                                            name="serving_time" id="serving_time"
-                                                                                                            wire:focus="$set('currentField', 'serving_time')"
-                                                                                                            placeholder="hh:mm"
-                                                                                                            value="{{$server_cat[$index]->serving_time}}"
-                                                                                                            wire:change="updateService({{ $item->id }} ,'serving_time', $event.target.value)">
-                                                                                                    </div>
-                                                                                                </div>
-                                                                                            </div>
-                                                                                        </div>
+                                                                                    
                                                                                         <div class="col-4">
                                                                                             <div class="mb-3">
                                                                                                 <label for="">Remarks</label>
@@ -808,9 +810,7 @@
                                                                                         for="toggle-switch">
                                                                                         {{ $auditLabel['name'] }}</label>
                                                                                 </div>
-                                                                                <p @class(['pt-4' => $index == 0])>
-
-                                                                                </p>
+                                                                                <p @class(['pt-4' => $index == 0])></p>
                                                                             </div>
                                                                             <div class="col-sm-12 col-md-2  ">
                                                                                 <div class="row">
@@ -861,8 +861,7 @@
                                                                                     <div
                                                                                         class="col-sm-12 {{ $auditLabel['dropdown'] ? 'col-md-6' : 'col-md-12' }}">
                                                                                         @if ($index == 0)
-                                                                                            <label for=""
-                                                                                                class="form-label">Remarks</label>
+                                                                                            <label for="" class="form-label">Remarks</label>
                                                                                         @endif
                                                                                         <textarea class="form-control" name="" id="" rows="1" @disabled($auditLabel['is_na'] ? true : false)
                                                                                             wire:change="updateRemarks(
@@ -877,9 +876,7 @@
                                                                                         <div
                                                                                             class="col-sm-12 col-md-6 {{ $auditLabel['dropdown'] ? '' : 'd-none' }}">
                                                                                             @if ($index == 0 || empty($auditLabel['dropdown']))
-                                                                                                <label
-                                                                                                    for=""
-                                                                                                    class="form-label">Deviation</label>
+                                                                                                <label for="" class="form-label">Deviation</label>
                                                                                             @endif
                                                                                             <select
                                                                                                 class="form-select form-select-md"
