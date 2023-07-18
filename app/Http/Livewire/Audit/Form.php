@@ -530,6 +530,7 @@ class Form extends Component
                         'sub_sub_base_point' => $child['bp'] ?? null,
                         'sub_sub_point' => $child['points'] ?? null,
                         'sub_sub_remarks' =>  null,
+                        'sub_sub_deviation' =>  null,
                         'sub_sub_file' => $child['tag'] ?? null,
                         'is_na' => '0'
                     ];
@@ -540,8 +541,9 @@ class Form extends Component
                                 'label_name' => $label['name'],
                                 'label_base_point' => $label['bp'] ?? null,
                                 'label_point' => $label['points'] ?? null,
-                                'label_remarks' => $label['remarks'] ?? null,
-                                'label_file' => $label['tag'] ?? null,
+                                'label_remarks' =>  null,
+                                'label_deviation' =>  null,
+                                'label_file' =>  null,
                             ]);
                         });
                     } else {

@@ -1,4 +1,4 @@
-@section('title', 'Mary Grace Restaurant Operation System / Schedule')
+@section('title', 'Mary Grace Restaurant Operation System / Report Summary')
 <div class="container-xl">
     <nav aria-label="breadcrumb">
         <ol class="breadcrumb">
@@ -6,7 +6,7 @@
             <li class="breadcrumb-item active">Sumary</li>
         </ol>
     </nav>
-    <h1 class="app-page-title">Summary</h1>
+    <h1 class="app-page-title mb-0">Summary</h1>
     <div class="page-utilities mb-3">
         <div class="row g-2 justify-content-start justify-content-md-end align-items-center">
             <div class="col-auto">
@@ -35,6 +35,16 @@
                 <div class="accordion-body">
                     <div class="page-utilities">
                         <div class="row g-2 justify-content-start justify-content-md-start align-items-center">
+                            <div class="col-auto d-flex flex-column">
+                                <label for="type" class="form-label">Store Type</label>
+                                <select name="type" id="type"
+                                    class="form-select form-select-md ms-auto d-inline-flex w-auto" wire:model="type">
+                                    <option value hidden selected>--Select Type--</option>
+                                    <option value="all">All</option>
+                                    <option value="1">Cafe</option>
+                                    <option value="2">Kiosk</option>
+                                </select>
+                            </div>
                             <div class="col-auto d-flex flex-column">
                                 <label for="area" class="form-label">Area</label>
                                 <select name="area" id="area"
@@ -96,7 +106,7 @@
                         </tr>
                     </thead>
                     <tbody>
-                        @forelse ($aggregate as $results)
+                        @forelse ($summary as $results)
                             <tr>
                                 <td class="cell">{{ $results->forms->stores->area }}</td>
                                 <td class="cell">{{ $results->forms->stores->name }}</td>
@@ -108,7 +118,7 @@
                                 <td class="cell">
                                     {{ $results->sub_sub_remarks ? $results->sub_sub_remarks : $results->label_remarks }}
                                 </td>
-                                <td class="cell">{{ $results->sub_sub_deviation }}</td>
+                                <td class="cell">{{ $results->sub_sub_deviation ? $results->sub_sub_deviation : $results->label_deviation  }}</td>
                                 <td class="cell">{{ date('Y', strtotime($results->updated_at)) }}</td>
                                 <td class="cell text-center">{{ $results->forms->wave }}</td>
                                 {{-- <td class="cell">{{ $results->sub_sub_remarks ? $results->sub_sub_remarks : $results->label_remarks }}</td>
@@ -153,7 +163,7 @@
         </div>
         <div class="col-sm-12 col-md-6">
             <nav class="app-pagination">
-                {{--   {{ $store_sched_list->onEachSide(0)->links() }} --}}
+                  {{ $summary->onEachSide(0)->links() }}
             </nav>
         </div>
     </div>

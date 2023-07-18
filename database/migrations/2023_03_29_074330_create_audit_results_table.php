@@ -35,6 +35,7 @@ return new class extends Migration
             $table->integer('label_base_point')->nullable();
             $table->integer('label_point')->nullable();
             $table->string('label_remarks')->nullable();
+            $table->string('label_deviation')->nullable();
             $table->string('label_file')->nullable();
             $table->timestamps();
         });
