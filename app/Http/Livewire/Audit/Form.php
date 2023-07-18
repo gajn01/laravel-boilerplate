@@ -529,7 +529,7 @@ class Form extends Component
                         'sub_sub_name' => $child['name'],
                         'sub_sub_base_point' => $child['bp'] ?? null,
                         'sub_sub_point' => $child['points'] ?? null,
-                        'sub_sub_remarks' => $child['remarks'] ?? null,
+                        'sub_sub_remarks' =>  null,
                         'sub_sub_file' => $child['tag'] ?? null,
                         'is_na' => '0'
                     ];

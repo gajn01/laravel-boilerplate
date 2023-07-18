@@ -40,27 +40,40 @@
                 <table class="table app-table-hover mb-0 text-left">
                     <thead>
                         <tr>
-                            <th class="cell">Category</th>
-                            <th class="cell">Deviation</th>
-                            <th class="cell">Remarks</th>
-                            <th class="cell">Deviation Details</th>
+                            <th class="cell">Area</th>
                             <th class="cell">Stores</th>
-                            <th class="cell">Score</th>
+                            <th class="cell">ROS</th>
+                            <th class="cell">Category</th>
+                            <th class="cell">Sub Category</th>
+                            <th class="cell">Specific</th>
+                            <th class="cell">Deviation Details</th>
+                            <th class="cell">Remarks</th>
+                            <th class="cell">Additional Info</th>
+                            <th class="cell">Year</th>
+                            <th class="cell">Wave</th>
                         </tr>
                     </thead>
                     <tbody>
                         @forelse ($aggregate as $results)
                             <tr>
+                                <td class="cell">{{ $results->forms->stores->area }}</td>
+                                <td class="cell">{{ $results->forms->stores->name }}</td>
+                                <td class="cell">{{ $results->category->Label }}</td>
                                 <td class="cell">{{ $results->category_name }}</td>
+                                <td class="cell">{{ $results->sub_name }}</td>
                                 <td class="cell">{{ $results->sub_sub_name }}</td>
-                                <td class="cell">{{ $results->sub_sub_remarks ? $results->sub_sub_remarks : $results->label_remarks }}</td>
+                                <td class="cell">{{ $results->label_name  }}</td>
+                                <td class="cell">{{ $results->sub_sub_remarks ? $results->sub_sub_remarks : $results->label_remarks  }}</td>
+                                <td class="cell">{{ $results->sub_sub_deviation  }}</td>
+                                <td class="cell">{{ date('Y', strtotime($results->updated_at))}}</td>
+                                <td class="cell text-center">{{ $results->forms->wave }}</td>
+                                {{-- <td class="cell">{{ $results->sub_sub_remarks ? $results->sub_sub_remarks : $results->label_remarks }}</td>
                                 <td class="cell">{{ $results->sub_sub_deviation ? $results->sub_sub_deviation : $results->label_name }}</td>
-                                <td class="cell">{{ $results->name }}</td>
-                                <td class="cell">{{ $results->sub_sub_point != "" ? $results->sub_sub_point : $results->label_point  }}</td>
+                                <td class="cell">{{ $results->sub_sub_point != "" ? $results->sub_sub_point : $results->label_point  }}</td> --}}
                             </tr>
                         @empty
                             <tr>
-                                <td colspan="8">
+                                <td colspan="11">
                                     <p class="text-center m-0">
                                         No data found.
                                     </p>

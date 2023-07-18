@@ -18,7 +18,7 @@ class Category extends Model
 
     public function getLabelAttribute()
     {
-        $ros_label = array("Primary", "Secondary");
+        $ros_label = array('Primary', 'Secondary');
         return $ros_label[$this->ros];
     }
 }

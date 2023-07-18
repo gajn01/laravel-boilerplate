@@ -38,4 +38,10 @@ class AuditFormResult extends Model
     public function criticaDeviation(){
         return $this->hasMany(CriticalDeviationResult::class, 'form_id', 'form_id');
     }
+    public function category(){
+        return $this->belongsTo(Category::class, 'category_id','id');
+    }
+    public function forms(){
+        return $this->belongsTo(AuditForm::class, 'form_id','id');
+    }
 }

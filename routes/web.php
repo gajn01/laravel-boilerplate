@@ -6,6 +6,7 @@ use App\Http\Livewire\Auth\Login;
 use App\Http\Livewire\Dashboard\Dashboard;
 /* report */
 use App\Http\Livewire\Report\Aggregate;
+use App\Http\Livewire\Report\Summary;
 /* Audit */
 use App\Http\Livewire\Audit\Audit as Audit;
 use App\Http\Livewire\Audit\Form as AuditForm;
@@ -40,6 +41,9 @@ Route::middleware(['auth'])->group(function () {
     Route::middleware(['level:0'])->group(function () {
         Route::redirect('/', '/dashboard');
 
+        Route::get('/insight/aggregate', Aggregate::class)->name('aggregate');
+        Route::get('/insight/summary', Summary::class)->name('summary');
+
         /* Dashboard */
         Route::get('/dashboard', Dashboard::class)->name('dashboard');
         /* Schedule */
@@ -71,7 +75,8 @@ Route::middleware(['auth'])->group(function () {
             Route::get('/view/{result_id?}', AuditResult::class)->name('audit.view.result');
             Route::get('/view/{result_id?}/summary', AuditSummary::class)->name('audit.view.summary');
         });
-        Route::get('/insight', Aggregate::class)->name('insight');
+        Route::get('/insight/aggregate', Aggregate::class)->name('aggregate');
+        Route::get('/insight/summary', Summary::class)->name('summary');
         // Route::get('/store', Store::class)->name('store');
         /* User */
         Route::get('/user', User::class)->name('user');
