@@ -22,8 +22,11 @@ class AuditForm extends Model
         $status_badge = array("bg-warning", "bg-success");
         return $status_badge[$this->audit_status];
     }
-
     public function stores(){
         return $this->belongsTo(Store::class,'store_id','id');
+    }
+    public function date(){
+        return $this->belongsTo(AuditDate::class,'audit_date_id','id');
+
     }
 }

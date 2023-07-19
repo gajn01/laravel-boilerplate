@@ -17,50 +17,83 @@
                     </svg>
                 </a>
             </div> --}}
-            <div class="col-auto">
+            <div class="col-auto d-flex flex-column">
+                <label for="store" class="form-label">Category</label>
                 <select class="form-select form-select-sm ms-auto d-inline-flex w-auto" wire:model="category">
+                    <option value hidden selected>--Select Category--</option>
                     <option value="">All</option>
                     @foreach ($categories as $item)
-                        <option value="{{$item->name}}">{{$item->name}}</option>
+                        <option value="{{ $item}}">{{ $item}}</option>
                     @endforeach
                 </select>
             </div>
         </div>
     </div>
-   {{--  <ul>
-        @foreach ($test as $item)
-            <li>
-                {{$item->categoryName}}
-            </li>
-        @endforeach
-    </ul> --}}
     <div class="app-card app-card-orders-table shadow-sm mb-5">
         <div class="app-card-body">
             <div class="table-responsive">
                 <table class="table app-table-hover mb-0 text-left">
-                    <thead>
+                    <thead >
                         <tr>
                             <th class="cell">Category</th>
-                            <th class="cell">Sub Category</th>
-                            <th class="cell">Specific</th>
-                            <th class="cell">Deviation Details</th>
+                            <th class="cell">Deviation</th>
                             <th class="cell">Remarks</th>
-                            <th class="cell">Additional Info</th>
-                            <th class="cell">Year</th>
-                            <th class="cell">Wave</th>
+                            <th class="cell">Additonal Info</th>
+                            <th class="cell">Store</th>
+                            <th class="cell">Score</th>
                         </tr>
                     </thead>
                     <tbody>
-                    {{--     @forelse ($aggregate as $results)
+                        @forelse ($aggregate as $index => $results)
                             <tr>
-                                <td class="cell">{{ $results->category_name }}</td>
+                                <td class="cell">{{ $results['category_name'] }}</td>
+                                <td class="cell">
+                                    <table>
+                                        @foreach ($results['data'] as $item)
+                                            <tr>
+                                                <td>{{$item['deviation']}}</td>
+                                            </tr>
+                                        @endforeach
+                                    </table>
+                                </td>
+                                <td class="cell">
+                                    <table>
+                                        @foreach ($results['data'] as $item)
+                                            <tr>
+                                                <td>{{$item['remarks']}}</td>
+                                            </tr>
+                                        @endforeach
+                                    </table>
+                                </td>
+                                <td class="cell">
+                                    <table>
+                                        @foreach ($results['data'] as $item)
+                                            <tr>
+                                                <td>{{$item['details']}}</td>
+                                            </tr>
+                                        @endforeach
+                                    </table>
+                                </td>
+                                <td class="cell">
+                                    <table>
+                                        @foreach ($results['data'] as $item)
+                                            <tr>
+                                                <td>{{$item['store']}}</td>
+                                            </tr>
+                                        @endforeach
+                                    </table>
+                                </td>
+                                <td class="cell">{{ $results['score'].'%' }}</td>
+
+
+                            {{--     <td class="cell">{{ $results->category_name }}</td>
                                 <td class="cell">{{ $results->sub_name }}</td>
                                 <td class="cell">{{ $results->sub_sub_name }}</td>
                                 <td class="cell">{{ $results->label_name  }}</td>
                                 <td class="cell">{{ $results->sub_sub_remarks ? $results->sub_sub_remarks : $results->label_remarks  }}</td>
                                 <td class="cell">{{ $results->sub_sub_deviation  }}</td>
                                 <td class="cell">{{ date('Y', strtotime($results->updated_at))}}</td>
-                                <td class="cell text-center">{{ $results->forms->wave }}</td>
+                                <td class="cell text-center">{{ $results->forms->wave }}</td> --}}
                             </tr>
                         @empty
                             <tr>
@@ -70,7 +103,7 @@
                                     </p>
                                 </td>
                             </tr>
-                        @endforelse --}}
+                        @endforelse
                     </tbody>
                 </table>
             </div>

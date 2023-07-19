@@ -18,43 +18,40 @@ class Aggregate extends Component
     public $limit = 10;
     public function render()
     {
-        $category = CategoryModel::all()->unique('name');
-        $this->aggregate_list = CategoryModel::pluck('name')->unique()->toArray();
-        $restructured_data = $category->map(fn($item, $key) => ['category_name' => $item->name, 'data' => []])->toArray();
-        
-        $aggregate = AuditFormResultModel::where(function ($q) {
-                $q->whereNotNull('sub_sub_remarks')
-                    ->orWhereNotNull('sub_sub_deviation')
-                    ->orWhereNotNull('label_remarks')
-                    ->orWhereNotNull('label_deviation');
-            })
-            ->when($this->search, fn($query) => $query->whereHas('forms.stores', fn($q) => $q->where('name', 'like', '%' . $this->search . '%')))
-            ->when($this->area && $this->area !== 'all', fn($query) => $query->whereHas('forms.stores', fn($q) => $q->where('area', $this->area)))
-            ->when($this->wave && $this->wave !== 'all', fn($query) => $query->whereHas('forms', fn($q) => $q->where('wave', $this->wave)))
+        $category_names = CategoryModel::distinct('name')->get(['name'])->pluck('name')->toArray();
+        $restructured_data = array_map(fn($name) => ['category_name' => $name, 'data' => [], 'score' => null], $category_names);
+        $aggregate = AuditFormResultModel::where(fn($q) =>
+            $q->whereNotNull('sub_sub_remarks')
+                ->orWhereNotNull('sub_sub_deviation')
+                ->orWhereNotNull('label_remarks')
+                ->orWhereNotNull('label_deviation'))
             ->when($this->category && $this->category !== 'all', fn($query) => $query->where('category_name', $this->category))
             ->get();
-        
-        // Grouping the results by category_name
-        $groupedData = $aggregate->groupBy('category_name');
-        foreach ($groupedData as $categoryName => $categoryData) {
-            $categoryResult = $restructured_data[array_search($categoryName, array_column($restructured_data, 'category_name'))];
-            $deviationRemarks = $categoryData->filter(function ($item) {
-                return $item->sub_sub_remarks || $item->sub_sub_deviation || $item->label_remarks || $item->label_deviation;
-            });
-        
-            $storesWithDeviationsRemarks = $deviationRemarks->groupBy('store_id');
-            // dd($categoryData);
-
-        
-            $categoryResult['data'] = $deviationRemarks;
-            $categoryResult['stores'] = $storesWithDeviationsRemarks;
-        
-            $restructured_data[array_search($categoryName, array_column($restructured_data, 'category_name'))] = $categoryResult;
+        $score = DB::table('audit_results')
+            ->select('category_id', 'category_name')
+            ->selectRaw('COALESCE(SUM(label_base_point), 0) + COALESCE(SUM(sub_sub_base_point), 0) AS total_base_points')
+            ->selectRaw('COALESCE(SUM(CASE WHEN is_na = 1 THEN label_base_point ELSE label_point END), 0) + COALESCE(SUM(CASE WHEN is_na = 1 THEN sub_sub_base_point ELSE sub_sub_point END), 0) AS total_points')
+            ->selectRaw('ROUND((COALESCE(SUM(CASE WHEN is_na = 1 THEN label_base_point ELSE label_point END), 0) + COALESCE(SUM(CASE WHEN is_na = 1 THEN sub_sub_base_point ELSE sub_sub_point END), 0)) / (COALESCE(SUM(label_base_point), 0) + COALESCE(SUM(sub_sub_base_point), 0)) * 100, 2) AS percentage')
+            ->groupBy('category_id', 'category_name')
+            ->get();
+        foreach ($aggregate as $agg) {
+            $index = array_search($agg->category_name, $category_names);
+            if ($index !== false) {
+                $restructured_data[$index]['data'][] = [
+                    'deviation' => $agg->sub_name,
+                    'remarks' => $agg->sub_sub_remarks ? $agg->sub_sub_remarks : $agg->label_remarks,
+                    'details' => $agg->sub_sub_deviation ? $agg->sub_sub_deviation : $agg->label_deviation,
+                    'store' => optional($agg->forms)->stores->name,
+                ];
+            }
         }
-        
-        // Here, $restructured_data will contain the desired data structure
-        
-
-        return view('livewire.report.aggregate', ['aggregate' => $aggregate, 'categories' => $category,'test'=>$category])->extends('layouts.app');
+        foreach ($score as $value) {
+            $index = array_search($value->category_name, $category_names);
+            if ($index !== false) {
+                $restructured_data[$index]['score'] = $value->percentage;
+            }
+        }
+        $restructured_data = array_filter($restructured_data, fn($item) => !empty($item['data']) || !empty($item['store']));
+        return view('livewire.report.aggregate', ['aggregate' => $restructured_data, 'categories' => $category_names])->extends('layouts.app');
     }
 }
