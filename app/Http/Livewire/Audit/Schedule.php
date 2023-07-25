@@ -25,6 +25,7 @@ class Schedule extends Component
     public $store_id = 1;
     public $auditor_id;
     public $auditor_list = [];
+    public $new_auditor_list = [];
     public $audit_date;
     public $wave = 1;
     public $modalTitle = "Add";
@@ -51,32 +52,32 @@ class Schedule extends Component
         $user = UserModel::all('*')->where('user_level', '!=', '0');
         $store_list = StoreModel::all();
         #region Schedule query
-            $schedule = AuditDateModel::where(function ($q) {
-                $q->whereHas('store', function ($q) {
-                    $searchTerm = '%' . $this->searchTerm . '%';
-                    $q->where('stores.name', 'like', '%' . $searchTerm . '%');
-                    $q->orWhere('stores.code', 'like', '%' . $searchTerm . '%');
-                    $q->orWhere('stores.area', 'like', '%' . $searchTerm . '%');
-                });
-            })->orderByRaw('ISNULL(audit_date.audit_date), audit_date.audit_date ASC');
+        $schedule = AuditDateModel::where(function ($q) {
+            $q->whereHas('store', function ($q) {
+                $searchTerm = '%' . $this->searchTerm . '%';
+                $q->where('stores.name', 'like', '%' . $searchTerm . '%');
+                $q->orWhere('stores.code', 'like', '%' . $searchTerm . '%');
+                $q->orWhere('stores.area', 'like', '%' . $searchTerm . '%');
+            });
+        })->orderByRaw('ISNULL(audit_date.audit_date), audit_date.audit_date ASC');
 
-            if (Auth::user()->user_level != 0) {
-                $schedule->where('auditor_list.auditor_id', Auth::user()->id);
-            }
-            if ($this->date_filter == 'weekly') {
-                $schedule->whereBetween('audit_date.audit_date', [Carbon::now()->startOfWeek(), Carbon::now()->endOfWeek()]);
-            } elseif ($this->date_filter == 'monthly') {
-                $schedule->whereBetween('audit_date.audit_date', [Carbon::now()->startOfMonth(), Carbon::now()->endOfMonth()]);
-            } elseif ($this->date_filter == $this->date_today) {
-                $schedule->where('audit_date.audit_date', $this->date_today);
-            }
-            $store_schedule = $schedule->paginate($this->limit);
+        if (Auth::user()->user_level != 0) {
+            $schedule->where('auditor_list.auditor_id', Auth::user()->id);
+        }
+        if ($this->date_filter == 'weekly') {
+            $schedule->whereBetween('audit_date.audit_date', [Carbon::now()->startOfWeek(), Carbon::now()->endOfWeek()]);
+        } elseif ($this->date_filter == 'monthly') {
+            $schedule->whereBetween('audit_date.audit_date', [Carbon::now()->startOfMonth(), Carbon::now()->endOfMonth()]);
+        } elseif ($this->date_filter == $this->date_today) {
+            $schedule->where('audit_date.audit_date', $this->date_today);
+        }
+        $store_schedule = $schedule->paginate($this->limit);
         #endregion
         return view('livewire.audit.schedule', ['store_list' => $store_list, 'store_sched_list' => $store_schedule, 'user_list' => $user])->extends('layouts.app');
     }
     public function addAuditor()
     {
-        if ($this->auditor_id) {
+       /*  if ($this->auditor_id) {
             $isAdded = collect($this->auditor_list)->contains('auditor_id', $this->auditor_id);
             if (!$isAdded) {
                 $user = UserModel::find($this->auditor_id);
@@ -89,10 +90,53 @@ class Schedule extends Component
                 array_push($auditorListArray, $add);
                 $this->auditor_list = collect($auditorListArray);
             }
+            $isExisting = AuditorListModel::where(
+                fn($q) =>
+                $q->where('auditor_id', $this->auditor_id)
+                    ->where('audit_date_id', $this->audit_date_id)
+            )->get();
+            if (!$isExisting) {
+                $user = UserModel::find($this->auditor_id);
+                $add = [
+                    'audit_date_id' => $this->audit_date_id,
+                    'auditor_id' => $this->auditor_id,
+                    'auditor_name' => $user->name
+                ];
+                $auditorListArray = $this->new_auditor_list->toArray();
+                array_push($auditorListArray, $add);
+                $this->new_auditor_list = collect($auditorListArray);
+            }
+        } */
+        if ($this->auditor_id) {
+            $isAdded = collect($this->auditor_list)->contains('auditor_id', $this->auditor_id);
+            $user = UserModel::find($this->auditor_id);
+            if (!$isAdded) {
+                $this->auditor_list = collect($this->auditor_list); // Convert the array to a collection
+                $this->auditor_list->push([
+                    'audit_date_id' => '',
+                    'auditor_id' => $this->auditor_id,
+                    'auditor_name' => $user->name
+                ]);
+            }
+            $isExisting = AuditorListModel::where('auditor_id', $this->auditor_id)
+                                            ->where('audit_date_id', $this->audit_date_id)
+                                            ->exists();
+            if (!$isExisting) {
+                $this->new_auditor_list = collect($this->new_auditor_list); // Convert the array to a collection
+                $this->new_auditor_list->push([
+                    'audit_date_id' => $this->audit_date_id,
+                    'auditor_id' => $this->auditor_id,
+                    'auditor_name' => $user->name
+                ]);
+            }
         }
     }
     public function removeAuditor($index)
     {
+        if($this->audit_date_id){
+            $auditor = AuditorListModel::find($this->auditor_list[$index]->id);
+            $auditor->delete();
+        }
         unset($this->auditor_list[$index]);
     }
     public function saveSchedule()
@@ -100,7 +144,7 @@ class Schedule extends Component
         $this->validate([
             'store_id' => 'required',
             'audit_date' => 'required',
-            'wave' => 'required', 
+            'wave' => 'required',
         ]);
         $auditDateData = [
             'store_id' => strip_tags($this->store_id),
@@ -136,9 +180,14 @@ class Schedule extends Component
             })->toArray();
             AuditorListModel::insert($auditorListData);
             $this->auditor_list = [];
+        } else {
+            if($this->new_auditor_list){
+                AuditorListModel::insert($this->new_auditor_list->toArray());
+                $this->new_auditor_list = [];
+            }
         }
         AuditFormModel::where('audit_date_id', $this->audit_date_id)
-        ->update(['date_of_visit' => $this->audit_date]);
+            ->update(['date_of_visit' => $this->audit_date]);
     }
     public function onDelete($id)
     {
@@ -150,7 +199,7 @@ class Schedule extends Component
         $this->audit_date_id = $id;
         $audit = AuditDateModel::find($id);
         $this->auditor_list = AuditorListModel::where('audit_date_id', $id)
-        ->get();
+            ->get();
         $this->audit_date = optional($audit)->audit_date;
         $this->store_id = optional($audit)->store_id;
         $this->audit_date = optional($audit)->audit_date;

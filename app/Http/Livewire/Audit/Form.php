@@ -128,7 +128,7 @@ class Form extends Component
                             $saved_point = $data ? $data['sub_sub_point'] : null;
                             $saved_remarks = $data ? $data['sub_sub_remarks'] : null;
                             $saved_deviation = $data ? $data['sub_sub_deviation'] : null;
-                            $saved_na = $data['is_na'];
+                            $saved_na = $data['is_na'] ?? 0;
                         } else {
                             $saved_point = $label->bp;
                         }
@@ -460,11 +460,12 @@ class Form extends Component
     }
     public function onUpdateStatus()
     {
-        $auditData = AuditDateModel::where('store_id', $this->store_id)
-            ->where('audit_date', $this->date_today)->first();
-        if(!$auditData){
+        // $auditData = AuditDateModel::where('store_id', $this->store_id)->where('audit_date', $this->date_today)->first();
+        $auditData = AuditDateModel::where('store_id', $this->store_id)->where('audit_date', $this->date_today)->first();
+
+        /* if(!$auditData){
              return $this->onAlert(false, 'Warning', 'The store is not scheduled for today`s audit. Please proceed with regular operations!', 'warning');
-        }
+        } */
         $audit_time = $this->time->format('h:i');
         $data = $this->audit_status ? false : true;
         $audit_form = AuditFormModel::updateOrCreate(

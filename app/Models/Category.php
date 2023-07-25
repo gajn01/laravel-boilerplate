@@ -21,4 +21,7 @@ class Category extends Model
         $ros_label = array('Primary', 'Secondary');
         return $ros_label[$this->ros];
     }
+    public function forms(){
+        return $this->hasMany(AuditFormResult::class,'category_id','id');
+    }
 }

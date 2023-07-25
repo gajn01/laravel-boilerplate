@@ -260,6 +260,24 @@
                                                         placeholder="Enter remarks here...">{{ $item['saved_remarks'] }}</textarea>
                                                 </div>
                                             @endif
+                                            @if ($item['score_dropdown_id'])
+                                                <div class="mb-3" wire:ignore.self>
+                                                    <select class="form-select form-select-md"
+                                                        wire:change="updateCriticalDeviation({{ json_encode($item) }},$event.target.value,'score')"
+                                                        name="dp_score{{ $item['id'] }}"
+                                                        id="dp_score{{ $item['id'] }}">
+                                                        <option value="null" {{ $item['saved_score'] == '' ? 'selected' : '' }}> Select score</option>
+                                                        @foreach ($score as $scores)
+                                                            <option value="{{ $scores['name'] }}"
+                                                                {{ $scores['name'] === $item['saved_score'] ? 'selected' : '' }}>
+                                                                {{ $scores['name'] . '%' }}
+                                                            </option>
+                                                        @endforeach
+                                                    </select>
+                                                </div>
+                                            @endif
+
+                                        
                                         @endforeach
                                     </div>
                                 </div>
