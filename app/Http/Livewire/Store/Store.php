@@ -11,6 +11,8 @@ use App\Models\auditor_list as AuditorListModel;
 use App\Helpers\CustomHelper;
 use Illuminate\Support\Facades\DB;
 use Livewire\WithPagination;
+use Illuminate\Support\Facades\Response;
+
 
 class Store extends Component
 {
@@ -29,13 +31,45 @@ class Store extends Component
     public $limit = 10;
     public function render()
     {
+        $store_list = $this->getStoreList();
+        return view('livewire.store.store', ['store_list' => $store_list])->extends('layouts.app');
+    }
+    private function getStoreList()
+    {
         $searchTerm = '%' . $this->searchTerm . '%';
         $store_list = StoreModel::where('name', 'like', $searchTerm)
             ->orWhere('code', 'like', $searchTerm)
             ->orWhere('area', 'like', '%' . $this->searchTerm . '%')
             ->orderBy('code', 'ASC')
             ->paginate($this->limit);
-        return view('livewire.store.store', ['store_list' => $store_list])->extends('layouts.app');
+        return $store_list;
+    }
+    public function exportCSV()
+    {
+        $store_list = $this->getStoreList();
+        $csvData = [];
+        $csvData[] = ['Code', 'Name', 'Type', 'Area']; 
+        foreach ($store_list as $store) {
+            $csvData[] = [
+                $store['code'],
+                $store['name'],
+                $store['type'] == 1 ? 'Cafe' : 'Kiosk',
+                $store['area'],
+            ];
+        }
+        $fileName = 'store_data_' . date('m-d-Y') . '.csv';
+        $headers = [
+            'Content-Type' => 'text/csv',
+            'Content-Disposition' => 'attachment; filename="' . $fileName . '"',
+        ];
+    
+        return Response::stream(function () use ($csvData) {
+            $file = fopen('php://output', 'w');
+            foreach ($csvData as $row) {
+                fputcsv($file, $row);
+            }
+            fclose($file);
+        }, 200, $headers);
     }
     public function showModal($store_id = null)
     {
@@ -85,4 +119,6 @@ class Store extends Component
     {
         $this->resetValidation();
     }
+
+ 
 }

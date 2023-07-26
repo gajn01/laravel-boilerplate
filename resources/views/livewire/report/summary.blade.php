@@ -21,11 +21,11 @@
                 <input type="text" id="search-docs" name="searchdocs" class="form-control search-docs"
                     wire:model.debounce.100ms="search" placeholder="Search Store">
             </div>
-         {{--    <div class="col-auto">
+            <div class="col-auto">
                 <div class="col-auto">
-                    <a class="btn app-btn-primary"  wire:click="print">Print</a>
+                    <a class="btn btn-primary" wire:click="exportCSV">CSV Export</a>
                 </div>
-            </div> --}}
+            </div>
         </div>
     </div>
     <div class="accordion" id="accordionFilter" wire:ignore>
