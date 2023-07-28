@@ -80,7 +80,7 @@
                                 @if ($isedit == false)
                                     <div class="item-data">{{ $user->userLevel }}</div>
                                 @else
-                                    @if ($sameUser == true || $user->user_type == 0)
+                                    @if ($isSameUser == true || $user->user_type == 0)
                                         <div class="item-data">{{ $user->userLevel }}</div>
                                     @else
                                         <select wire:model="usertype" class="form-select" required>
@@ -102,13 +102,10 @@
                     <div class="col-auto">
                         @if (Gate::allows('allow-edit', 'module-user-management'))
                             @if ($isedit == true)
-                                <button name="save_changes" wire:click="save" class="btn btn-sm btn-primary">Save
-                                    Changes</button>
-                                <button name="cancel_changes" wire:click="cancel"
-                                    class="btn btn-sm btn-secondary">Cancel</button>
+                                <button name="save_changes" wire:click="save" class="btn btn-sm btn-primary">Save Changes</button>
+                                <button name="cancel_changes" wire:click="cancel" class="btn btn-sm btn-secondary">Cancel</button>
                             @else
-                                <button name="edit_changes" wire:click="edit" class="btn btn-sm app-btn-primary">Edit
-                                    Detail</button>
+                                <button name="edit_changes" wire:click="edit" class="btn btn-sm app-btn-primary">Edit Detail</button>
                             @endif
                         @endif
                     </div>
@@ -131,9 +128,8 @@
                         </div>
                         <div class="col-auto form-check form-switch ml-5 ">
                             @if (Gate::allows('access-enabled', 'module-set-status'))
-                                @if ($sameUser == false || $user->user_type > 0)
-                                    <input class="form-check-input" type="checkbox" wire:model="isactive" id="isactive"
-                                        checked>
+                                @if ($isSameUser == false || $user->user_type > 0)
+                                    <input class="form-check-input" type="checkbox" wire:model="user.is_active" wire:change="onUpdateStatus()" id="isactive"  checked>
                                 @endif
                             @endif
                             <label class="form-check-label" for="isactive">
@@ -165,7 +161,7 @@
         </div>
     </div>
 
-    @if ($user->user_type != 2 && $this->sameUser == false)
+    @if ($user->user_type != 2 && $this->isSameUser == false)
         <hr class="my-4">
         @if (Gate::allows('access-enabled', 'module-set-module-access'))
             <div class="row g-4 settings-section">

@@ -2,6 +2,8 @@
 namespace App\Http\Livewire\User;
 
 use App\Helpers\CustomHelper;
+use Illuminate\Database\QueryException;
+
 use Livewire\Component;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Facades\Hash;
@@ -13,7 +15,7 @@ class UserDetails extends Component
 {
     public User $user;
     public $useraccess, $usertype, $isactive;
-    public $isedit, $sameUser = false;
+    public $isedit, $isSameUser = false;
     private $allowUserAccessUpdate;
     public $moduleList = [
         ['module' => "module-user-management", 'module_name' => "User Management", 'access_type' => 1, 'parent' => null, 'description' => 'Manage users.'],
@@ -22,17 +24,17 @@ class UserDetails extends Component
         ['module' => "module-override-email-verification", 'module_name' => "Override Email Verifcation", 'access_type' => 0, 'parent' => "module-user-management", 'description' => 'Override user email verification.'],
         ['module' => "module-set-access-scope", 'module_name' => "Set Access Scope", 'access_type' => 0, 'parent' => "module-user-management", 'description' => 'Set access scope.'],
         ['module' => "module-set-module-access", 'module_name' => "Set Module Access", 'access_type' => 0, 'parent' => "module-user-management", 'description' => 'Set module access.'],
-        ['module' => "module-transaction",'module_name' => "Transaction Type Settings",'access_type' => 1,'parent' => null,'description' => 'Access Transaction Type.'],
+        ['module' => "module-transaction", 'module_name' => "Transaction Type Settings", 'access_type' => 1, 'parent' => null, 'description' => 'Access Transaction Type.'],
         ['module' => "module-test", 'module_name' => "Set test", 'access_type' => 0, 'parent' => "module-transaction", 'description' => 'Set module access.'],
 
     ];
     protected function rules()
     {
         return [
-            'isactive' => 'boolean',
+            'user.is_active' => 'boolean',
             'user.name' => 'required|string|max:255',
             'usertype' => 'required|integer',
-            'user.email' => 'required|email|max:255|unique:users,email,' . $this->user->id . '',
+            'user.email' => 'required|email|max:255|unique:user,email,' . $this->user->id . '',
             'user.contact_number' => 'string|max:30',
         ];
     }
@@ -44,28 +46,10 @@ class UserDetails extends Component
         $this->user = User::findOrFail($id);
         $this->isactive = $this->user->is_active;
         $this->usertype = $this->user->user_type;
-        $this->sameUser = Auth::user()->id == $this->user->id ? true : false;
+        $this->isSameUser = Auth::user()->id == $this->user->id ? true : false;
         $this->loadUserAccess();
     }
-     /*    private function loadUserAccess()
-        {
-            $this->useraccess = null;
-            $ua = $this->user->userAccessArray;
-            foreach ($this->moduleList as $module) {
-                $key = is_null($ua) == false && empty($ua) == false ? array_search($module['module'], array_column($ua, 'module')) : FALSE;
-                if ($key === FALSE) {
-                    $access = new UserAccess();
-                    $access->module = $module['module'];
-                    $access->enabled = false;
-                    $access->access_level = 0;
-                    $access->access_type = $module['access_type'];
-                    $this->useraccess[] = $access;
-                } else {
-                    $this->useraccess[] = $ua[$key];
-                }
-            }
-            dd($this->useraccess);
-        } */
+
     private function loadUserAccess()
     {
         $this->useraccess = [];
@@ -88,7 +72,7 @@ class UserDetails extends Component
 
     public function edit()
     {
-        if($this->usertype == 0 && $this->sameUser == false){
+        if ($this->usertype == 0 && $this->isSameUser == false) {
             $this->onAlert(false, 'Action Cancelled', 'Unable to perform action due to user is unauthorized!', 'warning');
             return;
         }
@@ -98,8 +82,22 @@ class UserDetails extends Component
     {
         $this->isedit = false;
         $this->user = User::findOrFail($this->user->id);
-        $this->isactive = $this->user->is_active;
-        $this->usertype = $this->user->user_type;
+    }
+    public function overrideEmailVerification()
+    {
+        if (!Gate::allows('access-enabled', 'module-override-email-verification')) {
+            $this->onAlert(false, 'Action Cancelled', 'Unable to perform action due to user is unauthorized!', 'warning');
+            return;
+        }
+        try {
+            $this->user = User::findOrFail($this->user->id);
+            $this->user->last_updated_by_id = auth()->user()->id;
+            $this->user->email_verified_at = now();
+            $this->user->save();
+            $this->onAlert(false, 'Update Successful', 'E-mail verification override successful.', 'success');
+        } catch (QueryException $e) {
+            $this->onAlert(false, 'Error', $e->getMessage(), 'warning');
+        }
     }
     public function render()
     {
@@ -109,8 +107,44 @@ class UserDetails extends Component
     {
         CustomHelper::onShow($this, $is_confirm, $title, $message, $type, $data);
     }
-    public function reset(...$properties)
+    public function onUpdateStatus()
     {
-        $this->resetValidation();
+        if (!Gate::allows('access-enabled', 'module-set-status')) {
+            $this->onAlert(false, 'Action Cancelled', 'Unable to perform action due to user is unauthorized!', 'warning');
+            return;
+        }
+        if ($this->isSameUser) {
+            $this->onAlert(false, 'Action Cancelled', 'Cannot deactivate own account!', 'warning');
+            return;
+        }
+        try {
+            $this->user->save();
+        } catch (QueryException $e) {
+            $this->onAlert(false, 'Error', $e->getMessage(), 'warning');
+
+        }
+    }
+    public function save()
+    {
+        if (!Gate::allows('allow-edit', 'module-user-management')) {
+            $this->onAlert(false, 'Action Cancelled', 'Unable to perform action due to user is unauthorized!', 'warning');
+            return;
+        }
+        try {
+            $this->validate();
+            $getCurrentData = User::findOrFail($this->user->id);
+            if ($getCurrentData->email != $this->user->email)
+                $getCurrentData->email_verified_at = null;
+            $getCurrentData->last_updated_by_id = auth()->user()->id;
+            $getCurrentData->name = $this->user->name;
+            $getCurrentData->email = $this->user->email;
+            $getCurrentData->user_type = $this->usertype;
+            $getCurrentData->contact_number = $this->user->contact_number;
+            $getCurrentData->save();
+            $this->onAlert(false, 'Update Successful', 'User account details updated.', 'success');
+            $this->isedit = false;
+        } catch (QueryException $e) {
+            $this->onAlert(false, 'Error', $e->getMessage(), 'warning');
+        }
     }
 }
