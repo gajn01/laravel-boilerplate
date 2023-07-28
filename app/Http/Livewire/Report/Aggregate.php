@@ -51,6 +51,7 @@ class Aggregate extends Component
                 $restructured_data[$index]['score'] = $value->percentage;
             }
         }
+        // dd($restructured_data);
         $restructured_data = array_filter($restructured_data, fn($item) => !empty($item['data']) || !empty($item['store']));
         return view('livewire.report.aggregate', ['aggregate' => $restructured_data, 'categories' => $category_names])->extends('layouts.app');
     }

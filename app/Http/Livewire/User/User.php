@@ -3,80 +3,116 @@ namespace App\Http\Livewire\User;
 
 use Livewire\Component;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Database\QueryException;
 use Livewire\WithPagination;
 use App\Helpers\CustomHelper;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Gate;
+use Illuminate\Auth\Events\Registered;
+use App\Traits\Sortable;
+// use App\Helpers\UIHelper;
 use App\Models\User as UserModel;
-use App\Models\Store as StoreModel;
+use App\Models\Store;
 
 class User extends Component
 {
     use WithPagination;
     protected $paginationTheme = 'bootstrap';
     protected $listeners = ['alert-sent' => 'onDelete'];
-    public $account_id;
-    public $employee_id;
-    public $store_id;
-    public $name;
-    public $email;
-    public $password;
-    public $user_level = 1;
-    public $searchTerm;
-    public $modalTitle;
-    public $modalButtonText;
-    public $limit = 10;
-    public $is_toggle = false;
+    public $search = '';
+    public $displaypage = 10;
+    private $selectedID;
+    public UserModel $user;
+    public $password,$password_confirmation;
+    protected function rules()
+    {
+        return [
+            'user.name' => 'required|string|max:255',
+            'user.email' => 'required|email|max:255|unique:user,email,' . $this->user->id . '',
+            'password' => 'required|string|min:8',
+            'password_confirmation' => 'required|string|min:8|same:password',
+            'user.contact_number' => 'string|max:30',
+            'user.user_type' => 'required|integer',
+        ];
+    }
+    public function mount()
+    {
+        if(!Gate::allows('allow-view','module-user-management')) redirect()->route('dashboard');
+    }
     public function render()
     {
-        $store = StoreModel::select('*')->get();
-        $searchTerm = '%' . $this->searchTerm . '%';
-        $user_list = UserModel::select('id', 'name', 'employee_id', 'email', 'password', 'user_level', 'status')
-            ->where('user_level', '!=', 0)
-            ->where(function ($query) use ($searchTerm) {
-                $query->orWhere('name', 'like', '%' . $searchTerm . '%')
-                    ->orWhere('employee_id', 'like', '%' . $searchTerm . '%')
-                    ->orWhere('email', 'like', '%' . $searchTerm . '%');
-            })
-            ->paginate($this->limit);
-
-        return view('livewire.user.user', ['user_list' => $user_list, 'store_list' => $store])->extends('layouts.app');
+        $store = Store::get();
+        $users = UserModel::when(auth()->user()->user_type > 1, fn($q)=>
+             $q->where('user_type','>',1)
+                ->whereNot('id',auth()->user()->id)
+        )
+        ->where(fn($q) =>
+             $q->where('name','like','%'.$this->search.'%')
+                ->orWhere('email','like','%'.$this->search.'%')
+        )
+        ->paginate($this->displaypage);
+        return view('livewire.user.user', ['user_list' => $users, 'store_list' => $store])->extends('layouts.app');
     }
-    public function showModal($account_id = null)
+    public function create()
     {
-        $this->account_id = $account_id;
-        $account = UserModel::find($account_id);
-        $this->employee_id = optional($account)->employee_id;
-        $this->name = optional($account)->name;
-        $this->email = optional($account)->email;
-        $this->password = optional($account)->password;
-        $this->resetValidation();
-        $this->modalTitle = $this->account_id ? 'Edit Account' : 'Add Account';
-        $this->modalButtonText = $this->account_id ? 'Update' : 'Add';
+        $this->user = new UserModel();
     }
-    public function onSave()
-    {
-        $this->validate(
-            [
-                'user_level' => 'required|numeric',
-                'employee_id' => 'required|min:4',
-                'name' => 'required|max:255',
-                'email' => 'required|email',
-                'password' => 'required|min:6',
-            ]
-        );
-        UserModel::updateOrCreate(
-            ['id' => $this->account_id ?? null],
-            [
-                'user_level' => strip_tags($this->user_level),
-                'employee_id' => strip_tags($this->employee_id),
-                'name' => strip_tags($this->name),
-                'email' => strip_tags($this->email),
-                'password' => strip_tags(Hash::make($this->password)),
-                'status' => '1'
-            ]
-        );
+    public function cancel(){
         $this->resetValidation();
-        $this->onAlert(false, 'Success', 'Account saved successfully!', 'success');
-        CustomHelper::onRemoveModal($this, '#user_modal');
+    }
+    public function getId($id)
+    {
+        $this->user = UserModel::findOrFail($id);
+    }
+    public function save()
+    {
+        if(!Gate::allows('allow-create','module-user-management')){
+            $this->onAlert(false, 'Action Cancelled', 'Unable to perform action due to user is unauthorized!', 'warning');
+            return;
+        }
+        try
+        {
+            $this->validate();
+            $this->user->date_created = now();
+            $this->user->date_updated = now();
+            $this->user->created_by_id = auth()->user()->id;
+            $this->user->last_updated_by_id = auth()->user()->id;
+            $this->user->password = Hash::make($this->password);
+            $this->user->is_active = true;
+            $this->user->user_access = '';
+            $this->user->save();
+            //event(new Registered($this->user)); //Enable when email is set up
+            // redirect()->route('user-details',['id' => $this->user->id]);
+        }
+        catch(QueryException $e)
+        {
+            $this->onAlert(false, 'Error', $e->getMessage(), 'warning');
+        }
+        CustomHelper::onRemoveModal($this, '#createModal');
+        $this->resetValidation();
+    }
+    public function delete()
+    {
+        if(!Gate::allows('allow-delete','module-user-management')){
+            $this->onAlert(false, 'Action Cancelled', 'Unable to perform action due to user is unauthorized!', 'warning');
+             CustomHelper::onRemoveModal($this, '#deleteModal');
+            return;
+        }
+        try
+        {
+            $this->user->delete();
+            $this->onAlert(false, 'Delete Successful', 'User deleted!', 'success');
+            $this->user = new UserModel();
+        }
+        catch(QueryException $e)
+        {
+            if($e->getCode() == 23000)
+            {
+                $this->onAlert(false, 'Action Cancelled', 'Unable to perform action due to user is unauthorized!', 'warning');
+            }else{
+                $this->onAlert(false, 'Error', $e->getMessage(), 'warning');
+            }
+        }
     }
     public function onAlert($is_confirm = false, $title = null, $message = null, $type = null, $data = null)
     {

@@ -2,8 +2,10 @@
 
 namespace App\Providers;
 
-// use Illuminate\Support\Facades\Gate;
+use Illuminate\Support\Facades\Gate;
 use Illuminate\Foundation\Support\Providers\AuthServiceProvider as ServiceProvider;
+use Illuminate\Auth\Access\Response;
+use App\Models\User;
 
 class AuthServiceProvider extends ServiceProvider
 {
@@ -18,9 +20,43 @@ class AuthServiceProvider extends ServiceProvider
 
     /**
      * Register any authentication / authorization services.
+     *
+     * @return void
      */
-    public function boot(): void
+    public function boot()
     {
-        //
+        $this->registerPolicies();
+        Gate::define('allow-view', fn (User $user, $module) =>
+             $this->checkUserAccess($user, $module, 0, true)
+        );
+        Gate::define('allow-create', fn (User $user, $module) =>
+             $this->checkUserAccess($user, $module, 1, true)
+        );
+        Gate::define('allow-edit', fn (User $user, $module) =>
+             $this->checkUserAccess($user, $module, 2, true)
+        );
+        Gate::define('allow-delete', fn (User $user, $module) =>
+             $this->checkUserAccess($user, $module, 3, true)
+        );
+        Gate::define('access-enabled', fn (User $user, $module) =>
+             $this->checkUserAccess($user, $module, 0, false)
+        );
+    }
+    private function checkUserAccess(User $user, $module, $requiredAccessLevel, $checkEnabled)
+    {
+        $checkIfUserIsAdmin = $user->user_type < 2;
+        $checkIfUserAccessIsNull = !$user->userAccessArray;
+        if ($checkIfUserIsAdmin) {
+            return true;
+        }
+        if ($checkIfUserAccessIsNull) {
+            return false;
+        }
+        foreach ($user->userAccessArray as $access) {
+            if ($access['module'] === $module && (!$checkEnabled || $access['enabled']) && $access['access_level'] >= $requiredAccessLevel) {
+                return true;
+            }
+        }
+        return false;
     }
 }

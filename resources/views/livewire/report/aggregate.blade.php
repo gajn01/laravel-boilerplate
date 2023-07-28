@@ -84,16 +84,6 @@
                                     </table>
                                 </td>
                                 <td class="cell">{{ $results['score'].'%' }}</td>
-
-
-                            {{--     <td class="cell">{{ $results->category_name }}</td>
-                                <td class="cell">{{ $results->sub_name }}</td>
-                                <td class="cell">{{ $results->sub_sub_name }}</td>
-                                <td class="cell">{{ $results->label_name  }}</td>
-                                <td class="cell">{{ $results->sub_sub_remarks ? $results->sub_sub_remarks : $results->label_remarks  }}</td>
-                                <td class="cell">{{ $results->sub_sub_deviation  }}</td>
-                                <td class="cell">{{ date('Y', strtotime($results->updated_at))}}</td>
-                                <td class="cell text-center">{{ $results->forms->wave }}</td> --}}
                             </tr>
                         @empty
                             <tr>

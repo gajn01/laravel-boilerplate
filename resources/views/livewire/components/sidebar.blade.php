@@ -11,7 +11,6 @@
         <nav id="app-nav-main" class="app-nav app-nav-main flex-grow-1">
             <ul class="app-menu list-unstyled accordion" id="menu-accordion">
 
-                @if (Auth::user()->user_level == 0)
                     <li class="nav-item">
                         <a class="nav-link {{ Request::routeIs('dashboard') ? 'active' : '' }}"
                             href="{{ url('dashboard') }}">
@@ -27,7 +26,7 @@
                             <span class="nav-link-text">Dashboard</span>
                         </a>
                     </li>
-
+                @if (Gate::allows('allow-view', 'module-schedule'))
                     <li class="nav-item">
                         <a class="nav-link {{ Request::is('schedule') || Request::is('schedule/form*') || Request::is('schedule/details*') ? 'active' : '' }}"
                             href="{{ url('schedule') }}">
@@ -44,23 +43,25 @@
                         </a>
                     </li>
                 @endif
-                <li class="nav-item">
-                    <a class="nav-link {{ Request::is('audit') || Request::is('audit/form*') || Request::is('result*') || Request::is('result/summary*') ? 'active' : '' }}"
-                        href="{{ url('audit') }}">
-                        <span class="nav-icon">
+                @if (Gate::allows('allow-view', 'module-audit'))
+                    <li class="nav-item">
+                        <a class="nav-link {{ Request::is('audit') || Request::is('audit/form*') || Request::is('result*') || Request::is('result/summary*') ? 'active' : '' }}"
+                            href="{{ url('audit') }}">
+                            <span class="nav-icon">
 
-                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
-                                class="bi bi-card-list" viewBox="0 0 16 16">
-                                <path
-                                    d="M14.5 3a.5.5 0 0 1 .5.5v9a.5.5 0 0 1-.5.5h-13a.5.5 0 0 1-.5-.5v-9a.5.5 0 0 1 .5-.5h13zm-13-1A1.5 1.5 0 0 0 0 3.5v9A1.5 1.5 0 0 0 1.5 14h13a1.5 1.5 0 0 0 1.5-1.5v-9A1.5 1.5 0 0 0 14.5 2h-13z" />
-                                <path
-                                    d="M5 8a.5.5 0 0 1 .5-.5h7a.5.5 0 0 1 0 1h-7A.5.5 0 0 1 5 8zm0-2.5a.5.5 0 0 1 .5-.5h7a.5.5 0 0 1 0 1h-7a.5.5 0 0 1-.5-.5zm0 5a.5.5 0 0 1 .5-.5h7a.5.5 0 0 1 0 1h-7a.5.5 0 0 1-.5-.5zm-1-5a.5.5 0 1 1-1 0 .5.5 0 0 1 1 0zM4 8a.5.5 0 1 1-1 0 .5.5 0 0 1 1 0zm0 2.5a.5.5 0 1 1-1 0 .5.5 0 0 1 1 0z" />
-                            </svg>
-                        </span>
-                        <span class="nav-link-text">Audit</span>
-                    </a>
-                </li>
-                @if (Auth::user()->user_level == 0)
+                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
+                                    class="bi bi-card-list" viewBox="0 0 16 16">
+                                    <path
+                                        d="M14.5 3a.5.5 0 0 1 .5.5v9a.5.5 0 0 1-.5.5h-13a.5.5 0 0 1-.5-.5v-9a.5.5 0 0 1 .5-.5h13zm-13-1A1.5 1.5 0 0 0 0 3.5v9A1.5 1.5 0 0 0 1.5 14h13a1.5 1.5 0 0 0 1.5-1.5v-9A1.5 1.5 0 0 0 14.5 2h-13z" />
+                                    <path
+                                        d="M5 8a.5.5 0 0 1 .5-.5h7a.5.5 0 0 1 0 1h-7A.5.5 0 0 1 5 8zm0-2.5a.5.5 0 0 1 .5-.5h7a.5.5 0 0 1 0 1h-7a.5.5 0 0 1-.5-.5zm0 5a.5.5 0 0 1 .5-.5h7a.5.5 0 0 1 0 1h-7a.5.5 0 0 1-.5-.5zm-1-5a.5.5 0 1 1-1 0 .5.5 0 0 1 1 0zM4 8a.5.5 0 1 1-1 0 .5.5 0 0 1 1 0zm0 2.5a.5.5 0 1 1-1 0 .5.5 0 0 1 1 0z" />
+                                </svg>
+                            </span>
+                            <span class="nav-link-text">Audit</span>
+                        </a>
+                    </li>
+                @endif
+                @if (Gate::allows('allow-view', 'module-store-manage'))
                     <li class="nav-item">
                         <a class="nav-link {{ Request::is('store') || Request::is('store/details*') ? 'active' : '' }}"
                             href="{{ url('store') }}">
@@ -76,49 +77,50 @@
 
                     </li>
                 @endif
-                <li class="nav-item has-submenu">
-                    <a class="nav-link submenu-toggle {{ Request::routeIs('insight') ? 'active' : '' }}" href="#"
-                        data-bs-toggle="collapse" data-bs-target="#submenu-3" aria-expanded="false"
-                        aria-controls="submenu-3">
-                        <span class="nav-icon">
-                            <svg viewBox="0 0 16 16" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
-                                <path
-                                    d="M9.828 4a3 3 0 0 1-2.12-.879l-.83-.828A1 1 0 0 0 6.173 2H2.5a1 1 0 0 0-1 .981L1.546 4h-1L.5 3a2 2 0 0 1 2-2h3.672a2 2 0 0 1 1.414.586l.828.828A2 2 0 0 0 9.828 3v1z" />
-                                <path fill-rule="evenodd"
-                                    d="M13.81 4H2.19a1 1 0 0 0-.996 1.09l.637 7a1 1 0 0 0 .995.91h10.348a1 1 0 0 0 .995-.91l.637-7A1 1 0 0 0 13.81 4zM2.19 3A2 2 0 0 0 .198 5.181l.637 7A2 2 0 0 0 2.826 14h10.348a2 2 0 0 0 1.991-1.819l.637-7A2 2 0 0 0 13.81 3H2.19z" />
-                            </svg>
-                        </span>
-                        <span class="nav-link-text">Insight</span>
-                        <span class="submenu-arrow">
-                            <svg viewBox="0 0 16 16" class="bi bi-chevron-down" fill="currentColor"
-                                xmlns="http://www.w3.org/2000/svg">
-                                <path fill-rule="evenodd"
-                                    d="M1.646 4.646a.5.5 0 0 1 .708 0L8 10.293l5.646-5.647a.5.5 0 0 1 .708.708l-6 6a.5.5 0 0 1-.708 0l-6-6a.5.5 0 0 1 0-.708z" />
-                            </svg>
-                        </span>
-                    </a>
-                    <div id="submenu-3" @class([
-                        'collapse submenu submenu-3',
-                        'show' => Request::routeIs('aggregate') || Request::routeIs('summary'),
-                    ]) data-bs-parent="#menu-accordion">
-                        <ul class="submenu-list list-unstyled">
-                            <li class="submenu-item"><a
-                                    class="submenu-link {{ Request::routeIs('aggregate') ? 'active' : '' }}"
-                                    href="{{ url('insight/aggregate') }}">Aggregate</a></li>
-                            <li class="submenu-item"><a
-                                    class="submenu-link {{ Request::routeIs('summary') ? 'active' : '' }}"
-                                    href="{{ url('insight/summary') }}">Summary</a></li>
+                @if (Gate::allows('allow-view', 'module-insight'))
+                    <li class="nav-item has-submenu">
+                        <a class="nav-link submenu-toggle {{ Request::routeIs('insight') ? 'active' : '' }}" href="#"
+                            data-bs-toggle="collapse" data-bs-target="#submenu-3" aria-expanded="false"
+                            aria-controls="submenu-3">
+                            <span class="nav-icon">
+                                <svg viewBox="0 0 16 16" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                                    <path
+                                        d="M9.828 4a3 3 0 0 1-2.12-.879l-.83-.828A1 1 0 0 0 6.173 2H2.5a1 1 0 0 0-1 .981L1.546 4h-1L.5 3a2 2 0 0 1 2-2h3.672a2 2 0 0 1 1.414.586l.828.828A2 2 0 0 0 9.828 3v1z" />
+                                    <path fill-rule="evenodd"
+                                        d="M13.81 4H2.19a1 1 0 0 0-.996 1.09l.637 7a1 1 0 0 0 .995.91h10.348a1 1 0 0 0 .995-.91l.637-7A1 1 0 0 0 13.81 4zM2.19 3A2 2 0 0 0 .198 5.181l.637 7A2 2 0 0 0 2.826 14h10.348a2 2 0 0 0 1.991-1.819l.637-7A2 2 0 0 0 13.81 3H2.19z" />
+                                </svg>
+                            </span>
+                            <span class="nav-link-text">Insight</span>
+                            <span class="submenu-arrow">
+                                <svg viewBox="0 0 16 16" class="bi bi-chevron-down" fill="currentColor"
+                                    xmlns="http://www.w3.org/2000/svg">
+                                    <path fill-rule="evenodd"
+                                        d="M1.646 4.646a.5.5 0 0 1 .708 0L8 10.293l5.646-5.647a.5.5 0 0 1 .708.708l-6 6a.5.5 0 0 1-.708 0l-6-6a.5.5 0 0 1 0-.708z" />
+                                </svg>
+                            </span>
+                        </a>
+                        <div id="submenu-3" @class([
+                            'collapse submenu submenu-3',
+                            'show' => Request::routeIs('aggregate') || Request::routeIs('summary'),
+                        ]) data-bs-parent="#menu-accordion">
+                            <ul class="submenu-list list-unstyled">
+                                <li class="submenu-item"><a
+                                        class="submenu-link {{ Request::routeIs('aggregate') ? 'active' : '' }}"
+                                        href="{{ url('insight/aggregate') }}">Aggregate</a></li>
+                                <li class="submenu-item"><a
+                                        class="submenu-link {{ Request::routeIs('summary') ? 'active' : '' }}"
+                                        href="{{ url('insight/summary') }}">Summary</a></li>
 
-                        </ul>
-                    </div>
-                </li>
+                            </ul>
+                        </div>
+                    </li>
+                    @endif
             </ul>
         </nav>
         <div class="app-sidepanel-footer">
             <nav class="app-nav app-nav-footer">
                 <ul class="app-menu footer-menu list-unstyled">
-
-                    @if (Auth::user()->user_level == 0)
+                    @if (Gate::allows('allow-view', 'module-settings'))
                         <li class="nav-item has-submenu">
                             <a class="nav-link submenu-toggle {{ Request::routeIs('critical-deviation') || Request::routeIs('dropdown') || Request::routeIs('dropdown/menu*') || Request::routeIs('settings') || Request::routeIs('sanitary') || Request::routeIs('category') ? 'active' : '' }}"
                                 href="#" data-bs-toggle="collapse" data-bs-target="#submenu-4"
@@ -152,8 +154,8 @@
                                     Request::routeIs('critical-deviation'),
                             ]) data-bs-parent="#menu-accordion">
                                 <ul class="submenu-list list-unstyled">
-                                    <li class="submenu-item "><a @class(['submenu-link', 'active' => Request::routeIs('user')])
-                                            href="{{ url('user') }}">Account Management</a></li>
+                                    <li class="submenu-item "><a @class(['submenu-link', 'active' => Request::routeIs('user-management')])
+                                            href="{{ url('user-management') }}">Account Management</a></li>
                                     <li class="submenu-item "><a @class(['submenu-link', 'active' => Request::routeIs('category')])
                                             href="{{ url('settings/category') }}">Category</a></li>
                                     <li class="submenu-item"><a @class([

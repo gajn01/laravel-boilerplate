@@ -284,6 +284,10 @@
                             </div>
                         @endif
                     </div>
+                  
+                    @if ( $data->name == 'Food')
+                        <label for="points" class="form-label fw-bold">CORE PRODUCT</label>
+                    @endif
                     <div class="app-card app-card-orders-table shadow-sm mb-5 bg-none">
                         <div class="app-card-body">
                             @forelse ($data->sub_categ['data_items'] as  $key =>  $dataItem)
@@ -296,24 +300,39 @@
                                                 <h6 class="card-title product-name">{{ $dataItem['name'] }}</h6>
                                             </button>
                                         </h2>
-                                        <div id="accrod{{ $dataItem['id'] }}"
-                                            class="accordion-collapse collapse show"
-                                            aria-labelledby="accrod{{ $dataItem['id'] }}"
-                                            data-bs-parent="#accordionCategory">
+                                        <div id="accrod{{ $dataItem['id'] }}" class="accordion-collapse collapse show" aria-labelledby="accrod{{ $dataItem['id'] }}" data-bs-parent="#accordionCategory">
                                             <div class="accordion-body">
                                                 @if ($dataItem['is_sub'] == 0)
                                                     @foreach ($dataItem['sub_category'] as $index => $auditLabel)
+                                                    <div class="row">
+                                                        <div class="col-sm-12 col-md-5">
+
+                                                        </div>
+                                                        <div class="col-sm-12 col-md-2">
+                                                            @if ($index == 0)
+                                                            <div class="row">
+                                                                <div class="col-sm-6 col-md-6">
+                                                                    <label for=""  class="form-label">BP</label>
+                                                                </div>
+                                                                <div class="col-sm-6 col-md-6">
+                                                                    <label for="points" class="form-label">Point(s)</label>
+                                                                </div>
+                                                            </div>
+                                                         @endif
+                                                        </div>
+                                                        <div class="col-sm-12 col-md-5">
+                                                            @if ($index == 0)
+                                                            <label for="remarks" class="form-label">Remarks</label>
+                                                            @endif
+                                                        </div>
+                                                    </div>
                                                         <div class="row mb-3">
                                                             <div class="col-sm-12 col-md-5 col-lg-5">
                                                                 <div class="form-check form-switch">
                                                                     <input class="form-check-input" type="checkbox"
                                                                         id="toggle-switch" @checked(
-                                                                            $category_list[$loop->parent->parent->index]['sub_categ']['data_items'][$loop->parent->index]['sub_category'][
-                                                                                $loop->index
-                                                                            ]['is_na']
-                                                                                ? false
-                                                                                : true)
-                                                                        wire:change="updateNa(
+                                                                            $category_list[$loop->parent->parent->index]['sub_categ']['data_items'][$loop->parent->index]['sub_category'][$loop->index]['is_na']? false: true)
+                                                                            wire:change="updateNa(
                                                                         '{{ $auditLabel['id'] }}',
                                                                         '{{ $loop->parent->parent->index }}',
                                                                         '{{ $loop->parent->index }}',
@@ -325,8 +344,7 @@
                                                                         '',
                                                                         '{{ $auditLabel['bp'] }}',
                                                                         '{{ $dataItem['is_sub'] }}',
-                                                                        $event.target.checked ? 1 : 0
-                                                                    )">
+                                                                        $event.target.checked ? 1 : 0)">
                                                                     <label class="form-check-label"
                                                                         @class(['pt-4' => $index == 0])
                                                                         for="toggle-switch">
@@ -336,10 +354,6 @@
                                                             <div class="col-sm-12 col-md-2">
                                                                 <div class="row">
                                                                     <div class="col-sm-6 col-md-6">
-                                                                        @if ($index == 0)
-                                                                            <label for=""
-                                                                                class="form-label">BP</label>
-                                                                        @endif
                                                                         <input type="text"
                                                                             class="form-control text-center" disabled
                                                                             name="bp{{ $auditLabel['name'] }}"
@@ -348,11 +362,7 @@
                                                                             placeholder="">
                                                                     </div>
                                                                     <div class="col-sm-6 col-md-6">
-                                                                        @if ($index == 0)
-                                                                            <label for="points"
-                                                                                class="form-label">Point(s)</label>
-                                                                        @endif
-
+                                                                    
                                                                         <input type="number"
                                                                             class="form-control text-center"
                                                                             @disabled($auditLabel['is_na'] ? true : false)
@@ -380,10 +390,7 @@
                                                                 <div class="row">
                                                                     <div
                                                                         class="col-sm-12 {{ $auditLabel['dropdown'] ? 'col-md-6' : 'col-md-12' }}">
-                                                                        @if ($index == 0)
-                                                                            <label for="remarks"
-                                                                                class="form-label">Remarks</label>
-                                                                        @endif
+                                                                   
 
                                                                         <textarea class="form-control" @disabled($auditLabel['is_na'] ? true : false) name="remarks" id="remarks" rows="1"
                                                                             wire:change="updateRemarks(
