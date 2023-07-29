@@ -3,6 +3,7 @@
 namespace App\Http\Livewire\Settings;
 
 use Livewire\Component;
+use Illuminate\Support\Facades\Gate;
 use App\Models\Dropdown as DropdownModel;
 use App\Models\DropdownMenu as DropdownMenuModel;
 use Livewire\WithPagination;
@@ -23,6 +24,9 @@ class DropdownMenu extends Component
     public $limit = 10;
     public function mount($dropdown_id = null)
     {
+        if (!Gate::allows('allow-view', 'module-dropdown-management')) {
+            return redirect()->route('dashboard');
+        }
         $this->dropdown_id = $dropdown_id;
         $this->dropdown_name = DropdownModel::find($dropdown_id)->name;
     }
@@ -37,6 +41,15 @@ class DropdownMenu extends Component
     }
     public function onSave()
     {
+        $access = 'allow-create';
+        if($this->dropdown_menu_id){
+            $access = 'allow-edit';
+        }
+        if(!Gate::allows($access,'module-dropdown-management')){
+            $this->onAlert(false, 'Action Cancelled', 'Unable to perform action due to user is unauthorized!', 'warning');
+            return;
+        }
+
         $this->validate(
             [
                 'name' => 'required',
@@ -64,6 +77,10 @@ class DropdownMenu extends Component
     }
     public function onDelete($dropdown_menu_id)
     {
+        if(!Gate::allows('allow-delete','module-dropdown-management')){
+            $this->onAlert(false, 'Action Cancelled', 'Unable to perform action due to user is unauthorized!', 'warning');
+            return;
+        }
         $dropdown = DropdownMenuModel::find($dropdown_menu_id);
         $dropdown->delete();
     }

@@ -2,6 +2,7 @@
 namespace App\Http\Livewire\Settings;
 
 use Livewire\Component;
+use Illuminate\Support\Facades\Gate;
 use App\Models\Category as CategoryModel;
 use App\Models\SubCategory as SubCategoryModel;
 use Livewire\WithPagination;
@@ -23,6 +24,9 @@ class CategoryDetails extends Component
     public $limit = 10;
     public function mount($category_id = null)
     {
+        if (!Gate::allows('allow-view', 'module-category-management')) {
+            return redirect()->route('dashboard');
+        }
         $this->category_id = $category_id;
         $category = CategoryModel::with('subCategories')->where('id', $category_id)->first();
         $this->category_name = $category->name;
@@ -50,6 +54,15 @@ class CategoryDetails extends Component
     }
     public function onSave()
     {
+        $access = 'allow-create';
+        if($this->sub_category_id){
+            $access = 'allow-edit';
+        }
+        if(!Gate::allows($access,'module-category-management')){
+            $this->onAlert(false, 'Action Cancelled', 'Unable to perform action due to user is unauthorized!', 'warning');
+            return;
+        }
+
         $this->validate([
             'sub_category_name' => 'required|max:255',
         ]);
@@ -69,6 +82,10 @@ class CategoryDetails extends Component
     }
     public function onDelete($id)
     {
+        if(!Gate::allows('allow-delete','module-category-management')){
+            $this->onAlert(false, 'Action Cancelled', 'Unable to perform action due to user is unauthorized!', 'warning');
+            return;
+        }
         $sub_category = SubCategoryModel::find($id);
         $sub_category->delete();
     }

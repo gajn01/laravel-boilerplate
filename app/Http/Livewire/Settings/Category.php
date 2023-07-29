@@ -2,6 +2,7 @@
 namespace App\Http\Livewire\Settings;
 
 use Livewire\Component;
+use Illuminate\Support\Facades\Gate;
 use App\Models\Category as CategoryModel;
 use App\Models\CriticalDeviation as CriticalDeviationModel;
 use Livewire\WithPagination;
@@ -22,6 +23,11 @@ class Category extends Component
     public $modalTitle;
     public $modalButtonText;
     public $limit = 10;
+    public function mount(){
+        if (!Gate::allows('allow-view', 'module-category-management')) {
+            return redirect()->route('dashboard');
+        }
+    }
     public function render()
     {
         $deviation = CriticalDeviationModel::all('id', 'name');
@@ -47,6 +53,14 @@ class Category extends Component
     }
     public function onSave()
     {
+        $access = 'allow-create';
+        if($this->category_id){
+            $access = 'allow-edit';
+        }
+        if(!Gate::allows($access,'module-category-management')){
+            $this->onAlert(false, 'Action Cancelled', 'Unable to perform action due to user is unauthorized!', 'warning');
+            return;
+        }
         $this->validate([
             'name' => 'required|max:255',
             'type' => 'required|in:0,1',
@@ -68,6 +82,10 @@ class Category extends Component
     }
     public function onDelete($id)
     {
+        if(!Gate::allows('allow-delete','module-category-management')){
+            $this->onAlert(false, 'Action Cancelled', 'Unable to perform action due to user is unauthorized!', 'warning');
+            return;
+        }
         $category = CategoryModel::find($id);
         $category->delete();
     }

@@ -2,14 +2,10 @@
 
 namespace App\Http\Livewire\Store;
 
-use App\Models\auditor_list;
+use Illuminate\Support\Facades\Gate;
 use Livewire\Component;
 use App\Models\Store as StoreModel;
-use App\Models\User as UserModel;
-use App\Models\AuditDate as AuditDateModel;
-use App\Models\auditor_list as AuditorListModel;
 use App\Helpers\CustomHelper;
-use Illuminate\Support\Facades\DB;
 use Livewire\WithPagination;
 use Illuminate\Support\Facades\Response;
 
@@ -29,6 +25,11 @@ class Store extends Component
     public $modalTitle;
     public $modalButtonText;
     public $limit = 10;
+    public function mount() {
+        if (!Gate::allows('allow-view', 'module-store-management')) {
+            return redirect()->route('dashboard');
+        }
+    }
     public function render()
     {
         $store_list = $this->getStoreList();
@@ -85,6 +86,14 @@ class Store extends Component
     }
     public function onSave()
     {
+        $access = 'allow-create';
+        if($this->store_id){
+            $access = 'allow-edit';
+        }
+        if (!Gate::allows($access, 'module-store-management')) {
+            $this->onAlert(false, 'Action Cancelled', 'Unable to perform action due to user is unauthorized!', 'warning');
+            return;
+        }
         $this->validate(
             [
                 'name' => 'required|max:255',
@@ -108,6 +117,10 @@ class Store extends Component
     }
     public function onDelete($store_id)
     {
+        if(!Gate::allows('allow-delete','module-store-management')){
+            $this->onAlert(false, 'Action Cancelled', 'Unable to perform action due to user is unauthorized!', 'warning');
+            return;
+        }
         $store = StoreModel::find($store_id);
         $store->delete();
     }

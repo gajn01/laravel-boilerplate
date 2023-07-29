@@ -2,6 +2,7 @@
 namespace App\Http\Livewire\Audit;
 
 use Livewire\Component;
+use Illuminate\Support\Facades\Gate;
 use App\Models\Store as StoreModel;
 use App\Models\User as UserModel;
 use App\Models\AuditDate as AuditDateModel;
@@ -45,11 +46,14 @@ class Schedule extends Component
     }
     public function mount()
     {
+        if (!Gate::allows('allow-view', 'module-schedule-management')) {
+            return redirect()->route('dashboard');
+        }
         $this->date_filter = $this->date_today;
     }
     public function render()
     {
-        $user = UserModel::all('*')->where('user_level', '!=', '0');
+        $user = UserModel::where('user_type', '!=', '0')->get();
         $store_list = StoreModel::all();
         #region Schedule query
         $schedule = AuditDateModel::where(function ($q) {
@@ -60,9 +64,12 @@ class Schedule extends Component
                 $q->orWhere('stores.area', 'like', '%' . $searchTerm . '%');
             });
         })->orderByRaw('ISNULL(audit_date.audit_date), audit_date.audit_date ASC');
-
-        if (Auth::user()->user_level != 0) {
-            $schedule->where('auditor_list.auditor_id', Auth::user()->id);
+        if (Auth::user()->user_type != 0) {
+            $schedule->when(Auth::user()->user_type != 0 ,fn($con)=>
+                $con->whereHas('auditors', fn($q)=>
+                    $q->where('auditor_list.auditor_id',Auth::user()->id)
+                )
+            );
         }
         if ($this->date_filter == 'weekly') {
             $schedule->whereBetween('audit_date.audit_date', [Carbon::now()->startOfWeek(), Carbon::now()->endOfWeek()]);
@@ -111,6 +118,14 @@ class Schedule extends Component
     }
     public function saveSchedule()
     {
+        $access = 'allow-create';
+        if($this->audit_date_id){
+            $access = 'allow-edit';
+        }
+        if(!Gate::allows($access,'module-schedule-management')){
+            $this->onAlert(false, 'Action Cancelled', 'Unable to perform action due to user is unauthorized!', 'warning');
+            return;
+        }
         $this->validate([
             'store_id' => 'required',
             'audit_date' => 'required',
@@ -120,6 +135,7 @@ class Schedule extends Component
             'store_id' => strip_tags($this->store_id),
             'audit_date' => strip_tags($this->audit_date),
             'wave' => strip_tags($this->wave),
+            'is_complete' => 0
         ];
         $auditDate = AuditDateModel::updateOrCreate(['id' => $this->audit_date_id], $auditDateData);
         $this->onAlert(false, 'Success', 'Schedule saved successfully!', 'success');
@@ -142,6 +158,10 @@ class Schedule extends Component
     }
     public function onDelete($id)
     {
+        if(!Gate::allows('allow-delete','module-schedule-management')){
+            $this->onAlert(false, 'Action Cancelled', 'Unable to perform action due to user is unauthorized!', 'warning');
+            return;
+        }
         $schedule = AuditDateModel::find($id);
         $schedule->delete();
     }

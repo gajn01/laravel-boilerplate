@@ -3,6 +3,7 @@
 namespace App\Http\Livewire\Audit;
 
 use App\Models\AuditDate;
+use Illuminate\Support\Facades\Gate;
 use Livewire\Component;
 use App\Models\Store as StoreModel;
 use App\Models\Category as CategoryModel;
@@ -361,6 +362,9 @@ class Form extends Component
     }
     public function mount($store_id = null)
     {
+        if (!Gate::allows('allow-view', 'module-audit')) {
+            return redirect()->route('dashboard');
+        }
         $this->store_id = $store_id;
         $this->audit_forms_id = AuditFormModel::where('store_id', $this->store_id)->where('date_of_visit', $this->date_today)->value('id');
     }

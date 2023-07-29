@@ -2,6 +2,7 @@
 namespace App\Http\Livewire\Settings;
 
 use Livewire\Component;
+use Illuminate\Support\Facades\Gate;
 use App\Models\Category as CategoryModel;
 use App\Models\SubCategory as SubCategoryModel;
 use App\Models\SubCategoryLabel as SubSubCategoryModel;
@@ -33,6 +34,9 @@ class SubSubCategoryLabel extends Component
     public $limit = 10;
     public function mount($category_id = null, $sub_category_id = null, $sub_sub_category_id = null)
     {
+        if (!Gate::allows('allow-view', 'module-category-management')) {
+            return redirect()->route('dashboard');
+        }
         $this->category_id = $category_id;
         $this->sub_category_id = $sub_category_id;
         $this->sub_sub_category_id = $sub_sub_category_id;
@@ -66,6 +70,14 @@ class SubSubCategoryLabel extends Component
     }
     public function onSave()
     {
+        $access = 'allow-create';
+        if($this->label_id){
+            $access = 'allow-edit';
+        }
+        if(!Gate::allows($access,'module-category-management')){
+            $this->onAlert(false, 'Action Cancelled', 'Unable to perform action due to user is unauthorized!', 'warning');
+            return;
+        }
         $labelData = [
             'name' => $this->name,
             'sub_sub_category_id' => $this->sub_sub_category_id,
@@ -80,6 +92,10 @@ class SubSubCategoryLabel extends Component
     }
     public function onDelete($id)
     {
+        if(!Gate::allows('allow-delete','module-category-management')){
+            $this->onAlert(false, 'Action Cancelled', 'Unable to perform action due to user is unauthorized!', 'warning');
+            return;
+        }
         $sub_category = SubSubCategoryLabelModel::find($id);
         $sub_category->delete();
     }

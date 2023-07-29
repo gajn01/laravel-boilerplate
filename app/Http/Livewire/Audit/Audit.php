@@ -3,6 +3,7 @@
 namespace App\Http\Livewire\Audit;
 
 use Livewire\Component;
+use Illuminate\Support\Facades\Gate;
 use App\Models\Store as StoreModel;
 use App\Models\User as UserModel;
 use App\Models\AuditDate as AuditDateModel;
@@ -31,11 +32,14 @@ class Audit extends Component
     }
     public function mount()
     {
+        if (!Gate::allows('allow-view', 'module-audit')) {
+            return redirect()->route('dashboard');
+        }
         $this->date_filter = $this->date_today;
     }
     public function render()
     {
-        $user = UserModel::all('*')->where('user_level', '!=', '0');
+        $user = UserModel::where('user_type', '!=', '0')->get();
         $store_list = StoreModel::all();
         #region Schedule query
             $schedule = AuditDateModel::where(function ($q) {
@@ -46,7 +50,7 @@ class Audit extends Component
                     $q->orWhere('stores.area', 'like',$searchTerm);
                 });
             })
-            ->when(Auth::user()->user_level != 0, function ($q){
+            ->when(Auth::user()->user_type != 0, function ($q){
                     $q->whereHas('auditors',function ($q){
                      $q->where('auditor_list.auditor_id', auth()->user()->id);
                 });

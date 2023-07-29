@@ -26,7 +26,7 @@
                             <span class="nav-link-text">Dashboard</span>
                         </a>
                     </li>
-                @if (Gate::allows('allow-view', 'module-schedule'))
+                @if (Gate::allows('allow-view', 'module-schedule-management'))
                     <li class="nav-item">
                         <a class="nav-link {{ Request::is('schedule') || Request::is('schedule/form*') || Request::is('schedule/details*') ? 'active' : '' }}"
                             href="{{ url('schedule') }}">
@@ -61,7 +61,7 @@
                         </a>
                     </li>
                 @endif
-                @if (Gate::allows('allow-view', 'module-store-manage'))
+                @if (Gate::allows('allow-view', 'module-store-management'))
                     <li class="nav-item">
                         <a class="nav-link {{ Request::is('store') || Request::is('store/details*') ? 'active' : '' }}"
                             href="{{ url('store') }}">
@@ -153,22 +153,21 @@
                                 Request::routeIs('critical-deviation'),
                         ]) data-bs-parent="#menu-accordion">
                             <ul class="submenu-list list-unstyled">
-                                <li class="submenu-item "><a @class(['submenu-link', 'active' => Request::routeIs('user-management')])
-                                        href="{{ url('user-management') }}">Account Management</a></li>
-                                <li class="submenu-item "><a @class(['submenu-link', 'active' => Request::routeIs('category')])
-                                        href="{{ url('settings/category') }}">Category</a></li>
-                                <li class="submenu-item"><a @class([
-                                    'submenu-link',
-                                    'active' => Request::routeIs('critical-deviation'),
-                                ])
-                                        href="{{ url('settings/critical-deviation') }}">Critical Deviation</a>
-                                </li>
-                                <li class="submenu-item"><a
-                                        class="submenu-link {{ Request::routeIs('sanitary') ? 'active' : '' }}"
-                                        href="{{ url('settings/sanitary') }}">Sanitation Defect</a></li>
-                                <li class="submenu-item"><a
-                                        class="submenu-link {{ Request::routeIs('dropdown') || Request::is('dropdown/menu*') ? 'active' : '' }}"
-                                        href="{{ url('settings/dropdown') }}">Dropdown</a></li>
+                                @if (Gate::allows('allow-view', 'module-user-management'))
+                                    <li class="submenu-item "><a @class(['submenu-link', 'active' => Request::routeIs('user-management')]) href="{{ url('user-management') }}">Account Management</a></li>
+                                @endif
+                                @if (Gate::allows('allow-view', 'module-category-management'))
+                                    <li class="submenu-item "><a @class(['submenu-link', 'active' => Request::routeIs('category')])  href="{{ url('settings/category') }}">Category</a></li>
+                                @endif
+                                @if (Gate::allows('allow-view', 'module-critical-deviation-management'))
+                                    <li class="submenu-item"><a @class(['submenu-link','active' => Request::routeIs('critical-deviation'),])href="{{ url('settings/critical-deviation') }}">Critical Deviation</a></li>
+                                @endif
+                                @if (Gate::allows('allow-view', 'module-sanitation-defect-management'))
+                                    <li class="submenu-item"><a class="submenu-link {{ Request::routeIs('sanitary') ? 'active' : '' }}"href="{{ url('settings/sanitary') }}">Sanitation Defect</a></li>
+                                @endif
+                                @if (Gate::allows('allow-view', 'module-dropdown-management'))
+                                    <li class="submenu-item"><a class="submenu-link {{ Request::routeIs('dropdown') || Request::is('dropdown/menu*') ? 'active' : '' }}"href="{{ url('settings/dropdown') }}">Dropdown</a></li>
+                                @endif
                             </ul>
                         </div>
                     </li>

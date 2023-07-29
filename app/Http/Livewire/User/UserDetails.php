@@ -18,15 +18,19 @@ class UserDetails extends Component
     public $isedit, $isSameUser = false;
     private $allowUserAccessUpdate;
     public $moduleList = [
+        ['module' => "module-audit", 'module_name' => "Audit", 'access_type' => 0, 'parent' => null, 'description' => 'Access to Audit.'],
         ['module' => "module-user-management", 'module_name' => "User Management", 'access_type' => 1, 'parent' => null, 'description' => 'Manage users.'],
         ['module' => "module-reset-password", 'module_name' => "Reset Password", 'access_type' => 0, 'parent' => "module-user-management", 'description' => 'Reset user password.'],
         ['module' => "module-set-status", 'module_name' => "Set Status", 'access_type' => 0, 'parent' => "module-user-management", 'description' => 'Set user status to active/inactive.'],
         ['module' => "module-override-email-verification", 'module_name' => "Override Email Verifcation", 'access_type' => 0, 'parent' => "module-user-management", 'description' => 'Override user email verification.'],
         ['module' => "module-set-access-scope", 'module_name' => "Set Access Scope", 'access_type' => 0, 'parent' => "module-user-management", 'description' => 'Set access scope.'],
         ['module' => "module-set-module-access", 'module_name' => "Set Module Access", 'access_type' => 0, 'parent' => "module-user-management", 'description' => 'Set module access.'],
-        ['module' => "module-transaction", 'module_name' => "Transaction Type Settings", 'access_type' => 1, 'parent' => null, 'description' => 'Access Transaction Type.'],
-        ['module' => "module-test", 'module_name' => "Set test", 'access_type' => 0, 'parent' => "module-transaction", 'description' => 'Set module access.'],
-
+        ['module' => "module-store-management", 'module_name' => "Store Management", 'access_type' => 1, 'parent' => null, 'description' => 'Manage Store.'],
+        ['module' => "module-schedule-management", 'module_name' => "Schedule Management", 'access_type' => 1, 'parent' => null, 'description' => 'Manage Schedule.'],
+        ['module' => "module-category-management", 'module_name' => "Audit Template Management", 'access_type' => 1, 'parent' => null, 'description' => 'Manage Audit Template Form.'],
+        ['module' => "module-critical-deviation-management", 'module_name' => "Critical Deviation Management", 'access_type' => 1, 'parent' => null, 'description' => 'Manage Critical Deviation.'],
+        ['module' => "module-sanitation-defect-management", 'module_name' => "Sanitation Defect Management", 'access_type' => 1, 'parent' => null, 'description' => 'Manage Sanitation Defect.'],
+        ['module' => "module-dropdown-management", 'module_name' => "Dropdown Management", 'access_type' => 1, 'parent' => null, 'description' => 'Manage Dropdown.'],
     ];
     protected function rules()
     {

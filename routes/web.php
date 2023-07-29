@@ -26,7 +26,6 @@ use App\Http\Livewire\Settings\CategoryDetails;
 use App\Http\Livewire\Settings\SubCategoryLabel;
 use App\Http\Livewire\Settings\SubSubCategoryLabel;
 use App\Http\Livewire\Settings\Sanitary;
-use App\Http\Livewire\Settings\StoreSettings;
 use App\Http\Livewire\Settings\Dropdown;
 use App\Http\Livewire\Settings\DropdownMenu;
 use App\Http\Livewire\Settings\CriticalDeviation;
@@ -57,7 +56,6 @@ Route::middleware(['auth','verified'])->group(function () {
          Route::get('/view/{result_id?}/summary', AuditSummary::class)->name('audit.view.summary');
      });
     /* Settings */
-    Route::get('/settings/store-settings', StoreSettings::class)->name('settings');
     Route::get('/settings/category', Category::class)->name('category');
     Route::get('/settings/category/details/{category_id?}', CategoryDetails::class)->name('category-details');
     Route::get('/settings/category/details/{category_id?}/label/{sub_category_id?}', SubCategoryLabel::class)->name('sub-category-label');

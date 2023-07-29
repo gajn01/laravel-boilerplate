@@ -1,6 +1,7 @@
 <?php
 
 namespace App\Http\Livewire\Settings;
+use Illuminate\Support\Facades\Gate;
 use Livewire\WithPagination;
 use App\Helpers\CustomHelper;
 use App\Models\CriticalDeviation as CriticalDeviationModel;
@@ -18,6 +19,11 @@ class CriticalDeviation extends Component
     public $modalTitle;
     public $modalButtonText;
     public $limit = 10;
+    public function mount(){
+        if (!Gate::allows('allow-view', 'module-critical-deviation-management')) {
+            return redirect()->route('dashboard');
+        }
+    }
     public function render()
     {
         $searchTerm = '%' . $this->searchTerm . '%';
@@ -36,6 +42,14 @@ class CriticalDeviation extends Component
     }
     public function onSave()
     {
+        $access = 'allow-create';
+        if($this->critical_deviation_id){
+            $access = 'allow-edit';
+        }
+        if(!Gate::allows($access,'module-critical-deviation-management')){
+            $this->onAlert(false, 'Action Cancelled', 'Unable to perform action due to user is unauthorized!', 'warning');
+            return;
+        }
         $this->validate(
             [
                 'name' => 'required',
@@ -53,6 +67,10 @@ class CriticalDeviation extends Component
     }
     public function onDelete($id)
     {
+        if(!Gate::allows('allow-delete','module-critical-deviation-management')){
+            $this->onAlert(false, 'Action Cancelled', 'Unable to perform action due to user is unauthorized!', 'warning');
+            return;
+        }
         $data = CriticalDeviationModel::find($id);
         $data->delete();
     }
