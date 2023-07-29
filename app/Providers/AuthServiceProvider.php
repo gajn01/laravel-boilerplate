@@ -53,7 +53,10 @@ class AuthServiceProvider extends ServiceProvider
             return false;
         }
         foreach ($user->userAccessArray as $access) {
-            if ($access['module'] === $module && (!$checkEnabled || $access['enabled']) && $access['access_level'] >= $requiredAccessLevel) {
+            $isAccessModuleSame = $access['module'] === $module;
+            $isAccessLevelGreaterThanRequired = $access['access_level'] >= $requiredAccessLevel;
+            $isEnabled = !$checkEnabled || $access['enabled'];
+            if ($isAccessModuleSame && $isEnabled && $isAccessLevelGreaterThanRequired) {
                 return true;
             }
         }

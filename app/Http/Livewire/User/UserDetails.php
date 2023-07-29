@@ -67,9 +67,15 @@ class UserDetails extends Component
             }
             $this->useraccess[] = $access;
         }
-        // dd($this->useraccess);
     }
-
+    public function render()
+    {
+        return view('livewire.user.user-details')->extends('layouts.app');
+    }
+    public function onAlert($is_confirm = false, $title = null, $message = null, $type = null, $data = null)
+    {
+        CustomHelper::onShow($this, $is_confirm, $title, $message, $type, $data);
+    }
     public function edit()
     {
         if ($this->usertype == 0 && $this->isSameUser == false) {
@@ -83,49 +89,7 @@ class UserDetails extends Component
         $this->isedit = false;
         $this->user = User::findOrFail($this->user->id);
     }
-    public function overrideEmailVerification()
-    {
-        if (!Gate::allows('access-enabled', 'module-override-email-verification')) {
-            $this->onAlert(false, 'Action Cancelled', 'Unable to perform action due to user is unauthorized!', 'warning');
-            return;
-        }
-        try {
-            $this->user = User::findOrFail($this->user->id);
-            $this->user->last_updated_by_id = auth()->user()->id;
-            $this->user->email_verified_at = now();
-            $this->user->save();
-            $this->onAlert(false, 'Update Successful', 'E-mail verification override successful.', 'success');
-        } catch (QueryException $e) {
-            $this->onAlert(false, 'Error', $e->getMessage(), 'warning');
-        }
-    }
-    public function render()
-    {
-        return view('livewire.user.user-details')->extends('layouts.app');
-    }
-    public function onAlert($is_confirm = false, $title = null, $message = null, $type = null, $data = null)
-    {
-        CustomHelper::onShow($this, $is_confirm, $title, $message, $type, $data);
-    }
-    public function onUpdateStatus()
-    {
-        if (!Gate::allows('access-enabled', 'module-set-status')) {
-            $this->onAlert(false, 'Action Cancelled', 'Unable to perform action due to user is unauthorized!', 'warning');
-            return;
-        }
-        if ($this->isSameUser) {
-            $this->onAlert(false, 'Action Cancelled', 'Cannot deactivate own account!', 'warning');
-            return;
-        }
-        try {
-            $this->user->save();
-        } catch (QueryException $e) {
-            $this->onAlert(false, 'Error', $e->getMessage(), 'warning');
-
-        }
-    }
-    public function save()
-    {
+    public function save(){
         if (!Gate::allows('allow-edit', 'module-user-management')) {
             $this->onAlert(false, 'Action Cancelled', 'Unable to perform action due to user is unauthorized!', 'warning');
             return;
@@ -146,5 +110,66 @@ class UserDetails extends Component
         } catch (QueryException $e) {
             $this->onAlert(false, 'Error', $e->getMessage(), 'warning');
         }
+    }
+    public function resetPassword(){
+        if (!Gate::allows('access-enabled', 'module-reset-password')) {
+            $this->onAlert(false, 'Action Cancelled', 'Unable to perform action due to user is unauthorized!', 'warning');
+            return;
+        }
+        try {
+            if ($this->user->user_type == 0 && $this->sameUser == false) {
+                $this->onAlert(false, 'Unauthorized Action', 'Cannot reset Super User password!', 'warning');
+                return;
+            }
+            $this->user->password = Hash::make("Password123");
+            $this->user->save();
+            $this->onAlert(false, 'Password Reset Successful', 'Password was reset to "Password123', 'success');
+        } catch (QueryException $e) {
+            $this->onAlert(false, 'Error', $e->getMessage(), 'warning');
+        }
+    }
+    public function overrideEmailVerification()
+    {
+        if (!Gate::allows('access-enabled', 'module-override-email-verification')) {
+            $this->onAlert(false, 'Action Cancelled', 'Unable to perform action due to user is unauthorized!', 'warning');
+            return;
+        }
+        try {
+            $this->user->last_updated_by_id = auth()->user()->id;
+            $this->user->email_verified_at = now();
+            $this->user->save();
+            $this->onAlert(false, 'Update Successful', 'E-mail verification override successful.', 'success');
+        } catch (QueryException $e) {
+            $this->onAlert(false, 'Error', $e->getMessage(), 'warning');
+        }
+    }
+    public function onUpdateStatus()
+    {
+        if (!Gate::allows('access-enabled', 'module-set-status')) {
+            $this->onAlert(false, 'Action Cancelled', 'Unable to perform action due to user is unauthorized!', 'warning');
+            return;
+        }
+        if ($this->isSameUser) {
+            $this->onAlert(false, 'Action Cancelled', 'Cannot deactivate own account!', 'warning');
+            return;
+        }
+        try {
+            $this->user->save();
+            $this->onAlert(false, 'Update Successful', 'User status updated.', 'success');
+        } catch (QueryException $e) {
+            $this->onAlert(false, 'Error', $e->getMessage(), 'warning');
+        }
+    }
+    public function updateUserAccess()
+    {
+        $this->allowUserAccessUpdate = Gate::allows('access-enabled','module-set-module-access');
+        if($this->allowUserAccessUpdate == false){
+            $this->onAlert(false, 'Action Cancelled', 'Unable to perform action due to user is unauthorized!', 'warning');
+            return;
+        }
+        $this->user->user_access = json_encode($this->useraccess);
+        $this->user->save();
+        $this->loadUserAccess();
+        $this->onAlert(false, 'Update Successful', 'User access updated.', 'success');
     }
 }

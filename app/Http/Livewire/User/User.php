@@ -44,7 +44,7 @@ class User extends Component
         $store = Store::get();
         $users = UserModel::when(auth()->user()->user_type > 1, fn($q)=>
              $q->where('user_type','>',1)
-                ->whereNot('id',auth()->user()->id)
+                ->whereNot('id', auth()->user()->id)
         )
         ->where(fn($q) =>
              $q->where('name','like','%'.$this->search.'%')

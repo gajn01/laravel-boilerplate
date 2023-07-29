@@ -77,36 +77,6 @@ class Schedule extends Component
     }
     public function addAuditor()
     {
-       /*  if ($this->auditor_id) {
-            $isAdded = collect($this->auditor_list)->contains('auditor_id', $this->auditor_id);
-            if (!$isAdded) {
-                $user = UserModel::find($this->auditor_id);
-                $add = [
-                    'audit_date_id' => '',
-                    'auditor_id' => $this->auditor_id,
-                    'auditor_name' => $user->name
-                ];
-                $auditorListArray = $this->auditor_list->toArray();
-                array_push($auditorListArray, $add);
-                $this->auditor_list = collect($auditorListArray);
-            }
-            $isExisting = AuditorListModel::where(
-                fn($q) =>
-                $q->where('auditor_id', $this->auditor_id)
-                    ->where('audit_date_id', $this->audit_date_id)
-            )->get();
-            if (!$isExisting) {
-                $user = UserModel::find($this->auditor_id);
-                $add = [
-                    'audit_date_id' => $this->audit_date_id,
-                    'auditor_id' => $this->auditor_id,
-                    'auditor_name' => $user->name
-                ];
-                $auditorListArray = $this->new_auditor_list->toArray();
-                array_push($auditorListArray, $add);
-                $this->new_auditor_list = collect($auditorListArray);
-            }
-        } */
         if ($this->auditor_id) {
             $isAdded = collect($this->auditor_list)->contains('auditor_id', $this->auditor_id);
             $user = UserModel::find($this->auditor_id);
@@ -151,25 +121,6 @@ class Schedule extends Component
             'audit_date' => strip_tags($this->audit_date),
             'wave' => strip_tags($this->wave),
         ];
-        /*$check_schedule = AuditDateModel::where('store_id', $this->store_id)
-               ->where('wave', $this->wave)
-               ->where('audit_date', 'LIKE', $this->year . '-%')
-               ->first();
-           if ($check_schedule) {
-               $this->onAlert(false, 'Warning', 'The store has already been scheduled for this year for the same wave.', 'warning');
-           } else {
-               $auditDate = AuditDateModel::updateOrCreate(['id' => $this->audit_date_id], $auditDateData);
-               $this->onAlert(false, 'Success', 'Schedule saved successfully!', 'success');
-               CustomHelper::onRemoveModal($this, '#store_schedule_modal');
-               if (empty($this->audit_date_id)) {
-                   $auditorListData = collect($this->auditor_list)->map(function ($value) use ($auditDate) {
-                       $value['audit_date_id'] = $auditDate->id;
-                       return $value;
-                   })->toArray();
-                   AuditorListModel::insert($auditorListData);
-                   $this->auditor_list = [];
-               }
-           } */
         $auditDate = AuditDateModel::updateOrCreate(['id' => $this->audit_date_id], $auditDateData);
         $this->onAlert(false, 'Success', 'Schedule saved successfully!', 'success');
         CustomHelper::onRemoveModal($this, '#store_schedule_modal');

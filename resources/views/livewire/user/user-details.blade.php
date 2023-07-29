@@ -12,8 +12,7 @@
         </div>
         @if (Gate::allows('access-enabled', 'module-reset-password'))
             <div class="col-auto">
-                <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#confirmResetPasswordModal">Reset
-                    Password</button>
+                <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#confirmResetPasswordModal">Reset Password</button>
             </div>
         @endif
     </div>
@@ -129,7 +128,7 @@
                         <div class="col-auto form-check form-switch ml-5 ">
                             @if (Gate::allows('access-enabled', 'module-set-status'))
                                 @if ($isSameUser == false || $user->user_type > 0)
-                                    <input class="form-check-input" type="checkbox" wire:model="user.is_active" wire:change="onUpdateStatus()" id="isactive"  checked>
+                                    <input class="form-check-input" type="checkbox" wire:model="user.is_active" wire:change="onUpdateStatus" id="isactive"  checked>
                                 @endif
                             @endif
                             <label class="form-check-label" for="isactive">
@@ -161,7 +160,7 @@
         </div>
     </div>
 
-    @if ($user->user_type != 2 && $this->isSameUser == false)
+    @if ($user->user_type == 2 && $this->isSameUser == false)
         <hr class="my-4">
         @if (Gate::allows('access-enabled', 'module-set-module-access'))
             <div class="row g-4 settings-section">
@@ -183,22 +182,18 @@
                                             <li class="border-0 list-group-item d-flex justify-content-between align-items-center py-0">
                                                 <div class="{{ is_null($module['parent']) ? 'col-7 col-lg-5' : 'col-6 col-lg-4 offset-1' }}">
                                                     <div class="form-check form-switch mb-3">
-                                                        @if(!(($module['module'] == "module-user-management" || $module['parent'] == "module-user-management") && auth()->user()->user_type > 1))
-                                                            <input class="form-check-input" type="checkbox" id="{{$module['module']}}" wire:model="useraccess.{{ $index }}.enabled">
-                                                        @endif
+                                                        <input class="form-check-input" type="checkbox" wire:change="updateUserAccess" wire:model="useraccess.{{ $index }}.enabled"  id="{{$module['module']}}">
                                                         <label class="form-check-label{{ is_null($module['parent']) ? ' fw-semibold' : '' }}" for="{{$module['module']}}">{{ $module['module_name']}}</label>
                                                     </div>
                                                 </div>
                                                 <div class="col-5 col-lg-4">
-                                                    @if(!($module['module'] == "module-user-management" && auth()->user()->user_type > 1))
                                                         @if($module['access_type'] == 1)
-                                                            <select class="form-select form-select-sm" wire:model="useraccess.{{ $index }}.access_level" style="max-width:12em" {{ !$useraccess[$index]['enabled'] ? 'disabled' : '' }}>
+                                                            <select class="form-select form-select-sm"  wire:change="updateUserAccess" wire:model="useraccess.{{ $index }}.access_level" style="max-width:12em" {{ !$useraccess[$index]['enabled'] ? 'disabled' : '' }}>
                                                                 <option value=0>View</option>
                                                                 <option value=1>Create</option>
                                                                 <option value=2>Create + Update</option>
                                                                 <option value=3>Full Access</option>
                                                             </select>
-                                                        @endif
                                                     @endif
                                                 </div>
                                                 <div class="d-none d-lg-block small col-12 col-lg-3">
@@ -223,7 +218,6 @@
             <hr class="my-4">
         @endif
     @endif
-
     <!-- Modal -->
     <div wire:ignore class="modal fade" id="confirmOverride" data-bs-backdrop="static" data-bs-keyboard="false"
         tabindex="-1" aria-labelledby="confirmOverrideLabel" aria-hidden="true">
@@ -244,7 +238,6 @@
             </div>
         </div>
     </div>
-
     <!-- Modal -->
     <div wire:ignore class="modal fade" id="confirmResetPasswordModal" data-bs-backdrop="static"
         data-bs-keyboard="false" tabindex="-1" aria-labelledby="confirmResetPasswordLabel" aria-hidden="true">
@@ -258,14 +251,12 @@
                     Do you want to reset user password to "Password123"?
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-primary text-light" wire:click="resetPassword"
-                        data-bs-dismiss="modal">Yes</button>
+                    <button type="button" class="btn btn-primary text-light" wire:click="resetPassword" data-bs-dismiss="modal">Yes</button>
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
                 </div>
             </div>
         </div>
     </div>
-
 
     <div class="position-fixed bottom-0 end-0 p-3" style="z-index: 11">
         <div id="alertToast" class="toast hide" role="alert" aria-live="assertive" aria-atomic="true">
