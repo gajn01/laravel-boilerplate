@@ -1,5 +1,5 @@
 @section('title', 'Mary Grace Restaurant Operation System / Dashboard')
-<div class="container-xl">
+<div class="container-xl" wire:poll.10s>
     <h1 class="app-page-title">Overview</h1>
     {{--   <div class="app-card alert alert-dismissible shadow-sm mb-4 border-left-decoration" role="alert">
         <div class="inner">
@@ -103,84 +103,68 @@
         </div>
     </div>
 
-    <div class="row">
-        <h5 class="app-card-title text-marygrace">Activity Logs</h5>
-        <div class="mb-4"  wire:poll.10s>
-            <div class="app-card app-card-orders-table shadow-sm mb-5">
-                <div class="app-card-body">
-                    <div class="table-responsive">
-                        <table class="table app-table-hover mb-0 text-left">
-                            <thead>
-                                <tr>
-                                    <th class="cell">Date</th>
-                                    <th class="cell">Log Message</th>
-                                    <th class="cell">Author</th>
-                                    <th class="cell">Device</th>
-                                    <th class="cell">Browser</th>
-                                    <th class="cell">Platform</th>
-                                    <th class="cell">IP Address</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                @forelse ($activity as $item)
-                                    <tr>
-                                        <td class="cell">{{ date('F d Y | h:i A', strtotime($item->date_created)) }}</td>
-                                        <td class="cell">{{ $item->activity}}</td>
-                                        <td class="cell">{{ $item->created_by->name}}</td>
-                                        <td class="cell">{{ $item->device}}</td>
-                                        <td class="cell">{{ $item->browser}}</td>
-                                        <td class="cell">{{ $item->platform}}</td>
-                                        <td class="cell">{{ $item->ip_address}}</td>
-                                    </tr>
-                                @empty
-                                    <tr>
-                                        <td colspan="3">
-                                            <p class="text-center m-0">
-                                                No logs found.
-                                            </p>
-                                        </td>
-                                    </tr>
-                                @endforelse
-                            </tbody>
-                        </table>
-                    </div>
-                    <!--//table-responsive-->
-                </div>
-                <!--//app-card-body-->
-            </div>
-            {{-- Pagination --}}
-            <div class="row">
-                <div class="col-sm-12 col-md-6">
-                    <div class="page-utilities d-flex justify-start">
-                        <div class="row g-2 justify-content-start justify-content-md-end align-items-center">
+        <div class="row mb-4">
+            <div class="col-12 ">
+                <div class="app-card app-card-chart h-100 shadow-sm">
+                    <div class="app-card-header p-3">
+                        <div class="row justify-content-between align-items-center">
                             <div class="col-auto">
-                                <label for="limit">Display</label>
-                            </div>
+                                <h4 class="app-card-title">Activity Logs</h4>
+                            </div><!--//col-->
                             <div class="col-auto">
-                                <select class="form-select-sm w-auto" id="limit" wire:model="limit">
-                                    <option selected value="10">10</option>
-                                    <option value="20">20</option>
-                                    <option value="50">50</option>
-                                    <option value="100">100</option>
-                                </select>
+                                <div class="card-header-action">
+                                    <a href="{{ route('activity-log')}}">More Logs</a>
+                                </div><!--//card-header-actions-->
+                            </div><!--//col-->
+                        </div><!--//row-->
+                    </div><!--//app-card-header-->
+                    <div class="app-card-body p-3 p-lg-4">
+                        <div class="app-card app-card-orders-table shadow-sm"  >
+                            <div class="app-card-body">
+                                <div class="table-responsive">
+                                    <table class="table app-table-hover mb-0 text-left">
+                                        <thead>
+                                            <tr>
+                                                <th class="cell">Date</th>
+                                                <th class="cell">Log Message</th>
+                                                <th class="cell">Author</th>
+                                                <th class="cell">Device</th>
+                                                <th class="cell">Browser</th>
+                                                <th class="cell">Platform</th>
+                                                <th class="cell">IP Address</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            @forelse ($activity as $item)
+                                                <tr>
+                                                    <td class="cell">{{ date('F d Y | h:i A', strtotime($item->date_created)) }}</td>
+                                                    <td class="cell">{{ $item->activity}}</td>
+                                                    <td class="cell">{{ $item->created_by->name}}</td>
+                                                    <td class="cell">{{ $item->device}}</td>
+                                                    <td class="cell">{{ $item->browser}}</td>
+                                                    <td class="cell">{{ $item->platform}}</td>
+                                                    <td class="cell">{{ $item->ip_address}}</td>
+                                                </tr>
+                                            @empty
+                                                <tr>
+                                                    <td colspan="3">
+                                                        <p class="text-center m-0">
+                                                            No logs found.
+                                                        </p>
+                                                    </td>
+                                                </tr>
+                                            @endforelse
+                                        </tbody>
+                                    </table>
+                                </div>
+                                <!--//table-responsive-->
                             </div>
-                            <!--//col-->
-                            <div class="col-auto">
-                                <label for="">entries</label>
-                            </div>
+                            <!--//app-card-body-->
                         </div>
-                        <!--//row-->
-                    </div>
-                    <!--//table-utilities-->
-                </div>
-                <div class="col-sm-12 col-md-6">
-                    <nav class="app-pagination">
-                        {{ $activity->onEachSide(0)->links() }}
-                    </nav>
-                    <!--//app-pagination-->
-                </div>
-            </div>
-        </div>
+                    </div><!--//app-card-body-->
+                </div><!--//app-card-->
+            </div><!--//col-->
+      
     </div>
 </div>
 

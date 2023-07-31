@@ -8,6 +8,8 @@ use App\Http\Livewire\Dashboard\Dashboard;
 /* report */
 use App\Http\Livewire\Report\Aggregate;
 use App\Http\Livewire\Report\Summary;
+/* Log */
+use App\Http\Livewire\Log\ActivityLog;
 /* Audit */
 use App\Http\Livewire\Audit\Audit as Audit;
 use App\Http\Livewire\Audit\Form as AuditForm;
@@ -30,10 +32,9 @@ use App\Http\Livewire\Settings\Dropdown;
 use App\Http\Livewire\Settings\DropdownMenu;
 use App\Http\Livewire\Settings\CriticalDeviation;
 use App\Http\Livewire\Settings\CriticalDeviationMenu;
-/*  */
+/*Store  */
 use App\Http\Livewire\Store\Store;
 use App\Http\Livewire\Store\StoreDetails;
-
 /* Dashboard */
 Route::get('/', [NavigationController::class,'index'])->name('home');
 Route::get('/login', Login::class)->name('login');
@@ -73,6 +74,6 @@ Route::middleware(['auth','verified'])->group(function () {
     /* Report */
     Route::get('/insight/aggregate', Aggregate::class)->name('aggregate');
     Route::get('/insight/summary', Summary::class)->name('summary');
-
+    Route::get('/activity-log', ActivityLog::class)->name('activity-log');
 });
 require __DIR__ . '/auth.php';
