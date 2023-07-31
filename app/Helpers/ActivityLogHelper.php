@@ -46,7 +46,7 @@ class ActivityLogHelper
     }
     public function logUpdate($entityName, $id = null)
     {
-        return $message = "A {$entityName} record with ID: {$id} has been updated.";
+        return $message = "{$entityName} record with ID: {$id} has been updated.";
     }
 
     public function logDelete($entityName, $id = null)

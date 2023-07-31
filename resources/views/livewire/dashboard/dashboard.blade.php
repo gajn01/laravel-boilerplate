@@ -104,8 +104,8 @@
     </div>
 
     <div class="row">
-        <h4 class="app-card-title text-marygrace">Activity Logs</h4>
-        <div class="g-4 mb-4"  wire:poll.60s>
+        <h5 class="app-card-title text-marygrace">Activity Logs</h5>
+        <div class="mb-4"  wire:poll.10s>
             <div class="app-card app-card-orders-table shadow-sm mb-5">
                 <div class="app-card-body">
                     <div class="table-responsive">
@@ -124,7 +124,7 @@
                             <tbody>
                                 @forelse ($activity as $item)
                                     <tr>
-                                        <td class="cell">{{ date('F d Y', strtotime($item->date_created)) }}</td>
+                                        <td class="cell">{{ date('F d Y | h:i A', strtotime($item->date_created)) }}</td>
                                         <td class="cell">{{ $item->activity}}</td>
                                         <td class="cell">{{ $item->created_by->name}}</td>
                                         <td class="cell">{{ $item->device}}</td>
@@ -175,7 +175,7 @@
                 </div>
                 <div class="col-sm-12 col-md-6">
                     <nav class="app-pagination">
-                        {{-- {{ $activity->onEachSide(0)->links() }} --}}
+                        {{ $activity->onEachSide(0)->links() }}
                     </nav>
                     <!--//app-pagination-->
                 </div>

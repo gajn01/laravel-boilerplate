@@ -14,6 +14,8 @@ use Livewire\WithPagination;
 use DateTime;
 use DateTimeZone;
 use Carbon\Carbon;
+use App\Helpers\ActivityLogHelper;
+
 
 class Schedule extends Component
 {
@@ -37,12 +39,15 @@ class Schedule extends Component
     public $date_today;
     public $year;
     public $date_filter;
+    protected  ActivityLogHelper $activity;
+
     public function __construct()
     {
         $this->timezone = new DateTimeZone('Asia/Manila');
         $this->time = new DateTime('now', $this->timezone);
         $this->date_today = $this->time->format('Y-m-d');
         $this->year = $this->time->format('Y');
+        $this->activity = new ActivityLogHelper;
     }
     public function mount()
     {
@@ -155,6 +160,9 @@ class Schedule extends Component
         }
         AuditFormModel::where('audit_date_id', $this->audit_date_id)
             ->update(['date_of_visit' => $this->audit_date]);
+        $action = $this->audit_date_id ? 'update' : 'create';
+        $this->activity->onLogAction($action,'Schedule',$this->audit_date_id ?? null);
+
     }
     public function onDelete($id)
     {
@@ -164,6 +172,8 @@ class Schedule extends Component
         }
         $schedule = AuditDateModel::find($id);
         $schedule->delete();
+        $this->activity->onLogAction('delete','Schedule',$id ?? null);
+
     }
     public function showModal($id = null)
     {

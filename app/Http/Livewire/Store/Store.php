@@ -114,7 +114,7 @@ class Store extends Component
         $action = $this->store_id ? 'update' : 'create';
         $this->onAlert(false, 'Success', 'Store saved successfully!', 'success');
         CustomHelper::onRemoveModal($this, '#store_modal');
-        $this->activity->onLogAction($action,'store',$this->store_id ?? null);
+        $this->activity->onLogAction($action,'Store',$this->store_id ?? null);
         $this->resetValidation();
     }
     public function onDelete($store_id)
@@ -125,7 +125,7 @@ class Store extends Component
         }
         $store = StoreModel::find($store_id);
         $store->delete();
-        $this->activity->onLogAction('delete','store',$store_id ?? null);
+        $this->activity->onLogAction('delete','Store',$store_id ?? null);
 
     }
     public function onAlert($is_confirm = false, $title = null, $message = null, $type = null, $data = null)
