@@ -145,6 +145,7 @@
                         <div id="submenu-4" @class([
                             'collapse submenu submenu-4',
                             'show' =>
+                                Request::routeIs('user-management') ||
                                 Request::routeIs('dropdown') ||
                                 Request::routeIs('dropdown/menu*') ||
                                 Request::routeIs('settings') ||
@@ -171,7 +172,7 @@
                             </ul>
                         </div>
                     </li>
-                    <li class="nav-item">
+                  {{--   <li class="nav-item">
                         <a class="nav-link" href="help.html">
                             <span class="nav-icon">
                                 <svg viewBox="0 0 16 16" class="bi bi-question-circle" fill="currentColor"
@@ -184,8 +185,7 @@
                             </span>
                             <span class="nav-link-text">About</span>
                         </a>
-
-                    </li>
+                    </li> --}}
                 </ul>
                 <!--//footer-menu-->
             </nav>

@@ -8,23 +8,23 @@ use App\Models\Store as StoreModel;
 use App\Helpers\CustomHelper;
 use Livewire\WithPagination;
 use Illuminate\Support\Facades\Response;
-
+use App\Helpers\ActivityLogHelper;
 
 class Store extends Component
 {
     use WithPagination;
     protected $paginationTheme = 'bootstrap';
     protected $listeners = ['alert-sent' => 'onDelete'];
-    public $store_id;
-    public $name;
-    public $code;
-    public $type;
-    public $area;
-    public $representative;
+    public $store_id,$name,$code,$type,$area,$representative;
     public $searchTerm;
     public $modalTitle;
     public $modalButtonText;
     public $limit = 10;
+    protected  ActivityLogHelper $activity;
+    public function __construct()
+    {
+        $this->activity = new ActivityLogHelper;
+    }
     public function mount() {
         if (!Gate::allows('allow-view', 'module-store-management')) {
             return redirect()->route('dashboard');
@@ -102,7 +102,7 @@ class Store extends Component
                 'area' => 'required|in:MFO,South,North',
             ]
         );
-        StoreModel::updateOrCreate(
+        $store = StoreModel::updateOrCreate(
             ['id' => $this->store_id ?? null],
             [
                 'name' => strip_tags($this->name),
@@ -111,9 +111,11 @@ class Store extends Component
                 'area' => strip_tags($this->area),
             ]
         );
-        $this->resetValidation();
+        $action = $this->store_id ? 'update' : 'create';
         $this->onAlert(false, 'Success', 'Store saved successfully!', 'success');
         CustomHelper::onRemoveModal($this, '#store_modal');
+        $this->activity->onLogAction($action,'store',$this->store_id ?? null);
+        $this->resetValidation();
     }
     public function onDelete($store_id)
     {
@@ -123,6 +125,8 @@ class Store extends Component
         }
         $store = StoreModel::find($store_id);
         $store->delete();
+        $this->activity->onLogAction('delete','store',$store_id ?? null);
+
     }
     public function onAlert($is_confirm = false, $title = null, $message = null, $type = null, $data = null)
     {

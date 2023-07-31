@@ -23,7 +23,6 @@ class UserDetails extends Component
         ['module' => "module-reset-password", 'module_name' => "Reset Password", 'access_type' => 0, 'parent' => "module-user-management", 'description' => 'Reset user password.'],
         ['module' => "module-set-status", 'module_name' => "Set Status", 'access_type' => 0, 'parent' => "module-user-management", 'description' => 'Set user status to active/inactive.'],
         ['module' => "module-override-email-verification", 'module_name' => "Override Email Verifcation", 'access_type' => 0, 'parent' => "module-user-management", 'description' => 'Override user email verification.'],
-        ['module' => "module-set-access-scope", 'module_name' => "Set Access Scope", 'access_type' => 0, 'parent' => "module-user-management", 'description' => 'Set access scope.'],
         ['module' => "module-set-module-access", 'module_name' => "Set Module Access", 'access_type' => 0, 'parent' => "module-user-management", 'description' => 'Set module access.'],
         ['module' => "module-store-management", 'module_name' => "Store Management", 'access_type' => 1, 'parent' => null, 'description' => 'Manage Store.'],
         ['module' => "module-schedule-management", 'module_name' => "Schedule Management", 'access_type' => 1, 'parent' => null, 'description' => 'Manage Schedule.'],

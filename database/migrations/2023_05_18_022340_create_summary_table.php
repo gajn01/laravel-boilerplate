@@ -22,7 +22,7 @@ return new class extends Migration
             $table->string('wave');
             $table->string('strength');
             $table->string('improvement');
-            $table->integer('overall_score');
+            $table->integer('overall_score')->nullable();
             $table->timestamps();
         });
     }

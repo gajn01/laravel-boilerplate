@@ -102,5 +102,85 @@
             <a class="app-card-link-mask" href="#"></a>
         </div>
     </div>
+
+    <div class="row">
+        <h4 class="app-card-title text-marygrace">Activity Logs</h4>
+        <div class="g-4 mb-4"  wire:poll.60s>
+            <div class="app-card app-card-orders-table shadow-sm mb-5">
+                <div class="app-card-body">
+                    <div class="table-responsive">
+                        <table class="table app-table-hover mb-0 text-left">
+                            <thead>
+                                <tr>
+                                    <th class="cell">Date</th>
+                                    <th class="cell">Log Message</th>
+                                    <th class="cell">Author</th>
+                                    <th class="cell">Device</th>
+                                    <th class="cell">Browser</th>
+                                    <th class="cell">Platform</th>
+                                    <th class="cell">IP Address</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @forelse ($activity as $item)
+                                    <tr>
+                                        <td class="cell">{{ date('F d Y', strtotime($item->date_created)) }}</td>
+                                        <td class="cell">{{ $item->activity}}</td>
+                                        <td class="cell">{{ $item->created_by->name}}</td>
+                                        <td class="cell">{{ $item->device}}</td>
+                                        <td class="cell">{{ $item->browser}}</td>
+                                        <td class="cell">{{ $item->platform}}</td>
+                                        <td class="cell">{{ $item->ip_address}}</td>
+                                    </tr>
+                                @empty
+                                    <tr>
+                                        <td colspan="3">
+                                            <p class="text-center m-0">
+                                                No logs found.
+                                            </p>
+                                        </td>
+                                    </tr>
+                                @endforelse
+                            </tbody>
+                        </table>
+                    </div>
+                    <!--//table-responsive-->
+                </div>
+                <!--//app-card-body-->
+            </div>
+            {{-- Pagination --}}
+            <div class="row">
+                <div class="col-sm-12 col-md-6">
+                    <div class="page-utilities d-flex justify-start">
+                        <div class="row g-2 justify-content-start justify-content-md-end align-items-center">
+                            <div class="col-auto">
+                                <label for="limit">Display</label>
+                            </div>
+                            <div class="col-auto">
+                                <select class="form-select-sm w-auto" id="limit" wire:model="limit">
+                                    <option selected value="10">10</option>
+                                    <option value="20">20</option>
+                                    <option value="50">50</option>
+                                    <option value="100">100</option>
+                                </select>
+                            </div>
+                            <!--//col-->
+                            <div class="col-auto">
+                                <label for="">entries</label>
+                            </div>
+                        </div>
+                        <!--//row-->
+                    </div>
+                    <!--//table-utilities-->
+                </div>
+                <div class="col-sm-12 col-md-6">
+                    <nav class="app-pagination">
+                        {{-- {{ $activity->onEachSide(0)->links() }} --}}
+                    </nav>
+                    <!--//app-pagination-->
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
 

@@ -4,6 +4,7 @@ namespace App\Http\Livewire\Dashboard;
 use App\Models\Store as StoreModel;
 use App\Models\Summary as SummaryModel;
 use Illuminate\Support\Facades\DB;
+use App\Models\ActivityLog;
 use Livewire\Component;
 use DateTime;
 use DateTimeZone;
@@ -14,14 +15,17 @@ class Dashboard extends Component
     private $time;
     private $year;
     public $wave = 1;
+    public $limit = 10;
     public function __construct()
     {
         $this->timezone = new DateTimeZone('Asia/Manila');
         $this->time = new DateTime('now', $this->timezone);
         $this->year = $this->time->format('Y');
     }
+
     public function render()
-    {
+    {   
+        $activity = ActivityLog::orderBy('date_created', 'desc')->paginate($this->limit);
         $passingRate = SummaryModel::select('type', \DB::raw('count(overall_score) as count'))->where('overall_score', 1)->groupBy('type')->get();
         $storeCounts = StoreModel::select('type', \DB::raw('count(*) as count'))->groupBy('type')->get();
         $completion = SummaryModel::select('type', \DB::raw('count(*) as count'))
@@ -30,6 +34,6 @@ class Dashboard extends Component
             ->whereNotNull('received_by')
             ->groupBy('type')
             ->get();
-        return view('livewire.dashboard.dashboard', ['storeCounts' => $storeCounts, 'completion' => $completion, 'passingRate' => $passingRate])->extends('layouts.app');
+        return view('livewire.dashboard.dashboard', ['storeCounts' => $storeCounts, 'completion' => $completion, 'passingRate' => $passingRate,'activity'=>$activity])->extends('layouts.app');
     }
 }

@@ -114,7 +114,7 @@
                                             @if ($item['is_sd'])
                                                 <div class="row">
                                                     <div class="col-12">
-                                                        <div class="mb-3" wire:ignore>
+                                                        <div class="mb-2" wire:ignore>
                                                             <select class="form-select form-select-md"
                                                                 wire:change="updateCriticalDeviation({{ json_encode($item) }},$event.target.value,'sd')"
                                                                 name="sd{{ $item['id'] }}"
@@ -138,7 +138,7 @@
                                             @if ($item['is_location'])
                                                 <div class="row">
                                                     <div class="col-sm-12 col-md-6">
-                                                        <div class="mb-3" wire:ignore>
+                                                        <div class="mb-2" wire:ignore>
                                                             <select class="form-select form-select-md"
                                                                 wire:change="updateCriticalDeviation({{ json_encode($item) }},$event.target.value,'location')"
                                                                 name="location{{ $item['id'] }}"
@@ -156,7 +156,7 @@
                                                         </div>
                                                     </div>
                                                     <div class="col-sm-12 col-md-6">
-                                                        <div class="mb-3" wire:ignore>
+                                                        <div class="mb-2" wire:ignore>
                                                             <select class="form-select form-select-md"
                                                                 wire:change="updateCriticalDeviation({{ json_encode($item) }},$event.target.value,'score')"
                                                                 name="loc_score{{ $item['id'] }}"
@@ -178,7 +178,7 @@
                                             @if ($item['is_product'])
                                                 <div class="row">
                                                     <div class="col-sm-12 col-md-6">
-                                                        <div class="mb-3" wire:ignore.self>
+                                                        <div class="mb-2" wire:ignore.self>
                                                             <select class="form-select form-select-md"
                                                                 wire:change="updateCriticalDeviation({{ json_encode($item) }},$event.target.value,'product')"
                                                                 name="product{{ $item['id'] }}"
@@ -196,7 +196,7 @@
                                                         </div>
                                                     </div>
                                                     <div class="col-sm-12 col-md-6">
-                                                        <div class="mb-3" wire:ignore>
+                                                        <div class="mb-2" wire:ignore>
                                                             <select class="form-select form-select-md"
                                                                 wire:change="updateCriticalDeviation({{ json_encode($item) }},$event.target.value,'score')"
                                                                 name="product_score{{ $item['id'] }}"
@@ -218,7 +218,7 @@
                                             @if ($item['is_dropdown'])
                                                 <div class="row">
                                                     <div class="col-sm-12 col-md-6">
-                                                        <div class="mb-3" wire:ignore.self>
+                                                        <div class="mb-2" wire:ignore.self>
                                                             <select class="form-select form-select-md"
                                                                 wire:change="updateCriticalDeviation({{ json_encode($item) }}, $event.target.value, 'dropdown')"
                                                                 name="dropdown{{ $item['id'] }}"
@@ -234,7 +234,7 @@
                                                         </div>
                                                     </div>
                                                     <div class="col-sm-12 col-md-6">
-                                                        <div class="mb-3" wire:ignore.self>
+                                                        <div class="mb-2" wire:ignore.self>
                                                             <select class="form-select form-select-md"
                                                                 wire:change="updateCriticalDeviation({{ json_encode($item) }},$event.target.value,'score')"
                                                                 name="dp_score{{ $item['id'] }}"
@@ -253,7 +253,7 @@
                                                 </div>
                                             @endif
                                             @if ($item['remarks'])
-                                                <div class="mb-3" wire:ignore.self>
+                                                <div class="mb-2" wire:ignore.self>
                                                     <textarea class="form-control"
                                                         wire:change="updateCriticalDeviation({{ json_encode($item) }},$event.target.value,'remarks')"
                                                         name="remarks{{ $item['id'] }}" id="remarks{{ $item['id'] }}" rows="2"
@@ -261,7 +261,7 @@
                                                 </div>
                                             @endif
                                             @if ($item['score_dropdown_id'])
-                                                <div class="mb-3" wire:ignore.self>
+                                                <div class="mb-2" wire:ignore.self>
                                                     <select class="form-select form-select-md"
                                                         wire:change="updateCriticalDeviation({{ json_encode($item) }},$event.target.value,'score')"
                                                         name="dp_score{{ $item['id'] }}"
@@ -276,8 +276,6 @@
                                                     </select>
                                                 </div>
                                             @endif
-
-                                        
                                         @endforeach
                                     </div>
                                 </div>
