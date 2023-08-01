@@ -5,6 +5,8 @@ use App\Models\SanitaryModel;
 use Livewire\Component;
 use Livewire\WithPagination;
 use App\Helpers\CustomHelper;
+use App\Helpers\ActivityLogHelper;
+
 class Sanitary extends Component
 {
     use WithPagination;
@@ -17,7 +19,11 @@ class Sanitary extends Component
     public $modalTitle;
     public $modalButtonText;
     public $limit = 10;
-
+    protected  ActivityLogHelper $activity;
+    public function __construct()
+    {
+        $this->activity = new ActivityLogHelper;
+    }
     public function mount(){
         if (!Gate::allows('allow-view', 'module-sanitation-defect-management')) {
             return redirect()->route('dashboard');
@@ -67,6 +73,8 @@ class Sanitary extends Component
         $this->reset();
         $this->onAlert(false, 'Success', 'Sanitation defect saved successfully!', 'success');
         CustomHelper::onRemoveModal($this, '#sanitaryModal');
+        $action = $this->sanitary_id ?  'update' : 'create';
+        $this->activity->onLogAction($action,'Sanitary', $this->sanitary_id ?? null);
     }
     public function onDelete($sanitary_id)
     {
@@ -76,6 +84,8 @@ class Sanitary extends Component
         }
         $sanitary = SanitaryModel::find($sanitary_id);
         $sanitary->delete();
+        $this->activity->onLogAction('delete','Sanitary', $sanitary_id ?? null);
+
     }
     public function onAlert($is_confirm = false, $title = null, $message = null, $type = null, $data = null)
     {

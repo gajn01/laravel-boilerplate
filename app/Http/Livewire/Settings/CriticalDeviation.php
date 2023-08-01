@@ -5,6 +5,8 @@ use Illuminate\Support\Facades\Gate;
 use Livewire\WithPagination;
 use App\Helpers\CustomHelper;
 use App\Models\CriticalDeviation as CriticalDeviationModel;
+use App\Helpers\ActivityLogHelper;
+
 
 use Livewire\Component;
 
@@ -19,6 +21,11 @@ class CriticalDeviation extends Component
     public $modalTitle;
     public $modalButtonText;
     public $limit = 10;
+    protected  ActivityLogHelper $activity;
+    public function __construct()
+    {
+        $this->activity = new ActivityLogHelper;
+    }
     public function mount(){
         if (!Gate::allows('allow-view', 'module-critical-deviation-management')) {
             return redirect()->route('dashboard');
@@ -64,6 +71,8 @@ class CriticalDeviation extends Component
         $this->reset();
         $this->onAlert(false, 'Success', 'Critical deviation saved successfully!', 'success');
         CustomHelper::onRemoveModal($this, '#critical_deviation_menu_modal');
+        $action = $this->critical_deviation_id ?  'update' : 'create';
+        $this->activity->onLogAction($action,'Critical Deviation', $this->critical_deviation_id ?? null);
     }
     public function onDelete($id)
     {
@@ -73,6 +82,8 @@ class CriticalDeviation extends Component
         }
         $data = CriticalDeviationModel::find($id);
         $data->delete();
+        $this->activity->onLogAction('delete','Critical Deviation', $this->critical_deviation_id ?? null);
+
     }
     public function onAlert($is_confirm = false, $title = null, $message = null, $type = null, $data = null)
     {

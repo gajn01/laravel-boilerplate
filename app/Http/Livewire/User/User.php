@@ -8,11 +8,10 @@ use Livewire\WithPagination;
 use App\Helpers\CustomHelper;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Gate;
-use Illuminate\Auth\Events\Registered;
-use App\Traits\Sortable;
-// use App\Helpers\UIHelper;
 use App\Models\User as UserModel;
 use App\Models\Store;
+use App\Helpers\ActivityLogHelper;
+
 
 class User extends Component
 {
@@ -21,9 +20,13 @@ class User extends Component
     protected $listeners = ['alert-sent' => 'onDelete'];
     public $search = '';
     public $displaypage = 10;
-    private $selectedID;
     public UserModel $user;
     public $password,$password_confirmation;
+    protected  ActivityLogHelper $activity;
+    public function __construct()
+    {
+        $this->activity = new ActivityLogHelper;
+    }
     protected function rules()
     {
         return [
@@ -38,6 +41,7 @@ class User extends Component
     public function mount()
     {
         if(!Gate::allows('allow-view','module-user-management')) redirect()->route('dashboard');
+
     }
     public function render()
     {
@@ -82,7 +86,8 @@ class User extends Component
             $this->user->user_access = '';
             $this->user->save();
             //event(new Registered($this->user)); //Enable when email is set up
-            // redirect()->route('user-details',['id' => $this->user->id]);
+            redirect()->route('user-details',['id' => $this->user->id]);
+            $this->activity->onLogAction('create','Account', null);
         }
         catch(QueryException $e)
         {
@@ -103,6 +108,7 @@ class User extends Component
             $this->user->delete();
             $this->onAlert(false, 'Delete Successful', 'User deleted!', 'success');
             $this->user = new UserModel();
+            $this->activity->onLogAction('delete','Account',$this->user->id ?? null);
         }
         catch(QueryException $e)
         {

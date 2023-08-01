@@ -10,6 +10,8 @@ use Illuminate\Support\Facades\Hash;
 use App\Models\User;
 use App\Models\NonDBModel\UserAccess;
 use Auth;
+use App\Helpers\ActivityLogHelper;
+
 
 class UserDetails extends Component
 {
@@ -17,6 +19,9 @@ class UserDetails extends Component
     public $useraccess, $usertype, $isactive;
     public $isedit, $isSameUser = false;
     private $allowUserAccessUpdate;
+    protected  ActivityLogHelper $activity;
+
+
     public $moduleList = [
         ['module' => "module-audit", 'module_name' => "Audit", 'access_type' => 0, 'parent' => null, 'description' => 'Access to Audit.'],
         ['module' => "module-user-management", 'module_name' => "User Management", 'access_type' => 1, 'parent' => null, 'description' => 'Manage users.'],
@@ -40,6 +45,10 @@ class UserDetails extends Component
             'user.email' => 'required|email|max:255|unique:user,email,' . $this->user->id . '',
             'user.contact_number' => 'string|max:30',
         ];
+    }
+    public function __construct()
+    {
+        $this->activity = new ActivityLogHelper;
     }
     public function mount($id = null)
     {
@@ -110,6 +119,8 @@ class UserDetails extends Component
             $getCurrentData->save();
             $this->onAlert(false, 'Update Successful', 'User account details updated.', 'success');
             $this->isedit = false;
+            $this->activity->onLogAction('update','Account', $this->user->id);
+
         } catch (QueryException $e) {
             $this->onAlert(false, 'Error', $e->getMessage(), 'warning');
         }
@@ -127,6 +138,8 @@ class UserDetails extends Component
             $this->user->password = Hash::make("Password123");
             $this->user->save();
             $this->onAlert(false, 'Password Reset Successful', 'Password was reset to "Password123', 'success');
+            $this->activity->onLogAction('reset-password','Account', $this->user->id);
+
         } catch (QueryException $e) {
             $this->onAlert(false, 'Error', $e->getMessage(), 'warning');
         }
@@ -142,6 +155,8 @@ class UserDetails extends Component
             $this->user->email_verified_at = now();
             $this->user->save();
             $this->onAlert(false, 'Update Successful', 'E-mail verification override successful.', 'success');
+            $this->activity->onLogAction('verify-email','Account', $this->user->id);
+
         } catch (QueryException $e) {
             $this->onAlert(false, 'Error', $e->getMessage(), 'warning');
         }
@@ -159,6 +174,8 @@ class UserDetails extends Component
         try {
             $this->user->save();
             $this->onAlert(false, 'Update Successful', 'User status updated.', 'success');
+            $this->activity->onLogAction('update-status','Account', $this->user->id);
+
         } catch (QueryException $e) {
             $this->onAlert(false, 'Error', $e->getMessage(), 'warning');
         }
@@ -174,5 +191,7 @@ class UserDetails extends Component
         $this->user->save();
         $this->loadUserAccess();
         $this->onAlert(false, 'Update Successful', 'User access updated.', 'success');
+        $this->activity->onLogAction('update-access','Account', $this->user->id);
+
     }
 }

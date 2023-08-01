@@ -41,7 +41,7 @@
                         <tbody>
                             @forelse ($activity as $item)
                                 <tr>
-                                    <td class="cell">{{ date('F d Y | h:i A', strtotime($item->date_created)) }}</td>
+                                    <td class="cell">{{ date('F d Y | h:i A', strtotime($item->date_updated)) }}</td>
                                     <td class="cell">{{ $item->activity}}</td>
                                     <td class="cell">{{ $item->created_by->name}}</td>
                                     <td class="cell">{{ $item->device}}</td>

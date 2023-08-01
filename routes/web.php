@@ -41,7 +41,6 @@ Route::get('/login', Login::class)->name('login');
 
 Route::middleware(['auth','verified'])->group(function () {
     Route::get('/dashboard', Dashboard::class)->name('dashboard');
-
     /* Schedule */
     Route::get('/schedule', AuditSchedule::class)->name('audit.schedule');
     Route::get('/store', Store::class)->name('store');

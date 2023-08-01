@@ -9,6 +9,8 @@ use App\Models\CriticalDeviation as CriticalDeviationModel;
 use App\Models\Dropdown as DropdownModel;
 use Livewire\WithPagination;
 use App\Helpers\CustomHelper;
+use App\Helpers\ActivityLogHelper;
+
 
 class CriticalDeviationMenu extends Component
 {
@@ -30,6 +32,11 @@ class CriticalDeviationMenu extends Component
     public $modalTitle;
     public $modalButtonText;
     public $limit = 10;
+    protected  ActivityLogHelper $activity;
+    public function __construct()
+    {
+        $this->activity = new ActivityLogHelper;
+    }
     public function mount($critical_deviation_id = null)
     {
         if (!Gate::allows('allow-view', 'module-critical-deviation-management')) {
@@ -103,6 +110,8 @@ class CriticalDeviationMenu extends Component
         $this->reset();
         $this->onAlert(false, 'Success', 'Critical deviation saved successfully!', 'success');
         CustomHelper::onRemoveModal($this, '#critical_deviation_menu_modal');
+        $action = $this->critical_deviation_menu_id ?  'update' : 'create';
+        $this->activity->onLogAction($action,'Critical Deviation menu', $this->critical_deviation_menu_id ?? null);
     }
     public function onDelete($id)
     {
@@ -112,6 +121,8 @@ class CriticalDeviationMenu extends Component
         }
         $data = CriticalDeviationMenuModel::find($id);
         $data->delete();
+        $this->activity->onLogAction('delete','Critical Deviation menu', $this->critical_deviation_menu_id ?? null);
+
     }
     public function onAlert($is_confirm = false, $title = null, $message = null, $type = null, $data = null)
     {

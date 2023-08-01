@@ -10,6 +10,8 @@ use App\Models\SubSubCategoryLabel as SubSubCategoryLabelModel;
 use App\Models\Dropdown as DropdownModel;
 use Livewire\WithPagination;
 use App\Helpers\CustomHelper;
+use App\Helpers\ActivityLogHelper;
+
 
 class SubSubCategoryLabel extends Component
 {
@@ -32,6 +34,11 @@ class SubSubCategoryLabel extends Component
     public $modalTitle;
     public $modalButtonText;
     public $limit = 10;
+    protected  ActivityLogHelper $activity;
+    public function __construct()
+    {
+        $this->activity = new ActivityLogHelper;
+    }
     public function mount($category_id = null, $sub_category_id = null, $sub_sub_category_id = null)
     {
         if (!Gate::allows('allow-view', 'module-category-management')) {
@@ -89,6 +96,8 @@ class SubSubCategoryLabel extends Component
         $this->reset();
         $this->onAlert(false, 'Success', 'Label saved successfully!', 'success');
         CustomHelper::onRemoveModal($this, '#sub_category_label_modal');
+        $action = $this->label_id ?  'update' : 'create';
+        $this->activity->onLogAction($action,'Sub-sub-category label', $this->label_id ?? null);
     }
     public function onDelete($id)
     {
@@ -98,6 +107,8 @@ class SubSubCategoryLabel extends Component
         }
         $sub_category = SubSubCategoryLabelModel::find($id);
         $sub_category->delete();
+        $this->activity->onLogAction('delete','Sub-sub-category label', $this->label_id ?? null);
+
     }
     public function onAlert($is_confirm = false, $title = null, $message = null, $type = null, $data = null)
     {

@@ -28,9 +28,9 @@ class ActivityLog extends Component
 
     public function mount()
     {
-      /*   if (auth()->user()->user_type  != 0 || auth()->user()->user_type != 1){
+        if (auth()->user()->user_type  != 0 && auth()->user()->user_type != 1){
             return redirect()->route('dashboard');
-        } */
+        }
     }
     public function render()
     {
@@ -42,7 +42,7 @@ class ActivityLog extends Component
             } elseif ($this->date_filter == 'monthly') {
                 $activity->whereBetween('date_created', [Carbon::now()->startOfMonth(), Carbon::now()->endOfMonth()]);
             } elseif ($this->date_filter == $this->date_today) {
-                $activity->where('date_created', $this->date_today);
+                $activity->where('created_at', $this->date_today);
             }
         }
         // Use the paginate() method after the conditions have been applied

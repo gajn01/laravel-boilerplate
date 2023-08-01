@@ -8,6 +8,7 @@ use App\Models\Dropdown as DropdownModel;
 use App\Models\DropdownMenu as DropdownMenuModel;
 use Livewire\WithPagination;
 use App\Helpers\CustomHelper;
+use App\Helpers\ActivityLogHelper;
 
 class DropdownMenu extends Component
 {
@@ -22,6 +23,11 @@ class DropdownMenu extends Component
     public $modalTitle;
     public $modalButtonText;
     public $limit = 10;
+    protected  ActivityLogHelper $activity;
+    public function __construct()
+    {
+        $this->activity = new ActivityLogHelper;
+    }
     public function mount($dropdown_id = null)
     {
         if (!Gate::allows('allow-view', 'module-dropdown-management')) {
@@ -65,6 +71,8 @@ class DropdownMenu extends Component
         $this->reset();
         $this->onAlert(false, 'Success', 'Dropdown menu saved successfully!', 'success');
         CustomHelper::onRemoveModal($this, '#dropdown_menu_modal');
+        $action = $this->dropdown_menu_id ?  'update' : 'create';
+        $this->activity->onLogAction($action,'Dropdown menu', $this->dropdown_menu_id ?? null);
     }
     public function showModal($dropdown_menu_id = null)
     {
@@ -83,6 +91,8 @@ class DropdownMenu extends Component
         }
         $dropdown = DropdownMenuModel::find($dropdown_menu_id);
         $dropdown->delete();
+        $this->activity->onLogAction('delete','Dropdown menu', $this->dropdown_menu_id ?? null);
+
     }
     public function onAlert($is_confirm = false, $title = null, $message = null, $type = null, $data = null)
     {

@@ -6,6 +6,7 @@ use Illuminate\Support\Facades\Gate;
 use App\Models\Dropdown as DropdownModel;
 use Livewire\WithPagination;
 use App\Helpers\CustomHelper;
+use App\Helpers\ActivityLogHelper;
 
 class Dropdown extends Component
 {
@@ -18,6 +19,11 @@ class Dropdown extends Component
     public $modalTitle;
     public $modalButtonText;
     public $limit = 10;
+    protected  ActivityLogHelper $activity;
+    public function __construct()
+    {
+        $this->activity = new ActivityLogHelper;
+    }
     public function mount(){
         if (!Gate::allows('allow-view', 'module-dropdown-management')) {
             return redirect()->route('dashboard');
@@ -55,6 +61,9 @@ class Dropdown extends Component
         $this->resetValidation();
         $this->onAlert(false, 'Success', 'Dropdown saved successfully!', 'success');
         CustomHelper::onRemoveModal($this, '#dropdown_modal');
+        $action = $this->dropdown_id ?  'update' : 'create';
+        $this->activity->onLogAction($action,'Dropdown', $this->dropdown_id ?? null);
+
     }
     public function showModal($dropdown_id = null)
     {
@@ -73,6 +82,8 @@ class Dropdown extends Component
         }
         $dropdown = DropdownModel::find($dropdown_id);
         $dropdown->delete();
+        $this->activity->onLogAction('delete','Dropdown', $this->dropdown_id ?? null);
+
     }
     public function onAlert($is_confirm = false, $title = null, $message = null, $type = null, $data = null)
     {

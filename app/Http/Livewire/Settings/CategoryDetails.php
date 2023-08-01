@@ -7,7 +7,7 @@ use App\Models\Category as CategoryModel;
 use App\Models\SubCategory as SubCategoryModel;
 use Livewire\WithPagination;
 use App\Helpers\CustomHelper;
-
+use App\Helpers\ActivityLogHelper;
 class CategoryDetails extends Component
 {
     use WithPagination;
@@ -22,6 +22,11 @@ class CategoryDetails extends Component
     public $modalTitle;
     public $modalButtonText;
     public $limit = 10;
+    protected  ActivityLogHelper $activity;
+    public function __construct()
+    {
+        $this->activity = new ActivityLogHelper;
+    }
     public function mount($category_id = null)
     {
         if (!Gate::allows('allow-view', 'module-category-management')) {
@@ -62,7 +67,6 @@ class CategoryDetails extends Component
             $this->onAlert(false, 'Action Cancelled', 'Unable to perform action due to user is unauthorized!', 'warning');
             return;
         }
-
         $this->validate([
             'sub_category_name' => 'required|max:255',
         ]);
@@ -79,6 +83,8 @@ class CategoryDetails extends Component
         $this->reset();
         $this->onAlert(false, 'Success', 'Sub category saved successfully!', 'success');
         CustomHelper::onRemoveModal($this, '#sub_category_label_modal');
+        $action = $this->sub_category_id ?  'update' : 'create';
+        $this->activity->onLogAction($action,'Sub-category', $this->sub_category_id ?? null);
     }
     public function onDelete($id)
     {
@@ -88,6 +94,7 @@ class CategoryDetails extends Component
         }
         $sub_category = SubCategoryModel::find($id);
         $sub_category->delete();
+        $this->activity->onLogAction('delete','Sub-category', $this->sub_category_id ?? null);
     }
     public function onAlert($is_confirm = false, $title = null, $message = null, $type = null, $data = null)
     {
@@ -97,5 +104,4 @@ class CategoryDetails extends Component
     {
         $this->resetValidation();
     }
-
 }

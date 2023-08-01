@@ -20,13 +20,25 @@ class ActivityLogHelper
         $data = $this->getUserDeviceDetails();
         switch ($activity) {
             case 'create':
-                 $this->activityLog->activity = $data['activity'] = $this->logCreate($entity);
+                $this->activityLog->activity = $data['activity'] = $this->logCreate($entity);
                 break;
             case 'update':
-                 $this->activityLog->activity = $data['activity'] = $this->logUpdate($entity,$id);
+                $this->activityLog->activity = $data['activity'] = $this->logUpdate($entity, $id);
                 break;
             case 'delete':
-                 $this->activityLog->activity = $data['activity'] = $this->logDelete($entity,$id);
+                $this->activityLog->activity = $data['activity'] = $this->logDelete($entity, $id);
+                break;
+            case 'update-status':
+                $this->activityLog->activity = $data['activity'] = $this->logUpdateStatus($entity, $id);
+                break;
+            case 'update-access':
+                $this->activityLog->activity = $data['activity'] = $this->logUpdateAccess($entity, $id);
+                break;
+            case 'verify-email':
+                $this->activityLog->activity = $data['activity'] = $this->LogVerifyEmail($entity, $id);
+                break;
+            case 'reset-password':
+                $this->activityLog->activity = $data['activity'] = $this->logResetPassword($entity, $id);
                 break;
             default:
                 # code...
@@ -37,8 +49,25 @@ class ActivityLogHelper
         $this->activityLog->browser = $data['browser'];
         $this->activityLog->platform = $data['platform'];
         $this->activityLog->date_updated = now();
+        $this->activityLog->created_at = now();
         $this->activityLog->created_by_id = auth()->user()->id;
         $this->activityLog->save();
+    }
+    public function logResetPassword($entityName, $id = null)
+    {
+        return "The password of {$entityName} with ID: {$id} has been reset";
+    }
+    public function LogVerifyEmail($entityName, $id = null)
+    {
+        return "{$entityName} email verification status with ID: {$id} has been updated.";
+    }
+    public function logUpdateAccess($entityName, $id = null)
+    {
+        return "{$entityName} module access with ID: {$id} has been updated.";
+    }
+    public function logUpdateStatus($entityName, $id = null)
+    {
+        return "{$entityName} status with ID: {$id} has been updated.";
     }
     public function logCreate($entityName)
     {
@@ -48,10 +77,9 @@ class ActivityLogHelper
     {
         return $message = "{$entityName} record with ID: {$id} has been updated.";
     }
-
     public function logDelete($entityName, $id = null)
     {
-        return $message =  "{$entityName} record with ID: {$id} has been deleted.";
+        return $message = "{$entityName} record with ID: {$id} has been deleted.";
     }
     public function getUserDeviceDetails()
     {
