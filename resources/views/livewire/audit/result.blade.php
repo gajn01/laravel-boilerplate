@@ -1,5 +1,5 @@
 @section('title', 'Audit Result')
-<div class="container-xl">
+<div class="">
     <nav aria-label="breadcrumb">
         <ol class="breadcrumb">
             {{--             <li class="breadcrumb-item"><a href="{{ route('audit') }}">Audit</a></li>

@@ -145,6 +145,7 @@ class Schedule extends Component
         $auditDate = AuditDateModel::updateOrCreate(['id' => $this->audit_date_id], $auditDateData);
         $this->onAlert(false, 'Success', 'Schedule saved successfully!', 'success');
         CustomHelper::onRemoveModal($this, '#store_schedule_modal');
+        
         if (empty($this->audit_date_id)) {
             $auditorListData = collect($this->auditor_list)->map(function ($value) use ($auditDate) {
                 $value['audit_date_id'] = $auditDate->id;

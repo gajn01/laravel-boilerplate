@@ -35,6 +35,8 @@ use App\Http\Livewire\Settings\CriticalDeviationMenu;
 /*Store  */
 use App\Http\Livewire\Store\Store;
 use App\Http\Livewire\Store\StoreDetails;
+use App\Http\Livewire\Store\Capa;
+use App\Http\Livewire\Store\CapaResult;
 /* Dashboard */
 Route::get('/', [NavigationController::class,'index'])->name('home');
 Route::get('/login', Login::class)->name('login');
@@ -45,6 +47,9 @@ Route::middleware(['auth','verified'])->group(function () {
     Route::get('/schedule', AuditSchedule::class)->name('audit.schedule');
     Route::get('/store', Store::class)->name('store');
     Route::get('/store/details/{store_id?}', StoreDetails::class)->name('store-details');
+    Route::get('/store/capa', Capa::class)->name('capa');
+    Route::get('/store/capa/result/{id}', Capa::class)->name('capa-result');
+
      /* Audit */
      Route::get('/audit', Audit::class)->name('audit');
      Route::get('/store/details/{store_id?}', AuditDetails::class)->name('audit.details');

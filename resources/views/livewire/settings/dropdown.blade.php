@@ -1,6 +1,6 @@
 @section('title', 'Mary Grace Restaurant Operation System / Dropdown Settings')
 
-<div class="container-xl">
+<div class="">
     <nav aria-label="breadcrumb">
         <ol class="breadcrumb">
             <li class="breadcrumb-item active">Dropdown</li>

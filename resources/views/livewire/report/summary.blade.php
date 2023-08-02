@@ -1,5 +1,5 @@
 @section('title', 'Mary Grace Restaurant Operation System / Report Summary')
-<div class="container-xl">
+<div class="">
     <nav aria-label="breadcrumb">
         <ol class="breadcrumb">
             <li class="breadcrumb-item"><a href="{{ route('dashboard') }}">Dashboard</a></li>

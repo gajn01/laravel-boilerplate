@@ -1,5 +1,5 @@
 @section('title', 'Mary Grace Restaurant Operation System / Dashboard')
-<div class="container-xl" wire:poll.10s>
+<div class="" wire:poll.10s>
     <h1 class="app-page-title">Overview</h1>
     {{--   <div class="app-card alert alert-dismissible shadow-sm mb-4 border-left-decoration" role="alert">
         <div class="inner">
