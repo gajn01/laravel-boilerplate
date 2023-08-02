@@ -30,7 +30,7 @@
                             <div class="col">
                                 <div class="item-label"><strong>Name</strong><span class="text-danger">*</span></div>
                                 @if ($isedit == false)
-                                    <div class="item-data">{{ $user->name }}</div>
+                                    <div class="item-data">{{ $user->user_type == 3 ? $user->getStoreName->name : $user->name }}</div>
                                 @else
                                     <input wire:model.defer="user.name" type="text" class="form-control" required>
                                     @error('user.name')

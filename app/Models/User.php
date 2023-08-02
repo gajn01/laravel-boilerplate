@@ -48,10 +48,12 @@ class User extends Authenticatable
     public function departments(){
         return $this->belongsToMany(Department::class);
     }
-
+    public function getStoreName(){
+        return $this->belongsTo(Store::class,'name','id');
+    }
     public function getUserLevelAttribute()
     {
-        $levels = array("Super User", "Administrator", "User");
+        $levels = array("Super User", "Administrator", "User","Store");
         return $levels[$this->user_type];
     }
 

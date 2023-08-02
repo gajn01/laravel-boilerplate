@@ -40,8 +40,8 @@
                     <tbody>
                         @forelse ($user_list as $user)
                             <tr>
-                                <td class="cell">{{ $user['name'] }}</td>
-                                <td class="cell">{{ $user['email'] }}</td>
+                                <td class="cell">{{ $user->user_type == 3 ? $user->getStoreName->name : $user->name }}</td>
+                                <td class="cell">{{ $user->email }}</td>
                                 @if(is_null($user->email_verified_at))
                                     <th class="cell d-none d-lg-table-cell"><span class="badge bg-danger">Unverified</span><span class="note">NA</span></th>
                                 @else
@@ -130,10 +130,35 @@
                 <div class="modal-body">
                     <div class="settings-form">
                         <div class="mb-2">
-                            <label for="name" class="form-label small">Name<span class="text-danger">*</span></label>
-                            <input id="name" name="name" wire:model.defer="user.name" type="text" class="form-control form-control-sm" required>
-                            @error('user.name') <span class="text-danger">{{ $message }}</span> @enderror
+                            <label for="user_type" class="form-label small">User Type<span class="text-danger">*</span></label>
+                            <select id="user_type" name="user_type" wire:model="user_type" class="form-select form-select-sm" required>
+                                <option value selected>--Select User Type--</option>
+                                @if(auth()->user()->user_type < 2)
+                                <option value=1>Administrator</option>
+                                @endif
+                                <option value=2>User</option>
+                                <option value=3>Store</option>
+                            </select>
+                            @error('user_type') <span class="text-danger">{{ $message }}</span> @enderror
                         </div>
+                        @if ($user_type == 3)
+                            <div class="mb-3">
+                                <label for="" class="form-label">Store <span class="text-danger">*</span></label>
+                                <select class="form-select form-select-md" wire:model="user.name" id="store_id">
+                                    <option selected hidden>Select store</option>
+                                    @foreach ($store_list as $item)
+                                        <option value="{{ $item->id }}">{{ $item->TypeString }} - {{ $item->name }}</option>
+                                    @endforeach
+                                </select>
+                                @error('user.name')<span class="text-danger mt-1 ">{{ $message }}</span>@enderror
+                            </div>
+                        @else
+                            <div class="mb-2">
+                                <label for="name" class="form-label small">Name<span class="text-danger">*</span></label>
+                                <input id="name" name="name" wire:model.defer="user.name" type="text" class="form-control form-control-sm" required>
+                                @error('user.name') <span class="text-danger">{{ $message }}</span> @enderror
+                            </div>
+                        @endif
                         <div class="mb-2">
                             <label for="email" class="form-label small">E-mail<span class="text-danger">*</span></label>
                             <input id="email" name="email" type="email" class="form-control form-control-sm" wire:model.defer="user.email" required>
@@ -154,17 +179,7 @@
                             <input id="password_confirmation" name="password_confirmation" type="password" class="form-control form-control-sm" wire:model.defer="password_confirmation" required>
                             @error('password_confirmation') <span class="text-danger">{{ $message }}</span> @enderror
                         </div>
-                        <div class="mb-2">
-                            <label for="user_type" class="form-label small">User Type<span class="text-danger">*</span></label>
-                            <select id="user_type" name="user_type" wire:model="user.user_type" class="form-select form-select-sm" required>
-                                <option value selected>--Select User Type--</option>
-                                @if(auth()->user()->user_type < 2)
-                                <option value=1>Administrator</option>
-                                @endif
-                                <option value=2>User</option>
-                            </select>
-                            @error('user.user_type') <span class="text-danger">{{ $message }}</span> @enderror
-                        </div>
+                       
                     </div>
                 </div>
 

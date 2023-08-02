@@ -20,9 +20,10 @@ class User extends Component
     protected $listeners = ['alert-sent' => 'onDelete'];
     public $search = '';
     public $displaypage = 10;
+    public $user_type;
     public UserModel $user;
     public $password,$password_confirmation;
-    protected  ActivityLogHelper $activity;
+    protected ActivityLogHelper $activity;
     public function __construct()
     {
         $this->activity = new ActivityLogHelper;
@@ -35,7 +36,7 @@ class User extends Component
             'password' => 'required|string|min:8',
             'password_confirmation' => 'required|string|min:8|same:password',
             'user.contact_number' => 'string|max:30',
-            'user.user_type' => 'required|integer',
+            'user_type' => 'required|integer',
         ];
     }
     public function mount()
@@ -82,6 +83,7 @@ class User extends Component
             $this->user->created_by_id = auth()->user()->id;
             $this->user->last_updated_by_id = auth()->user()->id;
             $this->user->password = Hash::make($this->password);
+            $this->user->user_type = $this->user_type;
             $this->user->is_active = true;
             $this->user->user_access = '';
             $this->user->save();

@@ -33,7 +33,8 @@
     </div> --}}
     <div class="row g-4 mb-4">
         <div class="col-sm-6 col-lg-4">
-            <div class="app-card app-card-stat shadow-sm h-100">
+            <div class="app-card app-card-stat shadow-sm h-100"  >
+                
                 <div class="app-card-body p-3 p-lg-4">
                     <h4 class="stats-type mb-1">Total Stores</h4>
                     <div class="row">
@@ -54,7 +55,7 @@
                         @endforelse
                     </div>
                 </div>
-                <a class="app-card-link-mask" href=""></a>
+                <a class="app-card-link-mask" href="{{ route('store') }}"></a>
             </div>
         </div>
         <div class="col-sm-6  col-lg-4">
@@ -147,7 +148,7 @@
                                                 </tr>
                                             @empty
                                                 <tr>
-                                                    <td colspan="3">
+                                                    <td colspan="7">
                                                         <p class="text-center m-0">
                                                             No logs found.
                                                         </p>

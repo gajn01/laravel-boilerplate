@@ -119,9 +119,7 @@
                                                                 wire:change="updateCriticalDeviation({{ json_encode($item) }},$event.target.value,'sd')"
                                                                 name="sd{{ $item['id'] }}"
                                                                 id="sd{{ $item['id'] }}">
-                                                                <option value="null"
-                                                                    {{ $item['saved_sd'] == '' ? 'selected' : '' }}>
-                                                                    Select sd</option>
+                                                                <option value="0" {{ $item['saved_sd'] == '' ? 'selected' : '' }}> Select sd</option>
                                                                 @forelse ($sanitation_list as $sanitation)
                                                                     <option value="{{ $sanitation->code }}"
                                                                         {{ $sanitation->code === $item['saved_sd'] ? 'selected' : '' }}>
@@ -143,7 +141,7 @@
                                                                 wire:change="updateCriticalDeviation({{ json_encode($item) }},$event.target.value,'location')"
                                                                 name="location{{ $item['id'] }}"
                                                                 id="location{{ $item['id'] }}">
-                                                                <option value="null"
+                                                                <option value="0"
                                                                     {{ $item['saved_location'] == '' ? 'selected' : '' }}>
                                                                     Select location</option>
                                                                 @foreach ($item['location'] as $location_dropdown)
@@ -161,7 +159,7 @@
                                                                 wire:change="updateCriticalDeviation({{ json_encode($item) }},$event.target.value,'score')"
                                                                 name="loc_score{{ $item['id'] }}"
                                                                 id="loc_score{{ $item['id'] }}">
-                                                                <option value="null"
+                                                                <option value="0"
                                                                     {{ $item['saved_score'] == '' ? 'selected' : '' }}>
                                                                     Select score</option>
                                                                 @foreach ($score as $scores)
@@ -183,7 +181,7 @@
                                                                 wire:change="updateCriticalDeviation({{ json_encode($item) }},$event.target.value,'product')"
                                                                 name="product{{ $item['id'] }}"
                                                                 id="product{{ $item['id'] }}">
-                                                                <option value="null"
+                                                                <option value="0"
                                                                     {{ $item['saved_product'] == '' ? 'selected' : '' }}>
                                                                     Select product</option>
                                                                 @foreach ($item['product'] as $product_dropdown)
@@ -201,7 +199,7 @@
                                                                 wire:change="updateCriticalDeviation({{ json_encode($item) }},$event.target.value,'score')"
                                                                 name="product_score{{ $item['id'] }}"
                                                                 id="product_score{{ $item['id'] }}">
-                                                                <option value="null"
+                                                                <option value="0"
                                                                     {{ $item['saved_score'] == '' ? 'selected' : '' }}>
                                                                     Select score</option>
                                                                 @foreach ($score as $scores)
@@ -223,7 +221,7 @@
                                                                 wire:change="updateCriticalDeviation({{ json_encode($item) }}, $event.target.value, 'dropdown')"
                                                                 name="dropdown{{ $item['id'] }}"
                                                                 id="dropdown{{ $item['id'] }}">
-                                                                <option value="null" {{ $item['saved_dropdown'] == '' ? 'selected' : '' }}>Select deviation</option>
+                                                                <option value="0" {{ $item['saved_dropdown'] == '' ? 'selected' : '' }}>Select deviation</option>
                                                                 @foreach ($item['dropdown'] as $dropdown)
                                                                     <option value="{{ $dropdown['name'] }}"
                                                                         {{ $dropdown['name'] === $item['saved_dropdown'] ? 'selected' : '' }}>
@@ -239,7 +237,7 @@
                                                                 wire:change="updateCriticalDeviation({{ json_encode($item) }},$event.target.value,'score')"
                                                                 name="dp_score{{ $item['id'] }}"
                                                                 id="dp_score{{ $item['id'] }}">
-                                                                <option value="null" {{ $item['saved_score'] == '' ? 'selected' : '' }}> Select score</option>
+                                                                <option value="0" {{ $item['saved_score'] == '' ? 'selected' : '' }}> Select score</option>
                                                                 @foreach ($score as $scores)
                                                                     <option value="{{ $scores['name'] }}"
                                                                         {{ $scores['name'] === $item['saved_score'] ? 'selected' : '' }}>
@@ -282,7 +280,6 @@
                             </div>
                         @endif
                     </div>
-                  
                     @if ( $data->name == 'Food')
                         <label for="points" class="form-label fw-bold">CORE PRODUCT</label>
                     @endif
@@ -319,15 +316,26 @@
                                                          @endif
                                                         </div>
                                                         <div class="col-sm-12 col-md-5">
-                                                            @if ($index == 0)
-                                                            <label for="remarks" class="form-label">Remarks</label>
-                                                            @endif
-                                                        </div>
+                                                            <div class="row">
+                                                                <div class="col-sm-12 mb-2 {{ $auditLabel['dropdown'] ? 'col-md-6' : 'col-md-12' }}">
+                                                                    @if ($index == 0)
+                                                                        <label for="remarks" class="form-label">Remarks</label>
+                                                                    @endif   
+                                                                </div>
+                                                                @if (!empty($auditLabel['dropdown']))
+                                                                    <div class="col-sm-12 col-md-6 mb-2 {{ $auditLabel['dropdown'] ? '' : 'd-none' }}">
+                                                                        @if ($index == 0 || empty($auditLabel['dropdown']))
+                                                                            <label for="" class="form-label">Deviation</label>
+                                                                        @endif
+                                                                    </div>
+                                                                @endif
+                                                            </div>
+                                                        </div>    
                                                     </div>
                                                         <div class="row mb-3">
                                                             <div class="col-sm-12 col-md-5 col-lg-5">
                                                                 <div class="form-check form-switch">
-                                                                    <input class="form-check-input" type="checkbox"
+                                                                    <input class="form-check-input mb-2" type="checkbox"
                                                                         id="toggle-switch" @checked(
                                                                             $category_list[$loop->parent->parent->index]['sub_categ']['data_items'][$loop->parent->index]['sub_category'][$loop->index]['is_na']? false: true)
                                                                             wire:change="updateNa(
@@ -353,7 +361,7 @@
                                                                 <div class="row">
                                                                     <div class="col-sm-6 col-md-6">
                                                                         <input type="text"
-                                                                            class="form-control text-center" disabled
+                                                                            class="form-control text-center mb-2" disabled
                                                                             name="bp{{ $auditLabel['name'] }}"
                                                                             id="bp"
                                                                             value="{{ $auditLabel['is_all_nothing'] ? $auditLabel['bp'] . '*' : $auditLabel['bp'] }}"
@@ -362,7 +370,7 @@
                                                                     <div class="col-sm-6 col-md-6">
                                                                     
                                                                         <input type="number"
-                                                                            class="form-control text-center"
+                                                                            class="form-control text-center mb-2"
                                                                             @disabled($auditLabel['is_na'] ? true : false)
                                                                             name="points{{ $auditLabel['id'] }}"
                                                                             id="points{{ $auditLabel['id'] }}"
@@ -386,10 +394,7 @@
                                                             </div>
                                                             <div class="col-sm-12 col-md-5 col-lg-5">
                                                                 <div class="row">
-                                                                    <div
-                                                                        class="col-sm-12 {{ $auditLabel['dropdown'] ? 'col-md-6' : 'col-md-12' }}">
-                                                                   
-
+                                                                    <div class="col-sm-12 mb-2 {{ $auditLabel['dropdown'] ? 'col-md-6' : 'col-md-12' }}">
                                                                         <textarea class="form-control" @disabled($auditLabel['is_na'] ? true : false) name="remarks" id="remarks" rows="1"
                                                                             wire:change="updateRemarks(
                                                                             '{{ $category_list[$loop->parent->parent->index]['id'] }}',
@@ -400,12 +405,8 @@
                                                                             $event.target.value )">{{ $category_list[$loop->parent->parent->index]['sub_categ']['data_items'][$loop->parent->index]['sub_category'][$loop->index]['remarks'] }}</textarea>
                                                                     </div>
                                                                     @if (!empty($auditLabel['dropdown']))
-                                                                        <div
-                                                                            class="col-sm-12 col-md-6 {{ $auditLabel['dropdown'] ? '' : 'd-none' }}">
-                                                                            @if ($index == 0 || empty($auditLabel['dropdown']))
-                                                                                <label for=""
-                                                                                    class="form-label">Deviation</label>
-                                                                            @endif
+                                                                        <div class="col-sm-12 col-md-6 mb-2 {{ $auditLabel['dropdown'] ? '' : 'd-none' }}">
+                                                                        
                                                                             <select class="form-select form-select-md"
                                                                                 wire:change="updateDeviation('{{ $category_list[$loop->parent->parent->index]['id'] }}',
                                                                                 '{{ $category_list[$loop->parent->parent->index]['sub_categ']['data_items'][$loop->parent->index]['id'] }}',
@@ -470,7 +471,7 @@
                                                                                             <div class="col-3">
                                                                                                 <div class="mb-3">
                                                                                                     <label for="name_{{ $loop->index }}">Cashier Name</label>
-                                                                                                    <input type="text" class="form-control"
+                                                                                                    <input type="text" class="form-control "
                                                                                                         name="cashier_name"
                                                                                                         id="name_{{ $loop->index }}"
                                                                                                         value="{{$item->name}}"
