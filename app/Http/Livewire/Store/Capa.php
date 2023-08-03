@@ -6,6 +6,9 @@ use Livewire\Component;
 use League\Csv\Reader;
 use Illuminate\Http\Request;
 use App\Models\Store;
+use App\Models\SubCategory;
+use App\Models\SubCategoryLabel;
+use App\Models\SubSubCategoryLabel;
 
 class Capa extends Component
 {
@@ -20,7 +23,6 @@ class Capa extends Component
         $this->validate([
             'file' => 'required|file|mimes:csv,txt',
         ]);
-    
         $csv = Reader::createFromPath($this->file->path(), 'r');
         $csv->setHeaderOffset(0);
         $headers = $csv->getHeader();
@@ -30,7 +32,7 @@ class Capa extends Component
         foreach ($rows as $row) {
             $dataToInsert[] = array_combine($headers, $row); // Add each row as an associative array to the data array
         }
-        Store::insert($dataToInsert);
+        SubSubCategoryLabel::insert($dataToInsert);
         /* if (!empty($dataToInsert)) {
             $existingIds = Store::pluck('id')->toArray();
             $dataToInsert = array_filter($dataToInsert, function ($item) use ($existingIds) {

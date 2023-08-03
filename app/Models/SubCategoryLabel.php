@@ -8,10 +8,8 @@ use Illuminate\Database\Eloquent\Model;
 class SubCategoryLabel extends Model
 {
     use HasFactory;
-
     protected $table = 'sub_categories_label';
     protected $fillable = ['id', 'name', 'sub_category_id', 'bp', 'is_all_nothing','dropdown_id'];
-
     public function subCategory()
     {
         return $this->belongsTo(subCategory::class,'sub_category_id','id');

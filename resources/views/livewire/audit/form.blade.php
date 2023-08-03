@@ -119,7 +119,9 @@
                                                                 wire:change="updateCriticalDeviation({{ json_encode($item) }},$event.target.value,'sd')"
                                                                 name="sd{{ $item['id'] }}"
                                                                 id="sd{{ $item['id'] }}">
-                                                                <option value="0" {{ $item['saved_sd'] == '' ? 'selected' : '' }}> Select sd</option>
+                                                                <option value="0"
+                                                                    {{ $item['saved_sd'] == '' ? 'selected' : '' }}>
+                                                                    Select sd</option>
                                                                 @forelse ($sanitation_list as $sanitation)
                                                                     <option value="{{ $sanitation->code }}"
                                                                         {{ $sanitation->code === $item['saved_sd'] ? 'selected' : '' }}>
@@ -221,7 +223,9 @@
                                                                 wire:change="updateCriticalDeviation({{ json_encode($item) }}, $event.target.value, 'dropdown')"
                                                                 name="dropdown{{ $item['id'] }}"
                                                                 id="dropdown{{ $item['id'] }}">
-                                                                <option value="0" {{ $item['saved_dropdown'] == '' ? 'selected' : '' }}>Select deviation</option>
+                                                                <option value="0"
+                                                                    {{ $item['saved_dropdown'] == '' ? 'selected' : '' }}>
+                                                                    Select deviation</option>
                                                                 @foreach ($item['dropdown'] as $dropdown)
                                                                     <option value="{{ $dropdown['name'] }}"
                                                                         {{ $dropdown['name'] === $item['saved_dropdown'] ? 'selected' : '' }}>
@@ -237,7 +241,9 @@
                                                                 wire:change="updateCriticalDeviation({{ json_encode($item) }},$event.target.value,'score')"
                                                                 name="dp_score{{ $item['id'] }}"
                                                                 id="dp_score{{ $item['id'] }}">
-                                                                <option value="0" {{ $item['saved_score'] == '' ? 'selected' : '' }}> Select score</option>
+                                                                <option value="0"
+                                                                    {{ $item['saved_score'] == '' ? 'selected' : '' }}>
+                                                                    Select score</option>
                                                                 @foreach ($score as $scores)
                                                                     <option value="{{ $scores['name'] }}"
                                                                         {{ $scores['name'] === $item['saved_score'] ? 'selected' : '' }}>
@@ -264,7 +270,9 @@
                                                         wire:change="updateCriticalDeviation({{ json_encode($item) }},$event.target.value,'score')"
                                                         name="dp_score{{ $item['id'] }}"
                                                         id="dp_score{{ $item['id'] }}">
-                                                        <option value="null" {{ $item['saved_score'] == '' ? 'selected' : '' }}> Select score</option>
+                                                        <option value="null"
+                                                            {{ $item['saved_score'] == '' ? 'selected' : '' }}> Select
+                                                            score</option>
                                                         @foreach ($score as $scores)
                                                             <option value="{{ $scores['name'] }}"
                                                                 {{ $scores['name'] === $item['saved_score'] ? 'selected' : '' }}>
@@ -280,7 +288,7 @@
                             </div>
                         @endif
                     </div>
-                    @if ( $data->name == 'Food')
+                    @if ($data->name == 'Food')
                         <label for="points" class="form-label fw-bold">CORE PRODUCT</label>
                     @endif
                     <div class="app-card app-card-orders-table shadow-sm mb-5 bg-none">
@@ -295,50 +303,64 @@
                                                 <h6 class="card-title product-name">{{ $dataItem['name'] }}</h6>
                                             </button>
                                         </h2>
-                                        <div id="accrod{{ $dataItem['id'] }}" class="accordion-collapse collapse show" aria-labelledby="accrod{{ $dataItem['id'] }}" data-bs-parent="#accordionCategory">
+                                        <div id="accrod{{ $dataItem['id'] }}"
+                                            class="accordion-collapse collapse show"
+                                            aria-labelledby="accrod{{ $dataItem['id'] }}"
+                                            data-bs-parent="#accordionCategory">
                                             <div class="accordion-body">
+                                                {{-- no sub category --}}
                                                 @if ($dataItem['is_sub'] == 0)
                                                     @foreach ($dataItem['sub_category'] as $index => $auditLabel)
-                                                    <div class="row">
-                                                        <div class="col-sm-12 col-md-5">
-
-                                                        </div>
-                                                        <div class="col-sm-12 col-md-2">
-                                                            @if ($index == 0)
-                                                            <div class="row">
-                                                                <div class="col-sm-6 col-md-6">
-                                                                    <label for=""  class="form-label">BP</label>
-                                                                </div>
-                                                                <div class="col-sm-6 col-md-6">
-                                                                    <label for="points" class="form-label">Point(s)</label>
-                                                                </div>
+                                                        <div class="row">
+                                                            <div class="col-sm-12 col-md-5">
                                                             </div>
-                                                         @endif
-                                                        </div>
-                                                        <div class="col-sm-12 col-md-5">
-                                                            <div class="row">
-                                                                <div class="col-sm-12 mb-2 {{ $auditLabel['dropdown'] ? 'col-md-6' : 'col-md-12' }}">
-                                                                    @if ($index == 0)
-                                                                        <label for="remarks" class="form-label">Remarks</label>
-                                                                    @endif   
-                                                                </div>
-                                                                @if (!empty($auditLabel['dropdown']))
-                                                                    <div class="col-sm-12 col-md-6 mb-2 {{ $auditLabel['dropdown'] ? '' : 'd-none' }}">
-                                                                        @if ($index == 0 || empty($auditLabel['dropdown']))
-                                                                            <label for="" class="form-label">Deviation</label>
-                                                                        @endif
+                                                            <div class="col-sm-12 col-md-2">
+                                                                @if ($index == 0)
+                                                                    <div class="row">
+                                                                        <div class="col-sm-6 col-md-6">
+                                                                            <label for=""
+                                                                                class="form-label">BP</label>
+                                                                        </div>
+                                                                        <div class="col-sm-6 col-md-6">
+                                                                            <label for="points"
+                                                                                class="form-label">Point(s)</label>
+                                                                        </div>
                                                                     </div>
                                                                 @endif
                                                             </div>
-                                                        </div>    
-                                                    </div>
+                                                            <div class="col-sm-12 col-md-5">
+                                                                <div class="row">
+                                                                    <div
+                                                                        class="col-sm-12 mb-2 {{ $auditLabel['dropdown'] ? 'col-md-6' : 'col-md-12' }}">
+                                                                        @if ($index == 0)
+                                                                            <label for="remarks"
+                                                                                class="form-label">Remarks</label>
+                                                                        @endif
+                                                                    </div>
+                                                                    @if (!empty($auditLabel['dropdown']))
+                                                                        <div
+                                                                            class="col-sm-12 col-md-6 mb-2 {{ $auditLabel['dropdown'] ? '' : 'd-none' }}">
+                                                                            @if ($index == 0 || empty($auditLabel['dropdown']))
+                                                                                <label for=""
+                                                                                    class="form-label">Deviation</label>
+                                                                            @endif
+                                                                        </div>
+                                                                    @endif
+                                                                </div>
+                                                            </div>
+                                                        </div>
                                                         <div class="row mb-3">
                                                             <div class="col-sm-12 col-md-5 col-lg-5">
                                                                 <div class="form-check form-switch">
-                                                                    <input class="form-check-input mb-2" type="checkbox"
-                                                                        id="toggle-switch" @checked(
-                                                                            $category_list[$loop->parent->parent->index]['sub_categ']['data_items'][$loop->parent->index]['sub_category'][$loop->index]['is_na']? false: true)
-                                                                            wire:change="updateNa(
+                                                                    <input class="form-check-input mb-2"
+                                                                        type="checkbox" id="toggle-switch"
+                                                                        @checked(
+                                                                            $category_list[$loop->parent->parent->index]['sub_categ']['data_items'][$loop->parent->index]['sub_category'][
+                                                                                $loop->index
+                                                                            ]['is_na']
+                                                                                ? false
+                                                                                : true)
+                                                                        wire:change="updateNa(
                                                                         '{{ $auditLabel['id'] }}',
                                                                         '{{ $loop->parent->parent->index }}',
                                                                         '{{ $loop->parent->index }}',
@@ -361,14 +383,14 @@
                                                                 <div class="row">
                                                                     <div class="col-sm-6 col-md-6">
                                                                         <input type="text"
-                                                                            class="form-control text-center mb-2" disabled
+                                                                            class="form-control text-center mb-2"
+                                                                            disabled
                                                                             name="bp{{ $auditLabel['name'] }}"
                                                                             id="bp"
                                                                             value="{{ $auditLabel['is_all_nothing'] ? $auditLabel['bp'] . '*' : $auditLabel['bp'] }}"
                                                                             placeholder="">
                                                                     </div>
                                                                     <div class="col-sm-6 col-md-6">
-                                                                    
                                                                         <input type="number"
                                                                             class="form-control text-center mb-2"
                                                                             @disabled($auditLabel['is_na'] ? true : false)
@@ -394,7 +416,8 @@
                                                             </div>
                                                             <div class="col-sm-12 col-md-5 col-lg-5">
                                                                 <div class="row">
-                                                                    <div class="col-sm-12 mb-2 {{ $auditLabel['dropdown'] ? 'col-md-6' : 'col-md-12' }}">
+                                                                    <div
+                                                                        class="col-sm-12 mb-2 {{ $auditLabel['dropdown'] ? 'col-md-6' : 'col-md-12' }}">
                                                                         <textarea class="form-control" @disabled($auditLabel['is_na'] ? true : false) name="remarks" id="remarks" rows="1"
                                                                             wire:change="updateRemarks(
                                                                             '{{ $category_list[$loop->parent->parent->index]['id'] }}',
@@ -405,8 +428,9 @@
                                                                             $event.target.value )">{{ $category_list[$loop->parent->parent->index]['sub_categ']['data_items'][$loop->parent->index]['sub_category'][$loop->index]['remarks'] }}</textarea>
                                                                     </div>
                                                                     @if (!empty($auditLabel['dropdown']))
-                                                                        <div class="col-sm-12 col-md-6 mb-2 {{ $auditLabel['dropdown'] ? '' : 'd-none' }}">
-                                                                        
+                                                                        <div
+                                                                            class="col-sm-12 col-md-6 mb-2 {{ $auditLabel['dropdown'] ? '' : 'd-none' }}">
+
                                                                             <select class="form-select form-select-md"
                                                                                 wire:change="updateDeviation('{{ $category_list[$loop->parent->parent->index]['id'] }}',
                                                                                 '{{ $category_list[$loop->parent->parent->index]['sub_categ']['data_items'][$loop->parent->index]['id'] }}',
@@ -437,530 +461,576 @@
                                                     @endforeach
                                                 @else
                                                     @foreach ($dataItem['sub_category'] as $sub_category)
-                                                        <div class="accordion accordion-flush mb-3"
-                                                            id="accordionFlushSubcategory">
-                                                            <div class="accordion-item">
-                                                                <h2 class="accordion-header" id="headingSub">
-                                                                    <button class="accordion-button collapsed"
-                                                                        type="button" data-bs-toggle="collapse"
-                                                                        data-bs-target="#flush-{{ $sub_category['id'] }}"
-                                                                        aria-expanded="true"
-                                                                        aria-controls="flush-{{ $sub_category['id'] }}">
-                                                                        {{ $sub_category['name'] }}
-                                                                    </button>
-                                                                </h2>
-                                                                <div id="flush-{{ $sub_category['id'] }}"
-                                                                    class="accordion-collapse "
-                                                                    aria-labelledby="flush-{{ $sub_category['id'] }}"
-                                                                    data-bs-parent="#accordionFlushSubcategory">
-                                                                    <div class="accordion-body">
-                                                                        @if ($sub_category['name'] == "Cashier TAT" )
-                                                                            <div class="row">
-                                                                                <div class="col-12">
-                                                                                    <svg class="icon" wire:click="addInput(1)" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512">
-                                                                                        <path d="M256 80c0-17.7-14.3-32-32-32s-32 14.3-32 32V224H48c-17.7 0-32 14.3-32 32s14.3 32 32 32H192V432c0 17.7 14.3 32 32 32s32-14.3 32-32V288H400c17.7 0 32-14.3 32-32s-14.3-32-32-32H256V80z" />
-                                                                                    </svg>
-                                                                                    <a class="btn app-btn-primary float-right" wire:ignore role="button" wire:click="setTime(0)">Set</a>
-                                                                                </div>
-                                                                            </div>
-                                                                            <div class="row">
-                                                                                @foreach ($cashier_tat  as $index => $item)
-                                                                                    <div class="col-sm-12 col-md-12">
-                                                                                        <div class="row">
-                                                                                           <!-- Cashier Fields -->
-                                                                                            <div class="col-3">
-                                                                                                <div class="mb-3">
-                                                                                                    <label for="name_{{ $loop->index }}">Cashier Name</label>
-                                                                                                    <input type="text" class="form-control "
-                                                                                                        name="cashier_name"
-                                                                                                        id="name_{{ $loop->index }}"
-                                                                                                        value="{{$item->name}}"
-                                                                                                        wire:change="updateService({{ $item }} ,'name', $event.target.value)"
-                                                                                                        wire:focus="$set('currentIndex', '{{ $loop->index }}')">
-                                                                                                </div>
-                                                                                            </div>
-                                                                                            <div class="col-2">
-                                                                                                <div class="mb-3">
-                                                                                                    <label for="time_{{ $loop->index }}">Time</label>
-                                                                                                    <input type="text" class="form-control"
-                                                                                                        name="time"
-                                                                                                        id="time_{{ $loop->index }}"
-                                                                                                        value="{{$item->time}}"
-                                                                                                        wire:change="updateService({{ $item }} ,'time', $event.target.value)"
-                                                                                                        wire:focus="$set('currentField', 'time')"
-                                                                                                        placeholder="hh:mm">
-                                                                                                </div>
-                                                                                            </div>
-                                                                                            <div class="col-3">
-                                                                                                <div class="mb-3">
-                                                                                                    <label for="product_order{{ $loop->index }}">Product Ordered</label>
-                                                                                                    <input type="text" class="form-control"
-                                                                                                        name="product_order"
-                                                                                                        id="product_order{{ $loop->index }}"
-                                                                                                        value="{{$cashier_tat[$index]->product_ordered}}"
-                                                                                                        wire:change="updateService({{ $item }} ,'product_ordered', $event.target.value)">
-                                                                                                </div>
-                                                                                            </div>
-                                                                                            <div class="col-4">
-                                                                                                <div class="row">
-                                                                                                    <div class="col-4">
-                                                                                                        <div class="mb-3">
-                                                                                                            <label>OT</label>
-                                                                                                            <input type="text"
-                                                                                                                class="form-control"
-                                                                                                                id="ot"
-                                                                                                                value="{{$cashier_tat[$index]->ot}}"
-                                                                                                                wire:change="updateService({{ $item }} ,'ot', $event.target.value)">
-                                                                                                        </div>
-                                                                                                    </div>
-                                                                                                    <div class="col-4">
-                                                                                                        <div class="mb-3">
-                                                                                                            <label>Assembly </label>
-                                                                                                            <input type="text"
-                                                                                                                class="form-control"
-                                                                                                                name="assembly" id="assembly"
-                                                                                                                value="{{$cashier_tat[$index]->assembly}}"
-                                                                                                                wire:change="updateService({{ $item }} ,'assembly', $event.target.value)">
-                                                                                                        </div>
-                                                                                                    </div>
-                                                                                                    <div class="col-4">
-                                                                                                        <div class="mb-3">
-                                                                                                            <label>Point</label>
-                                                                                                            <input type="text"
-                                                                                                                class="form-control"
-                                                                                                                name="assembly_points" id="assembly_points"
-                                                                                                                value="{{$cashier_tat[$index]->assembly_points}}"
-                                                                                                                wire:change="updateService({{ $item }} ,'assembly_points', $event.target.value)">
-                                                                                                        </div>
-                                                                                                    </div>
-                                                                                                </div>
-                                                                                            </div>
-                                                                                            <div class="col-3">
-                                                                                                <label for="" class="">TAT (1pt.)</label>
-                                                                                                <div class="row">
-                                                                                                    <div class="col-6">
-                                                                                                        <div class="mb-3">
-                                                                                                            <label for=""
-                                                                                                                class="">Time</label>
-                                                                                                            <input type="text"
-                                                                                                                class="form-control"
-                                                                                                                name="tat" id="tat"
-                                                                                                                wire:focus="$set('currentField', 'tat')"
-                                                                                                                placeholder="hh:mm"
-                                                                                                                value="{{$cashier_tat[$index]->tat}}"
-                                                                                                                wire:change="updateService({{ $item }} ,'tat', $event.target.value)">
-                                                                                                        </div>
-                                                                                                    </div>
-                                                                                                    <div class="col-6">
-                                                                                                        <div class="mb-3">
-                                                                                                            <label for="" class="">Point</label>
-                                                                                                            <input type="text"
-                                                                                                                class="form-control"
-                                                                                                                name="tat_points" id="tat_points"
-                                                                                                                wire:focus="$set('currentField', 'tat_points')"
-                                                                                                                placeholder="Point"
-                                                                                                                value="{{$cashier_tat[$index]->tat_points}}"
-                                                                                                                wire:change="updateService({{ $item }} ,'tat_points', $event.target.value)">
-                                                                                                        </div>
-                                                                                                    </div>
-                                                                                                </div>
-                                                                                            </div>
-                                                                                            <div class="col-2">
-                                                                                                <label for="" class=""></label>
-                                                                                                <div class="row">
-                                                                                                    <div class="col-12">
-                                                                                                        <div class="mb-3">
-                                                                                                            <label for="" class="">Serving Time</label>
-                                                                                                            <input type="text"
-                                                                                                                class="form-control"
-                                                                                                                name="serving_time" id="serving_time"
-                                                                                                                wire:focus="$set('currentField', 'serving_time')"
-                                                                                                                placeholder="minutes"
-                                                                                                                value="{{$cashier_tat[$index]->serving_time}}"
-                                                                                                                wire:change="updateService({{ $item }} ,'serving_time', $event.target.value)">
-                                                                                                        </div>
-                                                                                                    </div>
-                                                                                                </div>
-                                                                                            </div>
-                                                                                            <div class="col-3">
-                                                                                                <label for="" class="">FST (3 pts.)</label>
-                                                                                                <div class="row">
-                                                                                                    <div class="col-6">
-                                                                                                        <div class="mb-3">
-                                                                                                            <label for="" class="">Time</label>
-                                                                                                            <input type="text"
-                                                                                                                class="form-control"
-                                                                                                                name="fst" id="fst"
-                                                                                                                wire:focus="$set('currentField', 'fst')"
-                                                                                                                placeholder="hh:mm"
-                                                                                                                value="{{$cashier_tat[$index]->fst}}"
-                                                                                                                wire:change="updateService({{ $item }} ,'fst', $event.target.value)">
-                                                                                                        </div>
-                                                                                                    </div>
-                                                                                                    <div class="col-6">
-                                                                                                        <div class="mb-3">
-                                                                                                            <label for="" class="">Point</label>
-                                                                                                            <input type="text"
-                                                                                                                class="form-control"
-                                                                                                                name="fst_points" id="fst_points"
-                                                                                                                value="{{$cashier_tat[$index]->fst_points}}"
-                                                                                                                placeholder="Point"
-                                                                                                                wire:change="updateService({{ $item }} ,'fst_points', $event.target.value)">
-
-                                                                                                        </div>
-                                                                                                    </div>
-                                                                                                </div>
-                                                                                            </div>
-                                                                                            
-                                                                                            <div class="col-4">
-                                                                                                <div class="mb-3">
-                                                                                                    <label>Remarks </label>
-                                                                                                    <textarea class="form-control" name="" id="" rows="2" id="remarks_{{ $loop->index }}" value="{{$cashier_tat[$index]->remarks}}"  wire:change="updateService({{ $item }} ,'remarks', $event.target.value)"
-                                                                                                        wire:focus="$set('currentField', 'fst_points')" placeholder="Remarks"></textarea>
-                                                                                                </div>
-                                                                                            </div>
-                                                                                        </div>
-                                                                                    </div>
-                                                                                    <hr>
-                                                                                @endforeach
-                                                                            </div>
-                                                                        @elseif($sub_category['name'] == "Server CAT")
+                                                        <label class="form-check-label fw-bold mb-2"
+                                                            @class(['pt-4' => $index == 0])>{{ $sub_category['name'] }}</label>
+                                                        @if ($sub_category['name'] == 'Cashier TAT')
+                                                            <div class="row">
+                                                                <div class="col-12">
+                                                                    <svg class="icon" wire:click="addInput(1)"
+                                                                        xmlns="http://www.w3.org/2000/svg"
+                                                                        viewBox="0 0 448 512">
+                                                                        <path
+                                                                            d="M256 80c0-17.7-14.3-32-32-32s-32 14.3-32 32V224H48c-17.7 0-32 14.3-32 32s14.3 32 32 32H192V432c0 17.7 14.3 32 32 32s32-14.3 32-32V288H400c17.7 0 32-14.3 32-32s-14.3-32-32-32H256V80z" />
+                                                                    </svg>
+                                                                    <a class="btn app-btn-primary float-right"
+                                                                        wire:ignore role="button"
+                                                                        wire:click="setTime(0)">Set</a>
+                                                                </div>
+                                                            </div>
+                                                            <div class="row">
+                                                                @foreach ($cashier_tat as $index => $item)
+                                                                    <div class="col-sm-12 col-md-12">
                                                                         <div class="row">
-                                                                            <div class="col-12">
-                                                                                <svg class="icon" wire:click="addInput(0)" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512">
-                                                                                    <path d="M256 80c0-17.7-14.3-32-32-32s-32 14.3-32 32V224H48c-17.7 0-32 14.3-32 32s14.3 32 32 32H192V432c0 17.7 14.3 32 32 32s32-14.3 32-32V288H400c17.7 0 32-14.3 32-32s-14.3-32-32-32H256V80z" /></svg>
-                                                                                    <a class="btn app-btn-primary float-right" wire:ignore role="button" wire:click="setTime(1)">Set</a>
+                                                                            <!-- Cashier Fields -->
+                                                                            <div class="col-3">
+                                                                                <div class="mb-3">
+                                                                                    <label
+                                                                                        for="name_{{ $loop->index }}">Cashier
+                                                                                        Name</label>
+                                                                                    <input type="text"
+                                                                                        class="form-control "
+                                                                                        name="cashier_name"
+                                                                                        id="name_{{ $loop->index }}"
+                                                                                        value="{{ $item->name }}"
+                                                                                        wire:change="updateService({{ $item }} ,'name', $event.target.value)"
+                                                                                        wire:focus="$set('currentIndex', '{{ $loop->index }}')">
+                                                                                </div>
+                                                                            </div>
+                                                                            <div class="col-2">
+                                                                                <div class="mb-3">
+                                                                                    <label
+                                                                                        for="time_{{ $loop->index }}">Time</label>
+                                                                                    <input type="text"
+                                                                                        class="form-control"
+                                                                                        name="time"
+                                                                                        id="time_{{ $loop->index }}"
+                                                                                        value="{{ $item->time }}"
+                                                                                        wire:change="updateService({{ $item }} ,'time', $event.target.value)"
+                                                                                        wire:focus="$set('currentField', 'time')"
+                                                                                        placeholder="hh:mm">
+                                                                                </div>
+                                                                            </div>
+                                                                            <div class="col-3">
+                                                                                <div class="mb-3">
+                                                                                    <label
+                                                                                        for="product_order{{ $loop->index }}">Product
+                                                                                        Ordered</label>
+                                                                                    <input type="text"
+                                                                                        class="form-control"
+                                                                                        name="product_order"
+                                                                                        id="product_order{{ $loop->index }}"
+                                                                                        value="{{ $cashier_tat[$index]->product_ordered }}"
+                                                                                        wire:change="updateService({{ $item }} ,'product_ordered', $event.target.value)">
+                                                                                </div>
+                                                                            </div>
+                                                                            <div class="col-4">
+                                                                                <div class="row">
+                                                                                    <div class="col-4">
+                                                                                        <div class="mb-3">
+                                                                                            <label>OT</label>
+                                                                                            <input type="text"
+                                                                                                class="form-control"
+                                                                                                id="ot"
+                                                                                                value="{{ $cashier_tat[$index]->ot }}"
+                                                                                                wire:change="updateService({{ $item }} ,'ot', $event.target.value)">
+                                                                                        </div>
+                                                                                    </div>
+                                                                                    <div class="col-4">
+                                                                                        <div class="mb-3">
+                                                                                            <label>Assembly </label>
+                                                                                            <input type="text"
+                                                                                                class="form-control"
+                                                                                                name="assembly"
+                                                                                                id="assembly"
+                                                                                                value="{{ $cashier_tat[$index]->assembly }}"
+                                                                                                wire:change="updateService({{ $item }} ,'assembly', $event.target.value)">
+                                                                                        </div>
+                                                                                    </div>
+                                                                                    <div class="col-4">
+                                                                                        <div class="mb-3">
+                                                                                            <label>Point</label>
+                                                                                            <input type="text"
+                                                                                                class="form-control"
+                                                                                                name="assembly_points"
+                                                                                                id="assembly_points"
+                                                                                                value="{{ $cashier_tat[$index]->assembly_points }}"
+                                                                                                wire:change="updateService({{ $item }} ,'assembly_points', $event.target.value)">
+                                                                                        </div>
+                                                                                    </div>
+                                                                                </div>
+                                                                            </div>
+                                                                            <div class="col-3">
+                                                                                <label for=""
+                                                                                    class="">TAT (1pt.)</label>
+                                                                                <div class="row">
+                                                                                    <div class="col-6">
+                                                                                        <div class="mb-3">
+                                                                                            <label for=""
+                                                                                                class="">Time</label>
+                                                                                            <input type="text"
+                                                                                                class="form-control"
+                                                                                                name="tat"
+                                                                                                id="tat"
+                                                                                                wire:focus="$set('currentField', 'tat')"
+                                                                                                placeholder="hh:mm"
+                                                                                                value="{{ $cashier_tat[$index]->tat }}"
+                                                                                                wire:change="updateService({{ $item }} ,'tat', $event.target.value)">
+                                                                                        </div>
+                                                                                    </div>
+                                                                                    <div class="col-6">
+                                                                                        <div class="mb-3">
+                                                                                            <label for=""
+                                                                                                class="">Point</label>
+                                                                                            <input type="text"
+                                                                                                class="form-control"
+                                                                                                name="tat_points"
+                                                                                                id="tat_points"
+                                                                                                wire:focus="$set('currentField', 'tat_points')"
+                                                                                                placeholder="Point"
+                                                                                                value="{{ $cashier_tat[$index]->tat_points }}"
+                                                                                                wire:change="updateService({{ $item }} ,'tat_points', $event.target.value)">
+                                                                                        </div>
+                                                                                    </div>
+                                                                                </div>
+                                                                            </div>
+                                                                            <div class="col-2">
+                                                                                <label for=""
+                                                                                    class=""></label>
+                                                                                <div class="row">
+                                                                                    <div class="col-12">
+                                                                                        <div class="mb-3">
+                                                                                            <label for=""
+                                                                                                class="">Serving
+                                                                                                Time</label>
+                                                                                            <input type="text"
+                                                                                                class="form-control"
+                                                                                                name="serving_time"
+                                                                                                id="serving_time"
+                                                                                                wire:focus="$set('currentField', 'serving_time')"
+                                                                                                placeholder="minutes"
+                                                                                                value="{{ $cashier_tat[$index]->serving_time }}"
+                                                                                                wire:change="updateService({{ $item }} ,'serving_time', $event.target.value)">
+                                                                                        </div>
+                                                                                    </div>
+                                                                                </div>
+                                                                            </div>
+                                                                            <div class="col-3">
+                                                                                <label for=""
+                                                                                    class="">FST (3 pts.)</label>
+                                                                                <div class="row">
+                                                                                    <div class="col-6">
+                                                                                        <div class="mb-3">
+                                                                                            <label for=""
+                                                                                                class="">Time</label>
+                                                                                            <input type="text"
+                                                                                                class="form-control"
+                                                                                                name="fst"
+                                                                                                id="fst"
+                                                                                                wire:focus="$set('currentField', 'fst')"
+                                                                                                placeholder="hh:mm"
+                                                                                                value="{{ $cashier_tat[$index]->fst }}"
+                                                                                                wire:change="updateService({{ $item }} ,'fst', $event.target.value)">
+                                                                                        </div>
+                                                                                    </div>
+                                                                                    <div class="col-6">
+                                                                                        <div class="mb-3">
+                                                                                            <label for=""
+                                                                                                class="">Point</label>
+                                                                                            <input type="text"
+                                                                                                class="form-control"
+                                                                                                name="fst_points"
+                                                                                                id="fst_points"
+                                                                                                value="{{ $cashier_tat[$index]->fst_points }}"
+                                                                                                placeholder="Point"
+                                                                                                wire:change="updateService({{ $item }} ,'fst_points', $event.target.value)">
+
+                                                                                        </div>
+                                                                                    </div>
+                                                                                </div>
+                                                                            </div>
+
+                                                                            <div class="col-4">
+                                                                                <div class="mb-3">
+                                                                                    <label>Remarks </label>
+                                                                                    <textarea class="form-control" name="" id="" rows="2" id="remarks_{{ $loop->index }}"
+                                                                                        value="{{ $cashier_tat[$index]->remarks }}"
+                                                                                        wire:change="updateService({{ $item }} ,'remarks', $event.target.value)"
+                                                                                        wire:focus="$set('currentField', 'fst_points')" placeholder="Remarks"></textarea>
+                                                                                </div>
                                                                             </div>
                                                                         </div>
-                                                                        @foreach ($server_cat as $index => $item)
-                                                                            <div class="row">
-                                                                                <div class="col-sm-12">
-                                                                                    <div class="row">
-                                                                                        <div class="col-3">
-                                                                                            <div class="mb-3">
-                                                                                                <label for="server_name">Server Name</label>
-                                                                                                <input type="text" class="form-control"
-                                                                                                    name="server_name"
-                                                                                                    id="name_{{ $loop->index }}"
-                                                                                                    value="{{$item->name}}"
-                                                                                                    wire:change="updateService({{ $item }} ,'name', $event.target.value)"
-                                                                                                    wire:focus="$set('currentIndex', '{{ $loop->index }}')">
-                                                                                            </div>
+                                                                    </div>
+                                                                    <hr>
+                                                                @endforeach
+                                                            </div>
+                                                        @elseif($sub_category['name'] == 'Server CAT')
+                                                            <div class="row">
+                                                                <div class="col-12">
+                                                                    <svg class="icon" wire:click="addInput(0)"
+                                                                        xmlns="http://www.w3.org/2000/svg"
+                                                                        viewBox="0 0 448 512">
+                                                                        <path
+                                                                            d="M256 80c0-17.7-14.3-32-32-32s-32 14.3-32 32V224H48c-17.7 0-32 14.3-32 32s14.3 32 32 32H192V432c0 17.7 14.3 32 32 32s32-14.3 32-32V288H400c17.7 0 32-14.3 32-32s-14.3-32-32-32H256V80z" />
+                                                                    </svg>
+                                                                    <a class="btn app-btn-primary float-right"
+                                                                        wire:ignore role="button"
+                                                                        wire:click="setTime(1)">Set</a>
+                                                                </div>
+                                                            </div>
+                                                            @foreach ($server_cat as $index => $item)
+                                                                <div class="row">
+                                                                    <div class="col-sm-12">
+                                                                        <div class="row">
+                                                                            <div class="col-3">
+                                                                                <div class="mb-3">
+                                                                                    <label for="server_name">Server
+                                                                                        Name</label>
+                                                                                    <input type="text"
+                                                                                        class="form-control"
+                                                                                        name="server_name"
+                                                                                        id="name_{{ $loop->index }}"
+                                                                                        value="{{ $item->name }}"
+                                                                                        wire:change="updateService({{ $item }} ,'name', $event.target.value)"
+                                                                                        wire:focus="$set('currentIndex', '{{ $loop->index }}')">
+                                                                                </div>
+                                                                            </div>
+                                                                            <div class="col-2">
+                                                                                <div class="mb-3">
+                                                                                    <label for="time">Time</label>
+                                                                                    <input type="text"
+                                                                                        class="form-control"
+                                                                                        name="time"
+                                                                                        id="time_{{ $loop->index }}"
+                                                                                        value="{{ $item->time }}"
+                                                                                        wire:focus="$set('currentField', 'time')"
+                                                                                        value="{{ $server_cat[$index]->time }}"
+                                                                                        wire:change="updateService({{ $item->id }} ,'time', $event.target.value)"
+                                                                                        placeholder="hh:mm">
+                                                                                </div>
+                                                                            </div>
+                                                                            <div class="col-3">
+                                                                                <div class="mb-3">
+                                                                                    <label for="product_order">Product
+                                                                                        Ordered</label>
+                                                                                    <input type="text"
+                                                                                        class="form-control"
+                                                                                        name="product_ordered"
+                                                                                        id="product_ordered{{ $loop->index }}"
+                                                                                        value="{{ $item->product_ordered }}"
+                                                                                        wire:change="updateService({{ $item->id }} ,'product_ordered', $event.target.value)"
+                                                                                        placeholder="Product Ordered">
+                                                                                </div>
+                                                                            </div>
+                                                                            <div class="col-4">
+                                                                                <div class="row">
+                                                                                    <div class="col-4">
+                                                                                        <div class="mb-3">
+                                                                                            <label>OT </label>
+                                                                                            <input type="text"
+                                                                                                class="form-control"
+                                                                                                id="ot"
+                                                                                                value="{{ $item->ot }}"
+                                                                                                wire:change="updateService({{ $item->id }} ,'ot', $event.target.value)">
                                                                                         </div>
-                                                                                        <div class="col-2">
-                                                                                            <div class="mb-3">
-                                                                                                <label for="time">Time</label>
-                                                                                                <input type="text" class="form-control"
-                                                                                                    name="time"
-                                                                                                    id="time_{{ $loop->index }}"
-                                                                                                    value="{{$item->time}}"
-                                                                                                    wire:focus="$set('currentField', 'time')"
-                                                                                                    value="{{$server_cat[$index]->time}}"
-                                                                                                    wire:change="updateService({{ $item->id }} ,'time', $event.target.value)"
-                                                                                                    placeholder="hh:mm">
-                                                                                            </div>
+                                                                                    </div>
+                                                                                    <div class="col-4">
+                                                                                        <div class="mb-3">
+                                                                                            <label>Assembly </label>
+                                                                                            <input type="text"
+                                                                                                class="form-control"
+                                                                                                name="assembly"
+                                                                                                id="assembly"
+                                                                                                value="{{ $item->assembly }}"
+                                                                                                wire:change="updateService({{ $item->id }} ,'assembly', $event.target.value)">
                                                                                         </div>
-                                                                                        <div class="col-3">
-                                                                                            <div class="mb-3">
-                                                                                                <label for="product_order">Product Ordered</label>
-                                                                                                <input type="text" class="form-control"
-                                                                                                    name="product_ordered"
-                                                                                                    id="product_ordered{{ $loop->index }}"
-                                                                                                    value="{{$item->product_ordered}}"
-                                                                                                    wire:change="updateService({{ $item->id }} ,'product_ordered', $event.target.value)"
-                                                                                                    placeholder="Product Ordered">
-                                                                                            </div>
+                                                                                    </div>
+                                                                                    <div class="col-4">
+                                                                                        <div class="mb-3">
+                                                                                            <label>Point </label>
+                                                                                            <input type="text"
+                                                                                                class="form-control"
+                                                                                                name="assembly_points"
+                                                                                                id="assembly_points"
+                                                                                                value="{{ $item->assembly_points }}"
+                                                                                                wire:change="updateService({{ $item->id }} ,'assembly_points', $event.target.value)"
+                                                                                                placeholder="Point">
                                                                                         </div>
-                                                                                        <div class="col-4">
-                                                                                            <div class="row">
-                                                                                                <div class="col-4">
-                                                                                                    <div class="mb-3">
-                                                                                                        <label>OT </label>
-                                                                                                        <input type="text"
-                                                                                                            class="form-control"
-                                                                                                            id="ot"
-                                                                                                            value="{{$item->ot}}"
-                                                                                                            wire:change="updateService({{ $item->id }} ,'ot', $event.target.value)">
-                                                                                                    </div>
-                                                                                                </div>
-                                                                                                <div class="col-4">
-                                                                                                    <div class="mb-3">
-                                                                                                        <label>Assembly </label>
-                                                                                                        <input type="text"
-                                                                                                            class="form-control"
-                                                                                                            name="assembly" id="assembly"
-                                                                                                            value="{{$item->assembly}}"
-                                                                                                            wire:change="updateService({{ $item->id }} ,'assembly', $event.target.value)">
-                                                                                                    </div>
-                                                                                                </div>
-                                                                                                <div class="col-4">
-                                                                                                    <div class="mb-3">
-                                                                                                        <label>Point </label>
-                                                                                                        <input type="text"
-                                                                                                            class="form-control"
-                                                                                                            name="assembly_points" id="assembly_points"
-                                                                                                            value="{{$item->assembly_points}}"
-                                                                                                            wire:change="updateService({{ $item->id }} ,'assembly_points', $event.target.value)"
-                                                                                                            placeholder="Point">
-                                                                                                    </div>
-                                                                                                </div>
-                                                                                            </div>
+                                                                                    </div>
+                                                                                </div>
+                                                                            </div>
+                                                                            <div class="col-3">
+                                                                                <label for=""
+                                                                                    class="">CAT (1
+                                                                                    pt.)</label>
+                                                                                <div class="row">
+                                                                                    <div class="col-6">
+                                                                                        <div class="mb-3">
+                                                                                            <label for=""
+                                                                                                class="">Time</label>
+                                                                                            <input type="text"
+                                                                                                class="form-control"
+                                                                                                name="tat"
+                                                                                                id="tat"
+                                                                                                value="{{ $item->tat }}"
+                                                                                                wire:change="updateService({{ $item->id }} ,'tat', $event.target.value)"
+                                                                                                wire:focus="$set('currentField', 'tat')"
+                                                                                                placeholder="hh:mm">
                                                                                         </div>
-                                                                                        <div class="col-3">
-                                                                                            <label for="" class="">CAT (1
-                                                                                                pt.)</label>
-                                                                                            <div class="row">
-                                                                                                <div class="col-6">
-                                                                                                    <div class="mb-3">
-                                                                                                        <label for=""
-                                                                                                            class="">Time</label>
-                                                                                                        <input type="text"
-                                                                                                            class="form-control"
-                                                                                                            name="tat" id="tat"
-                                                                                                            value="{{$item->tat}}"
-                                                                                                            wire:change="updateService({{ $item->id }} ,'tat', $event.target.value)"
-                                                                                                            wire:focus="$set('currentField', 'tat')"
-                                                                                                            placeholder="hh:mm">
-                                                                                                    </div>
-                                                                                                </div>
-                                                                                                <div class="col-6">
-                                                                                                    <div class="mb-3">
-                                                                                                        <label for=""
-                                                                                                            class="">Point
-                                                                                                        </label>
-                                                                                                        <input type="text"
-                                                                                                            class="form-control"
-                                                                                                            name="tat_point" id="tat_point"
-                                                                                                            value="{{$server_cat[$index]->tat_points}}"
-                                                                                                            wire:change="updateService({{ $item->id }} ,'tat_points', $event.target.value)"
-                                                                                                            wire:focus="$set('currentField', 'tat_point')"
-                                                                                                            placeholder="Point">
-                                                                                                    </div>
-                                                                                                </div>
-                                                                                            </div>
-                                                                                        </div>
-                                                                                        <div class="col-2">
-                                                                                            <label for="" class=""></label>
-                                                                                            <div class="row">
-                                                                                                <div class="col-12">
-                                                                                                    <div class="mb-3">
-                                                                                                        <label for="" class="">Serving Time</label>
-                                                                                                        <input type="text"
-                                                                                                            class="form-control"
-                                                                                                            name="serving_time" id="serving_time"
-                                                                                                            wire:focus="$set('currentField', 'serving_time')"
-                                                                                                            placeholder="hh:mm"
-                                                                                                            value="{{$server_cat[$index]->serving_time}}"
-                                                                                                            wire:change="updateService({{ $item->id }} ,'serving_time', $event.target.value)">
-                                                                                                    </div>
-                                                                                                </div>
-                                                                                            </div>
-                                                                                        </div>
-                                                                                        <div class="col-3">
-                                                                                            <label for="" class="">FST (3 pts.)
+                                                                                    </div>
+                                                                                    <div class="col-6">
+                                                                                        <div class="mb-3">
+                                                                                            <label for=""
+                                                                                                class="">Point
                                                                                             </label>
-                                                                                            <div class="row">
-                                                                                                <div class="col-6">
-                                                                                                    <div class="mb-3">
-                                                                                                        <label for=""
-                                                                                                            class="">Time</label>
-                                                                                                        <input type="text"
-                                                                                                            class="form-control"
-                                                                                                            name="fst" id="fst"
-                                                                                                            value="{{$item->fst}}"
-                                                                                                            wire:change="updateService({{ $item->id }} ,'fst', $event.target.value)"
-                                                                                                            wire:focus="$set('currentField', 'fst')"
-                                                                                                            placeholder="hh:mm">
-                                                                                                    </div>
-                                                                                                </div>
+                                                                                            <input type="text"
+                                                                                                class="form-control"
+                                                                                                name="tat_point"
+                                                                                                id="tat_point"
+                                                                                                value="{{ $server_cat[$index]->tat_points }}"
+                                                                                                wire:change="updateService({{ $item->id }} ,'tat_points', $event.target.value)"
+                                                                                                wire:focus="$set('currentField', 'tat_point')"
+                                                                                                placeholder="Point">
+                                                                                        </div>
+                                                                                    </div>
+                                                                                </div>
+                                                                            </div>
+                                                                            <div class="col-2">
+                                                                                <label for=""
+                                                                                    class=""></label>
+                                                                                <div class="row">
+                                                                                    <div class="col-12">
+                                                                                        <div class="mb-3">
+                                                                                            <label for=""
+                                                                                                class="">Serving
+                                                                                                Time</label>
+                                                                                            <input type="text"
+                                                                                                class="form-control"
+                                                                                                name="serving_time"
+                                                                                                id="serving_time"
+                                                                                                wire:focus="$set('currentField', 'serving_time')"
+                                                                                                placeholder="hh:mm"
+                                                                                                value="{{ $server_cat[$index]->serving_time }}"
+                                                                                                wire:change="updateService({{ $item->id }} ,'serving_time', $event.target.value)">
+                                                                                        </div>
+                                                                                    </div>
+                                                                                </div>
+                                                                            </div>
+                                                                            <div class="col-3">
+                                                                                <label for=""
+                                                                                    class="">FST (3 pts.)
+                                                                                </label>
+                                                                                <div class="row">
+                                                                                    <div class="col-6">
+                                                                                        <div class="mb-3">
+                                                                                            <label for=""
+                                                                                                class="">Time</label>
+                                                                                            <input type="text"
+                                                                                                class="form-control"
+                                                                                                name="fst"
+                                                                                                id="fst"
+                                                                                                value="{{ $item->fst }}"
+                                                                                                wire:change="updateService({{ $item->id }} ,'fst', $event.target.value)"
+                                                                                                wire:focus="$set('currentField', 'fst')"
+                                                                                                placeholder="hh:mm">
+                                                                                        </div>
+                                                                                    </div>
 
-                                                                                                <div class="col-6">
-                                                                                                    <div class="mb-3">
-                                                                                                        <label for=""
-                                                                                                            class="">Point</label>
-                                                                                                        <input type="text"
-                                                                                                            class="form-control"
-                                                                                                            name="fst_point" id="fst_point"
-                                                                                                            value="{{$server_cat[$index]->fst_points}}"
-                                                                                                            wire:change="updateService({{ $item->id }} ,'fst_points', $event.target.value)"
-                                                                                                            wire:focus="$set('currentField', 'fst_points')"
-                                                                                                            placeholder="Point">
-                                                                                                    </div>
-                                                                                                </div>
-                                                                                            </div>
-                                                                                        </div>
-                                                                                    
-                                                                                        <div class="col-4">
-                                                                                            <div class="mb-3">
-                                                                                                <label for="">Remarks</label>
-                                                                                                <textarea class="form-control" name="" id="" rows="2" id="remarks_{{ $loop->index }}"
-                                                                                                    value="{{$server_cat[$index]->remarks}}" wire:change="updateService({{ $item->id }} ,'remarks', $event.target.value)" placeholder="Remarks"></textarea>
-                                                                                            </div>
-                                                                                        </div>
-                                                                                    </div>
-                                                                                </div>
-                                                                            </div>
-                                                                            <hr>
-                                                                        @endforeach
-                                                                        @else
-                                                                        @forelse ($sub_category['label'] as $index => $auditLabel)
-                                                                        <div class="row mb-3">
-                                                                            <div class="col-sm-12 col-md-4 col-lg-4">
-                                                                                <div class="form-check form-switch">
-                                                                                    <input class="form-check-input"
-                                                                                        type="checkbox"
-                                                                                        id="toggle-switch"
-                                                                                        @checked(
-                                                                                            $category_list[$loop->parent->parent->parent->index]['sub_categ']['data_items'][$loop->parent->parent->index][
-                                                                                                'sub_category'
-                                                                                            ][$loop->parent->index]['label'][$loop->index]['is_na']
-                                                                                                ? false
-                                                                                                : true)
-                                                                                        wire:change="updateNa(
-                                                                                        '{{ $auditLabel['id'] }}',
-                                                                                        '{{ $loop->parent->parent->parent->index }}',
-                                                                                        '{{ $loop->parent->parent->index }}',
-                                                                                        '{{ $loop->parent->index }}',
-                                                                                        '{{ $loop->index }}',
-                                                                                        '{{ $category_list[$loop->parent->parent->parent->index]['id'] }}',
-                                                                                        '{{ $category_list[$loop->parent->parent->parent->index]['sub_categ']['data_items'][$loop->parent->parent->index]['id'] }}',
-                                                                                        '{{ $category_list[$loop->parent->parent->parent->index]['sub_categ']['data_items'][$loop->parent->parent->index]['sub_category'][$loop->parent->index]['id'] }}',
-                                                                                        '{{ $category_list[$loop->parent->parent->parent->index]['sub_categ']['data_items'][$loop->parent->parent->index]['sub_category'][$loop->parent->index]['label'][$loop->index]['id'] }}',
-                                                                                        '{{ $auditLabel['bp'] }}',
-                                                                                        '{{ $dataItem['is_sub'] }}',
-                                                                                        $event.target.checked ? 1 : 0 )">
-                                                                                    <label class="form-check-label"
-                                                                                        @class(['pt-4' => $index == 0])
-                                                                                        for="toggle-switch">
-                                                                                        {{ $auditLabel['name'] }}</label>
-                                                                                </div>
-                                                                                <p @class(['pt-4' => $index == 0])></p>
-                                                                            </div>
-                                                                            <div class="col-sm-12 col-md-2  ">
-                                                                                <div class="row">
-                                                                                    <div class="col-sm-6 col-md-6">
-                                                                                        @if ($index == 0)
+                                                                                    <div class="col-6">
+                                                                                        <div class="mb-3">
                                                                                             <label for=""
-                                                                                                class="form-label">BP</label>
-                                                                                        @endif
-                                                                                        <input type="text"
-                                                                                            class="form-control text-center"
-                                                                                            disabled
-                                                                                            name="bp{{ $auditLabel['name'] }}"
-                                                                                            id="bp"
-                                                                                            placeholder=""
-                                                                                            value="{{ $auditLabel['is_all_nothing'] ? $auditLabel['bp'] . '*' : $auditLabel['bp'] }}">
-                                                                                    </div>
-                                                                                    <div class="col-sm-6 col-md-6">
-                                                                                        @if ($index == 0)
-                                                                                            <label for=""
-                                                                                                class="form-label">Point</label>
-                                                                                        @endif
-                                                                                        <input type="number"
-                                                                                            class="form-control text-center"
-                                                                                            @disabled($auditLabel['is_na'] ? true : false)
-                                                                                            name="points{{ $auditLabel['id'] }}"
-                                                                                            id="points{{ $auditLabel['id'] }}"
-                                                                                            value="{{ $auditLabel['points'] }}"
-                                                                                            min="{{ $auditLabel['is_all_nothing'] ? $auditLabel['bp'] : 0 }}"
-                                                                                            max="{{ $auditLabel['is_all_nothing'] ? 0 : $auditLabel['bp'] }}"
-                                                                                            wire:change="updatePoints(
-                                                                                            'points{{ $auditLabel['id'] }}',
-                                                                                            '{{ $loop->parent->parent->parent->index }}',
-                                                                                            '{{ $loop->parent->parent->index }}',
-                                                                                            '{{ $loop->parent->index }}',
-                                                                                            '{{ $loop->index }}',
-                                                                                            '{{ $category_list[$loop->parent->parent->parent->index]['id'] }}',
-                                                                                            '{{ $category_list[$loop->parent->parent->parent->index]['sub_categ']['data_items'][$loop->parent->parent->index]['id'] }}',
-                                                                                            '{{ $category_list[$loop->parent->parent->parent->index]['sub_categ']['data_items'][$loop->parent->parent->index]['sub_category'][$loop->parent->index]['id'] }}',
-                                                                                            '{{ $category_list[$loop->parent->parent->parent->index]['sub_categ']['data_items'][$loop->parent->parent->index]['sub_category'][$loop->parent->index]['label'][$loop->index]['id'] }}',
-                                                                                            '{{ $dataItem['is_sub'] }}',
-                                                                                            $event.target.value )">
+                                                                                                class="">Point</label>
+                                                                                            <input type="text"
+                                                                                                class="form-control"
+                                                                                                name="fst_point"
+                                                                                                id="fst_point"
+                                                                                                value="{{ $server_cat[$index]->fst_points }}"
+                                                                                                wire:change="updateService({{ $item->id }} ,'fst_points', $event.target.value)"
+                                                                                                wire:focus="$set('currentField', 'fst_points')"
+                                                                                                placeholder="Point">
+                                                                                        </div>
                                                                                     </div>
                                                                                 </div>
                                                                             </div>
-                                                                            <div
-                                                                                class="col-sm-12 col-md-6 col-lg-6 ">
-                                                                                <div class="row">
-                                                                                    <div
-                                                                                        class="col-sm-12 {{ $auditLabel['dropdown'] ? 'col-md-6' : 'col-md-12' }}">
-                                                                                        @if ($index == 0)
-                                                                                            <label for="" class="form-label">Remarks</label>
-                                                                                        @endif
-                                                                                        <textarea class="form-control" name="" id="" rows="1" @disabled($auditLabel['is_na'] ? true : false)
-                                                                                            wire:change="updateRemarks(
-                                                                                            '{{ $category_list[$loop->parent->parent->parent->index]['id'] }}',
-                                                                                            '{{ $category_list[$loop->parent->parent->parent->index]['sub_categ']['data_items'][$loop->parent->parent->index]['id'] }}',
-                                                                                            '{{ $category_list[$loop->parent->parent->parent->index]['sub_categ']['data_items'][$loop->parent->parent->index]['sub_category'][$loop->parent->index]['id'] }}',
-                                                                                            '{{ $category_list[$loop->parent->parent->parent->index]['sub_categ']['data_items'][$loop->parent->parent->index]['sub_category'][$loop->parent->index]['label'][$loop->index]['id'] }}',
-                                                                                            '{{ $dataItem['is_sub'] }}',
-                                                                                            $event.target.value )">{{ $category_list[$loop->parent->parent->parent->index]['sub_categ']['data_items'][$loop->parent->parent->index]['sub_category'][$loop->parent->index]['label'][$loop->index]['remarks'] }}</textarea>
-                                                                                    </div>
-                                                                                    @if (!empty($auditLabel['dropdown']))
-                                                                                        <div
-                                                                                            class="col-sm-12 col-md-6 {{ $auditLabel['dropdown'] ? '' : 'd-none' }}">
-                                                                                            @if ($index == 0 || empty($auditLabel['dropdown']))
-                                                                                                <label for="" class="form-label">Deviation</label>
-                                                                                            @endif
-                                                                                            <select
-                                                                                                class="form-select form-select-md"
-                                                                                                @disabled($auditLabel['is_na'] ? true : false)
-                                                                                                wire:change="updateDeviation(
-                                                                                                '{{ $category_list[$loop->parent->parent->parent->index]['id'] }}',
-                                                                                                '{{ $category_list[$loop->parent->parent->parent->index]['sub_categ']['data_items'][$loop->parent->parent->index]['id'] }}',
-                                                                                                '{{ $category_list[$loop->parent->parent->parent->index]['sub_categ']['data_items'][$loop->parent->parent->index]['sub_category'][$loop->parent->index]['id'] }}',
-                                                                                                '{{ $category_list[$loop->parent->parent->parent->index]['sub_categ']['data_items'][$loop->parent->parent->index]['sub_category'][$loop->parent->index]['label'][$loop->index]['id'] }}',
-                                                                                                '{{ $dataItem['is_sub'] }}',
-                                                                                                $event.target.value )"
-                                                                                                name="tag{{ $auditLabel['name'] }}"
-                                                                                                id="tag">
-                                                                                                <option value="0"> Select a deviation </option>
-                                                                                                @foreach ($auditLabel['dropdown'] as $result)
-                                                                                                    @isset($result['name'])
-                                                                                                        <option
-                                                                                                            value="{{ $result['name'] }}"
-                                                                                                            {{ $result['name'] === $auditLabel['deviation'] ? 'selected' : '' }}>
-                                                                                                            {{ $result['name'] }}
-                                                                                                        </option>
-                                                                                                    @endisset
-                                                                                                @endforeach
-                                                                                            </select>
-                                                                                        </div>
-                                                                                    @endif
+
+                                                                            <div class="col-4">
+                                                                                <div class="mb-3">
+                                                                                    <label
+                                                                                        for="">Remarks</label>
+                                                                                    <textarea class="form-control" name="" id="" rows="2" id="remarks_{{ $loop->index }}"
+                                                                                        value="{{ $server_cat[$index]->remarks }}"
+                                                                                        wire:change="updateService({{ $item->id }} ,'remarks', $event.target.value)" placeholder="Remarks"></textarea>
                                                                                 </div>
                                                                             </div>
                                                                         </div>
-                                                                    @empty
-
-                                                                    @endforelse
+                                                                    </div>
+                                                                </div>
+                                                                <hr>
+                                                            @endforeach
+                                                        @else
+                                                            @forelse ($sub_category['label'] as $index => $auditLabel)
+                                                            <div class="row">
+                                                                <div class="col-sm-12 col-md-5">
+                                                                </div>
+                                                                <div class="col-sm-12 col-md-2">
+                                                                    @if ($index == 0)
+                                                                        <div class="row">
+                                                                            <div class="col-sm-6 col-md-6"><label for=""class="form-label">BP</label></div>
+                                                                            <div class="col-sm-6 col-md-6"> <label for="points" class="form-label">Point(s)</label></div>
+                                                                        </div>
+                                                                    @endif
+                                                                </div>
+                                                                <div class="col-sm-12 col-md-5">
+                                                                    <div class="row">
+                                                                        <div
+                                                                            class="col-sm-12 mb-2 {{ $auditLabel['dropdown'] ? 'col-md-6' : 'col-md-12' }}">
+                                                                            @if ($index == 0)
+                                                                                <label for="remarks"
+                                                                                    class="form-label">Remarks</label>
+                                                                            @endif
+                                                                        </div>
+                                                                        @if (!empty($auditLabel['dropdown']))
+                                                                            <div
+                                                                                class="col-sm-12 col-md-6 mb-2 {{ $auditLabel['dropdown'] ? '' : 'd-none' }}">
+                                                                                @if ($index == 0 || empty($auditLabel['dropdown']))
+                                                                                    <label for=""
+                                                                                        class="form-label">Deviation</label>
+                                                                                @endif
+                                                                            </div>
                                                                         @endif
                                                                     </div>
                                                                 </div>
                                                             </div>
-                                                        </div>
+                                                                <div class="row mb-3">
+                                                                    <div class="col-sm-12 col-md-5 col-lg-5">
+                                                                        <div class="form-check form-switch">
+                                                                            <input class="form-check-input" type="checkbox" id="toggle-switch"
+                                                                                @checked($category_list[$loop->parent->parent->parent->index]['sub_categ']['data_items'][$loop->parent->parent->index]['sub_category'][$loop->parent->index]['label'][$loop->index]['is_na']? false: true)
+                                                                                wire:change="updateNa(
+                                                                                '{{ $auditLabel['id'] }}',
+                                                                                '{{ $loop->parent->parent->parent->index }}',
+                                                                                '{{ $loop->parent->parent->index }}',
+                                                                                '{{ $loop->parent->index }}',
+                                                                                '{{ $loop->index }}',
+                                                                                '{{ $category_list[$loop->parent->parent->parent->index]['id'] }}',
+                                                                                '{{ $category_list[$loop->parent->parent->parent->index]['sub_categ']['data_items'][$loop->parent->parent->index]['id'] }}',
+                                                                                '{{ $category_list[$loop->parent->parent->parent->index]['sub_categ']['data_items'][$loop->parent->parent->index]['sub_category'][$loop->parent->index]['id'] }}',
+                                                                                '{{ $category_list[$loop->parent->parent->parent->index]['sub_categ']['data_items'][$loop->parent->parent->index]['sub_category'][$loop->parent->index]['label'][$loop->index]['id'] }}',
+                                                                                '{{ $auditLabel['bp'] }}',
+                                                                                '{{ $dataItem['is_sub'] }}',
+                                                                                $event.target.checked ? 1 : 0 )">
+                                                                            <label class="form-check-label"
+                                                                                @class(['pt-4' => $index == 0])
+                                                                                for="toggle-switch">
+                                                                                {{ $auditLabel['name'] }}</label>
+                                                                        </div>
+                                                                    </div>
+                                                                    <div class="col-sm-12 col-md-2  ">
+                                                                        <div class="row">
+                                                                            <div class="col-sm-6 col-md-6">
+                                                                                <input type="text"
+                                                                                    class="form-control text-center mb-2"
+                                                                                    disabled
+                                                                                    name="bp{{ $auditLabel['name'] }}"
+                                                                                    id="bp" placeholder=""
+                                                                                    value="{{ $auditLabel['is_all_nothing'] ? $auditLabel['bp'] . '*' : $auditLabel['bp'] }}">
+                                                                            </div>
+                                                                            <div class="col-sm-6 col-md-6">
+                                                                                <input type="number"
+                                                                                    class="form-control text-center mb-2"
+                                                                                    @disabled($auditLabel['is_na'] ? true : false)
+                                                                                    name="points{{ $auditLabel['id'] }}"
+                                                                                    id="points{{ $auditLabel['id'] }}"
+                                                                                    value="{{ $auditLabel['points'] }}"
+                                                                                    min="{{ $auditLabel['is_all_nothing'] ? $auditLabel['bp'] : 0 }}"
+                                                                                    max="{{ $auditLabel['is_all_nothing'] ? 0 : $auditLabel['bp'] }}"
+                                                                                    wire:change="updatePoints(
+                                                                                    'points{{ $auditLabel['id'] }}',
+                                                                                    '{{ $loop->parent->parent->parent->index }}',
+                                                                                    '{{ $loop->parent->parent->index }}',
+                                                                                    '{{ $loop->parent->index }}',
+                                                                                    '{{ $loop->index }}',
+                                                                                    '{{ $category_list[$loop->parent->parent->parent->index]['id'] }}',
+                                                                                    '{{ $category_list[$loop->parent->parent->parent->index]['sub_categ']['data_items'][$loop->parent->parent->index]['id'] }}',
+                                                                                    '{{ $category_list[$loop->parent->parent->parent->index]['sub_categ']['data_items'][$loop->parent->parent->index]['sub_category'][$loop->parent->index]['id'] }}',
+                                                                                    '{{ $category_list[$loop->parent->parent->parent->index]['sub_categ']['data_items'][$loop->parent->parent->index]['sub_category'][$loop->parent->index]['label'][$loop->index]['id'] }}',
+                                                                                    '{{ $dataItem['is_sub'] }}',
+                                                                                    $event.target.value )">
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                    <div class="col-sm-12 col-md-5 col-lg-5 ">
+                                                                        <div class="row">
+                                                                            <div
+                                                                                class="col-sm-12 {{ $auditLabel['dropdown'] ? 'col-md-6' : 'col-md-12' }}">
+                                                                             
+                                                                                <textarea class="form-control mb-2" name="" id="" rows="1" @disabled($auditLabel['is_na'] ? true : false)
+                                                                                    wire:change="updateRemarks(
+                                                                                    '{{ $category_list[$loop->parent->parent->parent->index]['id'] }}',
+                                                                                    '{{ $category_list[$loop->parent->parent->parent->index]['sub_categ']['data_items'][$loop->parent->parent->index]['id'] }}',
+                                                                                    '{{ $category_list[$loop->parent->parent->parent->index]['sub_categ']['data_items'][$loop->parent->parent->index]['sub_category'][$loop->parent->index]['id'] }}',
+                                                                                    '{{ $category_list[$loop->parent->parent->parent->index]['sub_categ']['data_items'][$loop->parent->parent->index]['sub_category'][$loop->parent->index]['label'][$loop->index]['id'] }}',
+                                                                                    '{{ $dataItem['is_sub'] }}',
+                                                                                    $event.target.value )">{{ $category_list[$loop->parent->parent->parent->index]['sub_categ']['data_items'][$loop->parent->parent->index]['sub_category'][$loop->parent->index]['label'][$loop->index]['remarks'] }}</textarea>
+                                                                            </div>
+                                                                            @if (!empty($auditLabel['dropdown']))
+                                                                                <div
+                                                                                    class="col-sm-12 col-md-6 {{ $auditLabel['dropdown'] ? '' : 'd-none' }}">
+                                                                              
+                                                                                    <select
+                                                                                        class="form-select form-select-md"
+                                                                                        @disabled($auditLabel['is_na'] ? true : false)
+                                                                                        wire:change="updateDeviation(
+                                                                                        '{{ $category_list[$loop->parent->parent->parent->index]['id'] }}',
+                                                                                        '{{ $category_list[$loop->parent->parent->parent->index]['sub_categ']['data_items'][$loop->parent->parent->index]['id'] }}',
+                                                                                        '{{ $category_list[$loop->parent->parent->parent->index]['sub_categ']['data_items'][$loop->parent->parent->index]['sub_category'][$loop->parent->index]['id'] }}',
+                                                                                        '{{ $category_list[$loop->parent->parent->parent->index]['sub_categ']['data_items'][$loop->parent->parent->index]['sub_category'][$loop->parent->index]['label'][$loop->index]['id'] }}',
+                                                                                        '{{ $dataItem['is_sub'] }}',
+                                                                                        $event.target.value )"
+                                                                                        name="tag{{ $auditLabel['name'] }}"
+                                                                                        id="tag">
+                                                                                        <option value="0"> Select
+                                                                                            a deviation </option>
+                                                                                        @foreach ($auditLabel['dropdown'] as $result)
+                                                                                            @isset($result['name'])
+                                                                                                <option
+                                                                                                    value="{{ $result['name'] }}"
+                                                                                                    {{ $result['name'] === $auditLabel['deviation'] ? 'selected' : '' }}>
+                                                                                                    {{ $result['name'] }}
+                                                                                                </option>
+                                                                                            @endisset
+                                                                                        @endforeach
+                                                                                    </select>
+                                                                                </div>
+                                                                            @endif
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            @empty
+                                                            @endforelse
+                                                        @endif
                                                     @endforeach
                                                 @endif
                                             </div>
                                         </div>
                                     </div>
                                 </div>
-                                @empty
-                                    <p class="m-0 p-2 text-center">No category found!</p>
-                                @endforelse
-                            </div>
+                            @empty
+                                <p class="m-0 p-2 text-center">No category found!</p>
+                            @endforelse
                         </div>
                     </div>
-                    @empty
-                        <p class="m-0 p-2">No category found!</p>
-                    @endforelse
                 </div>
-                <a href="#">
-                    <div class="floating-btn">
-                        <svg class="icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512">
-                            <path
-                                d="M182.6 137.4c-12.5-12.5-32.8-12.5-45.3 0l-128 128c-9.2 9.2-11.9 22.9-6.9 34.9s16.6 19.8 29.6 19.8H288c12.9 0 24.6-7.8 29.6-19.8s2.2-25.7-6.9-34.9l-128-128z" />
-                        </svg>
-                    </div>
-                </a>
-            </div>
+            @empty
+                <p class="m-0 p-2">No category found!</p>
+            @endforelse
         </div>
+        <a href="#">
+            <div class="floating-btn">
+                <svg class="icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512">
+                    <path
+                        d="M182.6 137.4c-12.5-12.5-32.8-12.5-45.3 0l-128 128c-9.2 9.2-11.9 22.9-6.9 34.9s16.6 19.8 29.6 19.8H288c12.9 0 24.6-7.8 29.6-19.8s2.2-25.7-6.9-34.9l-128-128z" />
+                </svg>
+            </div>
+        </a>
+    </div>
+</div>
