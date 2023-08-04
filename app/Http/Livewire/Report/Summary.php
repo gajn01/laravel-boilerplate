@@ -37,7 +37,6 @@ class Summary extends Component
         ->when($this->category && $this->category !== 'all', fn($query) => $query->where('category_name', $this->category))
         ->paginate($this->limit);
     }
-
     public function exportCSV(){
         $summary_list = $this->getSummaryList();
         $csvData = [];
@@ -62,7 +61,6 @@ class Summary extends Component
             'Content-Type' => 'text/csv',
             'Content-Disposition' => 'attachment; filename="' . $fileName . '"',
         ];
-    
         return Response::stream(function () use ($csvData) {
             $file = fopen('php://output', 'w');
             foreach ($csvData as $row) {

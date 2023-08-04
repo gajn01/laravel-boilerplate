@@ -27,6 +27,7 @@ class User extends Component
     public function __construct()
     {
         $this->activity = new ActivityLogHelper;
+        $this->user = new UserModel;
     }
     protected function rules()
     {

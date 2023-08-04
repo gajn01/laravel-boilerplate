@@ -110,7 +110,7 @@
                             <tr>
                                 <td class="cell">{{ $results->forms->stores->area }}</td>
                                 <td class="cell">{{ $results->forms->stores->name }}</td>
-                                <td class="cell">{{ $results->category->Label }}</td>
+                                <td class="cell">{{ $results->category->Label ?? null }}</td>
                                 <td class="cell">{{ $results->category_name }}</td>
                                 <td class="cell">{{ $results->sub_name }}</td>
                                 <td class="cell">{{ $results->sub_sub_name }}</td>

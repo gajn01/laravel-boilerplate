@@ -6,7 +6,8 @@
             <li class="breadcrumb-item active" aria-current="page">{{ $store_name }}</li>
         </ol>
     </nav>
-    <div class="page-utilities mb-3" wire:poll.10s>
+    {{-- wire:poll.10s --}}
+    <div class="page-utilities mb-3" >
         <div class="row g-2 justify-content-start justify-content-md-end align-items-center">
             <div class="col-auto mb-3">
                 <a class="btn app-btn-primary"
