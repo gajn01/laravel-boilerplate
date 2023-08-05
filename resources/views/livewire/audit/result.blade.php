@@ -16,7 +16,7 @@
             </div>
         </div>
         <nav wire:ignore id="audit-form-tab"
-            class="audit-form-tab app-nav-tabs nav shadow-sm flex-column flex-sm-row mb-4 justify-content-center">
+            class="audit-form-tab app-nav-tabs nav shadow-sm flex-column flex-sm-row mb-4 justify-content-center nav-sticky">
             @forelse ($category_list as $key => $data)
                 <a @class([
                     'flex-sm-fill',
