@@ -82,7 +82,7 @@ class Form extends Component
         $this->store_name = $store->name;
         $this->store_type = $store->type;
         $this->audit_status = $store->audit_status;
-        $this->actionTitle = $this->audit_status ? 'Save' : 'Start';
+        $this->actionTitle = $this->audit_status ? 'View Result' : 'Start';
         $data = CategoryModel::where('type', $this->store_type)
             ->orderBy('type', 'DESC')
             ->orderBy('order', 'ASC')
@@ -456,17 +456,16 @@ class Form extends Component
     public function onStartAndComplete($is_confirm = true, $title = 'Are you sure?', $type = null, $data = null)
     {
         if ($this->audit_status) {
-            $message = 'Are you sure you want to save this audit?';
+            $this->onUpdateStatus();
         } else {
             $message = 'Are you sure you want to start this audit?';
+            $this->emit('onStartAlert', $message);
         }
-        $this->emit('onStartAlert', $message);
     }
     public function onUpdateStatus()
     {
         // $auditData = AuditDateModel::where('store_id', $this->store_id)->where('audit_date', $this->date_today)->first();
         $auditData = AuditDateModel::where('store_id', $this->store_id)->where('audit_date', $this->date_today)->first();
-
         /* if(!$auditData){
              return $this->onAlert(false, 'Warning', 'The store is not scheduled for today`s audit. Please proceed with regular operations!', 'warning');
         } */
@@ -628,10 +627,6 @@ class Form extends Component
             }
         }
     }
-    public function removeService($id)
-    {
-    }
-
     public function onAlert($is_confirm = false, $title = null, $message = null, $type = null, $data = null)
     {
         CustomHelper::onShow($this, $is_confirm, $title, $message, $type, $data);

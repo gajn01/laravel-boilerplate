@@ -2,6 +2,8 @@
 <div class="">
     <nav aria-label="breadcrumb">
         <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="{{ route('audit') }}">Audit</a></li>
+            <li class="breadcrumb-item"><a href="{{ route('audit.form', [$store_id]) }}">{{ $store->name }}</a>
             <li class="breadcrumb-item"><a href="{{ route('audit.view.result', [$store_id, $summary_id]) }}">Result</a>
             <li class="breadcrumb-item active" aria-current="page">Executive Summary</li>
         </ol>

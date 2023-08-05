@@ -2,8 +2,8 @@
 <div class="">
     <nav aria-label="breadcrumb">
         <ol class="breadcrumb">
-            {{--             <li class="breadcrumb-item"><a href="{{ route('audit') }}">Audit</a></li>
-            <li class="breadcrumb-item"><a href="{{ route('audit.form', [$store_id]) }}">{{ $store_name }}</a> --}}
+            <li class="breadcrumb-item"><a href="{{ route('audit') }}">Audit</a></li>
+            <li class="breadcrumb-item"><a href="{{ route('audit.form', [$store_id]) }}">{{ $store->name }}</a>
             <li class="breadcrumb-item active" aria-current="page">Result</li>
         </ol>
     </nav>
@@ -37,10 +37,10 @@
                 <div class="tab-pane fade show {{ $key == $active_index ? 'active' : '' }}" id="cat{{ $data->id }}"
                     role="tabpanel" aria-labelledby="cat{{ $data->id }}-tab">
                     <div class="row g-4 mb-4">
-                        <div class="col-12 }}">
+                        <div class="col-sm-12 col-md-6 }}">
                             <div class="app-card app-card-chart  shadow-sm">
                                 <div class="app-card-header p-2">
-                                    <h4 class="app-card-title">Overall Score</h4>
+                                    <h3 class="app-card-title">Score</h3>
                                 </div>
                                 <div class="app-card-body p-1 ">
                                     <div class="row justify-content-between align-items-center">
@@ -98,8 +98,8 @@
                             </div>
                         </div>
                         @if ($data->critical_deviation->isNotEmpty())
-                            <div class="col-12 }}">
-                                <div class="app-card app-card-chart  shadow-sm">
+                            <div class="col-sm-12 col-md-6 }}">
+                                <div class="app-card app-card-chart h-100  shadow-sm">
                                     <div class="app-card-header p-2">
                                         <div class="row justify-content-between align-items-center">
                                             <div class="col-12">
@@ -123,12 +123,9 @@
                                                         @foreach ($data->critical_deviation as $item)
                                                             <tr class="">
                                                                 <td>{{ $item['label'] }}</td>
-                                                                <td>{{ $item['saved_dropdown'] }}
-                                                                </td>
-                                                                <td>{{ $item['saved_remarks'] }}
-                                                                </td>
-                                                                <td>{{ $item['saved_score'] }}
-                                                                </td>
+                                                                <td>{{ $item['saved_dropdown'] }}</td>
+                                                                <td>{{ $item['saved_remarks'] }}</td>
+                                                                <td>{{ $item['saved_score'] }}</td>
                                                             </tr>
                                                         @endforeach
                                                     </tbody>
@@ -166,7 +163,11 @@
                                                             <tr>
                                                                 <td class="w-50">
                                                                     <p @class(['pt-4' => $index == 0])>
-                                                                        {{ $auditLabel['name'] }}</p>
+                                                                        {{ $auditLabel['name'] }}
+                                                                        @if ($auditLabel['is_all_nothing'])
+                                                                            <span class="text-danger text-small"> (all or nothing)</span>
+                                                                        @endif
+                                                                    </p>
                                                                 </td>
                                                                 <td class="text-center">
                                                                     {{ $auditLabel['points'] != null ? $auditLabel['points'] : '0' }}
@@ -264,7 +265,11 @@
                                                                     <tr>
                                                                         <td class="w-50">
                                                                             <p @class(['pt-4' => $index == 0])>
-                                                                                {{ $auditLabel['name'] }}</p>
+                                                                                {{ $auditLabel['name'] }}
+                                                                                @if ($auditLabel['is_all_nothing'])
+                                                                                <span class="text-danger text-small"> (all or nothing)</span>
+                                                                            @endif
+                                                                            </p>
                                                                         </td>
                                                                         <td class="text-center">
                                                                             {{ $auditLabel['points'] != null ? $auditLabel['points'] : '0' }}

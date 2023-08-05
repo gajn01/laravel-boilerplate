@@ -461,7 +461,7 @@
                                                         </div>
                                                     @endforeach
                                                 @else
-                                                    @foreach ($dataItem['sub_category'] as $sub_category)
+                                                    @foreach ($dataItem['sub_category'] as $index => $sub_category)
                                                         <label class="form-check-label fw-bold mb-2"
                                                             @class(['pt-4' => $index == 0])>{{ $sub_category['name'] }}</label>
                                                         @if ($sub_category['name'] == 'Cashier TAT')
