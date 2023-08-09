@@ -53,7 +53,7 @@ Route::middleware(['auth','verified'])->group(function () {
      /* Audit */
      Route::get('/audit', Audit::class)->name('audit');
      Route::get('/store/details/{store_id?}', AuditDetails::class)->name('audit.details');
-     Route::get('/audit/form/{store_id?}', AuditForm::class)->name('audit.form');
+     Route::get('/audit/form/{id}', AuditForm::class)->name('audit.form');
      Route::prefix('result/{store_id?}')->group(function () {
          Route::get('/', AuditResult::class)->name('audit.result');
          Route::get('/summary', AuditSummary::class)->name('audit.summary');

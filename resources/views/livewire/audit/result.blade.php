@@ -10,9 +10,7 @@
     <div class="page-utilities mb-3">
         <div class="row g-2 justify-content-start justify-content-md-end align-items-center">
             <div class="col-auto mb-3">
-                <a class="btn app-btn-primary" href="{{ route('audit.view.summary', [$store_id, $result_id]) }}">Go to
-                    Executive
-                    Summary</a>
+                <a class="btn app-btn-primary" href="{{ route('audit.view.summary', [$store_id, $result_id]) }}">Executive Summary</a>
             </div>
         </div>
         <nav wire:ignore id="audit-form-tab"

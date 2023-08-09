@@ -15,7 +15,10 @@ class Category extends Model
     {
         return $this->hasMany(SubCategory::class);
     }
-
+    public function sub_category()
+    {
+        return $this->hasMany(SubCategory::class);
+    }
     public function getLabelAttribute()
     {
         $ros_label = array('Primary', 'Secondary');
