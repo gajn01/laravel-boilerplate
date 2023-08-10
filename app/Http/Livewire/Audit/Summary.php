@@ -72,7 +72,7 @@ class Summary extends Component
                 $value->percentage = round(($value->total_points * 100 / $value->total_base_points), 0);
             }
             $critical_deviation = $critical_deviations->where('category_id', $value->category_id)->sum('score');
-            // $value->percentage -= $critical_deviation ? intval($critical_deviation) : 0;
+            $value->percentage -= $critical_deviation ? intval($critical_deviation) : 0;
             $value->percentage = round($value->percentage, 2);
             if ($value->percentage > 79) {
                 $this->overall = 1;

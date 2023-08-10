@@ -1492,6 +1492,7 @@ textarea.form-control{
     cursor: pointer;
 }
 .floating-btn{
+    z-index: 99;
     border: 1px solid var(--cta-color);
     border-radius: 5px;
     width: 45px;

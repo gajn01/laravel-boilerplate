@@ -17,11 +17,11 @@ use App\Models\AuditFormResult;
 
 
 use App\Models\Category;
+use App\Models\DropdownMenu;
 use App\Models\SubSubCategoryLabel as SubSubCategoryLabelModel;
-use App\Models\DropdownMenu as DropdownMenuModel;
-use App\Models\SanitaryModel as SanitaryModel;
-use App\Models\CriticalDeviationMenu as CriticalDeviationMenuModel;
-use App\Models\CriticalDeviationResult as CriticalDeviationResultModel;
+use App\Models\SanitaryModel;
+use App\Models\CriticalDeviationMenu;
+use App\Models\CriticalDeviationResult;
 
 use App\Models\ServiceSpeed as ServiceSpeedModel;
 use DateTime;
@@ -36,6 +36,12 @@ class Form extends Component
     public AuditDate $auditDate;
     public Store $store;
     public Summary $summary;
+    public $score = [
+        ['name' => '3'],
+        ['name' => '5'],
+        ['name' => '10'],
+        ['name' => '15']
+    ];
     public function __construct()
     {
         $this->timezone = new DateTimeZone('Asia/Manila');
@@ -49,11 +55,12 @@ class Form extends Component
     }
     public function render()
     {
-        $data= $this->mapCategory();
+        $data = $this->mapCategory();
         $this->auditDate = AuditDate::where('store_id', $this->store->id)->where('audit_date', $this->date_today)->first();
-        return view('livewire.audit.form',['categoryList'=>$data])->extends('layouts.app');
+        return view('livewire.audit.form', ['categoryList' => $data])->extends('layouts.app');
     }
-    public function mapCategory(){
+    public function mapCategory()
+    {
         $data = $this->getCategoryList();
         foreach ($data as $category) {
             $category_id = $category->id;
@@ -61,57 +68,92 @@ class Form extends Component
             $total_base = 0;
             $total_score = 0;
             $saved_critical_score = 0;
-            $sub_category = $category->sub_category->transform(function ($subCategory) use ($category_id) {
-                    $sub_category_id = $subCategory->id;
-                    $subCategoryData = [
-                        'id' => $subCategory->id,
-                        'is_sub' => $subCategory->is_sub,
-                        'name' => $subCategory->name,
-                        'base_score' => 0,
-                        'total_point' => 0,
-                        'total_percent' => 0,
-                    ];
-                    $subCategoryData['sub_sub_category'] = $this->getSubSubCategory($subCategory,$category_id, $sub_category_id);
-
+            $category->sub_category->transform(function ($subCategory) use ($category_id) {
+                $sub_category_id = $subCategory->id;
+                $subCategoryData = [
+                    'id' => $subCategory->id,
+                    'is_sub' => $subCategory->is_sub,
+                    'name' => $subCategory->name,
+                    'base_score' => 0,
+                    'total_point' => 0,
+                    'total_percent' => 0,
+                ];
+                $subCategoryData['sub_sub_category'] = $this->getSubSubCategory($subCategory, $category_id, $sub_category_id);
                 return $subCategoryData;
             });
-            $category->sub_category = $sub_category;
+            $category->critical_deviation = $this->mapDeviation($category->critical_deviation_id);
         }
         return $data;
     }
-    public function getSubSubCategory($subCategory,$category_id, $sub_category_id) {
+    public function mapDeviation($critical_deviation_id)
+    {
+        return $this->getDeviationList($critical_deviation_id)->transform(function ($deviation) use ($critical_deviation_id){
+            return [
+                'id' => $deviation->id,
+                'label' => $deviation->label,
+                'remarks' => $deviation->remarks,
+                'saved_remarks' => '',
+                'score_dropdown_id' => $deviation->score_dropdown_id,
+                'score' => '',
+                'is_sd' => $deviation->is_sd,
+                'saved_sd' => '',
+                'is_location' => $deviation->is_location,
+                'location' => $this->getDropdownList($deviation->location) ?? null,
+                'is_product' => $deviation->is_product,
+                'product' => $this->getDropdownList($deviation->product) ?? null,
+                'is_dropdown' => $deviation->is_dropdown,
+                'dropdown' => $this->getDropdownList($deviation->dropdown_id) ?? null,
+            ];
+        });
+    }
+    public function getResult($category_id, $sub_category_id, $label_id)
+    {
+        return AuditFormResult::where('form_id', $this->auditForm->id)
+            ->where('category_id', $category_id)
+            ->where('sub_category_id', $sub_category_id)
+            ->where('sub_sub_category_id', $label_id)
+            ->first();
+    }
+    public function getDeviationResult($category_id,$deviation_id,$critical_deviation_id){
+        return CriticalDeviationResult::where('form_id', $this->auditForm->id)
+            ->where('category_id', $category_id)
+            ->where('deviation_id', $deviation_id)
+            ->where('critical_deviation_id', $critical_deviation_id)
+            ->first();
+    }
+    public function getSubSubCategory($subCategory, $category_id, $sub_category_id)
+    {
         $is_sub = $subCategory->is_sub;
-        $subCategory->sub_sub_category->transform(function ($label) use ($is_sub,$category_id,$sub_category_id) {
+        $subCategory->sub_sub_category->transform(function ($label) use ($is_sub, $category_id, $sub_category_id) {
             $result = null;
             if ($this->store->audit_status) {
                 $result = $this->getResult($category_id, $sub_category_id, $label->id);
-                
             }
             $data = [
                 'id' => $label->id,
                 'name' => $label->name,
                 'bp' => $label->bp,
-                'points' => $result ? $result['sub_sub_point'] : 0,  
+                'points' => $result ? $result['sub_sub_point'] : 0,
             ];
-            if($is_sub == 0){
+            if ($is_sub == 0) {
                 $data['is_all_nothing'] = $label->is_all_nothing;
                 $data['remarks'] = $result ? $result['sub_sub_remarks'] : null;
                 $data['deviation'] = $result ? $result['sub_sub_deviation'] : null;
                 $data['is_na'] = $result['is_na'] ?? 0;
                 $data['dropdown'] = $this->getDropdownList($label->dropdown_id) ?? null;
-            }else{
-                $data['sub_sub_sub_category']=$this->getSubSubSubCategory($label->sub_sub_sub_category);
+            } else {
+                $data['sub_sub_sub_category'] = $this->getSubSubSubCategory($label->sub_sub_sub_category, $category_id, $sub_category_id, $label->id);
             }
             return $data;
 
         });
         return $subCategory->sub_sub_category;
     }
-    public function getSubSubSubCategory($sub_sub_sub_category,$category_id = null, $sub_category_id = null, $sub_sub_sub_category_id = null){
-
-        $sub_sub_sub_category->transform(function ($label) use ($category_id, $sub_category_id,$sub_sub_sub_category_id) {
-            if($this->store->audit_status){
-               $result =  $this->getResult($category_id,$sub_category_id,$sub_sub_sub_category_id);
+    public function getSubSubSubCategory($sub_sub_sub_category, $category_id = null, $sub_category_id = null, $sub_sub_sub_category_id = null)
+    {
+        $sub_sub_sub_category->transform(function ($label) use ($category_id, $sub_category_id, $sub_sub_sub_category_id) {
+            if ($this->store->audit_status) {
+                $result = $this->getResult($category_id, $sub_category_id, $sub_sub_sub_category_id);
             }
             return [
                 'id' => $label->id,
@@ -121,32 +163,24 @@ class Form extends Component
                 'is_all_nothing' => $label->is_all_nothing,
                 'remarks' => $result ? $result['label_remarks'] : null,
                 'deviation' => $result ? $result['label_deviation'] : null,
-                'na' =>  $result['is_na'] ?? 0,
+                'is_na' => $result['is_na'] ?? 0,
                 'dropdown' => $this->getDropdownList($label->dropdown_id) ?? null
             ];
         });
         return $sub_sub_sub_category;
     }
-    public function getResult($category_id,$sub_category_id,$label_id){
-        $this->auditForm = AuditForm::where('store_id',$this->store->id)->where('date_of_visit',$this->date_today)->first();
-            $result = AuditFormResult::where('form_id', $this->auditForm->id)
-                ->where('category_id', $category_id)
-                ->where('sub_category_id', $sub_category_id)
-                ->where('sub_sub_category_id', $label_id)
-                ->first();
-            return $result;
-    }
-    public function getDeviationList(){
 
+    public function getDeviationList($deviation_id)
+    {
+        return CriticalDeviationMenu::where('critical_deviation_id', $deviation_id)->get();
     }
-    public function getDropdownList($id){
-       return DropdownMenuModel::where('dropdown_id', $id)->get()->toArray();
+    public function getDropdownList($id)
+    {
+        return DropdownMenu::where('dropdown_id', $id)->get()->toArray();
     }
-    public function getCategoryList(){
-        return Category::where('type', $this->store->type)
-        ->orderBy('type', 'DESC')
-        ->orderBy('order', 'ASC')
-        ->get();
+    public function getCategoryList()
+    {
+        return Category::where('type', $this->store->type)->orderBy('type', 'DESC')->orderBy('order', 'ASC')->get();
     }
     public function onStartAudit()
     {
@@ -157,8 +191,6 @@ class Form extends Component
     {
         $this->active_index = $index;
     }
-
-
     #region intialization
     public function initialize()
     {

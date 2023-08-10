@@ -38,6 +38,6 @@ class Dashboard extends Component
     }
 
     public function getSchedule(){
-        return AuditDate::where('audit_date',$this->date_today)->get();
+        return AuditDate::where('audit_date',$this->date_today)->paginate(5);
     }
 }
