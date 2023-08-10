@@ -106,6 +106,7 @@ class Schedule extends Component
             'store_id' => strip_tags($this->store_id),
             'audit_date' => strip_tags($this->audit_date),
             'wave' => strip_tags($this->wave),
+            'is_complete' => 0
         ];
         /*$check_schedule = AuditDateModel::where('store_id', $this->store_id)
                ->where('wave', $this->wave)
