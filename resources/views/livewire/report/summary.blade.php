@@ -1,5 +1,5 @@
 @section('title', 'Mary Grace Restaurant Operation System / Report Summary')
-<div class="container-xl">
+<div class="">
     <nav aria-label="breadcrumb">
         <ol class="breadcrumb">
             <li class="breadcrumb-item"><a href="{{ route('dashboard') }}">Dashboard</a></li>
@@ -21,11 +21,11 @@
                 <input type="text" id="search-docs" name="searchdocs" class="form-control search-docs"
                     wire:model.debounce.100ms="search" placeholder="Search Store">
             </div>
-         {{--    <div class="col-auto">
+            <div class="col-auto">
                 <div class="col-auto">
-                    <a class="btn app-btn-primary"  wire:click="print">Print</a>
+                    <a class="btn btn-primary" wire:click="exportCSV">CSV Export</a>
                 </div>
-            </div> --}}
+            </div>
         </div>
     </div>
     <div class="accordion" id="accordionFilter" wire:ignore>
@@ -110,7 +110,7 @@
                             <tr>
                                 <td class="cell">{{ $results->forms->stores->area }}</td>
                                 <td class="cell">{{ $results->forms->stores->name }}</td>
-                                <td class="cell">{{ $results->category->Label }}</td>
+                                <td class="cell">{{ $results->category->Label ?? null }}</td>
                                 <td class="cell">{{ $results->category_name }}</td>
                                 <td class="cell">{{ $results->sub_name }}</td>
                                 <td class="cell">{{ $results->sub_sub_name }}</td>

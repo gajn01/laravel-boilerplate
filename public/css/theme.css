@@ -64,5 +64,10 @@ button.secondary-bg:hover{
 }
 .disabled:hover{
     cursor:default;
-
+}
+.nav-sticky{
+    position: sticky;
+    top: 56px;
+    z-index: 9999;
+    background-color: #fff;
 }

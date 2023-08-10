@@ -102,7 +102,7 @@ class Result extends Component
                             $saved_point = $data ? $data['sub_sub_point'] : null;
                             $saved_remarks = $data ? $data['sub_sub_remarks'] : null;
                             $saved_deviation = $data ? $data['sub_sub_deviation'] : null;
-                            $saved_na = $data['is_na'];
+                            $saved_na = $data['is_na'] ?? 0;
                         } else {
                             $saved_point = $label->bp;
                         }

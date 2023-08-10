@@ -1,179 +1,294 @@
-@section('title', 'Mary Grace Restaurant Operation System / User Details')
-
-<div class="container-xl">
-    <nav aria-label="breadcrumb">
+<div>
+    <nav aria-label="breadcrumb" class="">
         <ol class="breadcrumb">
-            <li class="breadcrumb-item"><a href="{{ route('user') }}">Account</a></li>
-            <li class="breadcrumb-item active" aria-current="page">{{ $name }}</li>
+            <li class="breadcrumb-item"><a href="{{ route('dashboard') }}">Home</a></li>
+            <li class="breadcrumb-item"><a href="{{ route('user-management') }}">User Management</a></li>
+            <li class="breadcrumb-item active" aria-current="page">User Detail</li>
         </ol>
     </nav>
-    <div class="row gy-4 mb-3">
-        <div class="col-12 col-lg-6">
-            <div class="app-card app-card-chart h-100 shadow-sm">
-                <div class="app-card-header p-3">
-                    <div class="row justify-content-between align-items-center">
-                        <div class="col-auto">
-                            <h4 class="app-card-title">Profile</h4>
+    <div class="row g-3 mb-4 align-items-center justify-content-between">
+        <div class="col-auto">
+            <h1 class="app-page-title mb-0">User Detail</h1>
+        </div>
+        @if (Gate::allows('access-enabled', 'module-reset-password'))
+            <div class="col-auto">
+                <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#confirmResetPasswordModal">Reset Password</button>
+            </div>
+        @endif
+    </div>
+    <hr class="mb-4">
+    <div class="row g-4 settings-section">
+        <div class="col-12 col-md-4">
+            <h3 class="section-title">General</h3>
+            <div class="section-intro">General account information.</div>
+        </div>
+        <div class="col-12 col-md-8">
+            <div class="app-card app-card-settings shadow-sm p-4">
+                <div class="app-card-body">
+                    <div class="item border-bottom py-3">
+                        <div class="row justify-content-between align-items-center">
+                            <div class="col">
+                                <div class="item-label"><strong>Name</strong><span class="text-danger">*</span></div>
+                                @if ($isedit == false)
+                                    <div class="item-data">{{ $user->user_type == 3 ? $user->getStoreName->name : $user->name }}</div>
+                                @else
+                                    <input wire:model.defer="user.name" type="text" class="form-control" required>
+                                    @error('user.name')
+                                        <span class="text-danger">{{ $message }}</span>
+                                    @enderror
+                                @endif
+                            </div>
                         </div>
-                        <div class="col-auto ">
-                            <div class="card-header-action col ">
-                                <a class="btn app-btn-primary" wire:click="onUpdate(true)">Edit</a>
+                    </div>
+                    <div class="item border-bottom py-3">
+                        <div class="row justify-content-between align-items-center">
+                            <div class="col">
+                                <div class="item-label"><strong>E-mail</strong><span class="text-danger">*</span></div>
+                                @if ($isedit == false)
+                                    <div class="item-data">{{ $user->email }}</div>
+                                @else
+                                    <input wire:model.defer="user.email" type="email" class="form-control" required>
+                                    @error('user.email')
+                                        <span class="text-danger">{{ $message }}</span>
+                                    @enderror
+                                @endif
+                            </div>
+                        </div>
+                    </div>
+                    <div class="item border-bottom py-3">
+                        <div class="row justify-content-between align-items-center">
+                            <div class="col">
+                                <div class="item-label"><strong>Contact Number</strong></div>
+                                @if ($isedit == false)
+                                    <div class="item-data">{{ $user->contact_number }}</div>
+                                @else
+                                    <input wire:model.defer="user.contact_number" type="contactno" class="form-control"
+                                        required>
+                                    @error('user.contact_number')
+                                        <span class="text-danger">{{ $message }}</span>
+                                    @enderror
+                                @endif
+                            </div>
+                        </div>
+                    </div>
+                    <div class="item border-bottom py-3">
+                        <div class="row justify-content-between align-items-center">
+                            <div class="col">
+                                <div class="item-label"><strong>User Type</strong><span class="text-danger">*</span>
+                                </div>
+                                @if ($isedit == false)
+                                    <div class="item-data">{{ $user->userLevel }}</div>
+                                @else
+                                    @if ($isSameUser == true || $user->user_type == 0)
+                                        <div class="item-data">{{ $user->userLevel }}</div>
+                                    @else
+                                        <select wire:model="usertype" class="form-select" required>
+                                            @if (auth()->user()->user_type < 2)
+                                                <option value=1>Administrator</option>
+                                            @endif
+                                            <option value=2>User</option>
+                                        </select>
+                                        @error('usertype')
+                                            <span class="text-danger">{{ $message }}</span>
+                                        @enderror
+                                    @endif
+                                @endif
                             </div>
                         </div>
                     </div>
                 </div>
-                <div class="app-card-body p-3 ">
-                    <form wire:submit.prevent="onSave">
-                        @csrf
+                <div class="app-card-footer pt-4 mt-auto row justify-content-end">
+                    <div class="col-auto">
+                        @if (Gate::allows('allow-edit', 'module-user-management'))
+                            @if ($isedit == true)
+                                <button name="save_changes" wire:click="save" class="btn btn-sm btn-primary">Save Changes</button>
+                                <button name="cancel_changes" wire:click="cancel" class="btn btn-sm btn-secondary">Cancel</button>
+                            @else
+                                <button name="edit_changes" wire:click="edit" class="btn btn-sm app-btn-primary">Edit Detail</button>
+                            @endif
+                        @endif
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <hr class="my-4">
+    <div class="row g-4 settings-section">
+        <div class="col-12 col-md-4">
+            <h3 class="section-title">Account Status</h3>
+            <div class="section-intro">Settings for activating or deactivating account.</div>
+        </div>
+        <div class="col-12 col-md-8">
+            <div class="app-card app-card-settings shadow-sm p-4">
 
-                        <div class="item border-bottom py-3">
-                            <div class="row justify-content-between align-items-center">
-                                <div class="col-12">
-                                    <div class="item-label mb-1"><strong>Employee ID</strong></div>
-                                    @if ($is_edit)
-                                        <input type="text" class="form-control" wire:model="input_employee_id"
-                                            id="input_employee_id" value="{{ $name }}">
-                                        @error('input_employee_id')
-                                            <span class="text-danger">{{ $message }}</span>
-                                        @enderror
-                                    @else
-                                        <div class="item-data">{{ $employee_id }}</div>
-                                    @endif
-                                </div>
-                            </div>
+                <div class="app-card-body">
+                    <div class="row">
+                        <div class="col-auto mb-2"><strong>Status:</strong>
                         </div>
-                        <div class="item border-bottom py-3">
-                            <div class="row ">
-                                <div class="col-12">
-                                    <div class="item-label mb-1"><strong>Full Name</strong></div>
-                                    @if ($is_edit)
-                                        <input type="text" class="form-control" wire:model="input_name"
-                                            id="input_name" value="{{ $name }}">
-                                        @error('input_name')
-                                            <span class="text-danger">{{ $message }}</span>
-                                        @enderror
-                                    @else
-                                        <div class="item-data">{{ $name }}</div>
-                                    @endif
-                                </div>
-                            </div>
+                        <div class="col-auto form-check form-switch ml-5 ">
+                            @if (Gate::allows('access-enabled', 'module-set-status'))
+                                @if ($isSameUser == false || $user->user_type > 0)
+                                    <input class="form-check-input" type="checkbox" wire:model="user.is_active" wire:change="onUpdateStatus" id="isactive"  checked>
+                                @endif
+                            @endif
+                            <label class="form-check-label" for="isactive">
+                                @if ((bool) $user->is_active == true)
+                                    <span class="badge bg-success">Active</span>
+                                @else
+                                    <span class="badge bg-danger">Inactive</span>
+                                @endif
+                            </label>
                         </div>
-                        <div class="item border-bottom py-3">
-                            <div class="row ">
-                                <div class="col-12">
-                                    <div class="item-label mb-1"><strong>Email</strong></div>
-                                    @if ($is_edit)
-                                        <input type="text" class="form-control" wire:model="input_email"
-                                            id="input_email">
-                                        @error('input_email')
-                                            <span class="text-danger">{{ $message }}</span>
-                                        @enderror
-                                    @else
-                                        <div class="item-data">{{ $email }}</div>
-                                    @endif
-                                </div>
-                            </div>
-                        </div>
-                        <div class="item py-3">
-                            <div class="row justify-content-between align-items-center">
-                                <div class="item-label mb-1"><strong>Status</strong></div>
-                                <div class="col-12">
-                                    @if ($is_edit)
-                                        <select class="form-select form-select-md" name="input_status" id="input_status"
-                                            wire:model="input_status">
-                                            <option selected>Select status</option>
-                                            <option value="0">Pending</option>
-                                            <option value="1">Active</option>
-                                            <option value="2">Inactive</option>
-                                        </select>
-                                    @else
-                                        @if ($status == 1)
-                                            <span class="badge bg-success">Active</span>
-                                        @elseif($status == 0)
-                                            <span class="badge bg-warning">Pending</span>
-                                        @else
-                                            <span class="badge bg-danger">Inactive</span>
+                    </div>
+                    <div class="mb-2"><strong>Date Created:</strong>
+                        {{ date('F d, Y h:i A', strtotime($user->date_created)) }}</div>
+                    <div class="mb-2"><strong>Date Last Updated:</strong>
+                        {{ date('F d, Y h:i A', strtotime($user->date_updated)) }}</div>
+                    <div class="mb-2"><strong>Email Verified:</strong>
+                        @if (is_null($user->email_verified_at))
+                            <span class="badge bg-danger"> Unverified</span>
+                            @if (Gate::allows('access-enabled', 'module-override-email-verification'))
+                                <a class="link-primary" data-bs-toggle="modal" data-bs-target="#confirmOverride"
+                                    href="#"><small class="p-1">Override Verification</small></a>
+                            @endif
+                        @else
+                            <span class="badge bg-success">Verified</span>
+                        @endif
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    @if ($user->user_type == 2 && $this->isSameUser == false)
+        <hr class="my-4">
+        @if (Gate::allows('access-enabled', 'module-set-module-access'))
+            <div class="row g-4 settings-section">
+                <div class="col-12 col-md-4">
+                    <h3 class="section-title">Module Access</h3>
+                    <div class="section-intro">Settings to enable or disable access to specified modules.</div>
+                </div>
+                <div class="col-12 col-md-8">
+                    <div class="app-card app-card-settings shadow-sm p-4">
+                        <div class="app-card-body">
+                            <form class="settings-form">
+                                <ul class="list-group gap-2">
+                                    @php
+                                        $last_parent = '';
+                                        $last_parent_enabled = false;
+                                    @endphp
+                                    @foreach($moduleList as $index => $module)
+                                        @if(is_null($module['parent']) || $last_parent_enabled)
+                                            <li class="border-0 list-group-item d-flex justify-content-between align-items-center py-0">
+                                                <div class="{{ is_null($module['parent']) ? 'col-7 col-lg-5' : 'col-6 col-lg-4 offset-1' }}">
+                                                    <div class="form-check form-switch mb-3">
+                                                        <input class="form-check-input" type="checkbox" wire:change="updateUserAccess" wire:model="useraccess.{{ $index }}.enabled"  id="{{$module['module']}}">
+                                                        <label class="form-check-label{{ is_null($module['parent']) ? ' fw-semibold' : '' }}" for="{{$module['module']}}">{{ $module['module_name']}}</label>
+                                                    </div>
+                                                </div>
+                                                <div class="col-5 col-lg-4">
+                                                        @if($module['access_type'] == 1)
+                                                            <select class="form-select form-select-sm"  wire:change="updateUserAccess" wire:model="useraccess.{{ $index }}.access_level" style="max-width:12em" {{ !$useraccess[$index]['enabled'] ? 'disabled' : '' }}>
+                                                                <option value=0>View</option>
+                                                                <option value=1>Create</option>
+                                                                <option value=2>Create + Update</option>
+                                                                <option value=3>Full Access</option>
+                                                            </select>
+                                                    @endif
+                                                </div>
+                                                <div class="d-none d-lg-block small col-12 col-lg-3">
+                                                    {{$module['description']}}
+                                                </div>
+                                            </li>
                                         @endif
-                                    @endif
-                                </div>
-                            </div>
+                                        @php
+                                            if(is_null($module['parent'])) {
+                                                $last_parent = $module['module'];
+                                                $last_parent_enabled = $useraccess[$index]['enabled'];
+                                            }
+                                        @endphp
+                                    @endforeach
+                                </ul>
+                            </form>
                         </div>
-                        <div class="app-card-footer pt-2 mt-auto text-end {{ $is_edit ? '' : 'd-none' }}">
-                            <button type="button" class="btn btn-secondary"
-                                wire:click="onUpdate(false)">Cancel</button>
-                            <button type="button" class="btn app-btn-primary" wire:click="onSaveAccount">Save</button>
-                        </div>
-                    </form>
+                    </div>
+
                 </div>
             </div>
-        </div>
-    </div>
-    <div class="app-card app-card-orders-table shadow-sm mb-5 p-3">
-        <div class="app-card-header p-3">
-            <div class="row justify-content-between align-items-center">
-                <div class="col-auto">
-                    <h4 class="app-card-title">Audit Records</h4>
-                </div>
-            </div>
-        </div>
-        <div class="app-card-body">
-            <div class="table-responsive">
-                <table class="table app-table-hover mb-0 text-left">
-                    <thead>
-                        <tr>
-                            <th class="cell">Date </th>
-                            <th class="cell">Store</th>
-                            <th class="cell">Overall Score</th>
-                            <th class="cell">Wave</th>
-                            <th class="cell table-action-sm">Action</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <td class="cell">March 15 2023</td>
-                        <td class="cell">SM Megamall</td>
-                        <td class="cell">95%</td>
-                        <td class="cell">Wave 1</td>
-                        <td class="cell table-action-sm">
-                            <a href="" data-toggle="tooltip" data-placement="top" title="View">
-                                <svg class="icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512">
-                                    <path
-                                        d="M288 32c-80.8 0-145.5 36.8-192.6 80.6C48.6 156 17.3 208 2.5 243.7c-3.3 7.9-3.3 16.7 0 24.6C17.3 304 48.6 356 95.4 399.4C142.5 443.2 207.2 480 288 480s145.5-36.8 192.6-80.6c46.8-43.5 78.1-95.4 93-131.1c3.3-7.9 3.3-16.7 0-24.6c-14.9-35.7-46.2-87.7-93-131.1C433.5 68.8 368.8 32 288 32zM144 256a144 144 0 1 1 288 0 144 144 0 1 1 -288 0zm144-64c0 35.3-28.7 64-64 64c-7.1 0-13.9-1.2-20.3-3.3c-5.5-1.8-11.9 1.6-11.7 7.4c.3 6.9 1.3 13.8 3.2 20.7c13.7 51.2 66.4 81.6 117.6 67.9s81.6-66.4 67.9-117.6c-11.1-41.5-47.8-69.4-88.6-71.1c-5.8-.2-9.2 6.1-7.4 11.7c2.1 6.4 3.3 13.2 3.3 20.3z" />
-                                </svg>
-                            </a>
-                        </td>
-                    </tbody>
-                </table>
-            </div>
-        </div>
-    </div>
-    <div wire:ignore.self class="modal fade" id="assign_modal" tabindex="-1" data-bs-backdrop="static"
-        data-bs-keyboard="false" role="dialog" aria-labelledby="modalTitleId" aria-hidden="true">
-        <div class="modal-dialog modal-dialog-scrollable modal-dialog-centered modal-md" role="document">
+            <hr class="my-4">
+        @endif
+    @endif
+    <!-- Modal -->
+    <div wire:ignore class="modal fade" id="confirmOverride" data-bs-backdrop="static" data-bs-keyboard="false"
+        tabindex="-1" aria-labelledby="confirmOverrideLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="modalTitleId">Assign Store</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" wire:click="reset"></button>
+                    <h1 class="modal-title fs-5">Override E-mail Verification</h1>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
-                    <div class="mb-3">
-                        <label for="store" class="form-label">Store</label>
-                        <select class="form-select form-select-md" name="store" id="store" wire:model="store">
-                            <option selected hidden>Select store</option>
-                            @foreach ($store_list as $item)
-                                <option value="{{ $item->id }}">{{ $item->name }}</option>
-                            @endforeach
-                        </select>
-                    </div>
-                    <div class="mb-3">
-                        <label for="audit_date" class="form-label">Date of Audit</label>
-                        <input type="date" class="form-control" name="audit_date" id="audit_date"
-                            wire:model="audit_date" aria-describedby="helpId" placeholder="">
-                    </div>
+                    Do you want to override e-mail verification process for this user?
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn app-btn-primary" wire:click="onAssign">Save</button>
+                    <button type="button" class="btn btn-primary text-light" wire:click="overrideEmailVerification"
+                        data-bs-dismiss="modal">Yes</button>
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
                 </div>
             </div>
         </div>
     </div>
+    <!-- Modal -->
+    <div wire:ignore class="modal fade" id="confirmResetPasswordModal" data-bs-backdrop="static"
+        data-bs-keyboard="false" tabindex="-1" aria-labelledby="confirmResetPasswordLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h1 class="modal-title fs-5">Reset Password</h1>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    Do you want to reset user password to "Password123"?
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-primary text-light" wire:click="resetPassword" data-bs-dismiss="modal">Yes</button>
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="position-fixed bottom-0 end-0 p-3" style="z-index: 11">
+        <div id="alertToast" class="toast hide" role="alert" aria-live="assertive" aria-atomic="true">
+            <div class="toast-header">
+                <img src="" class="rounded me-2" alt="">
+                <strong class="me-auto">
+                    @if (session()->has('title'))
+                        <!-- Session Message -->
+                        <span class="{{ $class }}">{{ session('title') }}</span>
+                    @endif
+                </strong>
+                <small>
+                    @if (session()->has('timestamp'))
+                        {{ session('timestamp') }}
+                    @endif
+                </small>
+                <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
+            </div>
+            <div class="toast-body">
+                @if (session()->has('message'))
+                    <!-- Session Message -->
+                    {{ session('message') }}
+                @endif
+            </div>
+        </div>
+    </div>
+    @push('custom-scripts')
+        <script>
+            window.livewire.on('show-toast', event => {
+                var toast = bootstrap.Toast.getOrCreateInstance(document.getElementById('alertToast'));
+                toast.show();
+            });
+        </script>
+    @endpush
 </div>

@@ -1,9 +1,12 @@
 <?php
 namespace App\Http\Livewire\Settings;
+use Illuminate\Support\Facades\Gate;
 use App\Models\SanitaryModel;
 use Livewire\Component;
 use Livewire\WithPagination;
 use App\Helpers\CustomHelper;
+use App\Helpers\ActivityLogHelper;
+
 class Sanitary extends Component
 {
     use WithPagination;
@@ -16,7 +19,16 @@ class Sanitary extends Component
     public $modalTitle;
     public $modalButtonText;
     public $limit = 10;
-    public function render()
+    protected  ActivityLogHelper $activity;
+    public function __construct()
+    {
+        $this->activity = new ActivityLogHelper;
+    }
+    public function mount(){
+        if (!Gate::allows('allow-view', 'module-sanitation-defect-management')) {
+            return redirect()->route('dashboard');
+        }
+    }    public function render()
     {
         $searchTerm = '%' . $this->searchTerm . '%';
         $sanitary_list = SanitaryModel::select('id', 'title', 'code')
@@ -36,6 +48,15 @@ class Sanitary extends Component
     }
     public function onSave()
     {
+        $access = 'allow-create';
+        if($this->sanitary_id){
+            $access = 'allow-edit';
+        }
+        if(!Gate::allows($access,'module-sanitation-defect-management')){
+            $this->onAlert(false, 'Action Cancelled', 'Unable to perform action due to user is unauthorized!', 'warning');
+            return;
+        }
+
         $this->validate(
             [
                 'title' => 'required',
@@ -52,11 +73,19 @@ class Sanitary extends Component
         $this->reset();
         $this->onAlert(false, 'Success', 'Sanitation defect saved successfully!', 'success');
         CustomHelper::onRemoveModal($this, '#sanitaryModal');
+        $action = $this->sanitary_id ?  'update' : 'create';
+        $this->activity->onLogAction($action,'Sanitary', $this->sanitary_id ?? null);
     }
     public function onDelete($sanitary_id)
     {
+        if(!Gate::allows('allow-delete','module-sanitation-defect-management')){
+            $this->onAlert(false, 'Action Cancelled', 'Unable to perform action due to user is unauthorized!', 'warning');
+            return;
+        }
         $sanitary = SanitaryModel::find($sanitary_id);
         $sanitary->delete();
+        $this->activity->onLogAction('delete','Sanitary', $sanitary_id ?? null);
+
     }
     public function onAlert($is_confirm = false, $title = null, $message = null, $type = null, $data = null)
     {

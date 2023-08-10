@@ -12,19 +12,18 @@ class User extends Authenticatable
 {
     use HasApiTokens, HasFactory, Notifiable;
     protected $table = 'user';
+
+    const CREATED_AT = 'date_created';
+    const UPDATED_AT = 'date_updated';
     /**
      * The attributes that are mass assignable.
      *
      * @var array<int, string>
      */
     protected $fillable = [
-        'id',
         'name',
-        'employee_id',
         'email',
         'password',
-        'user_level',
-        'status'
     ];
 
     /**
@@ -45,4 +44,22 @@ class User extends Authenticatable
     protected $casts = [
         'email_verified_at' => 'datetime',
     ];
+
+    public function departments(){
+        return $this->belongsToMany(Department::class);
+    }
+    public function getStoreName(){
+        return $this->belongsTo(Store::class,'name','id');
+    }
+    public function getUserLevelAttribute()
+    {
+        $levels = array("Super User", "Administrator", "User","Store");
+        return $levels[$this->user_type];
+    }
+
+    public function getUserAccessArrayAttribute()
+    {
+        $ua = json_decode($this->user_access, true);
+        return $ua;
+    }
 }

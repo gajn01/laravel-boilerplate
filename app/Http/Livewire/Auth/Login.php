@@ -16,14 +16,18 @@ class Login extends Component
     {
         $this->validate([
             'email' => 'required|email',
-            'password' => 'required|min:6',
+            'password' => 'required|min:8',
         ]);
         if (Auth::attempt(['email' => $this->email, 'password' => $this->password])) {
-            CustomHelper::onShow($this, false, 'Success.', 'Successfully logged in!', 'success', '');
-            if(Auth::user()->user_level == 0){
-                return redirect()->to('/dashboard');
+            if(Auth::user()->email_verified_at){
+                CustomHelper::onShow($this, false, 'Success.', 'Successfully logged in!', 'success', '');
+                if(Auth::user()->user_type < 2){
+                    return redirect()->to('/dashboard');
+                }else{
+                    return redirect()->to('/audit');
+                }
             }else{
-                return redirect()->to('/audit');
+             CustomHelper::onShow($this, false, 'Account is not verified', 'Account is not verified', 'warning', '');
             }
         } else {
             CustomHelper::onShow($this, false, 'Invalid credentials.', 'Invalid email or password. Please try again.', 'error', '');

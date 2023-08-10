@@ -1,5 +1,5 @@
 @section('title', 'Mary Grace Restaurant Operation System / Profile')
-<div class="container-xl">
+<div class="">
     <h1 class="app-page-title">My Account</h1>
     <div class="row gy-4 mb-3">
         <div class="col-12 col-lg-12">

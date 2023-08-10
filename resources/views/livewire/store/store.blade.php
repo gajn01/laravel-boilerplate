@@ -1,6 +1,6 @@
 @section('title', 'Mary Grace Restaurant Operation System / Store Settings')
 
-<div class="container-xl">
+<div class="">
     <nav aria-label="breadcrumb">
         <ol class="breadcrumb">
             <li class="breadcrumb-item active">Store Management</li>
@@ -8,14 +8,6 @@
     </nav>
     <div class="page-utilities mb-3">
         <div class="row g-2 justify-content-start justify-content-md-end align-items-center">
-      {{--       <div class="col-auto">
-                <a href="">
-                    <svg class="icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
-                        <path
-                            d="M3.9 54.9C10.5 40.9 24.5 32 40 32H472c15.5 0 29.5 8.9 36.1 22.9s4.6 30.5-5.2 42.5L320 320.9V448c0 12.1-6.8 23.2-17.7 28.6s-23.8 4.3-33.5-3l-64-48c-8.1-6-12.8-15.5-12.8-25.6V320.9L9 97.3C-.7 85.4-2.8 68.8 3.9 54.9z" />
-                    </svg>
-                </a>
-            </div> --}}
             <div class="col-auto">
                 <form class="docs-search-form row gx-1 align-items-center">
                     <div class="col-auto">
@@ -34,11 +26,13 @@
                         wire:click="showModal">Add</a>
                 </div>
             </div>
+            <div class="col-auto">
+                <div class="col-auto">
+                    <a class="btn btn-primary" wire:click="exportCSV">CSV Export</a>
+                </div>
+            </div>
         </div>
-        <!--//row-->
     </div>
-    <!--//table-utilities-->
-
     <div class="app-card app-card-orders-table shadow-sm mb-5">
         <div class="app-card-body">
             <div class="table-responsive">
@@ -92,17 +86,12 @@
                                 </td>
                             </tr>
                         @endforelse
-
                     </tbody>
                 </table>
             </div>
-            <!--//table-responsive-->
         </div>
-        <!--//app-card-body-->
     </div>
-
     {{-- Pagination --}}
-
     <div class="row">
         <div class="col-sm-12 col-md-6">
             <div class="page-utilities d-flex justify-start">
@@ -116,16 +105,14 @@
                             <option value="20">20</option>
                             <option value="50">50</option>
                             <option value="100">100</option>
+                            <option value="9999">All</option>
                         </select>
                     </div>
-                    <!--//col-->
                     <div class="col-auto">
                         <label for="">entries</label>
                     </div>
                 </div>
-                <!--//row-->
             </div>
-            <!--//table-utilities-->
         </div>
         <div class="col-sm-12 col-md-6">
             <nav class="app-pagination">

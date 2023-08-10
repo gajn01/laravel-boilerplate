@@ -1,5 +1,4 @@
 <?php
-
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -9,31 +8,21 @@ class SubSubCategoryLabel extends Model
 {
     use HasFactory;
     protected $table = 'sub_sub_categories';
-
-    protected $fillable = ['id', 'name', 'sub_sub_category_id', 'bp', 'is_all_nothing','dropdown_id'];
-
+    protected $fillable = ['id', 'name', 'sub_sub_category_id', 'bp', 'is_all_nothing', 'dropdown_id'];
     public function subCategory()
     {
         return $this->belongsTo(SubCategoryLabel::class);
     }
-
     public function labels()
     {
         return $this->hasMany(SubCategoryLabelModel::class, 'sub_sub_category_id');
     }
-
     public function subCategoryLabel()
     {
         return $this->belongsTo(SubCategoryLabel::class, 'sub_category_label_id');
-
     }
-
-
     public function subSubCategoryLabelModels()
     {
         return $this->hasMany(SubSubCategoryLabelModel::class, 'sub_sub_category_id');
     }
-
-
-
 }
