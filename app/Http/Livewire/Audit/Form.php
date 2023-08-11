@@ -83,6 +83,7 @@ class Form extends Component
             $category->critical_deviation = $this->mapDeviation($category_id, $category->critical_deviation_id);
             $category->sub_category->transform(function ($subCategory) use ($category_id, &$total_base, &$total_score) {
                 $sub_category_id = $subCategory->id;
+                $subCategory->points = 0;
                 $total_base += $this->getTotalBp($subCategory);
                 // $total_score += $this->getTotalScore($subCategory);
 
@@ -91,13 +92,15 @@ class Form extends Component
                     'is_sub' => $subCategory->is_sub,
                     'name' => $subCategory->name,
                     'total_base_per_category' => $this->getTotalBp($subCategory),
-                    'total_points_per_category' => $this->getTotalScore($subCategory,$category_id, $sub_category_id),
+                    // 'total_points_per_category' => $this->getTotalScore($subCategory,$category_id, $sub_category_id),
+                    'total_points_per_category' => 0,
                     'total_base' => $total_base,
                     // Sum to total_base
                     'total_points' => $total_score,
                     'total_score' => $total_score,
                 ];
                 $subCategoryData['sub_sub_category'] = $this->getSubSubCategory($subCategory, $category_id, $sub_category_id);
+                $subCategoryData['total_points_per_category']= $this->getTotalScore($subCategory->is_sub, $subCategoryData['sub_sub_category'] );
                 return $subCategoryData;
             });
         }
@@ -113,16 +116,15 @@ class Form extends Component
             })->sum();
         }
     }
-    public function getTotalScore($subCategory,$category_id, $sub_category_id)
+    public function getTotalScore($is_sub,$subCategory)
     {
-        $data = $this->getSubSubCategory($subCategory, $category_id, $sub_category_id);
-        dd($data);
-        if ($subCategory->is_sub == 0) {
-            return $data->sum('points');
+        // $data = $this->getSubSubCategory($subCategory, $category_id, $sub_category_id);
+        if ($is_sub == 0) {
+            return $subCategory->sum('points');
         } else {
-            return $data->flatMap(function ($subSubCategory) {
+        /*     return $subCategory->sub_sub_sub_category->flatMap(function ($subSubCategory) {
                 return $subSubCategory->sub_sub_sub_category->pluck('points');
-            })->sum();
+            })->sum(); */
         }
     }
     public function mapDeviation($category_id, $critical_deviation_id)
