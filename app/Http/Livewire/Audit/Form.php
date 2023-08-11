@@ -85,26 +85,34 @@ class Form extends Component
                 $sub_category_id = $subCategory->id;
                 $subCategory->points = 0;
                 $total_base += $this->getTotalBp($subCategory);
-                // $total_score += $this->getTotalScore($subCategory);
-
                 $subCategoryData = [
                     'id' => $subCategory->id,
                     'is_sub' => $subCategory->is_sub,
                     'name' => $subCategory->name,
                     'total_base_per_category' => $this->getTotalBp($subCategory),
-                    // 'total_points_per_category' => $this->getTotalScore($subCategory,$category_id, $sub_category_id),
                     'total_points_per_category' => 0,
                     'total_base' => $total_base,
-                    // Sum to total_base
                     'total_points' => $total_score,
                     'total_score' => $total_score,
                 ];
                 $subCategoryData['sub_sub_category'] = $this->getSubSubCategory($subCategory, $category_id, $sub_category_id);
-                $subCategoryData['total_points_per_category']= $this->getTotalScore($subCategory->is_sub, $subCategoryData['sub_sub_category'] );
+                $subCategoryData['total_points_per_category'] = $this->getTotalScore($subCategory->is_sub, $subCategoryData['sub_sub_category'] );
+                $total_score += $this->getTotalScore($subCategory->is_sub, $subCategoryData['sub_sub_category'] );
+
                 return $subCategoryData;
             });
         }
         return $data;
+    }
+    public function getTotalScore($is_sub, $subCategory)
+    {
+        if ($is_sub == 0) {
+            return $subCategory->sum('points');
+        }else{
+            return $subCategory->flatMap(function ($item) {
+                return $item['sub_sub_sub_category'];
+            })->sum('points');
+        }
     }
     public function getTotalBp($subCategory)
     {
@@ -114,17 +122,6 @@ class Form extends Component
             return $subCategory->sub_sub_category->flatMap(function ($subSubCategory) {
                 return $subSubCategory->sub_sub_sub_category->pluck('bp');
             })->sum();
-        }
-    }
-    public function getTotalScore($is_sub,$subCategory)
-    {
-        // $data = $this->getSubSubCategory($subCategory, $category_id, $sub_category_id);
-        if ($is_sub == 0) {
-            return $subCategory->sum('points');
-        } else {
-        /*     return $subCategory->sub_sub_sub_category->flatMap(function ($subSubCategory) {
-                return $subSubCategory->sub_sub_sub_category->pluck('points');
-            })->sum(); */
         }
     }
     public function mapDeviation($category_id, $critical_deviation_id)
