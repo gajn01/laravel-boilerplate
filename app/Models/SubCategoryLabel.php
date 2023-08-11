@@ -18,6 +18,10 @@ class SubCategoryLabel extends Model
     {
         return $this->hasMany(SubSubCategoryLabel::class,'sub_sub_category_id');
     }
+    public function getTotalBpAttribute()
+    {
+        return array_sum($this->bp);
+    }
     public function subSubCategoryLabel()
     {
         return $this->hasMany(SubSubCategoryLabel::class,'sub_sub_category_id','id');

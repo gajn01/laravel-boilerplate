@@ -73,31 +73,28 @@
                                                                 <td class="core_name_total">
                                                                     <a href="#{{ $sub_category['name'] }}">{{ $sub_category['name'] }}</a>
                                                                 </td>
-                                                                <td class="text-center">
-                                                                    {{-- {{$sub_category->BpTotal}} --}}
-                                                                </td>
-                                                                
-                                                                <td class="text-center">{{ $sub_category['total_point'] }}</td>
-                                                                <td class="text-center"> {{ $sub_category['total_percent'] }}%</td>
+                                                                <td class="text-center">{{ $sub_category['total_base_per_category'] }}</td>
+                                                                <td class="text-center">{{ $sub_category['total_points_per_category'] }}</td>
+                                                                <td class="text-center"> {{ $sub_category['total_score'] }}%</td>
                                                             </tr>
                                                           {{--   @if ($sub_category->name)
                                                             @endif --}}
                                                         @endforeach
-                                                      {{--   <tr>
+                                                        <tr>
                                                             <td>
                                                                 <h5 class="app-card-title ">Total</h5>
                                                             </td>
                                                             <td class="text-center">
-                                                                {{ $sub['total_base'] }}
+                                                                {{ $sub_category['total_base'] }}
                                                             </td>
                                                             <td class="text-center">
-                                                                {{ $sub['total_score'] }}
+                                                                {{ $sub_category['total_score'] }}
                                                             </td>
-                                                            <td class="text-center">
+                                                          {{--   <td class="text-center">
                                                                 {{ $data->sub_categ['total_percentage'] }}%
-                                                            </td>
+                                                            </td> --}}
                                                         </tr>
-                                                        <tr>
+                                                      {{--   <tr>
                                                             <td colspan="3" class="text-center">
                                                                 <h5 class="app-card-title ">Overall Score</h5>
                                                             </td>
@@ -125,7 +122,7 @@
                                     <div class="app-card-body p-3 p-lg-4">
                                         @foreach ($category->critical_deviation as $item)
                                             <label for="" class="form-label ">{{ $item['label'] }}</label>
-                                           {{--  @if ($item['is_sd'])
+                                            @if ($item['is_sd'])
                                                 <div class="row">
                                                     <div class="col-12">
                                                         <div class="mb-2" wire:ignore>
@@ -136,7 +133,7 @@
                                                                 <option value="0"
                                                                     {{ $item['saved_sd'] == '' ? 'selected' : '' }}>
                                                                     Select sd</option>
-                                                                @forelse ($sanitation_list as $sanitation)
+                                                                @forelse ($sanitary_list as $sanitation)
                                                                     <option value="{{ $sanitation->code }}"
                                                                         {{ $sanitation->code === $item['saved_sd'] ? 'selected' : '' }}>
                                                                         {{ $sanitation->code }}
@@ -148,7 +145,7 @@
                                                         </div>
                                                     </div>
                                                 </div>
-                                            @endif --}}
+                                            @endif
                                             @if ($item['is_location'])
                                                 <div class="row " >
                                                     <div class="col-sm-12 col-md-6">
@@ -160,7 +157,7 @@
                                                                 <option value="0" {{ $item['location'] == '' ? 'selected' : '' }}>Select location</option>
                                                                 @foreach ($item['location'] as $location_dropdown)
                                                                     <option value="{{ $location_dropdown['name'] }}"
-                                                                        {{ $location_dropdown['name'] === $item['location'] ? 'selected' : '' }}>
+                                                                        {{ $location_dropdown['name'] === $item['saved_location'] ? 'selected' : '' }}>
                                                                         {{ $location_dropdown['name'] }}
                                                                     </option>
                                                                 @endforeach
@@ -175,7 +172,7 @@
                                                                 <option value="0" {{ $item['score'] == '' ? 'selected' : '' }}> Select score</option>
                                                                 @foreach ($score as $scores)
                                                                     <option value="{{ $scores['name'] }}"
-                                                                        {{ $scores['name'] === $item['score'] ? 'selected' : '' }}>
+                                                                        {{ $scores['name'] === $item['saved_score'] ? 'selected' : '' }}>
                                                                         {{ $scores['name'] . '%' }}
                                                                     </option>
                                                                 @endforeach
@@ -197,7 +194,7 @@
                                                                     Select product</option>
                                                                 @foreach ($item['product'] as $product_dropdown)
                                                                     <option value="{{ $product_dropdown['name'] }}"
-                                                                        {{ $product_dropdown['name'] === $item['product'] ? 'selected' : '' }}>
+                                                                        {{ $product_dropdown['name'] === $item['saved_product'] ? 'selected' : '' }}>
                                                                         {{ $product_dropdown['name'] }}
                                                                     </option>
                                                                 @endforeach
@@ -215,7 +212,7 @@
                                                                     Select score</option>
                                                                 @foreach ($score as $scores)
                                                                     <option value="{{ $scores['name'] }}"
-                                                                        {{ $scores['name'] === $item['score'] ? 'selected' : '' }}>
+                                                                        {{ $scores['name'] === $item['saved_score'] ? 'selected' : '' }}>
                                                                         {{ $scores['name'] . '%' }}
                                                                     </option>
                                                                 @endforeach
@@ -232,12 +229,10 @@
                                                                 wire:change="updateCriticalDeviation({{ json_encode($item) }}, $event.target.value, 'dropdown')"
                                                                 name="dropdown{{ $item['id'] }}"
                                                                 id="dropdown{{ $item['id'] }}">
-                                                                <option value="0"
-                                                                    {{ $item['dropdown'] == '' ? 'selected' : '' }}>
-                                                                    Select deviation</option>
+                                                                <option value="0" {{ $item['dropdown'] == '' ? 'selected' : '' }}> Select deviation</option>
                                                                 @foreach ($item['dropdown'] as $dropdown)
                                                                     <option value="{{ $dropdown['name'] }}"
-                                                                        {{ $dropdown['name'] === $item['dropdown'] ? 'selected' : '' }}>
+                                                                        {{ $dropdown['name'] === $item['saved_dropdown'] ? 'selected' : '' }}>
                                                                         {{ $dropdown['name'] }}
                                                                     </option>
                                                                 @endforeach
@@ -250,18 +245,15 @@
                                                                 wire:change="updateCriticalDeviation({{ json_encode($item) }},$event.target.value,'score')"
                                                                 name="dp_score{{ $item['id'] }}"
                                                                 id="dp_score{{ $item['id'] }}">
-                                                                <option value="0"
-                                                                    {{ $item['score'] == '' ? 'selected' : '' }}>
-                                                                    Select score</option>
+                                                                <option value="0" {{ $item['score'] == '' ? 'selected' : '' }}> Select score</option>
                                                                 @foreach ($score as $scores)
                                                                     <option value="{{ $scores['name'] }}"
-                                                                        {{ $scores['name'] === $item['score'] ? 'selected' : '' }}>
+                                                                        {{ $scores['name'] === $item['saved_score'] ? 'selected' : '' }}>
                                                                         {{ $scores['name'] . '%' }}
                                                                     </option>
                                                                 @endforeach
                                                             </select>
                                                         </div>
-
                                                     </div>
                                                 </div>
                                             @endif
@@ -284,7 +276,7 @@
                                                             score</option>
                                                         @foreach ($score as $scores)
                                                             <option value="{{ $scores['name'] }}"
-                                                                {{ $scores['name'] === $item['score'] ? 'selected' : '' }}>
+                                                                {{ $scores['name'] === $item['saved_score'] ? 'selected' : '' }}>
                                                                 {{ $scores['name'] . '%' }}
                                                             </option>
                                                         @endforeach
