@@ -49,203 +49,222 @@
             <div class="tab-pane fade show {{ $key == $active_index ? 'active' : '' }}" id="cat{{ $category->id }}" role="tabpanel" aria-labelledby="cat{{ $category->id }}-tab">
                 <div class="app-card app-card-orders-table shadow-sm mb-5 bg-none">
                     <div class="app-card-body">
-                        <div class="row mb-2">
-                            <div class="col-12  mb-4  {{ $category->critical_deviation->isNotEmpty() ? 'col-lg-6' : 'col-lg-12' }}">
-                                <div class="app-card app-card-chart  shadow-sm">
-                                    <div class="app-card-header p-3">
-                                        <h4 class="app-card-title">Overall Score</h4>
-                                    </div>
-                                    <div class="app-card-body p-3 p-lg-4">
-                                        <div class="row justify-content-between align-items-center">
-                                            <div class="col-12">
-                                                <table class="table app-table-hover mb-0 text-left ">
-                                                    <thead>
-                                                        <tr>
-                                                            <th class="cell">Category</th>
-                                                            <th class="cell text-center">Base</th>
-                                                            <th class="cell text-center">Score</th>
-                                                            <th class="cell text-center">%</th>
-                                                        </tr>
-                                                    </thead>
-                                                    <tbody>
-                                                        @foreach ($category['sub_category'] as $sub_category)
+                        {{-- Category List and Deviation --}}
+                            <div class="row mb-2">
+                                <div class="col-12  mb-4  {{ $category->critical_deviation->isNotEmpty() ? 'col-lg-6' : 'col-lg-12' }}">
+                                    <div class="app-card app-card-chart  shadow-sm">
+                                        <div class="app-card-header p-3">
+                                            <h4 class="app-card-title">Overall Score</h4>
+                                        </div>
+                                        <div class="app-card-body p-3 p-lg-4">
+                                            <div class="row justify-content-between align-items-center">
+                                                <div class="col-12">
+                                                    <table class="table app-table-hover mb-0 text-left ">
+                                                        <thead>
                                                             <tr>
-                                                                <td class="core_name_total">
-                                                                    <a href="#{{ $sub_category['name'] }}">{{ $sub_category['name'] }}</a>
-                                                                </td>
-                                                                <td class="text-center">{{ $sub_category['total_base_per_category'] }}</td>
-                                                                <td class="text-center">{{ $sub_category['total_points_per_category'] }}</td>
-                                                                <td class="text-center"> {{ $sub_category['total_score'] }}%</td>
+                                                                <th class="cell">Category</th>
+                                                                <th class="cell text-center">Base</th>
+                                                                <th class="cell text-center">Score</th>
+                                                                <th class="cell text-center">%</th>
                                                             </tr>
-                                                          {{--   @if ($sub_category->name)
-                                                            @endif --}}
-                                                        @endforeach
-                                                        <tr>
-                                                            <td>
-                                                                <h5 class="app-card-title ">Total</h5>
-                                                            </td>
-                                                            <td class="text-center">
-                                                                {{ $sub_category['total_base'] }}
-                                                            </td>
-                                                            <td class="text-center">
-                                                                {{ $sub_category['total_score'] }}
-                                                            </td>
-                                                          {{--   <td class="text-center">
-                                                                {{ $data->sub_categ['total_percentage'] }}%
-                                                            </td> --}}
-                                                        </tr>
-                                                      {{--   <tr>
-                                                            <td colspan="3" class="text-center">
-                                                                <h5 class="app-card-title ">Overall Score</h5>
-                                                            </td>
-                                                            <td class="text-center">
-                                                                {{ $data->sub_categ['overall_score'] }}%
-                                                            </td>
-                                                        </tr> --}}
-                                                    </tbody>
-                                                </table>
+                                                        </thead>
+                                                        <tbody>
+                                                            @foreach ($category['sub_category'] as $sub_category)
+                                                                <tr>
+                                                                    <td class="core_name_total">
+                                                                        <a href="#{{ $sub_category['name'] }}">{{ $sub_category['name'] }}</a>
+                                                                    </td>
+                                                                    <td class="text-center">{{ $sub_category['total_base_per_category'] }}</td>
+                                                                    <td class="text-center">{{ $sub_category['total_points_per_category'] }}</td>
+                                                                    <td class="text-center"> {{ $sub_category['total_percentage_per_category'] }}%</td>
+                                                                </tr>
+                                                            @endforeach
+                                                            <tr>
+                                                                <td>
+                                                                    <h5 class="app-card-title ">Total</h5>
+                                                                </td>
+                                                                <td class="text-center">
+                                                                    {{ $sub_category['total_base'] }}
+                                                                </td>
+                                                                <td class="text-center">
+                                                                    {{ $sub_category['total_points'] }}
+                                                                </td>
+                                                                <td class="text-center">
+                                                                    {{ $sub_category['total_percentage'] }}%
+                                                                </td>
+                                                            </tr>
+                                                        </tbody>
+                                                    </table>
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
                                 </div>
-                            </div>
-                            @if ($category->critical_deviation->isNotEmpty())
-                            <div class="col-12 col-lg-6">
-                                <div class="app-card app-card-chart h-100 shadow-sm">
-                                    <div class="app-card-header p-3">
-                                        <div class="row justify-content-between align-items-center">
-                                            <div class="col-auto">
-                                                <h4 class="app-card-title">Critical Deviation</h4>
+                                @if ($category->critical_deviation->isNotEmpty())
+                                    <div class="col-12 col-lg-6">
+                                        <div class="app-card app-card-chart h-100 shadow-sm">
+                                            <div class="app-card-header p-3">
+                                                <div class="row justify-content-between align-items-center">
+                                                    <div class="col-auto">
+                                                        <h4 class="app-card-title">Critical Deviation</h4>
+                                                    </div>
+                                                </div>
                                             </div>
-                                        </div>
-                                    </div>
-                                    <div class="app-card-body p-3 p-lg-4">
-                                        @foreach ($category->critical_deviation as $item)
-                                            <label for="" class="form-label ">{{ $item['label'] }}</label>
-                                            @if ($item['is_sd'])
-                                                <div class="row">
-                                                    <div class="col-12">
-                                                        <div class="mb-2" wire:ignore>
-                                                            <select class="form-select form-select-md"
-                                                                wire:change="updateCriticalDeviation({{ json_encode($item) }},$event.target.value,'sd')"
-                                                                name="sd{{ $item['id'] }}"
-                                                                id="sd{{ $item['id'] }}">
-                                                                <option value="0"
-                                                                    {{ $item['saved_sd'] == '' ? 'selected' : '' }}>
-                                                                    Select sd</option>
-                                                                @forelse ($sanitary_list as $sanitation)
-                                                                    <option value="{{ $sanitation->code }}"
-                                                                        {{ $sanitation->code === $item['saved_sd'] ? 'selected' : '' }}>
-                                                                        {{ $sanitation->code }}
-                                                                    </option>
-                                                                @empty
-                                                                    <option value="0">No data found!</option>
-                                                                @endforelse
-                                                            </select>
+                                            <div class="app-card-body p-3 p-lg-4">
+                                                @foreach ($category->critical_deviation as $item)
+                                                    <label for="" class="form-label ">{{ $item['label'] }}</label>
+                                                    @if ($item['is_sd'])
+                                                        <div class="row">
+                                                            <div class="col-12">
+                                                                <div class="mb-2" wire:ignore>
+                                                                    <select class="form-select form-select-md"
+                                                                        wire:change="updateCriticalDeviation({{ json_encode($item) }},$event.target.value,'sd')"
+                                                                        name="sd{{ $item['id'] }}"
+                                                                        id="sd{{ $item['id'] }}">
+                                                                        <option value="0"
+                                                                            {{ $item['saved_sd'] == '' ? 'selected' : '' }}>
+                                                                            Select sd</option>
+                                                                        @forelse ($sanitary_list as $sanitation)
+                                                                            <option value="{{ $sanitation->code }}"
+                                                                                {{ $sanitation->code === $item['saved_sd'] ? 'selected' : '' }}>
+                                                                                {{ $sanitation->code }}
+                                                                            </option>
+                                                                        @empty
+                                                                            <option value="0">No data found!</option>
+                                                                        @endforelse
+                                                                    </select>
+                                                                </div>
+                                                            </div>
                                                         </div>
-                                                    </div>
-                                                </div>
-                                            @endif
-                                            @if ($item['is_location'])
-                                                <div class="row " >
-                                                    <div class="col-sm-12 col-md-6">
-                                                        <div class="mb-2" wire:ignore>
-                                                            <select class="form-select form-select-md"
-                                                                wire:change="updateCriticalDeviation({{ json_encode($item) }},$event.target.value,'location')"
-                                                                name="location{{ $item['id'] }}"
-                                                                id="location{{ $item['id'] }}">
-                                                                <option value="0" {{ $item['location'] == '' ? 'selected' : '' }}>Select location</option>
-                                                                @foreach ($item['location'] as $location_dropdown)
-                                                                    <option value="{{ $location_dropdown['name'] }}"
-                                                                        {{ $location_dropdown['name'] === $item['saved_location'] ? 'selected' : '' }}>
-                                                                        {{ $location_dropdown['name'] }}
-                                                                    </option>
-                                                                @endforeach
-                                                            </select>
+                                                    @endif
+                                                    @if ($item['is_location'])
+                                                        <div class="row " >
+                                                            <div class="col-sm-12 col-md-6">
+                                                                <div class="mb-2" wire:ignore>
+                                                                    <select class="form-select form-select-md"
+                                                                        wire:change="updateCriticalDeviation({{ json_encode($item) }},$event.target.value,'location')"
+                                                                        name="location{{ $item['id'] }}"
+                                                                        id="location{{ $item['id'] }}">
+                                                                        <option value="0" {{ $item['location'] == '' ? 'selected' : '' }}>Select location</option>
+                                                                        @foreach ($item['location'] as $location_dropdown)
+                                                                            <option value="{{ $location_dropdown['name'] }}"
+                                                                                {{ $location_dropdown['name'] === $item['saved_location'] ? 'selected' : '' }}>
+                                                                                {{ $location_dropdown['name'] }}
+                                                                            </option>
+                                                                        @endforeach
+                                                                    </select>
+                                                                </div>
+                                                            </div>
+                                                            <div class="col-sm-12 col-md-6">
+                                                                <div class="mb-2" wire:ignore>
+                                                                    <select class="form-select form-select-md"
+                                                                        wire:change="updateCriticalDeviation({{ json_encode($item) }},$event.target.value,'score')"
+                                                                        name="loc_score{{ $item['id'] }}" id="loc_score{{ $item['id'] }}">
+                                                                        <option value="0" {{ $item['score'] == '' ? 'selected' : '' }}> Select score</option>
+                                                                        @foreach ($score as $scores)
+                                                                            <option value="{{ $scores['name'] }}"
+                                                                                {{ $scores['name'] === $item['saved_score'] ? 'selected' : '' }}>
+                                                                                {{ $scores['name'] . '%' }}
+                                                                            </option>
+                                                                        @endforeach
+                                                                    </select>
+                                                                </div>
+                                                            </div>
                                                         </div>
-                                                    </div>
-                                                    <div class="col-sm-12 col-md-6">
-                                                        <div class="mb-2" wire:ignore>
-                                                            <select class="form-select form-select-md"
-                                                                wire:change="updateCriticalDeviation({{ json_encode($item) }},$event.target.value,'score')"
-                                                                name="loc_score{{ $item['id'] }}" id="loc_score{{ $item['id'] }}">
-                                                                <option value="0" {{ $item['score'] == '' ? 'selected' : '' }}> Select score</option>
-                                                                @foreach ($score as $scores)
-                                                                    <option value="{{ $scores['name'] }}"
-                                                                        {{ $scores['name'] === $item['saved_score'] ? 'selected' : '' }}>
-                                                                        {{ $scores['name'] . '%' }}
-                                                                    </option>
-                                                                @endforeach
-                                                            </select>
+                                                    @endif
+                                                    @if ($item['is_product'])
+                                                        <div class="row">
+                                                            <div class="col-sm-12 col-md-6">
+                                                                <div class="mb-2" wire:ignore.self>
+                                                                    <select class="form-select form-select-md"
+                                                                        wire:change="updateCriticalDeviation({{ json_encode($item) }},$event.target.value,'product')"
+                                                                        name="product{{ $item['id'] }}"
+                                                                        id="product{{ $item['id'] }}">
+                                                                        <option value="0"
+                                                                            {{ $item['product'] == '' ? 'selected' : '' }}>
+                                                                            Select product</option>
+                                                                        @foreach ($item['product'] as $product_dropdown)
+                                                                            <option value="{{ $product_dropdown['name'] }}"
+                                                                                {{ $product_dropdown['name'] === $item['saved_product'] ? 'selected' : '' }}>
+                                                                                {{ $product_dropdown['name'] }}
+                                                                            </option>
+                                                                        @endforeach
+                                                                    </select>
+                                                                </div>
+                                                            </div>
+                                                            <div class="col-sm-12 col-md-6">
+                                                                <div class="mb-2" wire:ignore>
+                                                                    <select class="form-select form-select-md"
+                                                                        wire:change="updateCriticalDeviation({{ json_encode($item) }},$event.target.value,'score')"
+                                                                        name="product_score{{ $item['id'] }}"
+                                                                        id="product_score{{ $item['id'] }}">
+                                                                        <option value="0"
+                                                                            {{ $item['score'] == '' ? 'selected' : '' }}>
+                                                                            Select score</option>
+                                                                        @foreach ($score as $scores)
+                                                                            <option value="{{ $scores['name'] }}"
+                                                                                {{ $scores['name'] === $item['saved_score'] ? 'selected' : '' }}>
+                                                                                {{ $scores['name'] . '%' }}
+                                                                            </option>
+                                                                        @endforeach
+                                                                    </select>
+                                                                </div>
+                                                            </div>
                                                         </div>
-                                                    </div>
-                                                </div>
-                                            @endif
-                                            @if ($item['is_product'])
-                                                <div class="row">
-                                                    <div class="col-sm-12 col-md-6">
+                                                    @endif
+                                                    @if ($item['is_dropdown'])
+                                                        <div class="row">
+                                                            <div class="col-sm-12 col-md-6">
+                                                                <div class="mb-2" wire:ignore.self>
+                                                                    <select class="form-select form-select-md"
+                                                                        wire:change="updateCriticalDeviation({{ json_encode($item) }}, $event.target.value, 'dropdown')"
+                                                                        name="dropdown{{ $item['id'] }}"
+                                                                        id="dropdown{{ $item['id'] }}">
+                                                                        <option value="0" {{ $item['dropdown'] == '' ? 'selected' : '' }}> Select deviation</option>
+                                                                        @foreach ($item['dropdown'] as $dropdown)
+                                                                            <option value="{{ $dropdown['name'] }}"
+                                                                                {{ $dropdown['name'] === $item['saved_dropdown'] ? 'selected' : '' }}>
+                                                                                {{ $dropdown['name'] }}
+                                                                            </option>
+                                                                        @endforeach
+                                                                    </select>
+                                                                </div>
+                                                            </div>
+                                                            <div class="col-sm-12 col-md-6">
+                                                                <div class="mb-2" wire:ignore.self>
+                                                                    <select class="form-select form-select-md"
+                                                                        wire:change="updateCriticalDeviation({{ json_encode($item) }},$event.target.value,'score')"
+                                                                        name="dp_score{{ $item['id'] }}"
+                                                                        id="dp_score{{ $item['id'] }}">
+                                                                        <option value="0" {{ $item['score'] == '' ? 'selected' : '' }}> Select score</option>
+                                                                        @foreach ($score as $scores)
+                                                                            <option value="{{ $scores['name'] }}"
+                                                                                {{ $scores['name'] === $item['saved_score'] ? 'selected' : '' }}>
+                                                                                {{ $scores['name'] . '%' }}
+                                                                            </option>
+                                                                        @endforeach
+                                                                    </select>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    @endif
+                                                    @if ($item['remarks'])
                                                         <div class="mb-2" wire:ignore.self>
-                                                            <select class="form-select form-select-md"
-                                                                wire:change="updateCriticalDeviation({{ json_encode($item) }},$event.target.value,'product')"
-                                                                name="product{{ $item['id'] }}"
-                                                                id="product{{ $item['id'] }}">
-                                                                <option value="0"
-                                                                    {{ $item['product'] == '' ? 'selected' : '' }}>
-                                                                    Select product</option>
-                                                                @foreach ($item['product'] as $product_dropdown)
-                                                                    <option value="{{ $product_dropdown['name'] }}"
-                                                                        {{ $product_dropdown['name'] === $item['saved_product'] ? 'selected' : '' }}>
-                                                                        {{ $product_dropdown['name'] }}
-                                                                    </option>
-                                                                @endforeach
-                                                            </select>
+                                                            <textarea class="form-control"
+                                                                wire:change="updateCriticalDeviation({{ json_encode($item) }},$event.target.value,'remarks')"
+                                                                name="remarks{{ $item['id'] }}" id="remarks{{ $item['id'] }}" rows="2"
+                                                                placeholder="Enter remarks here...">{{ $item['saved_remarks'] }}</textarea>
                                                         </div>
-                                                    </div>
-                                                    <div class="col-sm-12 col-md-6">
-                                                        <div class="mb-2" wire:ignore>
-                                                            <select class="form-select form-select-md"
-                                                                wire:change="updateCriticalDeviation({{ json_encode($item) }},$event.target.value,'score')"
-                                                                name="product_score{{ $item['id'] }}"
-                                                                id="product_score{{ $item['id'] }}">
-                                                                <option value="0"
-                                                                    {{ $item['score'] == '' ? 'selected' : '' }}>
-                                                                    Select score</option>
-                                                                @foreach ($score as $scores)
-                                                                    <option value="{{ $scores['name'] }}"
-                                                                        {{ $scores['name'] === $item['saved_score'] ? 'selected' : '' }}>
-                                                                        {{ $scores['name'] . '%' }}
-                                                                    </option>
-                                                                @endforeach
-                                                            </select>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            @endif
-                                            @if ($item['is_dropdown'])
-                                                <div class="row">
-                                                    <div class="col-sm-12 col-md-6">
-                                                        <div class="mb-2" wire:ignore.self>
-                                                            <select class="form-select form-select-md"
-                                                                wire:change="updateCriticalDeviation({{ json_encode($item) }}, $event.target.value, 'dropdown')"
-                                                                name="dropdown{{ $item['id'] }}"
-                                                                id="dropdown{{ $item['id'] }}">
-                                                                <option value="0" {{ $item['dropdown'] == '' ? 'selected' : '' }}> Select deviation</option>
-                                                                @foreach ($item['dropdown'] as $dropdown)
-                                                                    <option value="{{ $dropdown['name'] }}"
-                                                                        {{ $dropdown['name'] === $item['saved_dropdown'] ? 'selected' : '' }}>
-                                                                        {{ $dropdown['name'] }}
-                                                                    </option>
-                                                                @endforeach
-                                                            </select>
-                                                        </div>
-                                                    </div>
-                                                    <div class="col-sm-12 col-md-6">
+                                                    @endif
+                                                    @if ($item['score_dropdown_id'])
                                                         <div class="mb-2" wire:ignore.self>
                                                             <select class="form-select form-select-md"
                                                                 wire:change="updateCriticalDeviation({{ json_encode($item) }},$event.target.value,'score')"
                                                                 name="dp_score{{ $item['id'] }}"
                                                                 id="dp_score{{ $item['id'] }}">
-                                                                <option value="0" {{ $item['score'] == '' ? 'selected' : '' }}> Select score</option>
+                                                                <option value="null"
+                                                                    {{ $item['score'] == '' ? 'selected' : '' }}> Select
+                                                                    score</option>
                                                                 @foreach ($score as $scores)
                                                                     <option value="{{ $scores['name'] }}"
                                                                         {{ $scores['name'] === $item['saved_score'] ? 'selected' : '' }}>
@@ -254,42 +273,13 @@
                                                                 @endforeach
                                                             </select>
                                                         </div>
-                                                    </div>
-                                                </div>
-                                            @endif
-                                            @if ($item['remarks'])
-                                                <div class="mb-2" wire:ignore.self>
-                                                    <textarea class="form-control"
-                                                        wire:change="updateCriticalDeviation({{ json_encode($item) }},$event.target.value,'remarks')"
-                                                        name="remarks{{ $item['id'] }}" id="remarks{{ $item['id'] }}" rows="2"
-                                                        placeholder="Enter remarks here...">{{ $item['saved_remarks'] }}</textarea>
-                                                </div>
-                                            @endif
-                                            @if ($item['score_dropdown_id'])
-                                                <div class="mb-2" wire:ignore.self>
-                                                    <select class="form-select form-select-md"
-                                                        wire:change="updateCriticalDeviation({{ json_encode($item) }},$event.target.value,'score')"
-                                                        name="dp_score{{ $item['id'] }}"
-                                                        id="dp_score{{ $item['id'] }}">
-                                                        <option value="null"
-                                                            {{ $item['score'] == '' ? 'selected' : '' }}> Select
-                                                            score</option>
-                                                        @foreach ($score as $scores)
-                                                            <option value="{{ $scores['name'] }}"
-                                                                {{ $scores['name'] === $item['saved_score'] ? 'selected' : '' }}>
-                                                                {{ $scores['name'] . '%' }}
-                                                            </option>
-                                                        @endforeach
-                                                    </select>
-                                                </div>
-                                            @endif
-                                        @endforeach
+                                                    @endif
+                                                @endforeach
+                                            </div>
+                                        </div>
                                     </div>
-                                </div>
+                                @endif
                             </div>
-                        @endif
-
-                        </div>
                         <div class="row">
                             @foreach ($category['sub_category'] as $sub_category)
                                 <div class="accordion mb-2" id="accordionCategory">
@@ -335,7 +325,8 @@
                                                                 <div class="col-sm-12 col-md-5 col-lg-5">
                                                                     <div class="form-check form-switch">
                                                                         <input class="form-check-input mb-2" type="checkbox" id="toggle-switch"
-                                                                            @checked($categoryList[$loop->parent->parent->index]['sub_category'][$loop->parent->index]['sub_sub_category'][$loop->index]['is_na']? false: true)>
+                                                                            wire:change="updateNA({{ $auditLabel['result_id']}},$event.target.checked ? 0 : 1)"
+                                                                            @checked($categoryList[$loop->parent->parent->index]['sub_category'][$loop->parent->index]['sub_sub_category'][$loop->index]['is_na'] ? false: true)>
                                                                         <label class="form-check-label "  @class(['pt-4' => $index == 0 ]) for="toggle-switch"> {{ $auditLabel['name'] }}</label>
                                                                     </div>
                                                                 </div>
@@ -348,7 +339,8 @@
                                                                     <input type="number" class="form-control text-center mb-2" @disabled($auditLabel['is_na'] ? true : false) 
                                                                         name="points{{ $auditLabel['id'] }}" 
                                                                         id="points{{ $auditLabel['id'] }}"
-                                                                        value="{{$categoryList[$loop->parent->parent->index]['sub_category'][$loop->parent->index]['sub_sub_category'][$loop->index]['points']}}"
+                                                                        value="{{$auditLabel['points']}}"
+                                                                        wire:change="updatePoints({{ $auditLabel['result_id']}}, $event.target.value)"
                                                                         min="{{ $auditLabel['is_all_nothing'] ? $auditLabel['bp'] : 0 }}" 
                                                                         max="{{ $auditLabel['is_all_nothing'] ? 0 : $auditLabel['bp'] }}">
                                                                 </div>
@@ -457,7 +449,6 @@
                                     </div>
                                 </div>
                             @endforeach
-
                         </div>
                     </div>
                 </div>

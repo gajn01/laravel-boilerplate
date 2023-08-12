@@ -14,8 +14,6 @@ use App\Models\AuditDate;
 use App\Models\Summary;
 
 use App\Models\AuditFormResult;
-
-
 use App\Models\Category;
 use App\Models\DropdownMenu;
 use App\Models\SubSubCategoryLabel as SubSubCategoryLabelModel;
@@ -37,6 +35,7 @@ class Form extends Component
     public AuditDate $auditDate;
     public Store $store;
     public Summary $summary;
+    public AuditFormResult $auditResult;
     public $score = [
         ['name' => '3'],
         ['name' => '5'],
@@ -71,6 +70,22 @@ class Form extends Component
     {
         $this->active_index = $index;
     }
+    #region Update Audit Score
+
+    public function updateNA($result_id,$value){
+        $this->auditResult = $this->getAuditResult($result_id);
+        $this->auditResult->is_na = $value;
+        $this->auditResult->save();
+    }
+    public function updatePoints($result_id,$value){
+        $this->auditResult = $this->getAuditResult($result_id);
+        $this->auditResult->sub_sub_point = $value;
+        $this->auditResult->save();
+    }
+    public function getAuditResult($result_id){
+        return $this->auditResult = AuditFormResult::find($result_id);
+    }
+    #endregion
     #region Set up Audit Forms
     public function mapCategory()
     {
@@ -79,56 +94,42 @@ class Form extends Component
             $category_id = $category->id;
             $saved_critical_score = 0;
             $total_base = 0;
-            $total_score = 0;
+            $total_points = 0;
+            $total_percent = 0;
             $category->critical_deviation = $this->mapDeviation($category_id, $category->critical_deviation_id);
-            $category->sub_category->transform(function ($subCategory) use ($category_id, &$total_base, &$total_score) {
+            $category->sub_category->transform(function ($subCategory) use ($category,$category_id, &$total_base, &$total_points,&$total_percent) {
                 $sub_category_id = $subCategory->id;
                 $subCategory->points = 0;
+                $sub_sub_category = $this->getSubSubCategory($subCategory, $category_id, $sub_category_id);
                 $total_base += $this->getTotalBp($subCategory);
+                $total_points += $this->getTotalScore($subCategory['is_sub'], $sub_sub_category);
+                if ($category_id == 2) {
+                    $total_percent += $this->getPercentage($category_id, $subCategory, $this->getTotalBp($subCategory), $this->getTotalScore($subCategory['is_sub'], $sub_sub_category));
+                } else {
+                    $total_percent = ($total_base == 0) ? 0 : round(($total_points / $total_base) * 100, 0);
+                }
                 $subCategoryData = [
-                    'id' => $subCategory->id,
-                    'is_sub' => $subCategory->is_sub,
-                    'name' => $subCategory->name,
+                    'id' => $subCategory['id'],
+                    'is_sub' => $subCategory['is_sub'],
+                    'name' => $subCategory['name'],
                     'total_base_per_category' => $this->getTotalBp($subCategory),
-                    'total_points_per_category' => 0,
+                    'total_points_per_category' => $this->getTotalScore($subCategory['is_sub'], $sub_sub_category),
+                    'total_percentage_per_category' => $this->getPercentage($category_id, $subCategory, $this->getTotalBp($subCategory), $this->getTotalScore($subCategory['is_sub'], $sub_sub_category)),
                     'total_base' => $total_base,
-                    'total_points' => $total_score,
-                    'total_score' => $total_score,
+                    'total_points' => $total_points,
+                    'total_percentage' => $total_percent - $this->mapDeviation($category_id, $category->critical_deviation_id)->sum('saved_score'),
                 ];
-                $subCategoryData['sub_sub_category'] = $this->getSubSubCategory($subCategory, $category_id, $sub_category_id);
-                $subCategoryData['total_points_per_category'] = $this->getTotalScore($subCategory->is_sub, $subCategoryData['sub_sub_category'] );
-                $total_score += $this->getTotalScore($subCategory->is_sub, $subCategoryData['sub_sub_category'] );
-
+                $subCategoryData['sub_sub_category'] = $sub_sub_category;
                 return $subCategoryData;
             });
         }
         return $data;
     }
-    public function getTotalScore($is_sub, $subCategory)
-    {
-        if ($is_sub == 0) {
-            return $subCategory->sum('points');
-        }else{
-            return $subCategory->flatMap(function ($item) {
-                return $item['sub_sub_sub_category'];
-            })->sum('points');
-        }
-    }
-    public function getTotalBp($subCategory)
-    {
-        if ($subCategory->is_sub == 0) {
-            return $subCategory->sub_sub_category->sum('bp');
-        } else {
-            return $subCategory->sub_sub_category->flatMap(function ($subSubCategory) {
-                return $subSubCategory->sub_sub_sub_category->pluck('bp');
-            })->sum();
-        }
-    }
     public function mapDeviation($category_id, $critical_deviation_id)
     {
         return $this->getDeviationList($critical_deviation_id)->transform(function ($deviation) use ($category_id, $critical_deviation_id) {
             if ($this->store->audit_status) {
-                $result = $this->getDeviationResult($category_id, $deviation->id, $critical_deviation_id);
+                $result = $this->getDeviationResultList($category_id, $deviation->id, $critical_deviation_id);
             }
             return [
                 'id' => $deviation->id,
@@ -152,7 +153,61 @@ class Form extends Component
             ];
         });
     }
-    public function getResult($category_id, $sub_category_id, $label_id)
+    public function getSubSubCategory($subCategory, $category_id, $sub_category_id)
+    {
+        $is_sub = $subCategory->is_sub;
+        return $subCategory->sub_sub_category->transform(function ($label) use ($is_sub, $category_id, $sub_category_id) {
+            $result = null;
+            if ($this->store->audit_status) {
+                $result = $this->getResultList($category_id, $sub_category_id, $label['id']);
+                if ($is_sub == 0) {
+                    if($result['is_na'] == 1){
+                        $result['sub_sub_point'] = 0;
+                        $label['bp'] = 0;
+                    }
+                }
+            }
+            $data = [
+                'id' => $label['id'],
+                'name' => $label['name'],
+                'bp' => $label['bp'],
+                'points' => $result ? $result['sub_sub_point'] : 0,
+                'result_id' =>$result ? $result['id'] : 0,
+            ];
+            if ($is_sub == 0) {
+                $data['is_all_nothing'] = $label['is_all_nothing'];
+                $data['remarks'] = $result ? $result['sub_sub_remarks'] : null;
+                $data['deviation'] = $result ? $result['sub_sub_deviation'] : null;
+                $data['is_na'] = $result['is_na'] ;
+                $data['dropdown'] = $this->getDropdownList($label['dropdown_id'] ?? null) ?? null;
+            } else {
+                $data['sub_sub_sub_category'] = $this->getSubSubSubCategory($label['sub_sub_sub_category'], $category_id, $sub_category_id, $label['id']);
+            }
+            return $data;
+        });
+    }
+    public function getSubSubSubCategory($sub_sub_sub_category, $category_id = null, $sub_category_id = null, $sub_sub_sub_category_id = null)
+    {
+        $sub_sub_sub_category->transform(function ($label) use ($category_id, $sub_category_id, $sub_sub_sub_category_id) {
+            if ($this->store->audit_status) {
+                $result = $this->getResultList($category_id, $sub_category_id, $sub_sub_sub_category_id);
+            }
+            return [
+                'id' => $label['id'],
+                'name' => $label['name'],
+                'bp' => $label['bp'],
+                'points' => $result ? $result['label_point'] : 0,
+                'result_id' =>$result ? $result['id'] : 0,
+                'is_all_nothing' => $label['is_all_nothing'],
+                'remarks' => $result ? $result['label_remarks'] : null,
+                'deviation' => $result ? $result['label_deviation'] : null,
+                'is_na' => $result['is_na'] ?? 0,
+                'dropdown' => $this->getDropdownList($label['dropdown_id'] ?? null) ?? null
+            ];
+        });
+        return $sub_sub_sub_category;
+    }
+    public function getResultList($category_id, $sub_category_id, $label_id)
     {
         return AuditFormResult::where('form_id', $this->auditForm->id)
             ->where('category_id', $category_id)
@@ -160,7 +215,7 @@ class Form extends Component
             ->where('sub_sub_category_id', $label_id)
             ->first();
     }
-    public function getDeviationResult($category_id, $deviation_id, $critical_deviation_id)
+    public function getDeviationResultList($category_id, $deviation_id, $critical_deviation_id)
     {
         return CriticalDeviationResult::where('form_id', $this->auditForm->id)
             ->where('category_id', $category_id)
@@ -168,52 +223,52 @@ class Form extends Component
             ->where('critical_deviation_id', $critical_deviation_id)
             ->first();
     }
-    public function getSubSubCategory($subCategory, $category_id, $sub_category_id)
+    public function getTotalBp($subCategory)
     {
-        $is_sub = $subCategory->is_sub;
-        $subCategory->sub_sub_category->transform(function ($label) use ($is_sub, $category_id, $sub_category_id) {
-            $result = null;
-            if ($this->store->audit_status) {
-                $result = $this->getResult($category_id, $sub_category_id, $label->id);
-            }
-            $data = [
-                'id' => $label->id,
-                'name' => $label->name,
-                'bp' => $label->bp,
-                'points' => $result ? $result['sub_sub_point'] : 0,
-            ];
-            if ($is_sub == 0) {
-                $data['is_all_nothing'] = $label->is_all_nothing;
-                $data['remarks'] = $result ? $result['sub_sub_remarks'] : null;
-                $data['deviation'] = $result ? $result['sub_sub_deviation'] : null;
-                $data['is_na'] = $result['is_na'] ?? 0;
-                $data['dropdown'] = $this->getDropdownList($label->dropdown_id) ?? null;
-            } else {
-                $data['sub_sub_sub_category'] = $this->getSubSubSubCategory($label->sub_sub_sub_category, $category_id, $sub_category_id, $label->id);
-            }
-            return $data;
-        });
-        return $subCategory->sub_sub_category;
+        if ($subCategory->is_sub == 0) {
+            return $subCategory['sub_sub_category']->sum('bp');
+        } else {
+            return $subCategory['sub_sub_category']->flatMap(function ($subSubCategory) {
+                return $subSubCategory['sub_sub_sub_category']->pluck('bp');
+            })->sum();
+        }
     }
-    public function getSubSubSubCategory($sub_sub_sub_category, $category_id = null, $sub_category_id = null, $sub_sub_sub_category_id = null)
+    public function getTotalScore($is_sub, $subCategory)
     {
-        $sub_sub_sub_category->transform(function ($label) use ($category_id, $sub_category_id, $sub_sub_sub_category_id) {
-            if ($this->store->audit_status) {
-                $result = $this->getResult($category_id, $sub_category_id, $sub_sub_sub_category_id);
-            }
-            return [
-                'id' => $label->id,
-                'name' => $label->name,
-                'bp' => $label->bp,
-                'points' => $result ? $result['label_point'] : 0,
-                'is_all_nothing' => $label->is_all_nothing,
-                'remarks' => $result ? $result['label_remarks'] : null,
-                'deviation' => $result ? $result['label_deviation'] : null,
-                'is_na' => $result['is_na'] ?? 0,
-                'dropdown' => $this->getDropdownList($label->dropdown_id) ?? null
-            ];
-        });
-        return $sub_sub_sub_category;
+        if ($is_sub == 0) {
+            return $subCategory->sum('points');
+        } else {
+            return $subCategory->flatMap(function ($item) {
+                return $item['sub_sub_sub_category'];
+            })->sum('points');
+        }
+    }
+    public function getPercentage($category_id, $subCategory, $total_base, $total_score)
+    {
+        $percent = 100;
+        switch ($subCategory->name) {
+            case 'Ensaymada':
+                $percent = 20;
+                break;
+            case 'Cheese roll':
+                $percent = 20;
+                break;
+            case 'Espresso':
+                $percent = 30;
+                break;
+            case 'Infused Water':
+                $percent = 10;
+                break;
+            case 'Cake Display':
+                $percent = 20;
+                break;
+        }
+        if($total_base == 0){
+            return 0;
+        }
+        $computeScore = $total_score / $total_base;
+        $getPercent = $computeScore * $percent;
+        return round(($getPercent), 0);
     }
     public function getDeviationList($deviation_id)
     {
@@ -228,7 +283,6 @@ class Form extends Component
         return Category::where('type', $this->store->type)->orderBy('type', 'DESC')->orderBy('order', 'ASC')->get();
     }
     #endregion
-
     #region intialization
     public function initialize()
     {
@@ -236,9 +290,9 @@ class Form extends Component
         $this->auditForm = new AuditForm;
         $this->auditDate = new AuditDate;
         $this->summary = new Summary;
+        $this->auditResult = new AuditFormResult;
     }
     #endregion
-
     #region Update Audit form,date,summary
     public function onUpdateStatus()
     {
