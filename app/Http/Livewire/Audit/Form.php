@@ -71,8 +71,8 @@ class Form extends Component
         $this->active_index = $index;
     }
     #region Update Audit Score
-
     public function updateNA($data,$value){
+        $this->checkStatus();
         $this->auditResult = $this->getAuditResult($data['result_id']);
         $this->auditResult->is_na = $value;
         $this->auditResult->save();
@@ -96,6 +96,11 @@ class Form extends Component
     }
     public function getAuditResult($result_id){
         return  AuditFormResult::find($result_id);
+    }
+    public function checkStatus(){
+        if ($this->store->audit_status == 0) {
+            return;
+        }
     }
     #endregion
     #region Set up Audit Forms
@@ -139,7 +144,8 @@ class Form extends Component
     }
     public function mapDeviation($category_id, $critical_deviation_id)
     {
-        return $this->getDeviationList($critical_deviation_id)->transform(function ($deviation) use ($category_id, $critical_deviation_id) {
+        $result = null;
+        return $this->getDeviationList($critical_deviation_id)->transform(function ($deviation) use ($category_id, $critical_deviation_id,$result) {
             if ($this->store->audit_status) {
                 $result = $this->getDeviationResultList($category_id, $deviation->id, $critical_deviation_id);
             }
@@ -172,11 +178,9 @@ class Form extends Component
             $result = null;
             if ($this->store->audit_status) {
                 $result = $this->getResultList($category_id, $sub_category_id, $label['id']);
-                if ($is_sub == 0) {
-                    if($result['is_na'] == 1){
-                        $result['sub_sub_point'] = 0;
-                        $label['bp'] = 0;
-                    }
+                if ($is_sub == 0 && $result && $result['is_na'] == 1) {
+                    $result['sub_sub_point'] = 0;
+                    $label['bp'] = 0;
                 }
             }
             $data = [
@@ -190,7 +194,7 @@ class Form extends Component
                 $data['is_all_nothing'] = $label['is_all_nothing'];
                 $data['remarks'] = $result ? $result['sub_sub_remarks'] : null;
                 $data['deviation'] = $result ? $result['sub_sub_deviation'] : null;
-                $data['is_na'] = $result['is_na'] ;
+                $data['is_na'] = $result ? $result['is_na'] : 0 ;
                 $data['dropdown'] = $this->getDropdownList($label['dropdown_id'] ?? null) ?? null;
             } else {
                 $data['sub_sub_sub_category'] = $this->getSubSubSubCategory($label['sub_sub_sub_category'], $category_id, $sub_category_id, $label['id']);
@@ -200,10 +204,11 @@ class Form extends Component
     }
     public function getSubSubSubCategory($sub_sub_sub_category, $category_id = null, $sub_category_id = null, $sub_sub_sub_category_id = null)
     {
-        $sub_sub_sub_category->transform(function ($label) use ($category_id, $sub_category_id, $sub_sub_sub_category_id) {
+        $result = null;
+        $sub_sub_sub_category->transform(function ($label) use ($category_id, $sub_category_id, $sub_sub_sub_category_id,$result) {
             if ($this->store->audit_status) {
                 $result = $this->getResultList($category_id, $sub_category_id, $sub_sub_sub_category_id,$label->id);
-                if($result['is_na'] == 1){
+                if ($result && $result['is_na'] == 1) {
                     $result['label_point'] = 0;
                     $label['bp'] = 0;
                 }
@@ -217,7 +222,7 @@ class Form extends Component
                 'is_all_nothing' => $label['is_all_nothing'],
                 'remarks' => $result ? $result['label_remarks'] : null,
                 'deviation' => $result ? $result['label_deviation'] : null,
-                'is_na' => $result['is_na'] ,
+                'is_na' => $result ?  $result['is_na'] :0 ,
                 'dropdown' => $this->getDropdownList($label['dropdown_id'] ?? null) ?? null
             ];
         });

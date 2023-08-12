@@ -325,6 +325,7 @@
                                                                 <div class="col-sm-12 col-md-5 col-lg-5">
                                                                     <div class="form-check form-switch">
                                                                         <input class="form-check-input mb-2" type="checkbox" id="toggle-switch"
+                                                                            @disabled( $store->audit_status == 0 ? true : false)
                                                                             wire:change="updateNA({{ json_encode($auditLabel)}},$event.target.checked ? 0 : 1)"
                                                                             @checked($categoryList[$loop->parent->parent->index]['sub_category'][$loop->parent->index]['sub_sub_category'][$loop->index]['is_na'] ? false: true)>
                                                                         <label class="form-check-label "  @class(['pt-4' => $index == 0 ]) for="toggle-switch"> {{ $auditLabel['name'] }}</label>
@@ -336,7 +337,7 @@
                                                                         value="{{ $auditLabel['is_all_nothing'] ? $auditLabel['bp'] . '*' : $auditLabel['bp'] }}">
                                                                 </div>
                                                                 <div class="col-sm-12 col-md-1">
-                                                                    <input type="number" class="form-control text-center mb-2" @disabled($auditLabel['is_na'] ? true : false) 
+                                                                    <input type="number" class="form-control text-center mb-2" @disabled($auditLabel['is_na'] == 1 || $store->audit_status == 0 ? true : false) 
                                                                         name="points{{ $auditLabel['id'] }}" 
                                                                         id="points{{ $auditLabel['id'] }}"
                                                                         value="{{$auditLabel['points']}}"
@@ -346,13 +347,13 @@
                                                                 </div>
                                                                 <div class="col-sm-12 col-md-3  mb-2 {{ $auditLabel['dropdown'] ? 'col-md-3' : 'col-md-5' }}">
                                                                     <textarea class="form-control" wire:change="updateRemarks({{$sub_category['is_sub']}},{{$auditLabel['result_id']}}, $event.target.value)"
-                                                                    @disabled($auditLabel['is_na'] ? true : false) name="remarks" id="remarks" rows="1">{{$auditLabel['remarks']}}</textarea>
+                                                                    @disabled($auditLabel['is_na'] == 1 || $store->audit_status == 0  ? true : false) name="remarks" id="remarks" rows="1">{{$auditLabel['remarks']}}</textarea>
                                                                 </div>
                                                                 @if (!empty($auditLabel['dropdown']))
                                                                 <div class="col-sm-12 col-md-2 {{ $auditLabel['dropdown'] ? '' : 'd-none' }}">
                                                                     <select class="form-select form-select-md" 
                                                                     wire:change="updateDeviation({{$sub_category['is_sub']}},{{$auditLabel['result_id']}}, $event.target.value)"
-                                                                    @disabled($auditLabel['is_na'] ? true : false) name="tag{{ $auditLabel['name'] }}" id="tag">
+                                                                    @disabled($auditLabel['is_na'] == 1 || $store->audit_status == 0  ? true : false) name="tag{{ $auditLabel['name'] }}" id="tag">
                                                                         <option value="null"> Select a deviation </option>
                                                                         @foreach ($auditLabel['dropdown'] as $result)
                                                                             @isset($result['name'])
@@ -406,6 +407,7 @@
                                                                 <div class="col-sm-12 col-md-5 col-lg-5">
                                                                     <div class="form-check form-switch">
                                                                         <input class="form-check-input mb-2" type="checkbox" id="toggle-switch"
+                                                                        @disabled( $store->audit_status == 0 ? true : false)
                                                                         wire:change="updateNA({{ json_encode($sub_sub_sub_category)}},$event.target.checked ? 0 : 1)"
                                                                         @checked($sub_sub_sub_category['is_na']? false: true)>
                                                                         <label class="form-check-label "  @class(['pt-4' => $index == 0 ]) for="toggle-switch"> {{ $sub_sub_sub_category['name'] }}</label>
@@ -417,7 +419,8 @@
                                                                             value="{{ $sub_sub_sub_category['is_all_nothing'] ? $sub_sub_sub_category['bp'] . '*' : $sub_sub_sub_category['bp'] }}">
                                                                     </div>
                                                                     <div class="col-sm-12 col-md-1">
-                                                                        <input type="number" class="form-control text-center mb-2" @disabled($sub_sub_sub_category['is_na'] ? true : false) 
+                                                                        <input type="number" class="form-control text-center mb-2" 
+                                                                        @disabled($sub_sub_sub_category['is_na'] == 1 || $store->audit_status == 0  ? true : false) 
                                                                             name="points{{ $sub_sub_sub_category['id'] }}" 
                                                                             id="points{{ $sub_sub_sub_category['id'] }}"
                                                                             value="{{$sub_sub_sub_category['points']}}"
@@ -428,13 +431,13 @@
                                                                     <div class="col-sm-12 col-md-3  mb-2 {{ $sub_sub_sub_category['dropdown'] ? 'col-md-3' : 'col-md-5' }}">
                                                                         <textarea class="form-control"
                                                                         wire:change="updateRemarks({{$sub_category['is_sub']}},{{$sub_sub_sub_category['result_id']}}, $event.target.value)"
-                                                                        @disabled($sub_sub_sub_category['is_na'] ? true : false) name="remarks" id="remarks" rows="1">{{$sub_sub_sub_category['remarks']}}</textarea>
+                                                                        @disabled($sub_sub_sub_category['is_na'] == 1 || $store->audit_status == 0  ? true : false) name="remarks" id="remarks" rows="1">{{$sub_sub_sub_category['remarks']}}</textarea>
                                                                     </div>
                                                                     @if (!empty($sub_sub_sub_category['dropdown']))
                                                                         <div class="col-sm-12 col-md-2 {{ $sub_sub_sub_category['dropdown'] ? '' : 'd-none' }}">
                                                                             <select class="form-select form-select-md" 
                                                                             wire:change="updateDeviation({{$sub_category['is_sub']}},{{$sub_sub_sub_category['result_id']}}, $event.target.value)"
-                                                                            @disabled($sub_sub_sub_category['is_na'] ? true : false) name="tag{{ $sub_sub_sub_category['name'] }}" id="tag">
+                                                                            @disabled($sub_sub_sub_category['is_na'] == 1 || $store->audit_status == 0  ? true : false) name="tag{{ $sub_sub_sub_category['name'] }}" id="tag">
                                                                                 <option value="null"> Select a deviation </option>
                                                                                 @foreach ($sub_sub_sub_category['dropdown'] as $result)
                                                                                     @isset($result['name'])
