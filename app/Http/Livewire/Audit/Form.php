@@ -21,7 +21,7 @@ use App\Models\SanitaryModel;
 use App\Models\CriticalDeviationMenu;
 use App\Models\CriticalDeviationResult;
 
-use App\Models\ServiceSpeed as ServiceSpeedModel;
+use App\Models\ServiceSpeed;
 use DateTime;
 use DateTimeZone;
 
@@ -31,17 +31,14 @@ class Form extends Component
     private $timezone, $time, $date_today;
     public $active_index = 0;
     public $sanitary_list;
+    public $cashier_tat,$server_cat;
     public AuditForm $auditForm;
     public AuditDate $auditDate;
     public Store $store;
     public Summary $summary;
     public AuditFormResult $auditResult;
-    public $score = [
-        ['name' => '3'],
-        ['name' => '5'],
-        ['name' => '10'],
-        ['name' => '15']
-    ];
+    public ServiceSpeed $serviceSpeed;
+    public $score = [['name' => '3'],['name' => '5'],['name' => '10'],['name' => '15']];
     public function __construct()
     {
         $this->timezone = new DateTimeZone('Asia/Manila');
@@ -56,6 +53,9 @@ class Form extends Component
     }
     public function render()
     {
+        $service = $this->getService();
+        $this->cashier_tat = $service->where('is_cashier', 1);
+        $this->server_cat = $service->where('is_cashier', 0);
         $this->auditDate = AuditDate::where('store_id', $this->store->id)->where('audit_date', $this->date_today)->first();
         $this->auditForm = AuditForm::where('store_id', $this->store->id)->where('date_of_visit', $this->date_today)->first();
         $category = $this->mapCategory();
@@ -70,6 +70,40 @@ class Form extends Component
     {
         $this->active_index = $index;
     }
+    #region intialization
+    public function initialize()
+    {
+        $this->store = new Store;
+        $this->auditForm = new AuditForm;
+        $this->auditDate = new AuditDate;
+        $this->summary = new Summary;
+        $this->auditResult = new AuditFormResult;
+        $this->serviceSpeed = new ServiceSpeed;
+    }
+    #endregion
+    #region service , speed and accuracy
+    public function getService(){
+        return ServiceSpeed::where('form_id', $this->auditForm->id)
+        ->whereIn('is_cashier', [0, 1])
+        ->get();
+    }
+    public function addService($id = null){
+        $data = ['form_id' => $this->auditForm->id, 'is_cashier' => $id, 'name' => null, 'time' => null, 'product_order' => null, 'ot' => null, 'base_assembly_points' => 1, 'assembly_points' => 1, 'tat' => null, 'base_tat_points' => 1, 'tat_points' => 1, 'fst' => null, 'base_fst_points' => 3, 'fst_points' => 3, 'remarks' => null, 'serving_time' => '5'];
+        ServiceSpeed::create($data);
+    }
+
+    public function updateService(){
+     /*    $query = ServiceSpeed::find($data['id']);
+        if ($query) {
+            if ($value >= 0) {
+                $newValue = isset($data['base_' . $key]) && intval($value) > $data['base_' . $key] ? $data['base_' . $key] : $value;
+                $query->update([
+                    $key => $newValue
+                ]);
+            }
+        } */
+    }
+    #endregion
     #region Update Audit Score
     public function updateNA($data,$value){
         $this->checkStatus();
@@ -305,16 +339,6 @@ class Form extends Component
     public function getCategoryList()
     {
         return Category::where('type', $this->store->type)->orderBy('type', 'DESC')->orderBy('order', 'ASC')->get();
-    }
-    #endregion
-    #region intialization
-    public function initialize()
-    {
-        $this->store = new Store;
-        $this->auditForm = new AuditForm;
-        $this->auditDate = new AuditDate;
-        $this->summary = new Summary;
-        $this->auditResult = new AuditFormResult;
     }
     #endregion
     #region Update Audit form,date,summary

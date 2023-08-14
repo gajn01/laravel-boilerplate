@@ -292,6 +292,7 @@
                                         <div id="accrod{{ $sub_category['id'] }}"class="accordion-collapse collapse show"  aria-labelledby="accrod{{ $sub_category['id'] }}" data-bs-parent="#accordionCategory">
                                             <div class="accordion-body">
                                                 @foreach ($sub_category['sub_sub_category'] as $index => $auditLabel)
+
                                                 {{-- NO sub_sub_sub_category --}}
                                                     @if ($sub_category['is_sub'] == 0)
                                                         {{-- Deviation Header --}}
@@ -370,11 +371,30 @@
                                                         </div>
                                                     @else
                                                         {{-- Deviation Header --}}
-                                                            <div class="row mb-3">
+                                                            <div class="row mb-2">
                                                                 <div class="col-12">
                                                                     <label class="form-check-label fw-bold " @class(['pt-4' => $index == 0 ]) for="toggle-switch"> {{ $auditLabel['name'] }}</label>
                                                                 </div>
                                                             </div>
+                                                            @if ($auditLabel['name'] == 'Cashier TAT')
+                                                                <div class="row">
+                                                                    <div class="col-12">
+                                                                        <svg class="icon" wire:click="addService(1)" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512">
+                                                                            <path d="M256 80c0-17.7-14.3-32-32-32s-32 14.3-32 32V224H48c-17.7 0-32 14.3-32 32s14.3 32 32 32H192V432c0 17.7 14.3 32 32 32s32-14.3 32-32V288H400c17.7 0 32-14.3 32-32s-14.3-32-32-32H256V80z" />
+                                                                        </svg>
+                                                                        <a class="btn app-btn-primary float-right" wire:ignore role="button" wire:click="setTime(0)">Set</a>
+                                                                    </div>
+                                                                </div>
+                                                            @elseif($auditLabel['name'] == 'Server CAT')
+                                                                <div class="row">
+                                                                    <div class="col-12">
+                                                                        <svg class="icon" wire:click="addService(0)" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512">
+                                                                            <path d="M256 80c0-17.7-14.3-32-32-32s-32 14.3-32 32V224H48c-17.7 0-32 14.3-32 32s14.3 32 32 32H192V432c0 17.7 14.3 32 32 32s32-14.3 32-32V288H400c17.7 0 32-14.3 32-32s-14.3-32-32-32H256V80z" />
+                                                                        </svg>
+                                                                        <a class="btn app-btn-primary float-right" wire:ignore role="button" wire:click="setTime(0)">Set</a>
+                                                                    </div>
+                                                                </div>
+                                                            @endif
                                                         @foreach ($auditLabel['sub_sub_sub_category'] as $index => $sub_sub_sub_category)
                                                             {{-- Deviation Label --}}
                                                                 <div class="row mb-2">
