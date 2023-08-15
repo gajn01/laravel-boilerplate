@@ -10,20 +10,14 @@
     <div class="page-utilities mb-3">
         <div class="row g-2 justify-content-start justify-content-md-end align-items-center">
             <div class="col-auto mb-3">
-                <a class="btn app-btn-primary"
-                    href="{{ route('audit.view.summary', [$store->id, $summary->id]) }}">Executive Summary</a>
+                <a class="btn app-btn-primary" href="{{ route('audit.view.summary', [$store->id, $summary->id]) }}">Executive Summary</a>
             </div>
         </div>
     </div>
     <nav wire:ignore
         id="audit-form-tab"class="audit-form-tab app-nav-tabs nav shadow-sm flex-column flex-sm-row mb-4 justify-content-center nav-sticky">
         @forelse ($categoryList as $key => $data)
-            <a @class([
-                'flex-sm-fill',
-                'text-sm-center',
-                'nav-link',
-                'active' => $key == $active_index,
-            ]) id="cat{{ $data->id }}-tab" data-bs-toggle="tab"
+            <a @class(['flex-sm-fill', 'text-sm-center', 'nav-link','active' => $key == $active_index,]) id="cat{{ $data->id }}-tab" data-bs-toggle="tab"
                 wire:click="setActive({{ $key }})" href="#cat{{ $data->id }}" role="tab"
                 aria-controls="cat{{ $data->id }}" aria-selected="{{ $key == $active_index ? 'true' : 'false' }}">
                 {{ $data->name }}
@@ -35,8 +29,7 @@
     <a href="#">
         <div class="floating-btn">
             <svg class="icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512">
-                <path
-                    d="M182.6 137.4c-12.5-12.5-32.8-12.5-45.3 0l-128 128c-9.2 9.2-11.9 22.9-6.9 34.9s16.6 19.8 29.6 19.8H288c12.9 0 24.6-7.8 29.6-19.8s2.2-25.7-6.9-34.9l-128-128z" />
+                <path d="M182.6 137.4c-12.5-12.5-32.8-12.5-45.3 0l-128 128c-9.2 9.2-11.9 22.9-6.9 34.9s16.6 19.8 29.6 19.8H288c12.9 0 24.6-7.8 29.6-19.8s2.2-25.7-6.9-34.9l-128-128z" />
             </svg>
         </div>
     </a>
@@ -145,15 +138,11 @@
                                 <div class="accordion mb-2" id="accordionCategory">
                                     <div class="accordion-item">
                                         <h2 class="accordion-header" id="{{ $sub_category['name'] }}">
-                                            <button class="accordion-button" type="button" data-bs-toggle="collapse"
-                                                data-bs-target="#accrod{{ $sub_category['id'] }}" aria-expanded="true"
-                                                aria-controls="accrod{{ $sub_category['id'] }}">
+                                            <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#accrod{{ $sub_category['id'] }}" aria-expanded="true" aria-controls="accrod{{ $sub_category['id'] }}">
                                                 <h6 class="card-title product-name">{{ $sub_category['name'] }}</h6>
                                             </button>
                                         </h2>
-                                        <div id="accrod{{ $sub_category['id'] }}"class="accordion-collapse collapse show"
-                                            aria-labelledby="accrod{{ $sub_category['id'] }}"
-                                            data-bs-parent="#accordionCategory">
+                                        <div id="accrod{{ $sub_category['id'] }}"class="accordion-collapse collapse show" aria-labelledby="accrod{{ $sub_category['id'] }}" data-bs-parent="#accordionCategory">
                                             <div class="accordion-body">
                                                 @if ($sub_category['is_sub'] == 0)
                                                     <div class="table-responsive">
@@ -161,6 +150,7 @@
                                                             <thead>
                                                                 <tr>
                                                                     <th scope="col"></th>
+                                                                    <th class="text-center" scope="col">BP</th>
                                                                     <th class="text-center" scope="col">Score</th>
                                                                     <th class="text-center" scope="col">Remarks</th>
                                                                     <th class="text-center" scope="col">Deviation
@@ -180,6 +170,8 @@
                                                                             </span>
                                                                         </td>
                                                                         <td class="text-center">
+                                                                            {{ $auditLabel['bp'] }}
+                                                                        <td class="text-center">
                                                                             {{ $auditLabel['points'] != null ? $auditLabel['points'] : '0' }}
                                                                         </td>
                                                                         <td class="text-center">
@@ -196,92 +188,93 @@
                                                 @else
                                                     @foreach ($sub_category['sub_sub_category'] as $index => $auditLabel)
                                                         @if ($auditLabel['name'] == 'Cashier TAT')
-                                                            <table class="table ">
-                                                                <thead>
-                                                                    <tr>
-                                                                        <th>Name</th>
-                                                                        <th>Time</th>
-                                                                        <th>Product Ordered</th>
-                                                                        <th>OT</th>
-                                                                        <th>Assembly</th>
-                                                                        <th>Assembly Points</th>
-                                                                        <th>TAT</th>
-                                                                        <th>TAT Points</th>
-                                                                        <th>FST</th>
-                                                                        <th>FST Points</th>
-                                                                        <th>Serving Time</th>
-                                                                        <th>Remarks</th>
-                                                                    </tr>
-                                                                </thead>
-                                                                <tbody>
-                                                                    @foreach ($cashier_tat as $item)
-                                                                        <tr class="">
-                                                                            <td>{{ $item->name }}</td>
-                                                                            <td>{{ $item->time }}</td>
-                                                                            <td>{{ $item->product_ordered }}</td>
-                                                                            <td>{{ $item->ot }}</td>
-                                                                            <td>{{ $item->assembly }}</td>
-                                                                            <td>{{ $item->assembly_points }}</td>
-                                                                            <td>{{ $item->tat }}</td>
-                                                                            <td>{{ $item->tat_points }}</td>
-                                                                            <td>{{ $item->fst }}</td>
-                                                                            <td>{{ $item->fst_points }}</td>
-                                                                            <td>{{ $item->serving_time }}</td>
-                                                                            <td>{{ $item->remarks }}</td>
+                                                            <div class="table-responsive">
+                                                                <table class="table ">
+                                                                    <thead>
+                                                                        <tr>
+                                                                            <th>Name</th>
+                                                                            <th>Time</th>
+                                                                            <th>Product Ordered</th>
+                                                                            <th>OT</th>
+                                                                            <th>Assembly</th>
+                                                                            <th>Assembly Points</th>
+                                                                            <th>TAT</th>
+                                                                            <th>TAT Points</th>
+                                                                            <th>FST</th>
+                                                                            <th>FST Points</th>
+                                                                            <th>Serving Time</th>
+                                                                            <th>Remarks</th>
                                                                         </tr>
-                                                                    @endforeach
-                                                                </tbody>
-                                                            </table>
+                                                                    </thead>
+                                                                    <tbody>
+                                                                        @foreach ($cashier_tat as $item)
+                                                                            <tr class="">
+                                                                                <td>{{ $item->name }}</td>
+                                                                                <td>{{ $item->time }}</td>
+                                                                                <td>{{ $item->product_ordered }}</td>
+                                                                                <td>{{ $item->ot }}</td>
+                                                                                <td>{{ $item->assembly }}</td>
+                                                                                <td>{{ $item->assembly_points }}</td>
+                                                                                <td>{{ $item->tat }}</td>
+                                                                                <td>{{ $item->tat_points }}</td>
+                                                                                <td>{{ $item->fst }}</td>
+                                                                                <td>{{ $item->fst_points }}</td>
+                                                                                <td>{{ $item->serving_time }}</td>
+                                                                                <td>{{ $item->remarks }}</td>
+                                                                            </tr>
+                                                                        @endforeach
+                                                                    </tbody>
+                                                                </table>
+                                                            </div>
                                                         @elseif($auditLabel['name'] == 'Server CAT')
-                                                            <table class="table ">
-                                                                <thead>
-                                                                    <tr>
-                                                                        <th>Name</th>
-                                                                        <th>Time</th>
-                                                                        <th>Product Ordered</th>
-                                                                        <th>OT</th>
-                                                                        <th>Assembly</th>
-                                                                        <th>Assembly Points</th>
-                                                                        <th>CAT</th>
-                                                                        <th>CAT Points</th>
-                                                                        <th>FST</th>
-                                                                        <th>FST Points</th>
-                                                                        <th>Serving Time</th>
-                                                                        <th>Remarks</th>
-                                                                    </tr>
-                                                                </thead>
-                                                                <tbody>
-                                                                    @foreach ($server_cat as $item)
-                                                                        <tr class="">
-                                                                            <td>{{ $item->name }}</td>
-                                                                            <td>{{ $item->time }}</td>
-                                                                            <td>{{ $item->product_ordered }}</td>
-                                                                            <td>{{ $item->ot }}</td>
-                                                                            <td>{{ $item->assembly }}</td>
-                                                                            <td>{{ $item->assembly_points }}</td>
-                                                                            <td>{{ $item->tat }}</td>
-                                                                            <td>{{ $item->tat_points }}</td>
-                                                                            <td>{{ $item->fst }}</td>
-                                                                            <td>{{ $item->fst_points }}</td>
-                                                                            <td>{{ $item->serving_time }}</td>
-                                                                            <td>{{ $item->remarks }}</td>
+                                                            <div class="table-responsive">
+                                                                <table class="table ">
+                                                                    <thead>
+                                                                        <tr>
+                                                                            <th>Name</th>
+                                                                            <th>Time</th>
+                                                                            <th>Product Ordered</th>
+                                                                            <th>OT</th>
+                                                                            <th>Assembly</th>
+                                                                            <th>Assembly Points</th>
+                                                                            <th>CAT</th>
+                                                                            <th>CAT Points</th>
+                                                                            <th>FST</th>
+                                                                            <th>FST Points</th>
+                                                                            <th>Serving Time</th>
+                                                                            <th>Remarks</th>
                                                                         </tr>
-                                                                    @endforeach
-                                                                </tbody>
-                                                            </table>
+                                                                    </thead>
+                                                                    <tbody>
+                                                                        @foreach ($server_cat as $item)
+                                                                            <tr class="">
+                                                                                <td>{{ $item->name }}</td>
+                                                                                <td>{{ $item->time }}</td>
+                                                                                <td>{{ $item->product_ordered }}</td>
+                                                                                <td>{{ $item->ot }}</td>
+                                                                                <td>{{ $item->assembly }}</td>
+                                                                                <td>{{ $item->assembly_points }}</td>
+                                                                                <td>{{ $item->tat }}</td>
+                                                                                <td>{{ $item->tat_points }}</td>
+                                                                                <td>{{ $item->fst }}</td>
+                                                                                <td>{{ $item->fst_points }}</td>
+                                                                                <td>{{ $item->serving_time }}</td>
+                                                                                <td>{{ $item->remarks }}</td>
+                                                                            </tr>
+                                                                        @endforeach
+                                                                    </tbody>
+                                                                </table>
+                                                            </div>
                                                         @else
                                                             <div class="table-responsive">
                                                                 <table class="table mb-3">
                                                                     <thead>
                                                                         <tr>
-                                                                            <th scope="col">
-                                                                                {{ $auditLabel['name'] }} </th>
-                                                                            <th class="text-center" scope="col">
-                                                                                Score</th>
-                                                                            <th class="text-center" scope="col">
-                                                                                Remarks</th>
-                                                                            <th class="text-center" scope="col">
-                                                                                Deviation</th>
+                                                                            <th scope="col"> {{ $auditLabel['name'] }} </th>
+                                                                            <th class="text-center" scope="col"> BP</th>
+                                                                            <th class="text-center" scope="col"> Score</th>
+                                                                            <th class="text-center" scope="col"> Remarks</th>
+                                                                            <th class="text-center" scope="col">  Deviation</th>
                                                                         </tr>
                                                                     </thead>
                                                                     @foreach ($auditLabel['sub_sub_sub_category'] as $index => $sub_sub_sub_category)
@@ -291,11 +284,12 @@
                                                                                     <span>
                                                                                         {{ $sub_sub_sub_category['name'] }}
                                                                                         @if ($sub_sub_sub_category['is_all_nothing'])
-                                                                                            <span
-                                                                                                class="text-danger text-small">
-                                                                                                (all or nothing)</span>
+                                                                                            <span class="text-danger text-small">(all or nothing)</span>
                                                                                         @endif
                                                                                     </span>
+                                                                                </td>
+                                                                                <td class="text-center">
+                                                                                    {{ $sub_sub_sub_category['bp'] }}
                                                                                 </td>
                                                                                 <td class="text-center">
                                                                                     {{ $sub_sub_sub_category['points'] != null ? $sub_sub_sub_category['points'] : '0' }}
@@ -327,5 +321,4 @@
             <p class="m-0 p-2">No category found!</p>
         @endforelse
     </div>
-
 </div>
