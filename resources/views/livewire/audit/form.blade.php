@@ -121,9 +121,7 @@
                                                                         wire:change="updateCriticalDeviation({{ json_encode($item) }},$event.target.value,'sd')"
                                                                         name="sd{{ $item['id'] }}"
                                                                         id="sd{{ $item['id'] }}">
-                                                                        <option value="0"
-                                                                            {{ $item['saved_sd'] == '' ? 'selected' : '' }}>
-                                                                            Select sd</option>
+                                                                        <option value="0" {{ $item['saved_sd'] == '' ? 'selected' : '' }}> Select sd</option>
                                                                         @forelse ($sanitary_list as $sanitation)
                                                                             <option value="{{ $sanitation->code }}"
                                                                                 {{ $sanitation->code === $item['saved_sd'] ? 'selected' : '' }}>
@@ -180,9 +178,7 @@
                                                                         wire:change="updateCriticalDeviation({{ json_encode($item) }},$event.target.value,'product')"
                                                                         name="product{{ $item['id'] }}"
                                                                         id="product{{ $item['id'] }}">
-                                                                        <option value="0"
-                                                                            {{ $item['product'] == '' ? 'selected' : '' }}>
-                                                                            Select product</option>
+                                                                        <option value="0"  {{ $item['product'] == '' ? 'selected' : '' }}>  Select product</option>
                                                                         @foreach ($item['product'] as $product_dropdown)
                                                                             <option value="{{ $product_dropdown['name'] }}"
                                                                                 {{ $product_dropdown['name'] === $item['saved_product'] ? 'selected' : '' }}>
@@ -198,9 +194,7 @@
                                                                         wire:change="updateCriticalDeviation({{ json_encode($item) }},$event.target.value,'score')"
                                                                         name="product_score{{ $item['id'] }}"
                                                                         id="product_score{{ $item['id'] }}">
-                                                                        <option value="0"
-                                                                            {{ $item['score'] == '' ? 'selected' : '' }}>
-                                                                            Select score</option>
+                                                                        <option value="0" {{ $item['score'] == '' ? 'selected' : '' }}>  Select score</option>
                                                                         @foreach ($score as $scores)
                                                                             <option value="{{ $scores['name'] }}"
                                                                                 {{ $scores['name'] === $item['saved_score'] ? 'selected' : '' }}>
@@ -262,9 +256,7 @@
                                                                 wire:change="updateCriticalDeviation({{ json_encode($item) }},$event.target.value,'score')"
                                                                 name="dp_score{{ $item['id'] }}"
                                                                 id="dp_score{{ $item['id'] }}">
-                                                                <option value="null"
-                                                                    {{ $item['score'] == '' ? 'selected' : '' }}> Select
-                                                                    score</option>
+                                                                <option value="0"  {{ $item['score'] == '' ? 'selected' : '' }}> Select score</option>
                                                                 @foreach ($score as $scores)
                                                                     <option value="{{ $scores['name'] }}"
                                                                         {{ $scores['name'] === $item['saved_score'] ? 'selected' : '' }}>
