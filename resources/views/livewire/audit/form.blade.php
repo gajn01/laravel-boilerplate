@@ -14,18 +14,14 @@
                 @if ($auditDate->is_complete == 0)
                     <a class="btn app-btn-primary" wire:click="onStartAudit"> Start Audit</a>
                 @else
-                    <a class="btn app-btn-primary" href="{{ route('audit.view.result', [$store->id, 3]) }}"> Result</a>
+                    <a class="btn app-btn-primary" href="{{ route('audit.view.result', [$store->id, $this->summary->id]) }}"> Result</a>
                 @endif
             </div>
         </div>
     </div>
     <nav wire:ignore id="audit-form-tab"class="audit-form-tab app-nav-tabs nav shadow-sm flex-column flex-sm-row mb-4 justify-content-center nav-sticky">
         @forelse ($categoryList as $key => $data)
-            <a @class([
-                'flex-sm-fill',
-                'text-sm-center',
-                'nav-link',
-                'active' => $key == $active_index,
+            <a @class(['flex-sm-fill','text-sm-center','nav-link','active' => $key == $active_index,
             ]) id="cat{{ $data->id }}-tab" data-bs-toggle="tab"
                 wire:click="setActive({{ $key }})" href="#cat{{ $data->id }}" role="tab"
                 aria-controls="cat{{ $data->id }}"

@@ -3,7 +3,6 @@
 namespace App\Http\Livewire\Audit;
 
 use Livewire\Component;
-/*  */
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Facades\Auth;
 use App\Helpers\CustomHelper;
@@ -12,15 +11,12 @@ use App\Models\Store;
 use App\Models\AuditForm;
 use App\Models\AuditDate;
 use App\Models\Summary;
-
 use App\Models\AuditFormResult;
 use App\Models\Category;
 use App\Models\DropdownMenu;
-use App\Models\SubSubCategoryLabel as SubSubCategoryLabelModel;
 use App\Models\SanitaryModel;
 use App\Models\CriticalDeviationMenu;
 use App\Models\CriticalDeviationResult;
-
 use App\Models\ServiceSpeed;
 use DateTime;
 use DateTimeZone;
@@ -59,6 +55,7 @@ class Form extends Component
         $service = $this->getService();
         $this->cashier_tat = $service->where('is_cashier', 1);
         $this->server_cat = $service->where('is_cashier', 0);
+        $this->summary = Summary::where('form_id', $this->auditForm->id)->where('store_id', $this->store->id) ->where('date_of_visit', $this->date_today)->first();
         $category = $this->mapCategory();
         return view('livewire.audit.form', ['categoryList' => $category])->extends('layouts.app');
     }

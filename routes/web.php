@@ -57,8 +57,8 @@ Route::middleware(['auth','verified'])->group(function () {
      Route::prefix('result/{store_id?}')->group(function () {
          Route::get('/', AuditResult::class)->name('audit.result');
          Route::get('/summary', AuditSummary::class)->name('audit.summary');
-         Route::get('/view/{result_id?}', AuditResult::class)->name('audit.view.result');
-         Route::get('/view/{result_id?}/summary', AuditSummary::class)->name('audit.view.summary');
+         Route::get('/view/{summary_id?}', AuditResult::class)->name('audit.view.result');
+         Route::get('/view/{summary_id?}/summary', AuditSummary::class)->name('audit.view.summary');
      });
     /* Settings */
     Route::get('/settings/category', Category::class)->name('category');
