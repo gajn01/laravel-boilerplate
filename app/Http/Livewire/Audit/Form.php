@@ -53,11 +53,11 @@ class Form extends Component
     }
     public function render()
     {
+        $this->auditDate = AuditDate::where('store_id', $this->store->id)->where('audit_date', $this->date_today)->first();
+        $this->auditForm = AuditForm::where('store_id', $this->store->id)->where('date_of_visit', $this->date_today)->first();
         $service = $this->getService();
         $this->cashier_tat = $service->where('is_cashier', 1);
         $this->server_cat = $service->where('is_cashier', 0);
-        $this->auditDate = AuditDate::where('store_id', $this->store->id)->where('audit_date', $this->date_today)->first();
-        $this->auditForm = AuditForm::where('store_id', $this->store->id)->where('date_of_visit', $this->date_today)->first();
         $category = $this->mapCategory();
         return view('livewire.audit.form', ['categoryList' => $category])->extends('layouts.app');
     }
@@ -83,30 +83,30 @@ class Form extends Component
     #endregion
     #region service , speed and accuracy
     public function getService(){
-        return ServiceSpeed::where('form_id', $this->auditForm->id)
-        ->whereIn('is_cashier', [0, 1])
-        ->get();
+        return ServiceSpeed::where('form_id', $this->auditForm->id)->get();
     }
     public function addService($id = null){
         $data = ['form_id' => $this->auditForm->id, 'is_cashier' => $id, 'name' => null, 'time' => null, 'product_order' => null, 'ot' => null, 'base_assembly_points' => 1, 'assembly_points' => 1, 'tat' => null, 'base_tat_points' => 1, 'tat_points' => 1, 'fst' => null, 'base_fst_points' => 3, 'fst_points' => 3, 'remarks' => null, 'serving_time' => '5'];
         ServiceSpeed::create($data);
     }
-
-    public function updateService(){
-     /*    $query = ServiceSpeed::find($data['id']);
-        if ($query) {
-            if ($value >= 0) {
-                $newValue = isset($data['base_' . $key]) && intval($value) > $data['base_' . $key] ? $data['base_' . $key] : $value;
-                $query->update([
-                    $key => $newValue
-                ]);
+    public function updateService($data, $key, $value)
+    {
+        $this->serviceSpeed = ServiceSpeed::find($data['id']);
+        if(isset($data['base_' . $key])){
+            $column = 'base_' . $key;
+            if($value >= 0){
+                $newValue = $value <= $this->serviceSpeed->$column ? $value : $this->serviceSpeed->$column ;
+                $this->serviceSpeed->$key = $newValue;
+                $this->serviceSpeed->save();
             }
-        } */
+        }else{
+            $this->serviceSpeed->$key = $value;
+            $this->serviceSpeed->save();
+        }
     }
     #endregion
     #region Update Audit Score
     public function updateNA($data,$value){
-        $this->checkStatus();
         $this->auditResult = $this->getAuditResult($data['result_id']);
         $this->auditResult->is_na = $value;
         $this->auditResult->save();
@@ -131,11 +131,6 @@ class Form extends Component
     public function getAuditResult($result_id){
         return  AuditFormResult::find($result_id);
     }
-    public function checkStatus(){
-        if ($this->store->audit_status == 0) {
-            return;
-        }
-    }
     #endregion
     #region Set up Audit Forms
     public function mapCategory()
@@ -154,6 +149,17 @@ class Form extends Component
                 $sub_sub_category = $this->getSubSubCategory($subCategory, $category_id, $sub_category_id);
                 $total_base += $this->getTotalBp($subCategory);
                 $total_points += $this->getTotalScore($subCategory['is_sub'], $sub_sub_category);
+                if($subCategory['name'] ==  "Speed and Accuracy"){
+                    $total_base_per_category = $this->getServiceResultList()->base_total;
+                    $total_points_per_category = $this->getServiceResultList()->total_points;
+                    $total_base += $total_base_per_category;
+                    $total_points += $total_points_per_category;
+                    $total_percentage_per_category =  $this->getPercentage($category_id, $subCategory, $total_base_per_category, $total_points_per_category);
+                }else{
+                    $total_base_per_category =$this->getTotalBp($subCategory);
+                    $total_points_per_category = $this->getTotalScore($subCategory['is_sub'], $sub_sub_category);
+                    $total_percentage_per_category =  $this->getPercentage($category_id, $subCategory, $this->getTotalBp($subCategory), $this->getTotalScore($subCategory['is_sub'], $sub_sub_category));
+                }
                 if ($category_id == 2) {
                     $total_percent += $this->getPercentage($category_id, $subCategory, $this->getTotalBp($subCategory), $this->getTotalScore($subCategory['is_sub'], $sub_sub_category));
                 } else {
@@ -163,9 +169,9 @@ class Form extends Component
                     'id' => $subCategory['id'],
                     'is_sub' => $subCategory['is_sub'],
                     'name' => $subCategory['name'],
-                    'total_base_per_category' => $this->getTotalBp($subCategory),
-                    'total_points_per_category' => $this->getTotalScore($subCategory['is_sub'], $sub_sub_category),
-                    'total_percentage_per_category' => $this->getPercentage($category_id, $subCategory, $this->getTotalBp($subCategory), $this->getTotalScore($subCategory['is_sub'], $sub_sub_category)),
+                    'total_base_per_category' => $total_base_per_category,
+                    'total_points_per_category' => $total_points_per_category,
+                    'total_percentage_per_category' => $total_percentage_per_category,
                     'total_base' => $total_base,
                     'total_points' => $total_points,
                     'total_percentage' => $total_percent - $this->mapDeviation($category_id, $category->critical_deviation_id)->sum('saved_score'),
@@ -261,6 +267,9 @@ class Form extends Component
             ];
         });
         return $sub_sub_sub_category;
+    }
+    public function getServiceResultList(){
+       return ServiceSpeed::selectRaw(' SUM(assembly_points + tat_points + fst_points) AS total_points, SUM(base_assembly_points + base_tat_points + base_fst_points) AS base_total')->where('form_id', $this->auditForm->id)->first();
     }
     public function getResultList($category_id, $sub_category_id, $sub_sub_category_id,$label_id = null)
     {
