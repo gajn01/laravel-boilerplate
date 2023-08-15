@@ -38,6 +38,7 @@ class Form extends Component
     public Summary $summary;
     public AuditFormResult $auditResult;
     public ServiceSpeed $serviceSpeed;
+    public CriticalDeviationResult $criticalDeviationResult;
     public $score = [['name' => '3'],['name' => '5'],['name' => '10'],['name' => '15']];
     public function __construct()
     {
@@ -103,6 +104,13 @@ class Form extends Component
             $this->serviceSpeed->$key = $value;
             $this->serviceSpeed->save();
         }
+    }
+    #endregion
+    #region Update Deviation
+    public function updateCriticalDeviation($data,$value,$key){
+        $this->criticalDeviationResult = criticalDeviationResult::find($data['id']);
+        $this->criticalDeviationResult->$key = $value;
+        $this->criticalDeviationResult->save();
     }
     #endregion
     #region Update Audit Score

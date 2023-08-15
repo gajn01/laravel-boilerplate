@@ -292,7 +292,6 @@
                                         <div id="accrod{{ $sub_category['id'] }}"class="accordion-collapse collapse show"  aria-labelledby="accrod{{ $sub_category['id'] }}" data-bs-parent="#accordionCategory">
                                             <div class="accordion-body">
                                                 @foreach ($sub_category['sub_sub_category'] as $index => $auditLabel)
-
                                                 {{-- NO sub_sub_sub_category --}}
                                                     @if ($sub_category['is_sub'] == 0)
                                                         {{-- Deviation Header --}}
@@ -382,7 +381,7 @@
                                                                         <svg class="icon" wire:click="addService(1)" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512">
                                                                             <path d="M256 80c0-17.7-14.3-32-32-32s-32 14.3-32 32V224H48c-17.7 0-32 14.3-32 32s14.3 32 32 32H192V432c0 17.7 14.3 32 32 32s32-14.3 32-32V288H400c17.7 0 32-14.3 32-32s-14.3-32-32-32H256V80z" />
                                                                         </svg>
-                                                                        <a class="btn app-btn-primary float-right" wire:ignore role="button" wire:click="setTime(0)">Set</a>
+                                                                        {{-- <a class="btn app-btn-primary float-right" wire:ignore role="button" wire:click="setTime(0)">Set</a> --}}
                                                                     </div>
                                                                 </div>
                                                                 <div class="row">
@@ -506,7 +505,7 @@
                                                                         <svg class="icon" wire:click="addService(0)" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512">
                                                                             <path d="M256 80c0-17.7-14.3-32-32-32s-32 14.3-32 32V224H48c-17.7 0-32 14.3-32 32s14.3 32 32 32H192V432c0 17.7 14.3 32 32 32s32-14.3 32-32V288H400c17.7 0 32-14.3 32-32s-14.3-32-32-32H256V80z" />
                                                                         </svg>
-                                                                        <a class="btn app-btn-primary float-right" wire:ignore role="button" wire:click="setTime(0)">Set</a>
+                                                                        {{-- <a class="btn app-btn-primary float-right" wire:ignore role="button" wire:click="setTime(0)">Set</a> --}}
                                                                     </div>
                                                                 </div>
                                                                 @foreach ($server_cat as $index => $item)
