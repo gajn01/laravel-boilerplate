@@ -82,10 +82,10 @@ class Summary extends Component
         $this->store = $store;
         return view('livewire.audit.summary', ['summary' => $summary, 'critical_deviation' => $critical_deviations])->extends('layouts.app');
     }
-    public function mount($store_id = null, $result_id = null)
+    public function mount($store_id = null, $summary_id = null)
     {
         $this->store_id = $store_id;
-        $this->summary_id = $result_id;
+        $this->summary_id = $summary_id;
     }
     public function onStartAndComplete($is_confirm = true, $title = 'Are you sure?', $type = null, $data = null)
     {

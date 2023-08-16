@@ -51,11 +51,13 @@ class Form extends Component
     public function render()
     {
         $this->auditDate = AuditDate::where('store_id', $this->store->id)->where('audit_date', $this->date_today)->first();
-        $this->auditForm = AuditForm::where('store_id', $this->store->id)->where('date_of_visit', $this->date_today)->first();
+        if($this->store->audit_status){
+            $this->auditForm = AuditForm::where('store_id', $this->store->id)->where('date_of_visit', $this->date_today)->first();
+            $this->summary = Summary::where('form_id', $this->auditForm->id)->where('store_id', $this->store->id) ->where('date_of_visit', $this->date_today)->first();
+        }
         $service = $this->getService();
         $this->cashier_tat = $service->where('is_cashier', 1);
         $this->server_cat = $service->where('is_cashier', 0);
-        $this->summary = Summary::where('form_id', $this->auditForm->id)->where('store_id', $this->store->id) ->where('date_of_visit', $this->date_today)->first();
         $category = $this->mapCategory();
         return view('livewire.audit.form', ['categoryList' => $category])->extends('layouts.app');
     }
@@ -104,8 +106,8 @@ class Form extends Component
     }
     #endregion
     #region Update Deviation
-    public function updateCriticalDeviation($data,$value,$key){
-        $this->criticalDeviationResult = criticalDeviationResult::find($data['id']);
+    public function updateCriticalDeviation($audit_form_id,$data,$value,$key){
+        $this->criticalDeviationResult = criticalDeviationResult::where('form_id',$audit_form_id)->where('deviation_id',$data['id'])->first();
         $this->criticalDeviationResult->$key = $value;
         $this->criticalDeviationResult->save();
     }
@@ -134,7 +136,7 @@ class Form extends Component
         $this->auditResult->save();
     }
     public function getAuditResult($result_id){
-        return  AuditFormResult::find($result_id);
+        return AuditFormResult::find($result_id);
     }
     #endregion
     #region Set up Audit Forms
@@ -143,7 +145,6 @@ class Form extends Component
         $data = $this->getCategoryList();
         foreach ($data as $category) {
             $category_id = $category->id;
-            $saved_critical_score = 0;
             $total_base = 0;
             $total_points = 0;
             $total_percent = 0;
@@ -232,7 +233,7 @@ class Form extends Component
                 'id' => $label['id'],
                 'name' => $label['name'],
                 'bp' => $label['bp'],
-                'points' => $result ? $result['sub_sub_point'] : 0,
+                'points' => $result ? $result['sub_sub_point'] : $label['bp'],
                 'result_id' =>$result ? $result['id'] : 0,
             ];
             if ($is_sub == 0) {
@@ -262,7 +263,7 @@ class Form extends Component
                 'id' => $label['id'],
                 'name' => $label['name'],
                 'bp' => $label['bp'],
-                'points' => $result ? $result['label_point'] : 0,
+                'points' => $result ? $result['label_point'] : $label['bp'],
                 'result_id' =>$result ? $result['id'] : 0,
                 'is_all_nothing' => $label['is_all_nothing'],
                 'remarks' => $result ? $result['label_remarks'] : null,
@@ -278,6 +279,7 @@ class Form extends Component
     }
     public function getResultList($category_id, $sub_category_id, $sub_sub_category_id,$label_id = null)
     {
+        $this->auditForm = AuditForm::where('store_id', $this->store->id)->where('date_of_visit', $this->date_today)->first();
         return AuditFormResult::where('form_id', $this->auditForm->id)
             ->where('category_id', $category_id)
             ->where('sub_category_id', $sub_category_id)
@@ -361,6 +363,9 @@ class Form extends Component
         $this->updateStatus();
         $this->updateAuditForm();
         $this->updateOrCreateSummary();
+        $this->onInitialSave();
+        $this->auditForm = AuditForm::where('store_id', $this->store->id)->where('date_of_visit', $this->date_today)->first();
+        $this->summary = Summary::where('form_id', $this->auditForm->id)->where('store_id', $this->store->id) ->where('date_of_visit', $this->date_today)->first();
     }
     private function updateStatus()
     {
@@ -403,6 +408,72 @@ class Form extends Component
                 'time_of_audit' => $this->time->format('h:i'),
             ]
         );
+    }
+    public function onInitialSave(){
+        $auditResults = collect($this->mapCategory())->flatMap(function ($data) {
+            return collect($data->sub_category)->flatMap(function ($sub) use ($data) {
+                return collect($sub['sub_sub_category'])->map(function ($child) use ($data, $sub) {
+                    $result = [
+                        'form_id' => $this->auditForm->id,
+                        'category_id' => $data->id,
+                        'category_name' => $data->name,
+                        'sub_category_id' => $sub['id'],
+                        'sub_name' => $sub['name'],
+                        'sub_sub_category_id' => $child['id'],
+                        'sub_sub_name' => $child['name'],
+                        'sub_sub_base_point' => $child['bp'] ?? null,
+                        'sub_sub_point' => $child['bp'] ?? null,
+                        'sub_sub_remarks' =>  null,
+                        'sub_sub_deviation' =>  null,
+                        'sub_sub_file' => $child['tag'] ?? null,
+                        'is_na' => '0'
+                    ];
+                    if (isset($child['sub_sub_sub_category'])) {
+                        return collect($child['sub_sub_sub_category'])->map(function ($label) use ($result) {
+                            return array_merge($result, [
+                                'label_id' => $label['id'],
+                                'label_name' => $label['name'],
+                                'label_base_point' => $label['bp'] ?? null,
+                                'label_point' => $label['bp'] ?? null,
+                                'label_remarks' =>  null,
+                                'label_deviation' =>  null,
+                                'label_file' =>  null,
+                            ]);
+                        });
+                    } else {
+                        return [$result];
+                    }
+                });
+            });
+        })->flatten(1);
+        $critical_deviation = collect($this->mapCategory())->flatMap(function ($data) {
+            $deviations = CriticalDeviationMenu::where('critical_deviation_id', $data->critical_deviation_id)->get();
+            return collect($deviations)->map(function ($dev) use ($data) {
+                $result = [
+                    'form_id' => $this->auditForm->id,
+                    'deviation_id' => $dev->id,
+                    'category_id' => $data->id,
+                    'critical_deviation_id' => $dev->critical_deviation_id,
+                    'remarks' => null,
+                    'score' => null,
+                    'sd' => null,
+                    'location' => null,
+                    'product' => null,
+                    'dropdown' => null,
+                ];
+                return [$result];
+            });
+        })->flatten(1);
+        $critical_deviation->each(function ($result) {
+            if (is_array($result)) {
+                CriticalDeviationResult::create($result);
+            }
+        });
+        $auditResults->each(function ($result) {
+            if (is_array($result)) {
+                AuditFormResult::create($result);
+            }
+        });
     }
     #endregion
     public function onAlert($is_confirm = false, $title = null, $message = null, $type = null, $data = null)

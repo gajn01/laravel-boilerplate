@@ -114,7 +114,7 @@
                                                             <div class="col-12">
                                                                 <div class="mb-2" wire:ignore>
                                                                     <select class="form-select form-select-md"
-                                                                        wire:change="updateCriticalDeviation({{ json_encode($item) }},$event.target.value,'sd')"
+                                                                        wire:change="updateCriticalDeviation({{$this->auditForm->id}},{{ json_encode($item) }},$event.target.value,'sd')"
                                                                         name="sd{{ $item['id'] }}"
                                                                         id="sd{{ $item['id'] }}">
                                                                         <option value="0" {{ $item['saved_sd'] == '' ? 'selected' : '' }}> Select sd</option>
@@ -136,7 +136,7 @@
                                                             <div class="col-sm-12 col-md-6">
                                                                 <div class="mb-2" wire:ignore>
                                                                     <select class="form-select form-select-md"
-                                                                        wire:change="updateCriticalDeviation({{ json_encode($item) }},$event.target.value,'location')"
+                                                                        wire:change="updateCriticalDeviation({{$this->auditForm->id}},{{ json_encode($item) }},$event.target.value,'location')"
                                                                         name="location{{ $item['id'] }}"
                                                                         id="location{{ $item['id'] }}">
                                                                         <option value="0" {{ $item['location'] == '' ? 'selected' : '' }}>Select location</option>
@@ -152,7 +152,7 @@
                                                             <div class="col-sm-12 col-md-6">
                                                                 <div class="mb-2" wire:ignore>
                                                                     <select class="form-select form-select-md"
-                                                                        wire:change="updateCriticalDeviation({{ json_encode($item) }},$event.target.value,'score')"
+                                                                        wire:change="updateCriticalDeviation({{$this->auditForm->id}},{{ json_encode($item) }},$event.target.value,'score')"
                                                                         name="loc_score{{ $item['id'] }}" id="loc_score{{ $item['id'] }}">
                                                                         <option value="0" {{ $item['score'] == '' ? 'selected' : '' }}> Select score</option>
                                                                         @foreach ($score as $scores)
@@ -171,7 +171,7 @@
                                                             <div class="col-sm-12 col-md-6">
                                                                 <div class="mb-2" wire:ignore.self>
                                                                     <select class="form-select form-select-md"
-                                                                        wire:change="updateCriticalDeviation({{ json_encode($item) }},$event.target.value,'product')"
+                                                                        wire:change="updateCriticalDeviation({{$this->auditForm->id}},{{ json_encode($item) }},$event.target.value,'product')"
                                                                         name="product{{ $item['id'] }}"
                                                                         id="product{{ $item['id'] }}">
                                                                         <option value="0"  {{ $item['product'] == '' ? 'selected' : '' }}>  Select product</option>
@@ -187,7 +187,7 @@
                                                             <div class="col-sm-12 col-md-6">
                                                                 <div class="mb-2" wire:ignore>
                                                                     <select class="form-select form-select-md"
-                                                                        wire:change="updateCriticalDeviation({{ json_encode($item) }},$event.target.value,'score')"
+                                                                        wire:change="updateCriticalDeviation({{$this->auditForm->id}},{{ json_encode($item) }},$event.target.value,'score')"
                                                                         name="product_score{{ $item['id'] }}"
                                                                         id="product_score{{ $item['id'] }}">
                                                                         <option value="0" {{ $item['score'] == '' ? 'selected' : '' }}>  Select score</option>
@@ -207,7 +207,7 @@
                                                             <div class="col-sm-12 col-md-6">
                                                                 <div class="mb-2" wire:ignore.self>
                                                                     <select class="form-select form-select-md"
-                                                                        wire:change="updateCriticalDeviation({{ json_encode($item) }}, $event.target.value, 'dropdown')"
+                                                                        wire:change="updateCriticalDeviation({{$this->auditForm->id}},{{ json_encode($item) }}, $event.target.value, 'dropdown')"
                                                                         name="dropdown{{ $item['id'] }}"
                                                                         id="dropdown{{ $item['id'] }}">
                                                                         <option value="0" {{ $item['dropdown'] == '' ? 'selected' : '' }}> Select deviation</option>
@@ -223,7 +223,7 @@
                                                             <div class="col-sm-12 col-md-6">
                                                                 <div class="mb-2" wire:ignore.self>
                                                                     <select class="form-select form-select-md"
-                                                                        wire:change="updateCriticalDeviation({{ json_encode($item) }},$event.target.value,'score')"
+                                                                        wire:change="updateCriticalDeviation({{$this->auditForm->id}},{{ json_encode($item) }},$event.target.value,'score')"
                                                                         name="dp_score{{ $item['id'] }}"
                                                                         id="dp_score{{ $item['id'] }}">
                                                                         <option value="0" {{ $item['score'] == '' ? 'selected' : '' }}> Select score</option>
@@ -241,7 +241,7 @@
                                                     @if ($item['remarks'])
                                                         <div class="mb-2" wire:ignore.self>
                                                             <textarea class="form-control"
-                                                                wire:change="updateCriticalDeviation({{ json_encode($item) }},$event.target.value,'remarks')"
+                                                                wire:change="updateCriticalDeviation({{$this->auditForm->id}},{{ json_encode($item) }},$event.target.value,'remarks')"
                                                                 name="remarks{{ $item['id'] }}" id="remarks{{ $item['id'] }}" rows="2"
                                                                 placeholder="Enter remarks here...">{{ $item['saved_remarks'] }}</textarea>
                                                         </div>
@@ -249,7 +249,7 @@
                                                     @if ($item['score_dropdown_id'])
                                                         <div class="mb-2" wire:ignore.self>
                                                             <select class="form-select form-select-md"
-                                                                wire:change="updateCriticalDeviation({{ json_encode($item) }},$event.target.value,'score')"
+                                                                wire:change="updateCriticalDeviation({{$this->auditForm->id}},{{ json_encode($item) }},$event.target.value,'score')"
                                                                 name="dp_score{{ $item['id'] }}"
                                                                 id="dp_score{{ $item['id'] }}">
                                                                 <option value="0"  {{ $item['score'] == '' ? 'selected' : '' }}> Select score</option>
