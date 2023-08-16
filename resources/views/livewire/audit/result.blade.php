@@ -121,7 +121,7 @@
                                                     @foreach ($category->critical_deviation as $item)
                                                         <tr class="">
                                                             <td>{{ $item['label'] }}</td>
-                                                            <td>{{ $item['saved_dropdown'] }}</td>
+                                                            <td>{{ $item['saved_dropdown'] ?? $item['saved_location'] ?? $item['saved_sd']}}</td>
                                                             <td>{{ $item['saved_remarks'] }}</td>
                                                             <td>{{ $item['saved_score'] }}</td>
                                                         </tr>
