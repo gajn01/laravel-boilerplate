@@ -2,12 +2,17 @@
 namespace App\Http\Livewire\Audit;
 
 use Livewire\Component;
-use App\Models\Store as StoreModel;
-use App\Models\CriticalDeviationResult as CriticalDeviationResultModel;
+
+use App\Models\Store;
 use App\Models\Summary as SummaryModel;
-use App\Models\AuditDate as AuditDateModel;
-use App\Models\AuditFormResult as AuditFormResultModel;
-use App\Models\ServiceSpeed as ServiceSpeedModel;
+use App\Models\CriticalDeviationResult;
+
+use App\Models\AuditForm;
+use App\Models\AuditDate;
+use App\Models\AuditFormResult;
+use App\Models\Category;
+use App\Models\ServiceSpeed;
+
 use Illuminate\Support\Facades\Auth;
 use App\Helpers\CustomHelper;
 use Illuminate\Support\Facades\DB;
@@ -17,75 +22,110 @@ use DateTimeZone;
 class Summary extends Component
 {
     protected $listeners = ['start-alert-sent' => 'onComplete'];
-    public $store;
-    public $store_id;
-    public $summary_id;
-    /* Audit Category */
-    public $category_list;
-    public $audit_status;
-    public $audit_forms_id;
-    public $with;
-    public $conducted_by;
-    public $received_by;
-    public $dov;
-    public $toa;
-    public $strength;
-    public $improvement;
-    public $wave;
-    public $time_of_audit;
-    private $timezone;
-    private $time;
-    private $date_today;
-    public $summary_details;
-    public $overall = 0;
+    private $timezone, $time, $date_today;
+    public $criticalDeviationResultList;
+    public $auditResult;
+    public Store $store;
+    public SummaryModel $summary;
+    public AuditForm $auditForm;
+    public AuditDate $auditDate;
+    public ServiceSpeed $serviceSpeed;
+
     public function __construct()
     {
         $this->timezone = new DateTimeZone('Asia/Manila');
         $this->time = new DateTime('now', $this->timezone);
         $this->date_today = $this->time->format('Y-m-d');
+        $this->onInitialize();
+    }
+    protected function rules()
+    {
+        return [
+            'summary.conducted_by' => 'string|max:255',
+            'summary.received_by' => 'required|string|max:255',
+            'summary.strength' => 'string|max:255',
+            'summary.improvement' => 'string|max:255',
+            'summary.overall_score' => 'string|max:255',
+            'summary.date_of_visit' => 'string|max:255',
+
+        ];
+    }
+    public function onInitialize()
+    {
+        $this->store = new Store;
+        $this->summary = new SummaryModel;
+        $this->store = new Store;
+        $this->auditForm = new AuditForm;
+        $this->auditDate = new AuditDate;
+        $this->serviceSpeed = new ServiceSpeed;
     }
     public function render()
     {
-        $this->conducted_by = auth()->user()->name;
-        $this->summary_details = SummaryModel::find($this->summary_id);
-        if ($this->summary_details->received_by) {
-            $this->received_by = $this->summary_details->received_by;
-        }
-        $this->dov = $this->summary_details->date_of_visit;
-        $this->audit_forms_id = $this->summary_details->form_id;
-        $critical_deviations = CriticalDeviationResultModel::where('form_id', $this->audit_forms_id)
-            ->whereNotNull('score')
-            ->get();
-        $summary = DB::table('audit_results')
-            ->select('category_id', 'category_name')
-            ->selectRaw('COALESCE(SUM(label_base_point), 0) + COALESCE(SUM(sub_sub_base_point), 0) AS total_base_points')
-            ->selectRaw('COALESCE(SUM(CASE WHEN is_na = 1 THEN label_base_point ELSE label_point END), 0) + COALESCE(SUM(CASE WHEN is_na = 1 THEN sub_sub_base_point ELSE sub_sub_point END), 0) AS total_points')
-            ->selectRaw('ROUND((COALESCE(SUM(CASE WHEN is_na = 1 THEN label_base_point ELSE label_point END), 0) + COALESCE(SUM(CASE WHEN is_na = 1 THEN sub_sub_base_point ELSE sub_sub_point END), 0)) / (COALESCE(SUM(label_base_point), 0) + COALESCE(SUM(sub_sub_base_point), 0)) * 100, 2) AS percentage')
-            ->where('form_id', $this->audit_forms_id)
-            ->groupBy('category_id', 'category_name')
-            ->get();
-        $service_points = ServiceSpeedModel::selectRaw(' SUM(assembly_points + tat_points + fst_points) AS total_points, SUM(base_assembly_points + base_tat_points + base_fst_points) AS base_total')->where('form_id', $this->audit_forms_id)->first();
-        foreach ($summary as $key => $value) {
-            if ($value->category_name === 'Service') {
-                $value->total_base_points += $service_points->base_total;
-                $value->total_points += $service_points->total_points;
-                $value->percentage = round(($value->total_points * 100 / $value->total_base_points), 0);
-            }
-            $critical_deviation = $critical_deviations->where('category_id', $value->category_id)->sum('score');
-            $value->percentage -= $critical_deviation ? intval($critical_deviation) : 0;
-            $value->percentage = round($value->percentage, 2);
-            if ($value->percentage > 79) {
-                $this->overall = 1;
-            }
-        }
-        $store = StoreModel::find($this->store_id);
-        $this->store = $store;
-        return view('livewire.audit.summary', ['summary' => $summary, 'critical_deviation' => $critical_deviations])->extends('layouts.app');
+        $summaryList = $this->getTotalScore()->toArray();
+        return view('livewire.audit.summary',['summaryList' =>$summaryList])->extends('layouts.app');
     }
     public function mount($store_id = null, $summary_id = null)
     {
-        $this->store_id = $store_id;
-        $this->summary_id = $summary_id;
+        $this->store = Store::find($store_id);
+        $this->summary = SummaryModel::find($summary_id);
+        $this->criticalDeviationResultList = CriticalDeviationResult::where('form_id', $this->summary->form_id)
+            ->whereNotNull('score')
+            ->get();
+        $this->auditResult = AuditFormResult::where('form_id', $this->summary->form_id)->get();
+       
+    }
+    public function getCategoryList()
+    {
+        return Category::where('type', $this->store->type)->orderBy('type', 'DESC')->orderBy('order', 'ASC')->get();
+    }
+    public function getTotalScore()
+    {
+        return $this->getCategoryList()->transform(function ($category) {
+            return [
+                'id' => $category['id'],
+                'category_name' => $category['name'],
+                'percentage' => $this->getSummaryScore($category['id'])
+            ];
+        });
+    }
+    public function getSummaryScore($category_id)
+    {
+        $total_bp = 0;
+        $total_points = 0;
+        $total_percentage = 0;
+        $results = AuditFormResult::where('form_id', $this->summary->form_id)->where('category_id', $category_id)->get();
+        foreach ($results as $data) {
+            if (!$data->label_id) {
+                if ($category_id == 2) {
+                    $subNameMappings = [
+                        ["name" => "Ensaymada", "percent" => 20],
+                        ["name" => "Cheese roll", "percent" => 20],
+                        ["name" => "Espresso", "percent" => 30],
+                        ["name" => "Infused Water", "percent" => 10],
+                        ["name" => "Cake Display", "percent" => 20],
+                    ];
+                    foreach ($subNameMappings as $mapping) {
+                        if ($mapping['name'] != "Cake Display") {
+                            $total_bp = $data->where('form_id', $this->summary->form_id)->where('sub_name', $mapping['name'])->get()->sum('sub_sub_base_point');
+                            $total_points = $data->where('form_id', $this->summary->form_id)->where('sub_name', $mapping['name'])->get()->sum('sub_sub_point');
+                        } else {
+                            $total_bp = $data->where('form_id', $this->summary->form_id)->where('sub_name', $mapping['name'])->get()->sum('label_base_point');
+                            $total_points = $data->where('form_id', $this->summary->form_id)->where('sub_name', $mapping['name'])->get()->sum('label_point');
+                        }
+                        $total_percentage += ($total_bp == 0) ? 0 : round(($total_points / $total_bp) * $mapping["percent"], 0);
+                    }
+                    return $total_percentage - CriticalDeviationResult::where('form_id', $this->summary->form_id)->where('category_id',2 )->whereNotNull('score')->sum('score');
+                }else{
+                    $total_bp += $data->sub_sub_base_point;
+                    $total_points += $data->sub_sub_point;
+                }
+            } else {
+                $total_bp += $data->label_base_point;
+                $total_points += $data->label_point;
+            }
+        }
+        $total_percentage = ($total_bp == 0) ? 0 : round(($total_points / $total_bp) * 100, 0);
+        return $total_percentage - CriticalDeviationResult::where('form_id', $this->summary->form_id)->where('category_id',$category_id )->whereNotNull('score')->get()->sum('score');;
     }
     public function onStartAndComplete($is_confirm = true, $title = 'Are you sure?', $type = null, $data = null)
     {
@@ -94,27 +134,16 @@ class Summary extends Component
     }
     public function onComplete()
     {
-        $this->validate([
-            'conducted_by' => '',
-            'received_by' => 'required',
-            'strength' => 'required',
-            'improvement' => 'required'
-        ]);
-        SummaryModel::where('form_id', $this->audit_forms_id)
-            ->update([
-                'conducted_by' => $this->conducted_by,
-                'received_by' => $this->received_by,
-                'strength' => $this->strength,
-                'improvement' => $this->improvement,
-                'overall_score' => $this->overall,
-            ]);
-        AuditDateModel::where('store_id', $this->store_id)
-            ->where('audit_date', $this->date_today)
-            ->update(['is_complete' => 2]);
-        StoreModel::where('id', $this->store_id)->update(['audit_status' => 0]);
+        // $this->validate();
+        $this->auditDate = AuditDate::where('store_id', $this->store->id)->where('audit_date', $this->date_today)->first();
+        $this->summary->save();
+        $this->store->audit_status = 0;
+        $this->store->save();
+        $this->auditDate->is_complete = 2;
+        $this->auditDate->save();
         $this->reset();
         $this->onAlert(false, 'Success', 'Audit record saved successfully!', 'success');
-        redirect()->route('audit.details', ['store_id' => $this->store_id]);
+        redirect()->route('audit.details', ['store_id' => $this->store->id]); 
     }
     public function onAlert($is_confirm = false, $title = null, $message = null, $type = null, $data = null)
     {
@@ -124,4 +153,5 @@ class Summary extends Component
     {
         $this->resetValidation();
     }
+
 }
