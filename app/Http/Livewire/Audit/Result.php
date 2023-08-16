@@ -160,6 +160,12 @@ class Result extends Component
                     $result['sub_sub_point'] = 0;
                     $label['bp'] = 0;
                 }
+            }else{
+                $result = $this->getStoreRecord();
+                if ($is_sub == 0 && $result && $result['is_na'] == 1) {
+                    $result['sub_sub_point'] = 0;
+                    $label['bp'] = 0;
+                }
             }
             $data = [
                 'id' => $label['id'],
@@ -220,6 +226,9 @@ class Result extends Component
                 $query->where('label_id', $label_id);
             })
             ->first();
+    }
+    public function getStoreRecord(){
+        return AuditFormResult::where('form_id', $this->summary->form_id)->first();
     }
     public function getDeviationResultList($category_id, $deviation_id, $critical_deviation_id)
     {
