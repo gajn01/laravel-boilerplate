@@ -9,7 +9,6 @@ use App\Helpers\CustomHelper;
 /* models  */
 use App\Models\Store;
 use App\Models\AuditForm;
-use App\Models\AuditDate;
 use App\Models\Summary;
 use App\Models\AuditFormResult;
 use App\Models\Category;
@@ -29,7 +28,6 @@ class Form extends Component
     public $sanitary_list;
     public $cashier_tat,$server_cat;
     public AuditForm $auditForm;
-    public AuditDate $auditDate;
     public Store $store;
     public Summary $summary;
     public AuditFormResult $auditResult;
@@ -45,17 +43,15 @@ class Form extends Component
     }
     public function mount($id = null)
     {
+        $this->auditForm = AuditForm::find($id);
         $this->sanitary_list = SanitaryModel::get();
-        $this->store = Store::find($id);
+        $this->store = Store::find($this->auditForm->store_id);
+
     }
     public function render()
     {
-        $this->auditDate = AuditDate::where('store_id', $this->store->id)->where('audit_date', $this->date_today)->first();
-        if($this->auditDate->is_complete){
-            $this->auditForm = AuditForm::where('store_id', $this->store->id)->where('date_of_visit', $this->date_today)->first();
-
-        }elseif ($this->auditDate->is_complete == 2) {
-            $this->summary = Summary::where('form_id', $this->auditForm->id)->where('store_id', $this->store->id) ->where('date_of_visit', $this->date_today)->first();
+        if($this->auditForm->audit_status){
+            $this->summary = Summary::where('form_id', $this->auditForm->id)->first();
         }
         $service = $this->getService();
         $this->cashier_tat = $service->where('is_cashier', 1);
@@ -77,7 +73,6 @@ class Form extends Component
     {
         $this->store = new Store;
         $this->auditForm = new AuditForm;
-        $this->auditDate = new AuditDate;
         $this->summary = new Summary;
         $this->auditResult = new AuditFormResult;
         $this->serviceSpeed = new ServiceSpeed;
@@ -364,7 +359,6 @@ class Form extends Component
     public function onUpdateStatus()
     {
         $this->updateStatus();
-        $this->updateAuditForm();
         $this->updateOrCreateSummary();
         $this->onInitialSave();
         $this->auditForm = AuditForm::where('store_id', $this->store->id)->where('date_of_visit', $this->date_today)->first();
@@ -374,24 +368,8 @@ class Form extends Component
     {
         $this->store->audit_status = 1;
         $this->store->save();
-        $this->auditDate->is_complete = 1;
-        $this->auditDate->save();
-    }
-    private function updateAuditForm()
-    {
-        $this->auditForm = AuditForm::updateOrCreate(
-            [
-                'store_id' => $this->store->id,
-                'date_of_visit' => $this->date_today
-            ],
-            [
-                'audit_date_id' => $this->auditDate->id,
-                'conducted_by_id' => Auth::user()->id,
-                'time_of_audit' => $this->time->format('h:i'),
-                'audit_status' => $this->store->audit_status,
-                'wave' => $this->auditDate->wave,
-            ]
-        );
+        $this->auditForm->audit_status = 1;
+        $this->auditForm->save();
     }
     public function updateOrCreateSummary()
     {
@@ -405,7 +383,7 @@ class Form extends Component
                 'name' => $this->store->name,
                 'code' => $this->store->code,
                 'type' => $this->store->type,
-                'wave' => $this->auditDate->wave,
+                'wave' => $this->auditForm->wave,
                 'conducted_by' => Auth::user()->name,
                 'received_by' => null,
                 'time_of_audit' => $this->time->format('h:i'),

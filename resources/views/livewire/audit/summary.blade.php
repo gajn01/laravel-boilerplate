@@ -3,8 +3,8 @@
     <nav aria-label="breadcrumb">
         <ol class="breadcrumb">
             <li class="breadcrumb-item"><a href="{{ route('audit') }}">Audit</a></li>
-            <li class="breadcrumb-item"><a href="{{ route('audit.form', [$store->id]) }}">{{ $store->name }}</a>
-            <li class="breadcrumb-item"><a href="{{ route('audit.view.result', [$store->id, $summary->id]) }}">Result</a>
+            <li class="breadcrumb-item"><a href="{{ route('audit.form', [$auditForm->id]) }}">{{ $store->name }}</a>
+            <li class="breadcrumb-item"><a href="{{ route('audit.view.result', [$auditForm->id, $summary->id]) }}">Result</a>
             <li class="breadcrumb-item active" aria-current="page">Executive Summary</li>
         </ol>
     </nav>

@@ -47,7 +47,6 @@ class Summary extends Component
             'summary.improvement' => 'string|max:255',
             'summary.overall_score' => 'string|max:255',
             'summary.date_of_visit' => 'string|max:255',
-
         ];
     }
     public function onInitialize()
@@ -65,15 +64,15 @@ class Summary extends Component
         $documentAndPeopleList =  $this->getTotalScoreForDocumentAndPeople()->toArray();
         return view('livewire.audit.summary',['summaryList' =>$summaryList,'documentAndPeopleList'=>$documentAndPeopleList])->extends('layouts.app');
     }
-    public function mount($store_id = null, $summary_id = null)
+    public function mount($form_id = null, $summary_id = null)
     {
-        $this->store = Store::find($store_id);
+        $this->auditForm = AuditForm::find($form_id);
+        $this->store = Store::find($this->auditForm->store_id);
         $this->summary = SummaryModel::find($summary_id);
-        $this->criticalDeviationResultList = CriticalDeviationResult::where('form_id', $this->summary->form_id)
+        $this->criticalDeviationResultList = CriticalDeviationResult::where('form_id', $this->auditForm->id)
             ->whereNotNull('score')
             ->get();
         $this->auditResult = AuditFormResult::where('form_id', $this->summary->form_id)->get();
-        $this->auditForm = AuditForm::find($this->summary->form_id);
     }
     public function getCategoryList()
     {
@@ -108,11 +107,11 @@ class Summary extends Component
                     ];
                     foreach ($subNameMappings as $mapping) {
                         if ($mapping['name'] != "Cake Display") {
-                            $total_bp = $data->where('form_id', $this->summary->form_id)->where('sub_name', $mapping['name'])->get()->sum('sub_sub_base_point');
-                            $total_points = $data->where('form_id', $this->summary->form_id)->where('sub_name', $mapping['name'])->get()->sum('sub_sub_point');
+                            $total_bp = $data->where('sub_name', $mapping['name'])->get()->sum('sub_sub_base_point');
+                            $total_points = $data->where('sub_name', $mapping['name'])->get()->sum('sub_sub_point');
                         } else {
-                            $total_bp = $data->where('form_id', $this->summary->form_id)->where('sub_name', $mapping['name'])->get()->sum('label_base_point');
-                            $total_points = $data->where('form_id', $this->summary->form_id)->where('sub_name', $mapping['name'])->get()->sum('label_point');
+                            $total_bp = $data->where('sub_name', $mapping['name'])->get()->sum('label_base_point');
+                            $total_points = $data->where('sub_name', $mapping['name'])->get()->sum('label_point');
                         }
                         $total_percentage += ($total_bp == 0) ? 0 : round(($total_points / $total_bp) * $mapping["percent"], 0);
                     }

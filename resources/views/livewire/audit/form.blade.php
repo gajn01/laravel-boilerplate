@@ -11,10 +11,10 @@
         <div class="row g-2 justify-content-start justify-content-md-end align-items-center">
             <div class="col-auto mb-3">
               
-                @if ($auditDate->is_complete == 0)
+                @if ($auditForm->audit_status == 0)
                     <a class="btn app-btn-primary" wire:click="onStartAudit"> Start Audit</a>
                 @else
-                    <a class="btn app-btn-primary" href="{{ route('audit.view.result', [$store->id, $this->summary->id]) }}"> Result</a>
+                    <a class="btn app-btn-primary" href="{{ route('audit.view.result', [$auditForm->id, $summary->id]) }}"> Result</a>
                 @endif
             </div>
         </div>

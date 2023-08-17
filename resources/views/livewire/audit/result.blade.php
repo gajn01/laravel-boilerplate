@@ -3,14 +3,14 @@
     <nav aria-label="breadcrumb">
         <ol class="breadcrumb">
             <li class="breadcrumb-item"><a href="{{ route('audit') }}">Audit</a></li>
-            <li class="breadcrumb-item"><a href="{{ route('audit.form', [$store->id]) }}">{{ $store->name }}</a>
+            <li class="breadcrumb-item"><a href="{{ route('audit.form', [$auditForm->id]) }}">{{ $store->name }}</a>
             <li class="breadcrumb-item active" aria-current="page">Result</li>
         </ol>
     </nav>
     <div class="page-utilities mb-3">
         <div class="row g-2 justify-content-start justify-content-md-end align-items-center">
             <div class="col-auto mb-3">
-                <a class="btn app-btn-primary" href="{{ route('audit.view.summary', [$store->id, $summary->id]) }}">Executive Summary</a>
+                <a class="btn app-btn-primary" href="{{ route('audit.view.summary', [$auditForm->id, $summary->id]) }}">Executive Summary</a>
             </div>
         </div>
     </div>

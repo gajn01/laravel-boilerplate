@@ -9,7 +9,6 @@ use App\Helpers\CustomHelper;
 /* models  */
 use App\Models\Store;
 use App\Models\AuditForm;
-use App\Models\AuditDate;
 use App\Models\Summary;
 use App\Models\AuditFormResult;
 use App\Models\Category;
@@ -28,7 +27,6 @@ class Result extends Component
     public $active_index = 0;
     public $score = [['name' => '3'],['name' => '5'],['name' => '10'],['name' => '15']];
     public AuditForm $auditForm;
-    public AuditDate $auditDate;
     public Store $store;
     public Summary $summary;
     public AuditFormResult $auditResult;
@@ -41,15 +39,14 @@ class Result extends Component
         $this->date_today = $this->time->format('Y-m-d');
         $this->initialize();
     }
-    public function mount($store_id = null, $summary_id = null)
+    public function mount($form_id = null, $summary_id = null)
     {
-        $this->store = Store::find($store_id);
+        $this->auditForm = AuditForm::find($form_id);
+        $this->store = Store::find($this->auditForm->store_id);
         $this->summary = Summary::find($summary_id);
     }
     public function render()
     {
-        // $this->auditDate = AuditDate::where('store_id', $this->store->id)->where('audit_date', $this->date_today)->first();
-        $this->auditForm = AuditForm::where('store_id', $this->store->id)->where('date_of_visit', $this->date_today)->first();
         $service = $this->getService();
         $this->cashier_tat = $service->where('is_cashier', 1);
         $this->server_cat = $service->where('is_cashier', 0);
@@ -65,7 +62,6 @@ class Result extends Component
     {
         $this->store = new Store;
         $this->auditForm = new AuditForm;
-        // $this->auditDate = new AuditDate;
         $this->summary = new Summary;
         $this->auditResult = new AuditFormResult;
         $this->serviceSpeed = new ServiceSpeed;
