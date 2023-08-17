@@ -99,7 +99,8 @@
                             <table class="table app-table-hover mb-0 text-left ">
                                 <thead>
                                     <tr>
-                                        <th class="cell">Category</th>
+                                        <th class="cell w-50">Category</th>
+                                        <th class="cell text-center">% Base</th>
                                         <th class="cell text-center">% Score</th>
                                         <th class="cell text-center">Final Rating</th>
                                     </tr>
@@ -110,6 +111,7 @@
                                             <td class="core_name_total"><a
                                                     href="#{{ $data['category_name'] }}">{{ $data['category_name'] }}</a>
                                             </td>
+                                            <td class="text-center"> {{$data['percent']}} </td>
                                             <td class="text-center {{ $data['percentage'] < 80 ? 'text-danger' : '' }}">
                                                 {{ $data['percentage'] }}</td>
                                             @php
@@ -143,10 +145,64 @@
                         </div>
                     </div>
                 </div>
+                <div class="app-card-body p-3 p-lg-4">
+                    <div class="row justify-content-between align-items-center">
+                        <div class="col-12">
+                            <table class="table app-table-hover mb-0 text-left ">
+                                <thead>
+                                    <tr>
+                                        <th class="cell w-50">Category</th>
+                                        <th class="cell text-center">% Base</th>
+                                        <th class="cell text-center">% Score</th>
+                                        <th class="cell text-center">Final Rating</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @forelse ($documentAndPeopleList as $key => $data)
+                                        <tr>
+                                            <td class="core_name_total"><a href="#{{ $data['category_name'] }}">{{ $data['category_name'] }}</a></td>
+                                            <td class="text-center ">{{ $data['percent'] }}</td>
+                                            <td class="text-center "> {{ $data['percentage'] }}</td>
+                                            <td></td>
+                                      
+                                        </tr>
+                                    @endforeach
+                                    <tr>
+                                        <td class="text-center fw-bold" colspan="2">Total</td>
+                                        <td class="text-center ">{{ collect($documentAndPeopleList)->sum('percentage') }}</td>
+                                        @php
+                                            $overallScore = collect($documentAndPeopleList)->sum('percentage');
+                                        @endphp
+                                        @switch(true)
+                                            @case($overallScore >= 90)
+                                                <td class="text-center">A</td>
+                                            @break
+
+                                            @case($overallScore >= 80 && $overallScore <= 89)
+                                                <td class="text-center">B</td>
+                                            @break
+
+                                            @case($overallScore >= 70 && $overallScore <= 79)
+                                                <td class="text-center text-danger">C</td>
+                                            @break
+
+                                            @case($overallScore >= 60 && $overallScore <= 69)
+                                                <td class="text-center text-danger">D</td>
+                                            @break
+
+                                            @default
+                                                <td class="text-center text-danger">E</td>
+                                        @endswitch
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
         <div class="col-12 col-lg-6">
-            <div class="app-card app-card-chart h-100 shadow-sm">
+            <div class="app-card app-card-chart shadow-sm">
                 <div class="app-card-header p-3">
                     <div class="row justify-content-between align-items-center">
                         <div class="col-auto">

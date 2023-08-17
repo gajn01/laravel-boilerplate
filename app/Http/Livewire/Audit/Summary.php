@@ -62,7 +62,8 @@ class Summary extends Component
     public function render()
     {
         $summaryList = $this->getTotalScore()->toArray();
-        return view('livewire.audit.summary',['summaryList' =>$summaryList])->extends('layouts.app');
+        $documentAndPeopleList =  $this->getTotalScoreForDocumentAndPeople()->toArray();
+        return view('livewire.audit.summary',['summaryList' =>$summaryList,'documentAndPeopleList'=>$documentAndPeopleList])->extends('layouts.app');
     }
     public function mount($store_id = null, $summary_id = null)
     {
@@ -76,7 +77,7 @@ class Summary extends Component
     }
     public function getCategoryList()
     {
-        return Category::where('type', $this->store->type)->orderBy('type', 'DESC')->orderBy('order', 'ASC')->get();
+        return Category::where('type', $this->store->type)->whereNotIn('id', [6, 7]) ->orderBy('type', 'DESC') ->orderBy('order', 'ASC')->get();
     }
     public function getTotalScore()
     {
@@ -84,6 +85,7 @@ class Summary extends Component
             return [
                 'id' => $category['id'],
                 'category_name' => $category['name'],
+                'percent' =>  100,
                 'percentage' => $this->getSummaryScore($category['id'])
             ];
         });
@@ -125,8 +127,43 @@ class Summary extends Component
             }
         }
         $total_percentage = ($total_bp == 0) ? 0 : round(($total_points / $total_bp) * 100, 0);
-        return $total_percentage - CriticalDeviationResult::where('form_id', $this->summary->form_id)->where('category_id',$category_id )->whereNotNull('score')->get()->sum('score');;
+        return $total_percentage - CriticalDeviationResult::where('form_id', $this->summary->form_id)->where('category_id',$category_id )->whereNotNull('score')->get()->sum('score');
     }
+    public function getCategoryDocumentAndPeopleList()
+    {
+        return Category::where('type', $this->store->type)->whereIn('id', [6, 7])->orderBy('type', 'DESC')->orderBy('order', 'ASC')->get();
+    }
+    public function getTotalScoreForDocumentAndPeople()
+    {
+        return $this->getCategoryDocumentAndPeopleList()->transform(function ($category) {
+            return [
+                'id' => $category['id'],
+                'category_name' => $category['name'],
+                'percent' =>  $category['id'] == 6 ? 40: 60,
+                'percentage' => $this->getSummaryScoreForDocumentAndPeople($category['id'])
+            ];
+        });
+    }
+    public function getSummaryScoreForDocumentAndPeople($category_id)
+    {
+        $total_bp = 0;
+        $total_points = 0;
+        $total_percentage = 0;
+        $percent = ($category_id == 7) ? 60 : 40;
+        $results = AuditFormResult::where('form_id', $this->summary->form_id)->where('category_id', $category_id)->get();
+        foreach ($results as $data) {
+            if (!$data->label_id) {
+                $total_bp = $data->where('form_id', $this->summary->form_id)->where('category_id', $category_id)->get()->sum('sub_sub_base_point');
+                $total_points = $data->where('form_id', $this->summary->form_id)->where('category_id', $category_id)->get()->sum('sub_sub_point');
+            }else{
+                $total_bp = $data->where('form_id', $this->summary->form_id)->where('category_id', $category_id)->get()->sum('label_base_point');
+                $total_points = $data->where('form_id', $this->summary->form_id)->where('category_id', $category_id)->get()->sum('label_point');
+            }
+             $total_percentage = ($total_bp == 0) ? 0 : round(($total_points / $total_bp) * $percent, 0);
+            return $total_percentage - CriticalDeviationResult::where('form_id', $this->summary->form_id)->where('category_id',$category_id )->whereNotNull('score')->get()->sum('score');
+        }
+    }
+   
     public function onStartAndComplete($is_confirm = true, $title = 'Are you sure?', $type = null, $data = null)
     {
         $message = 'Are you sure you want to complete this audit?';
