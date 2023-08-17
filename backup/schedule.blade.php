@@ -28,7 +28,7 @@
                 <form class="docs-search-form row gx-1 align-items-center">
                     <div class="col-auto">
                         <input type="text" id="search-docs" name="searchdocs" class="form-control search-docs"
-                            wire:model.debounce.100ms="search" placeholder="Search">
+                            wire:model.debounce.100ms="searchTerm" placeholder="Search">
                     </div>
                 </form>
             </div>
@@ -57,26 +57,32 @@
                     <tbody>
                         @forelse ($store_sched_list as $store)
                             <tr>
-                                <td class="cell">{{ $store->stores->code }}</td>
-                                <td class="cell">{{ $store->stores->name }}</td>
-                                <td class="cell">{{ $store->stores->TypeString }}</td>
-                                <td class="cell">{{ $store->stores->area }}</td>
+                                <td class="cell">{{ $store->store->code }}</td>
+                                <td class="cell">{{ $store->store->name }}</td>
+                                <td class="cell">{{ $store->store->TypeString }}</td>
+                                <td class="cell">{{ $store->store->area }}</td>
                                 <td class="cell">{{ date('F d Y', strtotime($store->audit_date)) }}</td>
                                 <td class="cell">{{ $store->wave }}</td>
                                 <td class="cell">
                                     <span class="badge  {{ $store->StatusBadge }}">{{ $store->StatusString }}</span>
                                 </td>
                                 <td class="cell table-action-sm">
-                                  
-                                    @if ($store->audit_status != 2)
-                                        <a wire:click="showModal('{{ $store->id }}')" data-bs-toggle="modal"
-                                            data-bs-target="#store_schedule_modal">
-                                            <svg class="icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
-                                                <path
-                                                    d="M362.7 19.3L314.3 67.7 444.3 197.7l48.4-48.4c25-25 25-65.5 0-90.5L453.3 19.3c-25-25-65.5-25-90.5 0zm-71 71L58.6 323.5c-10.4 10.4-18 23.3-22.2 37.4L1 481.2C-1.5 489.7 .8 498.8 7 505s15.3 8.5 23.7 6.1l120.3-35.4c14.1-4.2 27-11.8 37.4-22.2L421.7 220.3 291.7 90.3z" />
-                                            </svg>
-                                        </a>
+                                    {{-- <a href="{{ route('audit.details', ['store_id' => $store->id]) }}">
+                                        <svg class="icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512">
+                                            <path
+                                                d="M288 32c-80.8 0-145.5 36.8-192.6 80.6C48.6 156 17.3 208 2.5 243.7c-3.3 7.9-3.3 16.7 0 24.6C17.3 304 48.6 356 95.4 399.4C142.5 443.2 207.2 480 288 480s145.5-36.8 192.6-80.6c46.8-43.5 78.1-95.4 93-131.1c3.3-7.9 3.3-16.7 0-24.6c-14.9-35.7-46.2-87.7-93-131.1C433.5 68.8 368.8 32 288 32zM144 256a144 144 0 1 1 288 0 144 144 0 1 1 -288 0zm144-64c0 35.3-28.7 64-64 64c-7.1 0-13.9-1.2-20.3-3.3c-5.5-1.8-11.9 1.6-11.7 7.4c.3 6.9 1.3 13.8 3.2 20.7c13.7 51.2 66.4 81.6 117.6 67.9s81.6-66.4 67.9-117.6c-11.1-41.5-47.8-69.4-88.6-71.1c-5.8-.2-9.2 6.1-7.4 11.7c2.1 6.4 3.3 13.2 3.3 20.3z" />
+                                        </svg>
+                                    </a> --}}
+                                    {{--   @if ($store->is_complete != 2)
                                     @endif
+ --}}
+                                    <a wire:click="showModal('{{ $store->id }} ')" data-bs-toggle="modal"
+                                        data-bs-target="#store_schedule_modal">
+                                        <svg class="icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+                                            <path
+                                                d="M362.7 19.3L314.3 67.7 444.3 197.7l48.4-48.4c25-25 25-65.5 0-90.5L453.3 19.3c-25-25-65.5-25-90.5 0zm-71 71L58.6 323.5c-10.4 10.4-18 23.3-22.2 37.4L1 481.2C-1.5 489.7 .8 498.8 7 505s15.3 8.5 23.7 6.1l120.3-35.4c14.1-4.2 27-11.8 37.4-22.2L421.7 220.3 291.7 90.3z" />
+                                        </svg>
+                                    </a>
                                     <a href="#"
                                         wire:click="onAlert(true,'Confirm','Are you sure you want to delete this schedule?','warning',{{ $store->id }})">
                                         <svg class="icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512">
@@ -143,14 +149,14 @@
                         @csrf
                         <div class="mb-3">
                             <label for="" class="form-label">Store <span class="text-danger">*</span></label>
-                            <select class="form-select form-select-md" wire:model="auditForm.store_id" id="auditForm.store_id">
+                            <select class="form-select form-select-md" wire:model="store_id" id="store_id">
                                 <option selected hidden>Select store</option>
                                 @foreach ($store_list as $item)
                                     <option value="{{ $item->id }}">{{ $item->TypeString }} -
                                         {{ $item->name }}</option>
                                 @endforeach
                             </select>
-                            @error('auditForm.store_id')
+                            @error('store_id')
                                 <span class="text-danger mt-1 ">{{ $message }}</span>
                             @enderror
                         </div>
@@ -158,19 +164,19 @@
                             <label for="" class="form-label">Date of Audit <span
                                     class="text-danger">*</span></label>
                             <input type="date" class="form-control" name="audit_date" id="audit_date"
-                                wire:model="auditForm.audit_date">
-                            @error('auditForm.audit_date')
+                                wire:model="audit_date">
+                            @error('audit_date')
                                 <span class="text-danger mt-1 ">{{ $message }}</span>
                             @enderror
                         </div>
                         <div class="mb-3">
                             <label for="" class="form-label">Wave <span class="text-danger">*</span></label>
-                            <select class="form-select form-select-md" wire:model="auditForm.wave">
+                            <select class="form-select form-select-md" wire:model="wave">
                                 <option selected value="">Select wave</option>
                                 <option value="1">Wave 1</option>
                                 <option value="2">Wave 2</option>
                             </select>
-                            @error('auditForm.wave')
+                            @error('wave')
                                 <span class="text-danger mt-1 ">{{ $message }}</span>
                             @enderror
                         </div>

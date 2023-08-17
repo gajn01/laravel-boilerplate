@@ -53,6 +53,8 @@ class Form extends Component
         $this->auditDate = AuditDate::where('store_id', $this->store->id)->where('audit_date', $this->date_today)->first();
         if($this->auditDate->is_complete){
             $this->auditForm = AuditForm::where('store_id', $this->store->id)->where('date_of_visit', $this->date_today)->first();
+
+        }elseif ($this->auditDate->is_complete == 2) {
             $this->summary = Summary::where('form_id', $this->auditForm->id)->where('store_id', $this->store->id) ->where('date_of_visit', $this->date_today)->first();
         }
         $service = $this->getService();
