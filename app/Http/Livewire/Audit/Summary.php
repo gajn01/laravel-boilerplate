@@ -171,12 +171,9 @@ class Summary extends Component
     public function onComplete()
     {
         // $this->validate();
-        $this->auditDate = AuditDate::where('store_id', $this->store->id)->where('audit_date', $this->date_today)->first();
         $this->summary->save();
         $this->store->audit_status = 0;
         $this->store->save();
-        $this->auditDate->is_complete = 2;
-        $this->auditDate->save();
         $this->auditForm->audit_status = 2;
         $this->auditForm->save();
         $this->reset();
