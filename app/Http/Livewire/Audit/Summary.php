@@ -72,7 +72,7 @@ class Summary extends Component
             ->whereNotNull('score')
             ->get();
         $this->auditResult = AuditFormResult::where('form_id', $this->summary->form_id)->get();
-       
+        $this->auditForm = AuditForm::find($this->summary->form_id);
     }
     public function getCategoryList()
     {
@@ -141,6 +141,8 @@ class Summary extends Component
         $this->store->save();
         $this->auditDate->is_complete = 2;
         $this->auditDate->save();
+        $this->auditForm->audit_status = 2;
+        $this->auditForm->save();
         $this->reset();
         $this->onAlert(false, 'Success', 'Audit record saved successfully!', 'success');
         redirect()->route('audit.details', ['store_id' => $this->store->id]); 

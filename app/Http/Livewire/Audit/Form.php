@@ -51,7 +51,7 @@ class Form extends Component
     public function render()
     {
         $this->auditDate = AuditDate::where('store_id', $this->store->id)->where('audit_date', $this->date_today)->first();
-        if($this->store->audit_status){
+        if($this->auditDate->is_complete){
             $this->auditForm = AuditForm::where('store_id', $this->store->id)->where('date_of_visit', $this->date_today)->first();
             $this->summary = Summary::where('form_id', $this->auditForm->id)->where('store_id', $this->store->id) ->where('date_of_visit', $this->date_today)->first();
         }

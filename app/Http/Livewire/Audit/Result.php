@@ -48,7 +48,7 @@ class Result extends Component
     }
     public function render()
     {
-        $this->auditDate = AuditDate::where('store_id', $this->store->id)->where('audit_date', $this->date_today)->first();
+        // $this->auditDate = AuditDate::where('store_id', $this->store->id)->where('audit_date', $this->date_today)->first();
         $this->auditForm = AuditForm::where('store_id', $this->store->id)->where('date_of_visit', $this->date_today)->first();
         $service = $this->getService();
         $this->cashier_tat = $service->where('is_cashier', 1);
@@ -65,7 +65,7 @@ class Result extends Component
     {
         $this->store = new Store;
         $this->auditForm = new AuditForm;
-        $this->auditDate = new AuditDate;
+        // $this->auditDate = new AuditDate;
         $this->summary = new Summary;
         $this->auditResult = new AuditFormResult;
         $this->serviceSpeed = new ServiceSpeed;
@@ -126,6 +126,9 @@ class Result extends Component
         return $this->getDeviationList($critical_deviation_id)->transform(function ($deviation) use ($category_id, $critical_deviation_id, $result) {
             if ($this->store->audit_status) {
                 $result = $this->getDeviationResultList($category_id, $deviation->id, $critical_deviation_id);
+            } else{
+                $this->auditForm->id =  $this->getStoreRecord()->form_id;
+                $result = $this->getDeviationResultList($category_id, $deviation->id, $critical_deviation_id);
             }
             return [
                 'id' => $deviation->id,
@@ -156,16 +159,13 @@ class Result extends Component
             $result = null;
             if ($this->store->audit_status) {
                 $result = $this->getResultList($category_id, $sub_category_id, $label['id']);
-                if ($is_sub == 0 && $result && $result['is_na'] == 1) {
-                    $result['sub_sub_point'] = 0;
-                    $label['bp'] = 0;
-                }
             }else{
-                $result = $this->getStoreRecord();
-                if ($is_sub == 0 && $result && $result['is_na'] == 1) {
-                    $result['sub_sub_point'] = 0;
-                    $label['bp'] = 0;
-                }
+                $this->auditForm->id =  $this->getStoreRecord()->form_id;
+                $result = $this->getResultList($category_id, $sub_category_id, $label['id']);
+            }
+            if ($is_sub == 0 && $result && $result['is_na'] == 1) {
+                $result['sub_sub_point'] = 0;
+                $label['bp'] = 0;
             }
             $data = [
                 'id' => $label['id'],
@@ -192,10 +192,13 @@ class Result extends Component
         $sub_sub_sub_category->transform(function ($label) use ($category_id, $sub_category_id, $sub_sub_sub_category_id, $result) {
             if ($this->store->audit_status) {
                 $result = $this->getResultList($category_id, $sub_category_id, $sub_sub_sub_category_id, $label->id);
-                if ($result && $result['is_na'] == 1) {
-                    $result['label_point'] = 0;
-                    $label['bp'] = 0;
-                }
+            }else{
+                $this->auditForm->id =  $this->getStoreRecord()->form_id;
+                $result = $this->getResultList($category_id, $sub_category_id, $sub_sub_sub_category_id, $label->id);
+            }
+            if ($result && $result['is_na'] == 1) {
+                $result['label_point'] = 0;
+                $label['bp'] = 0;
             }
             return [
                 'id' => $label['id'],
