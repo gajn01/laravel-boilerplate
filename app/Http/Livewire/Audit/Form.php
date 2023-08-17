@@ -148,7 +148,6 @@ class Form extends Component
             $total_base = 0;
             $total_points = 0;
             $total_percent = 0;
-            $category->critical_deviation = $this->mapDeviation($category_id, $category->critical_deviation_id);
             $category->sub_category->transform(function ($subCategory) use ($category,$category_id, &$total_base, &$total_points,&$total_percent) {
                 $sub_category_id = $subCategory->id;
                 $subCategory->points = 0;
@@ -185,6 +184,8 @@ class Form extends Component
                 $subCategoryData['sub_sub_category'] = $sub_sub_category;
                 return $subCategoryData;
             });
+            $category->critical_deviation = $this->mapDeviation($category_id, $category->critical_deviation_id);
+
         }
         return $data;
     }
@@ -208,12 +209,12 @@ class Form extends Component
                 'product' => $this->getDropdownList($deviation->product_dropdown_id) ?? null,
                 'is_dropdown' => $deviation->is_dropdown,
                 'dropdown' => $this->getDropdownList($deviation->dropdown_id) ?? null,
-                'saved_sd' => $result ? $result['sd'] : null,
-                'saved_remarks' => $result ? $result['remarks'] : null,
-                'saved_score' => $result ? $result['score'] : null,
-                'saved_location' => $result ? $result['location'] : null,
-                'saved_product' => $result ? $result['product'] : null,
-                'saved_dropdown' => $result ? $result['dropdown'] : null,
+                'saved_sd' => $result ? $result['sd'] : 0,
+                'saved_remarks' => $result ? $result['remarks'] : 0,
+                'saved_score' => $result ? $result['score'] : 0,
+                'saved_location' => $result ? $result['location'] : 0,
+                'saved_product' => $result ? $result['product'] : 0,
+                'saved_dropdown' => $result ? $result['dropdown'] : 0,
             ];
         });
     }

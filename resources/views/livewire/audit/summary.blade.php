@@ -111,9 +111,9 @@
                                             <td class="core_name_total"><a
                                                     href="#{{ $data['category_name'] }}">{{ $data['category_name'] }}</a>
                                             </td>
-                                            <td class="text-center"> {{$data['percent']}} </td>
+                                            <td class="text-center"> {{$data['percent']}} %</td>
                                             <td class="text-center {{ $data['percentage'] < 80 ? 'text-danger' : '' }}">
-                                                {{ $data['percentage'] }}</td>
+                                                {{ $data['percentage'] }}%</td>
                                             @php
                                                 $overallScore = $data['percentage'];
                                             @endphp
@@ -161,15 +161,15 @@
                                     @forelse ($documentAndPeopleList as $key => $data)
                                         <tr>
                                             <td class="core_name_total"><a href="#{{ $data['category_name'] }}">{{ $data['category_name'] }}</a></td>
-                                            <td class="text-center ">{{ $data['percent'] }}</td>
-                                            <td class="text-center "> {{ $data['percentage'] }}</td>
+                                            <td class="text-center ">{{ $data['percent'] }}%</td>
+                                            <td class="text-center "> {{ $data['percentage'] }}%</td>
                                             <td></td>
                                       
                                         </tr>
                                     @endforeach
                                     <tr>
                                         <td class="text-center fw-bold" colspan="2">Total</td>
-                                        <td class="text-center ">{{ collect($documentAndPeopleList)->sum('percentage') }}</td>
+                                        <td class="text-center ">{{ collect($documentAndPeopleList)->sum('percentage') }}%</td>
                                         @php
                                             $overallScore = collect($documentAndPeopleList)->sum('percentage');
                                         @endphp
