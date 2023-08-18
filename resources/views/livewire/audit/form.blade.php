@@ -415,8 +415,9 @@
                                                                                 </div>
                                                                                 <div class="col-6 mb-2">
                                                                                     <label>Point</label>
-                                                                                    <input type="text" class="form-control" name="assembly_points" id="assembly_points"
+                                                                                    <input type="number" class="form-control" name="assembly_points" id="assembly_points"
                                                                                         value="{{ $cashier_tat[$index]->assembly_points }}"
+                                                                                        min="0" max="{{ $cashier_tat[$index]->base_assembly_points}}"
                                                                                         wire:change="updateService({{ $item }} ,'assembly_points', $event.target.value)">
                                                                                 </div>
                                                                             </div>
@@ -439,7 +440,8 @@
                                                                                 </div>
                                                                                 <div class="col-6 mb-2">
                                                                                     <label >Point</label>
-                                                                                    <input type="text" class="form-control" name="tat_points" id="tat_points"
+                                                                                    <input type="number" class="form-control" name="tat_points" id="tat_points"
+                                                                                        min="0" max="{{ $cashier_tat[$index]->base_tat_points}}"
                                                                                         placeholder="Point" value="{{ $cashier_tat[$index]->tat_points }}"
                                                                                         wire:change="updateService({{ $item }} ,'tat_points', $event.target.value)">
                                                                                 </div>
@@ -457,8 +459,9 @@
                                                                                 </div>
                                                                                 <div class="col-6 mb-2">
                                                                                     <label >Point</label>
-                                                                                    <input type="text" class="form-control" name="fst_points" id="fst_points"
+                                                                                    <input type="number" class="form-control" name="fst_points" id="fst_points"
                                                                                         value="{{ $cashier_tat[$index]->fst_points }}" placeholder="Point"
+                                                                                        min="0" max="{{ $cashier_tat[$index]->base_fst_points}}"
                                                                                         wire:change="updateService({{ $item }} ,'fst_points', $event.target.value)">
                                                                                 </div>
                                                                             </div>
@@ -524,6 +527,7 @@
                                                                                     <label>Point </label>
                                                                                     <input type="number"class=" form-control" name="assembly_points" id="assembly_points"
                                                                                         value="{{ $item->assembly_points }}"
+                                                                                        min="0" max="{{ $server_cat[$index]->base_assembly_points }}"
                                                                                         wire:change="updateService({{ $item }} ,'assembly_points', $event.target.value)"
                                                                                         placeholder="Point">
                                                                                 </div>
@@ -550,6 +554,7 @@
                                                                                     <label >Point </label>
                                                                                     <input type="number" class="form-control" name="tat_point" id="tat_point"
                                                                                         value="{{ $server_cat[$index]->tat_points }}"
+                                                                                        min="0" max="{{ $server_cat[$index]->base_tat_points }}"
                                                                                         wire:change="updateService({{ $item }} ,'tat_points', $event.target.value)"
                                                                                         placeholder="Point">
                                                                                 </div>
@@ -570,6 +575,7 @@
                                                                                     <input type="number" class="form-control" name="fst_point" id="fst_point"
                                                                                         value="{{ $server_cat[$index]->fst_points }}"
                                                                                         wire:change="updateService({{ $item}} ,'fst_points', $event.target.value)"
+                                                                                        min="0" max="{{ $server_cat[$index]->base_fst_points }}"
                                                                                         placeholder="Point">
                                                                                 </div>
                                                                             </div>
@@ -589,6 +595,7 @@
                                                                                     <input type="number" class="form-control" name="att_point" id="att_point"
                                                                                         value="{{ $server_cat[$index]->att_points }}"
                                                                                         wire:change="updateService({{ $item }} ,'att_points', $event.target.value)"
+                                                                                        min="0" max="{{ $server_cat[$index]->base_att_points }}"
                                                                                         placeholder="Point">
                                                                                 </div>
                                                                             </div>
