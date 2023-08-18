@@ -83,7 +83,7 @@ class Form extends Component
         return ServiceSpeed::where('form_id', $this->auditForm->id)->get();
     }
     public function addService($id = null){
-        $data = ['form_id' => $this->auditForm->id, 'is_cashier' => $id, 'name' => null, 'time' => null, 'product_order' => null, 'ot' => null, 'base_assembly_points' => 1, 'assembly_points' => 1, 'tat' => null, 'base_tat_points' => 1, 'tat_points' => 1, 'fst' => null, 'base_fst_points' => 3, 'fst_points' => 3, 'remarks' => null, 'serving_time' => '5'];
+        $data = ['form_id' => $this->auditForm->id, 'is_cashier' => $id, 'name' => null, 'time' => null, 'product_order' => null, 'ot' => null, 'base_assembly_points' => 1, 'assembly_points' => 1, 'tat' => null, 'base_tat_points' => 1, 'tat_points' => 1, 'fst' => null, 'base_fst_points' => 3, 'fst_points' => 3,'att' => null,'base_att_points' => $id ? 0 : 1 , 'att_points' => $id ? 0 : 1 ,'remarks' => null, 'serving_time' => '5'];
         ServiceSpeed::create($data);
     }
     public function updateService($data, $key, $value)
@@ -273,7 +273,7 @@ class Form extends Component
         return $sub_sub_sub_category;
     }
     public function getServiceResultList(){
-       return ServiceSpeed::selectRaw(' SUM(assembly_points + tat_points + fst_points) AS total_points, SUM(base_assembly_points + base_tat_points + base_fst_points) AS base_total')->where('form_id', $this->auditForm->id)->first();
+       return ServiceSpeed::selectRaw(' SUM(assembly_points + tat_points + fst_points + att_points) AS total_points, SUM(base_assembly_points + base_tat_points + base_fst_points + base_att_points) AS base_total')->where('form_id', $this->auditForm->id)->first();
     }
     public function getResultList($category_id, $sub_category_id, $sub_sub_category_id,$label_id = null)
     {

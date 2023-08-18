@@ -24,8 +24,8 @@ class Summary extends Component
     }
     public function getSummaryList(){
         return AuditFormResultModel::where(fn($query) =>
-        $query->whereHas('forms.date', fn($q) =>
-            $q->where('is_complete', '2')))
+        $query->whereHas('forms', fn($q) =>
+            $q->where('audit_status', '2')))
         ->where(fn($q) =>
             $q->whereNotNull('sub_sub_remarks')
                 ->orWhereNotNull('sub_sub_deviation')
