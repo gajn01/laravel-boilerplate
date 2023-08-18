@@ -107,15 +107,17 @@ class Summary extends Component
                     ];
                     foreach ($subNameMappings as $mapping) {
                         if ($mapping['name'] != "Cake Display") {
-                            $total_bp = $data->where('sub_name', $mapping['name'])->get()->sum('sub_sub_base_point');
-                            $total_points = $data->where('sub_name', $mapping['name'])->get()->sum('sub_sub_point');
+                            $total_bp = $data->where('form_id',$this->auditForm->id)->where('sub_name', $mapping['name'])->get()->sum('sub_sub_base_point');
+                            $total_points = $data->where('form_id',$this->auditForm->id)->where('sub_name', $mapping['name'])->get()->sum('sub_sub_point');
                         } else {
-                            $total_bp = $data->where('sub_name', $mapping['name'])->get()->sum('label_base_point');
-                            $total_points = $data->where('sub_name', $mapping['name'])->get()->sum('label_point');
+
+                            $total_bp = $data->where('form_id',$this->auditForm->id)->where('sub_name', $mapping['name'])->get()->sum('label_base_point');
+                            $total_points = $data->where('form_id',$this->auditForm->id)->where('sub_name', $mapping['name'])->get()->sum('label_point');
                         }
                         $total_percentage += ($total_bp == 0) ? 0 : round(($total_points / $total_bp) * $mapping["percent"], 0);
+
                     }
-                    return $total_percentage - CriticalDeviationResult::where('form_id', $this->summary->form_id)->where('category_id',2 )->whereNotNull('score')->sum('score');
+                    return $total_percentage - CriticalDeviationResult::where('form_id', $this->summary->form_id)->where('category_id', 2 )->whereNotNull('score')->sum('score');
                 }else{
                     $total_bp += $data->sub_sub_base_point;
                     $total_points += $data->sub_sub_point;
