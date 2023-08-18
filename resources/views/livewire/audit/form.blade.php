@@ -97,7 +97,7 @@
                                     </div>
                                 </div>
                                 @if ($category->critical_deviation->isNotEmpty())
-                                    <div class="col-12 col-lg-6">
+                                    <div class="col-12 col-lg-6 " wire:ignore >
                                         <div class="app-card app-card-chart h-100 shadow-sm">
                                             <div class="app-card-header p-3">
                                                 <div class="row justify-content-between align-items-center">
@@ -112,9 +112,9 @@
                                                     @if ($item['is_sd'])
                                                         <div class="row">
                                                             <div class="col-12">
-                                                                <div class="mb-2" wire:ignore>
+                                                                <div class="mb-2" >
                                                                     <select class="form-select form-select-md"
-                                                                        wire:change="updateCriticalDeviation({{$this->auditForm->id}},{{ json_encode($item) }},$event.target.value,'sd')"
+                                                                        wire:change="updateCriticalDeviation({{$category}},{{$this->auditForm->id}},{{ json_encode($item) }},$event.target.value,'sd')"
                                                                         name="sd{{ $item['id'] }}"
                                                                         id="sd{{ $item['id'] }}">
                                                                         <option value="0" {{ $item['saved_sd'] == '' ? 'selected' : '' }}> Select sd</option>
@@ -134,9 +134,9 @@
                                                     @if ($item['is_location'])
                                                         <div class="row " >
                                                             <div class="col-sm-12 col-md-6">
-                                                                <div class="mb-2" wire:ignore>
+                                                                <div class="mb-2" >
                                                                     <select class="form-select form-select-md"
-                                                                        wire:change="updateCriticalDeviation({{$this->auditForm->id}},{{ json_encode($item) }},$event.target.value,'location')"
+                                                                        wire:change="updateCriticalDeviation({{$category}},{{$this->auditForm->id}},{{ json_encode($item) }},$event.target.value,'location')"
                                                                         name="location{{ $item['id'] }}"
                                                                         id="location{{ $item['id'] }}">
                                                                         <option value="0" {{ $item['location'] == '' ? 'selected' : '' }}>Select location</option>
@@ -150,9 +150,9 @@
                                                                 </div>
                                                             </div>
                                                             <div class="col-sm-12 col-md-6">
-                                                                <div class="mb-2" wire:ignore>
+                                                                <div class="mb-2" >
                                                                     <select class="form-select form-select-md"
-                                                                        wire:change="updateCriticalDeviation({{$this->auditForm->id}},{{ json_encode($item) }},$event.target.value,'score')"
+                                                                        wire:change="updateCriticalDeviation({{$category}},{{$this->auditForm->id}},{{ json_encode($item) }},$event.target.value,'score')"
                                                                         name="loc_score{{ $item['id'] }}" id="loc_score{{ $item['id'] }}">
                                                                         <option value="0" {{ $item['score'] == '' ? 'selected' : '' }}> Select score</option>
                                                                         @foreach ($score as $scores)
@@ -171,7 +171,7 @@
                                                             <div class="col-sm-12 col-md-6">
                                                                 <div class="mb-2" wire:ignore.self>
                                                                     <select class="form-select form-select-md"
-                                                                        wire:change="updateCriticalDeviation({{$this->auditForm->id}},{{ json_encode($item) }},$event.target.value,'product')"
+                                                                        wire:change="updateCriticalDeviation({{$category}},{{$this->auditForm->id}},{{ json_encode($item) }},$event.target.value,'product')"
                                                                         name="product{{ $item['id'] }}"
                                                                         id="product{{ $item['id'] }}">
                                                                         <option value="0"  {{ $item['product'] == '' ? 'selected' : '' }}>  Select product</option>
@@ -185,9 +185,9 @@
                                                                 </div>
                                                             </div>
                                                             <div class="col-sm-12 col-md-6">
-                                                                <div class="mb-2" wire:ignore>
+                                                                <div class="mb-2" wire:ignore.self>
                                                                     <select class="form-select form-select-md"
-                                                                        wire:change="updateCriticalDeviation({{$this->auditForm->id}},{{ json_encode($item) }},$event.target.value,'score')"
+                                                                        wire:change="updateCriticalDeviation({{$category}},{{$this->auditForm->id}},{{ json_encode($item) }},$event.target.value,'score')"
                                                                         name="product_score{{ $item['id'] }}"
                                                                         id="product_score{{ $item['id'] }}">
                                                                         <option value="0" {{ $item['score'] == '' ? 'selected' : '' }}>  Select score</option>
@@ -207,7 +207,7 @@
                                                             <div class="col-sm-12 col-md-6">
                                                                 <div class="mb-2" wire:ignore.self>
                                                                     <select class="form-select form-select-md"
-                                                                        wire:change="updateCriticalDeviation({{$this->auditForm->id}},{{ json_encode($item) }}, $event.target.value, 'dropdown')"
+                                                                        wire:change="updateCriticalDeviation({{$category}},{{$this->auditForm->id}},{{ json_encode($item) }}, $event.target.value, 'dropdown')"
                                                                         name="dropdown{{ $item['id'] }}"
                                                                         id="dropdown{{ $item['id'] }}">
                                                                         <option value="0" {{ $item['dropdown'] == '' ? 'selected' : '' }}> Select deviation</option>
@@ -223,7 +223,7 @@
                                                             <div class="col-sm-12 col-md-6">
                                                                 <div class="mb-2" wire:ignore.self>
                                                                     <select class="form-select form-select-md"
-                                                                        wire:change="updateCriticalDeviation({{$this->auditForm->id}},{{ json_encode($item) }},$event.target.value,'score')"
+                                                                        wire:change="updateCriticalDeviation({{$category}},{{$this->auditForm->id}},{{ json_encode($item) }},$event.target.value,'score')"
                                                                         name="dp_score{{ $item['id'] }}"
                                                                         id="dp_score{{ $item['id'] }}">
                                                                         <option value="0" {{ $item['score'] == '' ? 'selected' : '' }}> Select score</option>
@@ -241,7 +241,7 @@
                                                     @if ($item['remarks'])
                                                         <div class="mb-2" wire:ignore.self>
                                                             <textarea class="form-control"
-                                                                wire:change="updateCriticalDeviation({{$this->auditForm->id}},{{ json_encode($item) }},$event.target.value,'remarks')"
+                                                                wire:change="updateCriticalDeviation({{$category}},{{$this->auditForm->id}},{{ json_encode($item) }},$event.target.value,'remarks')"
                                                                 name="remarks{{ $item['id'] }}" id="remarks{{ $item['id'] }}" rows="2"
                                                                 placeholder="Enter remarks here...">{{ $item['saved_remarks'] }}</textarea>
                                                         </div>
@@ -249,7 +249,7 @@
                                                     @if ($item['score_dropdown_id'])
                                                         <div class="mb-2" wire:ignore.self>
                                                             <select class="form-select form-select-md"
-                                                                wire:change="updateCriticalDeviation({{$this->auditForm->id}},{{ json_encode($item) }},$event.target.value,'score')"
+                                                                wire:change="updateCriticalDeviation({{$category}},{{$this->auditForm->id}},{{ json_encode($item) }},$event.target.value,'score')"
                                                                 name="dp_score{{ $item['id'] }}"
                                                                 id="dp_score{{ $item['id'] }}">
                                                                 <option value="0"  {{ $item['score'] == '' ? 'selected' : '' }}> Select score</option>
@@ -268,7 +268,7 @@
                                     </div>
                                 @endif
                             </div>
-                        <div class="row">
+                        <div class="row" >
                             @foreach ($category['sub_category'] as $sub_category)
                                 <div class="accordion mb-2" id="accordionCategory">
                                     <div class="accordion-item">
@@ -385,7 +385,7 @@
                                                                             <label for="product_order{{ $loop->index }}">Product Ordered</label>
                                                                             <input type="text" class="form-control" name="product_order"
                                                                                 id="product_order{{ $loop->index }}"
-                                                                                value="{{ $cashier_tat[$index]->product_ordered }}"
+                                                                                value="{{ $item->product_ordered }}"
                                                                                 wire:change="updateService({{ $item }} ,'product_ordered', $event.target.value)">
                                                                         </div>
 
@@ -399,7 +399,7 @@
                                                                                 </div>
                                                                                 <div class="col-6 mb-2">
                                                                                     <label>OT</label>
-                                                                                    <input type="text" class="form-control" id="ot" value="{{ $cashier_tat[$index]->ot }}"
+                                                                                    <input type="text" class="form-control" id="ot" value="{{ $item->ot }}"
                                                                                         wire:change="updateService({{ $item }} ,'ot', $event.target.value)">
                                                                                 </div>
                                                                             </div>
@@ -410,14 +410,14 @@
                                                                                 <div class="col-6 mb-2">
                                                                                     <label>Assembly </label>
                                                                                     <input type="text" class="form-control" name="assembly"id="assembly"
-                                                                                        value="{{ $cashier_tat[$index]->assembly }}"
+                                                                                        value="{{ $item->assembly }}"
                                                                                         wire:change="updateService({{ $item }} ,'assembly', $event.target.value)">
                                                                                 </div>
                                                                                 <div class="col-6 mb-2">
                                                                                     <label>Point</label>
                                                                                     <input type="number" class="form-control" name="assembly_points" id="assembly_points"
-                                                                                        value="{{ $cashier_tat[$index]->assembly_points }}"
-                                                                                        min="0" max="{{ $cashier_tat[$index]->base_assembly_points}}"
+                                                                                        value="{{ $item->assembly_points }}"
+                                                                                        min="0" max="{{ $item->base_assembly_points}}"
                                                                                         wire:change="updateService({{ $item }} ,'assembly_points', $event.target.value)">
                                                                                 </div>
                                                                             </div>
@@ -425,7 +425,7 @@
                                                                         <div class="col-sm-6 col-lg-2 mb-2">
                                                                             <label >Serving Time</label>
                                                                             <input type="text" class="form-control" name="serving_time" id="serving_time"
-                                                                                placeholder="minutes" value="{{ $cashier_tat[$index]->serving_time }}"
+                                                                                placeholder="minutes" value="{{ $item->serving_time }}"
                                                                                 wire:change="updateService({{ $item }} ,'serving_time', $event.target.value)">
                                                                         </div>
 
@@ -435,14 +435,14 @@
                                                                                 <div class="col-6 mb-2">
                                                                                     <label>Time</label>
                                                                                     <input type="text" class="form-control" name="tat" id="tat"
-                                                                                        placeholder="hh:mm" value="{{ $cashier_tat[$index]->tat }}"
+                                                                                        placeholder="hh:mm" value="{{ $item->tat }}"
                                                                                         wire:change="updateService({{ $item }} ,'tat', $event.target.value)">
                                                                                 </div>
                                                                                 <div class="col-6 mb-2">
                                                                                     <label >Point</label>
                                                                                     <input type="number" class="form-control" name="tat_points" id="tat_points"
-                                                                                        min="0" max="{{ $cashier_tat[$index]->base_tat_points}}"
-                                                                                        placeholder="Point" value="{{ $cashier_tat[$index]->tat_points }}"
+                                                                                        min="0" max="{{ $item->base_tat_points}}"
+                                                                                        placeholder="Point" value="{{ $item->tat_points }}"
                                                                                         wire:change="updateService({{ $item }} ,'tat_points', $event.target.value)">
                                                                                 </div>
                                                                             </div>
@@ -454,14 +454,14 @@
                                                                                 <div class="col-6 mb-2" >
                                                                                     <label for="" class="">Time</label>
                                                                                     <input type="text"class="form-control" name="fst" id="fst"
-                                                                                        placeholder="hh:mm"  value="{{ $cashier_tat[$index]->fst }}"
+                                                                                        placeholder="hh:mm"  value="{{ $item->fst }}"
                                                                                         wire:change="updateService({{ $item }} ,'fst', $event.target.value)">
                                                                                 </div>
                                                                                 <div class="col-6 mb-2">
                                                                                     <label >Point</label>
                                                                                     <input type="number" class="form-control" name="fst_points" id="fst_points"
-                                                                                        value="{{ $cashier_tat[$index]->fst_points }}" placeholder="Point"
-                                                                                        min="0" max="{{ $cashier_tat[$index]->base_fst_points}}"
+                                                                                        value="{{ $item->fst_points }}" placeholder="Point"
+                                                                                        min="0" max="{{ $item->base_fst_points}}"
                                                                                         wire:change="updateService({{ $item }} ,'fst_points', $event.target.value)">
                                                                                 </div>
                                                                             </div>
@@ -470,8 +470,7 @@
                                                                             <div class="mb-3">
                                                                                 <label for="">Remarks</label>
                                                                                 <textarea class="form-control" name="" id="" rows="2" id="remarks_{{ $loop->index }}"
-                                                                                    value="{{ $cashier_tat[$index]->remarks }}"
-                                                                                    wire:change="updateService({{ $item }} ,'remarks', $event.target.value)" placeholder="Remarks"></textarea>
+                                                                                    wire:change="updateService({{ $item }} ,'remarks', $event.target.value)" placeholder="Remarks">{{ $item->remarks }}</textarea>
                                                                             </div>
                                                                         </div>
                                                                     </div>
@@ -604,8 +603,8 @@
                                                                             <div class="mb-3">
                                                                                 <label for="">Remarks</label>
                                                                                 <textarea class="form-control" name="" id="" rows="2" id="remarks_{{ $loop->index }}"
-                                                                                    value="{{ $cashier_tat[$index]->remarks }}"  wire:change="updateService({{ $item }} ,'remarks', $event.target.value)"
-                                                                                    placeholder="Remarks"></textarea>
+                                                                                     wire:change="updateService({{ $item }} ,'remarks', $event.target.value)"
+                                                                                    placeholder="Remarks">{{ $server_cat[$index]->remarks }}</textarea>
                                                                             </div>
                                                                         </div>
                                                                     </div>

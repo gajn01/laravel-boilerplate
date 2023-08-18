@@ -83,7 +83,7 @@ class Form extends Component
         return ServiceSpeed::where('form_id', $this->auditForm->id)->get();
     }
     public function addService($id = null){
-        $data = ['form_id' => $this->auditForm->id, 'is_cashier' => $id, 'name' => null, 'time' => null, 'product_order' => null, 'ot' => null, 'base_assembly_points' => 1, 'assembly_points' => 1, 'tat' => null, 'base_tat_points' => 1, 'tat_points' => 1, 'fst' => null, 'base_fst_points' => 3, 'fst_points' => 3,'att' => null,'base_att_points' => $id ? 0 : 1 , 'att_points' => $id ? 0 : 1 ,'remarks' => null, 'serving_time' => '5'];
+        $data = ['form_id' => $this->auditForm->id, 'is_cashier' => $id, 'name' => null, 'time' => null, 'product_order' => null, 'ot' => null, 'base_assembly_points' => 1, 'assembly_points' => 1, 'tat' => null, 'base_tat_points' => 1, 'tat_points' => 1, 'fst' => null, 'base_fst_points' => $id ? 3 : 5, 'fst_points' => $id ? 3 : 5,'att' => null,'base_att_points' => $id ? 0 : 1 , 'att_points' => $id ? 0 : 1 ,'remarks' => null, 'serving_time' => '5'];
         ServiceSpeed::create($data);
     }
     public function updateService($data, $key, $value)
@@ -103,8 +103,8 @@ class Form extends Component
     }
     #endregion
     #region Update Deviation
-    public function updateCriticalDeviation($audit_form_id,$data,$value,$key){
-        $this->criticalDeviationResult = criticalDeviationResult::where('form_id',$audit_form_id)->where('deviation_id',$data['id'])->first();
+    public function updateCriticalDeviation($category,$audit_form_id,$data,$value,$key){
+        $this->criticalDeviationResult = criticalDeviationResult::where('category_id',$category['id'])->where('form_id',$audit_form_id)->where('deviation_id',$data['id'])->first();
         $this->criticalDeviationResult->$key = $value;
         $this->criticalDeviationResult->save();
     }
