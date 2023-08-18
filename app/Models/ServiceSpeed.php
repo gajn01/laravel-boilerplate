@@ -28,6 +28,9 @@ class ServiceSpeed extends Model
         'fst',
         'base_fst_points',
         'fst_points',
+        'att',
+        'base_att_points',
+        'att_points',
         'remarks',
         'serving_time'
     ];

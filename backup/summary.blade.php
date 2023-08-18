@@ -3,8 +3,8 @@
     <nav aria-label="breadcrumb">
         <ol class="breadcrumb">
             <li class="breadcrumb-item"><a href="{{ route('audit') }}">Audit</a></li>
-            <li class="breadcrumb-item"><a href="{{ route('audit.form', [$auditForm->id]) }}">{{ $store->name }}</a>
-            <li class="breadcrumb-item"><a href="{{ route('audit.view.result', [$auditForm->id, $summary->id]) }}">Result</a>
+            <li class="breadcrumb-item"><a href="{{ route('audit.form', [$store_id]) }}">{{ $store->name }}</a>
+            <li class="breadcrumb-item"><a href="{{ route('audit.view.result', [$store_id, $summary_id]) }}">Result</a>
             <li class="breadcrumb-item active" aria-current="page">Executive Summary</li>
         </ol>
     </nav>
@@ -54,7 +54,7 @@
                                         <label class="form-label">Conducted by:</label>
                                     </td>
                                     <td class="pl-3">
-                                        <input type="text" wire:model="summary.conducted_by" class="form-control" @disabled($store->audit_status ? false :true)>
+                                        <input type="text" wire:model="conducted_by" class="form-control" @disabled($store->audit_status ? false :true)>
                                     </td>
                                 </tr>
                                 <tr class="v-align-items-baseline">
@@ -63,8 +63,8 @@
                                                 class="text-danger">*</span></label>
                                     </td>
                                     <td class="pl-3">
-                                        <input type="text" wire:model="summary.received_by" class="form-control" @disabled($store->audit_status ? false :true)>
-                                        @error('summary.received_by')
+                                        <input type="text" wire:model="received_by" class="form-control" @disabled($store->audit_status ? false :true)>
+                                        @error('received_by')
                                             <span class="text-danger mt-1 ">{{ $message }}</span>
                                         @enderror
                                     </td>
@@ -75,7 +75,7 @@
                                         <label class="form-label">Date of visit:</label>
                                     </td>
                                     <td class="pl-3">
-                                        <input type="date" wire:model="summary.date_of_visit" class="form-control" @disabled($store->audit_status ? false :true)>
+                                        <input type="date" wire:model="dov" class="form-control" @disabled($store->audit_status ? false :true)>
 
                                     </td>
                                 </tr>
@@ -99,23 +99,21 @@
                             <table class="table app-table-hover mb-0 text-left ">
                                 <thead>
                                     <tr>
-                                        <th class="cell w-50">Category</th>
-                                        <th class="cell text-center">% Base</th>
+                                        <th class="cell">Category</th>
                                         <th class="cell text-center">% Score</th>
                                         <th class="cell text-center">Final Rating</th>
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    @forelse ($summaryList as $key => $data)
+                                    @forelse ($summary as $key => $data)
                                         <tr>
                                             <td class="core_name_total"><a
-                                                    href="#{{ $data['category_name'] }}">{{ $data['category_name'] }}</a>
+                                                    href="#{{ $data->category_name }}">{{ $data->category_name }}</a>
                                             </td>
-                                            <td class="text-center"> {{$data['percent']}} %</td>
-                                            <td class="text-center {{ $data['percentage'] < 80 ? 'text-danger' : '' }}">
-                                                {{ $data['percentage'] }}%</td>
+                                            <td class="text-center {{ $data->percentage < 80 ? 'text-danger' : '' }}">
+                                                {{ $data->percentage }}</td>
                                             @php
-                                                $overallScore = $data['percentage'];
+                                                $overallScore = $data->percentage;
                                             @endphp
 
                                             @switch(true)
@@ -145,64 +143,10 @@
                         </div>
                     </div>
                 </div>
-                <div class="app-card-body p-3 p-lg-4">
-                    <div class="row justify-content-between align-items-center">
-                        <div class="col-12">
-                            <table class="table app-table-hover mb-0 text-left ">
-                                <thead>
-                                    <tr>
-                                        <th class="cell w-50">Category</th>
-                                        <th class="cell text-center">% Base</th>
-                                        <th class="cell text-center">% Score</th>
-                                        <th class="cell text-center">Final Rating</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    @forelse ($documentAndPeopleList as $key => $data)
-                                        <tr>
-                                            <td class="core_name_total"><a href="#{{ $data['category_name'] }}">{{ $data['category_name'] }}</a></td>
-                                            <td class="text-center ">{{ $data['percent'] }}%</td>
-                                            <td class="text-center "> {{ $data['percentage'] }}%</td>
-                                            <td></td>
-                                      
-                                        </tr>
-                                    @endforeach
-                                    <tr>
-                                        <td class="text-center fw-bold" colspan="2">Total</td>
-                                        <td class="text-center ">{{ collect($documentAndPeopleList)->sum('percentage') }}%</td>
-                                        @php
-                                            $overallScore = collect($documentAndPeopleList)->sum('percentage');
-                                        @endphp
-                                        @switch(true)
-                                            @case($overallScore >= 90)
-                                                <td class="text-center">A</td>
-                                            @break
-
-                                            @case($overallScore >= 80 && $overallScore <= 89)
-                                                <td class="text-center">B</td>
-                                            @break
-
-                                            @case($overallScore >= 70 && $overallScore <= 79)
-                                                <td class="text-center text-danger">C</td>
-                                            @break
-
-                                            @case($overallScore >= 60 && $overallScore <= 69)
-                                                <td class="text-center text-danger">D</td>
-                                            @break
-
-                                            @default
-                                                <td class="text-center text-danger">E</td>
-                                        @endswitch
-                                    </tr>
-                                </tbody>
-                            </table>
-                        </div>
-                    </div>
-                </div>
             </div>
         </div>
         <div class="col-12 col-lg-6">
-            <div class="app-card app-card-chart shadow-sm">
+            <div class="app-card app-card-chart h-100 shadow-sm">
                 <div class="app-card-header p-3">
                     <div class="row justify-content-between align-items-center">
                         <div class="col-auto">
@@ -265,7 +209,7 @@
                             </tr>
                         </thead>
                         <tbody>
-                            @forelse ($criticalDeviationResultList as $deviation)
+                            @forelse ($critical_deviation as $deviation)
                                 <tr>
                                     <td>{{ $deviation->category->name }}</td>
                                     <td>{{ $deviation->CriticalDeviationMenu->label }}</td>
@@ -277,6 +221,7 @@
                                     <td class="text-danger text-center" colspan="4">No Critical Deviation</td>
                                 </tr>
                             @endforelse
+
                         </tbody>
                     </table>
                 </div>
@@ -292,12 +237,12 @@
                     </div>
                     <div class="app-card-body p-3 p-lg-4">
                         <div class="row justify-content-between align-items-center">
-                            <div class="col-12 ">
-                                <div class="3">
+                            <div class="col-12">
+                                <div class="mb-3">
                                     <label for="" class="form-label">Areas of Strength<span
                                             class="text-danger">*</span></label>
-                                    <textarea class="form-control" wire:model="summary.strength" rows="3"></textarea>
-                                    @error('summary.strength')
+                                    <textarea class="form-control" wire:model="strength" rows="3"></textarea>
+                                    @error('strength')
                                         <span class="text-danger mt-1 ">{{ $message }}</span>
                                     @enderror
                                 </div>
@@ -305,8 +250,8 @@
                                 <div class="mb-3">
                                     <label for="" class="form-label">Areas for Improvement<span
                                             class="text-danger">*</span></label>
-                                    <textarea class="form-control" wire:model="summary.improvement" rows="3"></textarea>
-                                    @error('summary.improvement')
+                                    <textarea class="form-control" wire:model="improvement" rows="3"></textarea>
+                                    @error('improvement')
                                         <span class="text-danger mt-1 ">{{ $message }}</span>
                                     @enderror
                                 </div>
@@ -316,11 +261,14 @@
                     </div>
                 </div>
             </div>
+
         </div>
+
         <div class="row g-2 justify-content-start justify-content-md-end align-items-center">
             <div class="col-auto mb-3">
                 <a class="btn app-btn-primary"
                     wire:click="onStartAndComplete(true,'Are you sure?','warning')">Complete</a>
+                {{-- wire:click="onStartAndComplete(true,'Are you sure?','warning')">{{ $actionTitle }} --}}
             </div>
         </div>
     @endif
