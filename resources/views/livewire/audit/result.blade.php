@@ -149,11 +149,11 @@
                                                         <table class="table mb-0">
                                                             <thead>
                                                                 <tr>
-                                                                    <th scope="col"></th>
+                                                                    <th scope="col" class="w-50"></th>
                                                                     <th class="text-center" scope="col">BP</th>
                                                                     <th class="text-center" scope="col">Score</th>
-                                                                    <th class="text-center" scope="col">Remarks</th>
-                                                                    <th class="text-center" scope="col">Deviation
+                                                                    <th class="text-center w-25" scope="col">Remarks</th>
+                                                                    <th class="text-center w-25" scope="col">Deviation
                                                                     </th>
                                                                 </tr>
                                                             </thead>
@@ -163,9 +163,7 @@
                                                                         <td class="w-50">
                                                                             <span> {{ $auditLabel['name'] }}
                                                                                 @if ($auditLabel['is_all_nothing'])
-                                                                                    <span
-                                                                                        class="text-danger text-small">
-                                                                                        (all or nothing)</span>
+                                                                                    <span class="text-danger text-small">(all or nothing)</span>
                                                                                 @endif
                                                                             </span>
                                                                         </td>
@@ -241,6 +239,8 @@
                                                                             <th>CAT Points</th>
                                                                             <th>FST</th>
                                                                             <th>FST Points</th>
+                                                                            <th>ATT</th>
+                                                                            <th>ATT Points</th>
                                                                             <th>Serving Time</th>
                                                                             <th>Remarks</th>
                                                                         </tr>
@@ -258,6 +258,8 @@
                                                                                 <td>{{ $item->tat_points }}</td>
                                                                                 <td>{{ $item->fst }}</td>
                                                                                 <td>{{ $item->fst_points }}</td>
+                                                                                <td>{{ $item->att }}</td>
+                                                                                <td>{{ $item->att_points }}</td>
                                                                                 <td>{{ $item->serving_time }}</td>
                                                                                 <td>{{ $item->remarks }}</td>
                                                                             </tr>
@@ -270,11 +272,11 @@
                                                                 <table class="table mb-3">
                                                                     <thead>
                                                                         <tr>
-                                                                            <th scope="col"> {{ $auditLabel['name'] }} </th>
+                                                                            <th scope="col" class="w-50"> {{ $auditLabel['name'] }} </th>
                                                                             <th class="text-center" scope="col"> BP</th>
                                                                             <th class="text-center" scope="col"> Score</th>
-                                                                            <th class="text-center" scope="col"> Remarks</th>
-                                                                            <th class="text-center" scope="col">  Deviation</th>
+                                                                            <th class="text-center w-25" scope="col"> Remarks</th>
+                                                                            <th class="text-center w-25" scope="col">  Deviation</th>
                                                                         </tr>
                                                                     </thead>
                                                                     @foreach ($auditLabel['sub_sub_sub_category'] as $index => $sub_sub_sub_category)

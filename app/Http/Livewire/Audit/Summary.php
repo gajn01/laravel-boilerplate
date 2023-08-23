@@ -30,7 +30,6 @@ class Summary extends Component
     public AuditForm $auditForm;
     public AuditDate $auditDate;
     public ServiceSpeed $serviceSpeed;
-
     public function __construct()
     {
         $this->timezone = new DateTimeZone('Asia/Manila');
@@ -110,17 +109,19 @@ class Summary extends Component
                             $total_bp = $data->where('form_id',$this->auditForm->id)->where('sub_name', $mapping['name'])->get()->sum('sub_sub_base_point');
                             $total_points = $data->where('form_id',$this->auditForm->id)->where('sub_name', $mapping['name'])->get()->sum('sub_sub_point');
                         } else {
-
                             $total_bp = $data->where('form_id',$this->auditForm->id)->where('sub_name', $mapping['name'])->get()->sum('label_base_point');
                             $total_points = $data->where('form_id',$this->auditForm->id)->where('sub_name', $mapping['name'])->get()->sum('label_point');
                         }
                         $total_percentage += ($total_bp == 0) ? 0 : round(($total_points / $total_bp) * $mapping["percent"], 0);
-
                     }
                     return $total_percentage - CriticalDeviationResult::where('form_id', $this->summary->form_id)->where('category_id', 2 )->whereNotNull('score')->sum('score');
                 }else{
                     $total_bp += $data->sub_sub_base_point;
                     $total_points += $data->sub_sub_point;
+                    if($category_id == 1){
+                        $total_bp += $this->getServiceResultList()->base_total;
+                        $total_points += $this->getServiceResultList()->total_points;
+                    }
                 }
             } else {
                 $total_bp += $data->label_base_point;
@@ -164,7 +165,9 @@ class Summary extends Component
             return $total_percentage - CriticalDeviationResult::where('form_id', $this->summary->form_id)->where('category_id',$category_id )->whereNotNull('score')->get()->sum('score');
         }
     }
-   
+    public function getServiceResultList(){
+        return ServiceSpeed::selectRaw(' SUM(assembly_points + tat_points + fst_points + att_points) AS total_points, SUM(base_assembly_points + base_tat_points + base_fst_points + base_att_points) AS base_total')->where('form_id', $this->auditForm->id)->first();
+     }
     public function onStartAndComplete($is_confirm = true, $title = 'Are you sure?', $type = null, $data = null)
     {
         $message = 'Are you sure you want to complete this audit?';

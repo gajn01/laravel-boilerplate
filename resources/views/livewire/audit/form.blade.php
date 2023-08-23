@@ -114,6 +114,7 @@
                                                             <div class="col-12">
                                                                 <div class="mb-2" >
                                                                     <select class="form-select form-select-md"
+                                                                        @disabled( $store->audit_status == 0 ? true : false)
                                                                         wire:change="updateCriticalDeviation({{$category}},{{$this->auditForm->id}},{{ json_encode($item) }},$event.target.value,'sd')"
                                                                         name="sd{{ $item['id'] }}"
                                                                         id="sd{{ $item['id'] }}">
@@ -136,6 +137,7 @@
                                                             <div class="col-sm-12 col-md-6">
                                                                 <div class="mb-2" >
                                                                     <select class="form-select form-select-md"
+                                                                        @disabled( $store->audit_status == 0 ? true : false)
                                                                         wire:change="updateCriticalDeviation({{$category}},{{$this->auditForm->id}},{{ json_encode($item) }},$event.target.value,'location')"
                                                                         name="location{{ $item['id'] }}"
                                                                         id="location{{ $item['id'] }}">
@@ -152,6 +154,7 @@
                                                             <div class="col-sm-12 col-md-6">
                                                                 <div class="mb-2" >
                                                                     <select class="form-select form-select-md"
+                                                                        @disabled( $store->audit_status == 0 ? true : false)
                                                                         wire:change="updateCriticalDeviation({{$category}},{{$this->auditForm->id}},{{ json_encode($item) }},$event.target.value,'score')"
                                                                         name="loc_score{{ $item['id'] }}" id="loc_score{{ $item['id'] }}">
                                                                         <option value="0" {{ $item['score'] == '' ? 'selected' : '' }}> Select score</option>
@@ -171,6 +174,7 @@
                                                             <div class="col-sm-12 col-md-6">
                                                                 <div class="mb-2" wire:ignore.self>
                                                                     <select class="form-select form-select-md"
+                                                                    @disabled( $store->audit_status == 0 ? true : false)
                                                                         wire:change="updateCriticalDeviation({{$category}},{{$this->auditForm->id}},{{ json_encode($item) }},$event.target.value,'product')"
                                                                         name="product{{ $item['id'] }}"
                                                                         id="product{{ $item['id'] }}">
@@ -187,6 +191,7 @@
                                                             <div class="col-sm-12 col-md-6">
                                                                 <div class="mb-2" wire:ignore.self>
                                                                     <select class="form-select form-select-md"
+                                                                    @disabled( $store->audit_status == 0 ? true : false)
                                                                         wire:change="updateCriticalDeviation({{$category}},{{$this->auditForm->id}},{{ json_encode($item) }},$event.target.value,'score')"
                                                                         name="product_score{{ $item['id'] }}"
                                                                         id="product_score{{ $item['id'] }}">
@@ -207,6 +212,7 @@
                                                             <div class="col-sm-12 col-md-6">
                                                                 <div class="mb-2" wire:ignore.self>
                                                                     <select class="form-select form-select-md"
+                                                                    @disabled( $store->audit_status == 0 ? true : false)
                                                                         wire:change="updateCriticalDeviation({{$category}},{{$this->auditForm->id}},{{ json_encode($item) }}, $event.target.value, 'dropdown')"
                                                                         name="dropdown{{ $item['id'] }}"
                                                                         id="dropdown{{ $item['id'] }}">
@@ -223,6 +229,7 @@
                                                             <div class="col-sm-12 col-md-6">
                                                                 <div class="mb-2" wire:ignore.self>
                                                                     <select class="form-select form-select-md"
+                                                                    @disabled( $store->audit_status == 0 ? true : false)
                                                                         wire:change="updateCriticalDeviation({{$category}},{{$this->auditForm->id}},{{ json_encode($item) }},$event.target.value,'score')"
                                                                         name="dp_score{{ $item['id'] }}"
                                                                         id="dp_score{{ $item['id'] }}">
@@ -241,6 +248,7 @@
                                                     @if ($item['remarks'])
                                                         <div class="mb-2" wire:ignore.self>
                                                             <textarea class="form-control"
+                                                            @disabled( $store->audit_status == 0 ? true : false)
                                                                 wire:change="updateCriticalDeviation({{$category}},{{$this->auditForm->id}},{{ json_encode($item) }},$event.target.value,'remarks')"
                                                                 name="remarks{{ $item['id'] }}" id="remarks{{ $item['id'] }}" rows="2"
                                                                 placeholder="Enter remarks here...">{{ $item['saved_remarks'] }}</textarea>
@@ -249,6 +257,7 @@
                                                     @if ($item['score_dropdown_id'])
                                                         <div class="mb-2" wire:ignore.self>
                                                             <select class="form-select form-select-md"
+                                                            @disabled( $store->audit_status == 0 ? true : false)
                                                                 wire:change="updateCriticalDeviation({{$category}},{{$this->auditForm->id}},{{ json_encode($item) }},$event.target.value,'score')"
                                                                 name="dp_score{{ $item['id'] }}"
                                                                 id="dp_score{{ $item['id'] }}">
@@ -321,11 +330,13 @@
                                                                 </div>
                                                             {{-- Deviation bp,points,remarks --}}
                                                                 <div class="col-sm-12 col-md-1">
-                                                                    <input type="text" class="form-control text-center mb-2" disabled name="bp{{ $auditLabel['name'] }}" id="bp" 
+                                                                    <input type="text" class="form-control text-center mb-2" disabled name="bp{{ $auditLabel['name'] }}" id="bp"
+                                                                        @disabled( $store->audit_status == 0 ? true : false)
                                                                         value="{{ $auditLabel['is_all_nothing'] ? $auditLabel['bp'] . '*' : $auditLabel['bp'] }}">
                                                                 </div>
                                                                 <div class="col-sm-12 col-md-1">
                                                                     <input type="number" class="form-control text-center mb-2" @disabled($auditLabel['is_na'] == 1 || $store->audit_status == 0 ? true : false) 
+                                                                        @disabled( $store->audit_status == 0 ? true : false)
                                                                         name="points{{ $auditLabel['id'] }}" 
                                                                         id="points{{ $auditLabel['id'] }}"
                                                                         value="{{$auditLabel['points']}}"

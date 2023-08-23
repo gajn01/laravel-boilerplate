@@ -447,12 +447,12 @@ class Form extends Component
         })->flatten(1);
         $critical_deviation->each(function ($result) {
             if (is_array($result)) {
-                CriticalDeviationResult::create($result);
+                CriticalDeviationResult::updateOrCreate($result);
             }
         });
         $auditResults->each(function ($result) {
             if (is_array($result)) {
-                AuditFormResult::create($result);
+                AuditFormResult::updateOrCreate($result);
             }
         });
     }

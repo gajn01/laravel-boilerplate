@@ -294,23 +294,13 @@
                         <div class="row justify-content-between align-items-center">
                             <div class="col-12 ">
                                 <div class="3">
-                                    <label for="" class="form-label">Areas of Strength<span
-                                            class="text-danger">*</span></label>
+                                    <label for="" class="form-label">Areas of Strength</label>
                                     <textarea class="form-control" wire:model="summary.strength" rows="3"></textarea>
-                                    @error('summary.strength')
-                                        <span class="text-danger mt-1 ">{{ $message }}</span>
-                                    @enderror
                                 </div>
-
                                 <div class="mb-3">
-                                    <label for="" class="form-label">Areas for Improvement<span
-                                            class="text-danger">*</span></label>
+                                    <label for="" class="form-label">Areas for Improvement</label>
                                     <textarea class="form-control" wire:model="summary.improvement" rows="3"></textarea>
-                                    @error('summary.improvement')
-                                        <span class="text-danger mt-1 ">{{ $message }}</span>
-                                    @enderror
                                 </div>
-
                             </div>
                         </div>
                     </div>

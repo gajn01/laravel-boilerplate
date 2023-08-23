@@ -213,7 +213,7 @@ class Result extends Component
     }
     public function getServiceResultList()
     {
-        return ServiceSpeed::selectRaw(' SUM(assembly_points + tat_points + fst_points) AS total_points, SUM(base_assembly_points + base_tat_points + base_fst_points) AS base_total')->where('form_id', $this->auditForm->id)->first();
+       return ServiceSpeed::selectRaw(' SUM(assembly_points + tat_points + fst_points + att_points) AS total_points, SUM(base_assembly_points + base_tat_points + base_fst_points + base_att_points) AS base_total')->where('form_id', $this->auditForm->id)->first();
     }
     public function getResultList($category_id, $sub_category_id, $sub_sub_category_id, $label_id = null)
     {
