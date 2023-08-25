@@ -377,7 +377,6 @@ class Form extends Component
             [
                 'form_id' => $this->auditForm->id,
                 'store_id' => $this->store->id,
-                'date_of_visit' => $this->date_today,
             ],
             [
                 'name' => $this->store->name,
