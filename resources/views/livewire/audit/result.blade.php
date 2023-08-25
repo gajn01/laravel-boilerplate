@@ -2,8 +2,12 @@
 <div class="">
     <nav aria-label="breadcrumb">
         <ol class="breadcrumb">
-            <li class="breadcrumb-item"><a href="{{ route('audit') }}">Audit</a></li>
-            <li class="breadcrumb-item"><a href="{{ route('audit.form', [$auditForm->id]) }}">{{ $store->name }}</a>
+            @if ($auditForm->audit_status != 2 )
+                <li class="breadcrumb-item"><a href="{{ route('audit') }}">Audit</a></li>
+                <li class="breadcrumb-item"><a href="{{ route('audit.form', [$auditForm->id]) }}">{{ $store->name }}</a>
+            @else
+                <li class="breadcrumb-item"><a href="{{ route('audit.details', [$store->id]) }}">{{ $store->name }}</a>
+            @endif
             <li class="breadcrumb-item active" aria-current="page">Result</li>
         </ol>
     </nav>

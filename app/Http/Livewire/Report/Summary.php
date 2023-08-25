@@ -28,6 +28,10 @@ class Summary extends Component
     }
     public function getSummaryList()
     {
+        /* if($this->category == 'all'){
+            $this->subCategory = 'all';
+            $this->subSubCategory = 'all';
+        } */
         $query = AuditFormResultModel::whereHas('forms', fn ($q) =>
             $q->where('audit_status', '2')
                 ->when($this->area && $this->area !== 'all', fn ($q) => $q->where('area', $this->area))

@@ -37,14 +37,18 @@ class Store extends Component
     }
     private function getStoreList()
     {
-        $searchTerm = '%' . $this->searchTerm . '%';
-        $store_list = StoreModel::where('name', 'like', $searchTerm)
-            ->orWhere('code', 'like', $searchTerm)
-            ->orWhere('area', 'like', '%' . $this->searchTerm . '%')
-            ->orderBy('code', 'ASC')
-            ->paginate($this->limit);
-        return $store_list;
+        return StoreModel::where(function ($query) {
+            $query->where('name', 'like', '%' . $this->searchTerm . '%')
+                ->orWhere('code', 'like', '%' . $this->searchTerm . '%')
+                ->orWhere('area', 'like', '%' . $this->searchTerm . '%');
+        })
+        ->when(auth()->user()->user_type == 3, function ($query) {
+            return $query->where('name', auth()->user()->name);
+        })
+        ->orderBy('code', 'ASC')
+        ->paginate($this->limit);
     }
+    
     public function exportCSV()
     {
         $store_list = $this->getStoreList();

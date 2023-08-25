@@ -160,7 +160,7 @@
         </div>
     </div>
 
-    @if ($user->user_type == 2 && $this->isSameUser == false)
+    @if ($user->user_type == 2 && $this->isSameUser == false || $user->user_type == 3)
         <hr class="my-4">
         @if (Gate::allows('access-enabled', 'module-set-module-access'))
             <div class="row g-4 settings-section">

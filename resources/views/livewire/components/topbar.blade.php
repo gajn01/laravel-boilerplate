@@ -6,8 +6,7 @@
             <div class="row justify-content-between align-items-center">
                 <div class="col-auto">
                     <a id="sidepanel-toggler" class="sidepanel-toggler d-inline-block d-xl-none" href="#">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" viewBox="0 0 30 30"
-                            role="img">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" viewBox="0 0 30 30" role="img">
                             <title>Menu</title>
                             <path stroke="currentColor" stroke-linecap="round" stroke-miterlimit="10" stroke-width="2"
                                 d="M4 7h22M4 15h22M4 23h22"></path>
@@ -18,7 +17,7 @@
                     <div class="app-utility-item app-user-dropdown dropdown">
                         <a class="dropdown-toggle" id="user-dropdown-toggle" data-bs-toggle="dropdown" href="#"
                             role="button" aria-expanded="false">
-                            <span class="h6 align-middle">{{ Auth::user()->name }}</span>
+                            <span class="h6 align-middle">{{ auth()->user()->user_type == 3 ?  auth()->user()->getStoreName->name : Auth::user()->name }}</span>
                             <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" fill="currentColor"
                                 class="bi bi-person-circle" viewBox="0 0 16 16">
                                 <path d="M11 6a3 3 0 1 1-6 0 3 3 0 0 1 6 0z"></path>

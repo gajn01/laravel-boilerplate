@@ -12,7 +12,6 @@ class User extends Authenticatable
 {
     use HasApiTokens, HasFactory, Notifiable;
     protected $table = 'user';
-
     const CREATED_AT = 'date_created';
     const UPDATED_AT = 'date_updated';
     /**
@@ -25,7 +24,6 @@ class User extends Authenticatable
         'email',
         'password',
     ];
-
     /**
      * The attributes that should be hidden for serialization.
      *
@@ -35,7 +33,6 @@ class User extends Authenticatable
         'password',
         'remember_token',
     ];
-
     /**
      * The attributes that should be cast.
      *
@@ -44,7 +41,6 @@ class User extends Authenticatable
     protected $casts = [
         'email_verified_at' => 'datetime',
     ];
-
     public function departments(){
         return $this->belongsToMany(Department::class);
     }
@@ -56,7 +52,6 @@ class User extends Authenticatable
         $levels = array("Super User", "Administrator", "User","Store");
         return $levels[$this->user_type];
     }
-
     public function getUserAccessArrayAttribute()
     {
         $ua = json_decode($this->user_access, true);

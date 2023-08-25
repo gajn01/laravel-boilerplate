@@ -10,7 +10,7 @@ class AuditForm extends Model
     use HasFactory;
 
     protected $table = 'audit_forms';
-    protected $fillable = ['store_id', 'audit_date_id', 'date_of_visit', 'conducted_by_id', 'time_of_audit', 'wave', 'audit_status', 'created_at', 'updated_at'];
+    protected $fillable = ['store_id', 'audit_date_id', 'date_of_visit', 'conducted_by_id','received_by', 'time_of_audit', 'wave', 'audit_status', 'created_at', 'updated_at'];
 
     public function getStatusStringAttribute()
     {
@@ -34,5 +34,12 @@ class AuditForm extends Model
     public function auditors()
     {
         return $this->hasMany(AuditorList::class, 'audit_form_id', 'id');
+    }
+    public function user(){
+        return $this->belongsTo(User::class, 'conducted_by_id', 'id');
+    }
+    public function summary(){
+        return $this->belongsTo(Summary::class, 'id', 'form_id');
+
     }
 }

@@ -37,6 +37,7 @@ use App\Http\Livewire\Store\Store;
 use App\Http\Livewire\Store\StoreDetails;
 use App\Http\Livewire\Store\Capa;
 use App\Http\Livewire\Store\CapaResult;
+use App\Http\Livewire\Store\StoreRecordList;
 /* Dashboard */
 Route::get('/', [NavigationController::class,'index'])->name('home');
 Route::get('/login', Login::class)->name('login');
@@ -47,6 +48,7 @@ Route::middleware(['auth','verified'])->group(function () {
     Route::get('/schedule', AuditSchedule::class)->name('audit.schedule');
     Route::get('/store', Store::class)->name('store');
     Route::get('/store/details/{store_id?}', StoreDetails::class)->name('store-details');
+    Route::get('/store/records', StoreRecordList::class)->name('store-records');
     Route::get('/store/capa', Capa::class)->name('capa');
     Route::get('/store/capa/result/{id}', Capa::class)->name('capa-result');
 
