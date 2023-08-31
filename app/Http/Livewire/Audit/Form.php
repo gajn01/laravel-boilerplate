@@ -17,9 +17,9 @@ use App\Models\SanitaryModel;
 use App\Models\CriticalDeviationMenu;
 use App\Models\CriticalDeviationResult;
 use App\Models\ServiceSpeed;
+use App\Http\Controllers\Form\AuditForm as AuditFormController;
 use DateTime;
 use DateTimeZone;
-
 class Form extends Component
 {
     protected $listeners = ['start-alert-sent' => 'onUpdateStatus'];
@@ -29,7 +29,7 @@ class Form extends Component
     public $cashier_tat,$server_cat;
     public AuditForm $auditForm;
     public Store $store;
-    public Summary $summary;
+    public  $summary;
     public AuditFormResult $auditResult;
     public ServiceSpeed $serviceSpeed;
     public CriticalDeviationResult $criticalDeviationResult;
@@ -46,12 +46,15 @@ class Form extends Component
         $this->auditForm = AuditForm::find($id);
         $this->sanitary_list = SanitaryModel::get();
         $this->store = Store::find($this->auditForm->store_id);
-
     }
     public function render()
-    {
+    {   
+        // dd($this->auditForm());
         if($this->auditForm->audit_status){
             $this->summary = Summary::where('form_id', $this->auditForm->id)->first();
+            if(!$this->summary){
+                $this->updateOrCreateSummary();
+            }
         }
         $service = $this->getService();
         $this->cashier_tat = $service->where('is_cashier', 1);
@@ -59,6 +62,7 @@ class Form extends Component
         $category = $this->mapCategory();
         return view('livewire.audit.form', ['categoryList' => $category])->extends('layouts.app');
     }
+   
     public function onStartAudit()
     {
         $message = 'Are you sure you want to start this audit?';
@@ -85,6 +89,9 @@ class Form extends Component
     public function addService($id = null){
         $data = ['form_id' => $this->auditForm->id, 'is_cashier' => $id, 'name' => null, 'time' => null, 'product_order' => null, 'ot' => null, 'base_assembly_points' => 1, 'assembly_points' => 1, 'tat' => null, 'base_tat_points' => 1, 'tat_points' => 1, 'fst' => null, 'base_fst_points' => $id ? 3 : 5, 'fst_points' => $id ? 3 : 5,'att' => null,'base_att_points' => $id ? 0 : 1 , 'att_points' => $id ? 0 : 1 ,'remarks' => null, 'serving_time' => '5'];
         ServiceSpeed::create($data);
+    }
+    public function removeService($id){
+        ServiceSpeed::find($id)->delete();
     }
     public function updateService($data, $key, $value)
     {
@@ -385,6 +392,7 @@ class Form extends Component
                 'wave' => $this->auditForm->wave,
                 'conducted_by' => Auth::user()->name,
                 'received_by' => null,
+                'date_of_visit' => $this->date_today,
                 'time_of_audit' => $this->time->format('h:i'),
             ]
         );
@@ -460,4 +468,576 @@ class Form extends Component
     {
         CustomHelper::onShow($this, $is_confirm, $title, $message, $type, $data);
     }
+    public function auditForm(){
+        return [
+            [
+                'category' =>'Food',
+                'total-base' => 94,
+                'total-points' => 94,
+                'sub-category' =>[
+                    [
+                        'title' => 'Ensaymada',
+                        'total-base' => 15,
+                        'total-points' => 15,
+                        'deviation' => [
+                            [
+                                'is-na' =>'1',
+                                'title' => 'Apperance / No SD',
+                                'is-aon' => 1,
+                                'base' => 5,
+                                'points' => 5,
+                                'remarks' => '',
+                                'deviation-dropdown' => [
+                                    ['title' => 'Deformed'],
+                                    ['title' => 'Burnt'],
+                                    ['title' => 'Pale'],
+                                    ['title' => 'With SD'],
+                                ]
+                            ],
+                            [
+                                'is-na' =>'1',
+                                'title' => 'Texture',
+                                'is-aon' => 1,
+                                'base' => 5,
+                                'points' => 5,
+                                'remarks' => '',
+                                'deviation-dropdown' => [
+                                    ['title' => 'Flasky'],
+                                    ['title' => 'Dry'],
+                                ],
+                            ],
+                            [
+                                'is-na' =>'1',
+                                'title' => 'Taste / Mouthfeel',
+                                'is-aon' => 1,
+                                'base' => 5,
+                                'points' => 5,
+                                'remarks' => '',
+                                'deviation-dropdown' => [
+                                    ['title' => 'Bitter'],
+                                    ['title' => 'Sour'],
+                                    ['title' => 'Burning'],
+                                ],
+                            ]
+                        ]
+                    ],
+                    [
+                        'title' => 'Cheese Roll',
+                        'total-base' => 15,
+                        'total-points' => 15,
+                        'deviation' => [
+                            [
+                                'is-na' =>'1',
+                                'title' => 'Apperance / No SD',
+                                'is-aon' => 1,
+                                'base' => 5,
+                                'points' => 5,
+                                'remarks' => '',
+                                'deviation-dropdown' => [
+                                    ['title' => 'Deformed'],
+                                    ['title' => 'Burnt'],
+                                    ['title' => 'Pale'],
+                                    ['title' => 'With SD'],
+                                ]
+                            ],
+                            [
+                                'is-na' =>'1',
+                                'title' => 'Texture',
+                                'is-aon' => 1,
+                                'base' => 5,
+                                'points' => 5,
+                                'remarks' => '',
+                                'deviation-dropdown' => [
+                                    ['title' => 'Flasky'],
+                                    ['title' => 'Dry'],
+                                ],
+                            ],
+                            [
+                                'is-na' =>'1',
+                                'title' => 'Taste / Mouthfeel',
+                                'is-aon' => 1,
+                                'base' => 5,
+                                'points' => 5,
+                                'remarks' => '',
+                                'deviation-dropdown' => [
+                                    ['title' => 'Bitter'],
+                                    ['title' => 'Sour'],
+                                    ['title' => 'Burning'],
+                                ],
+                            ]
+                        ]
+                    ],
+                    [
+                        'title' => 'Espresso',
+                        'total-base' => 14,
+                        'total-points' => 14,
+                        'deviation' => [
+                            [
+                                'is-na' =>'1',
+                                'title' => 'Serving Temperature',
+                                'is-aon' => 1,
+                                'base' => 3,
+                                'points' => 3,
+                                'remarks' => '',
+                                'deviation-dropdown' => [
+                                    ['title' => 'Below 56C'],
+                                    ['title' => 'Above 60C'],
+                                ]
+                            ],
+                            [
+                                'is-na' =>'1',
+                                'title' => 'Appearance/ Portioning/ No SD',
+                                'is-aon' => 1,
+                                'base' => 3,
+                                'points' => 3,
+                                'remarks' => '',
+                                'deviation-dropdown' => [
+                                    ['title' => 'Overportioned'],
+                                    ['title' => 'Underportioned'],
+                                    ['title' => 'With SD'],
+                                    ['title' => 'Defective Utensils'],
+                                ],
+                            ],
+                            [
+                                'is-na' =>'1',
+                                'title' => 'Creama Foam',
+                                'is-aon' => 1,
+                                'base' => 3,
+                                'points' => 3,
+                                'remarks' => '',
+                                'deviation-dropdown' => [
+                                    ['title' => 'Dark'],
+                                    ['title' => 'Light'],
+                                    ['title' => 'Thin'],
+                                    ['title' => 'Sour'],
+                                ],
+                            ],
+                            [
+                                'is-na' =>'1',
+                                'title' => 'Taste',
+                                'is-aon' => 1,
+                                'base' => 5,
+                                'points' => 5,
+                                'remarks' => '',
+                                'deviation-dropdown' => [
+                                    ['title' => 'Think'],
+                                    ['title' => 'Bitter'],
+                                    ['title' => 'Bland'],
+                                ],
+                            ]
+                        ]
+                    ],
+                    [
+                        'id' => 4,
+                        'title' => 'Infused Water',
+                        'total-base' => 10,
+                        'total-points' => 10,
+                        'deviation' => [
+                            [
+                                'id' => 1,
+                                'is-na' =>'1',
+                                'title' => 'Apperance / No SD',
+                                'is-aon' => 1,
+                                'base' => 5,
+                                'points' => 5,
+                                'remarks' => '',
+                                'deviation-dropdown' => []
+                            ],
+                            [
+                                'id' => 2,
+                                'is-na' =>'1',
+                                'title' => 'Taste',
+                                'is-aon' => 1,
+                                'base' => 5,
+                                'points' => 5,
+                                'remarks' => '',
+                                'deviation-dropdown' => []
+                            ]
+                        ]
+                    ],
+                    [
+                        'title' => 'Cake Display',
+                        'total-base' => 40,
+                        'total-points' => 40,
+                        'sub-sub-category' => [
+                            [
+                                'title' => 'Whole',
+                                'total-base' => 25,
+                                'total-points' => 25,
+                                'deviation' => [
+                                    [
+                                        'is-na' =>'1',
+                                        'title' => 'EQ',
+                                        'is-aon' => 0,
+                                        'base' => 1,
+                                        'points' => 1,
+                                        'remarks' => '',
+                                        'deviation-dropdown' => []
+                                    ],
+                                    [
+                                        'is-na' =>'1',
+                                        'title' => 'CR',
+                                        'is-aon' => 0,
+                                        'base' => 1,
+                                        'points' => 1,
+                                        'remarks' => '',
+                                        'deviation-dropdown' => []
+                                    ],
+                                    [
+                                        'is-na' =>'1',
+                                        'title' => 'PU',
+                                        'is-aon' => 0,
+                                        'base' => 1,
+                                        'points' => 1,
+                                        'remarks' => '',
+                                        'deviation-dropdown' => []
+                                    ],
+                                    [
+                                        'is-na' =>'1',
+                                        'title' => 'MM',
+                                        'is-aon' => 0,
+                                        'base' => 1,
+                                        'points' => 1,
+                                        'remarks' => '',
+                                        'deviation-dropdown' => []
+                                    ],
+                                    [
+                                        'is-na' =>'1',
+                                        'title' => 'BR',
+                                        'is-aon' => 0,
+                                        'base' => 1,
+                                        'points' => 1,
+                                        'remarks' => '',
+                                        'deviation-dropdown' => []
+                                    ],
+                                    [
+                                        'is-na' =>'1',
+                                        'title' => 'FG',
+                                        'is-aon' => 0,
+                                        'base' => 1,
+                                        'points' => 1,
+                                        'remarks' => '',
+                                        'deviation-dropdown' => []
+                                    ],
+                                    [
+                                        'is-na' =>'1',
+                                        'title' => 'LMS',
+                                        'is-aon' => 0,
+                                        'base' => 1,
+                                        'points' => 1,
+                                        'remarks' => '',
+                                        'deviation-dropdown' => []
+                                    ],
+                                    [
+                                        'is-na' =>'1',
+                                        'title' => 'BB',
+                                        'is-aon' => 0,
+                                        'base' => 1,
+                                        'points' => 1,
+                                        'remarks' => '',
+                                        'deviation-dropdown' => []
+                                    ],
+                                    [
+                                        'is-na' =>'1',
+                                        'title' => 'AP',
+                                        'is-aon' => 0,
+                                        'base' => 1,
+                                        'points' => 1,
+                                        'remarks' => '',
+                                        'deviation-dropdown' => []
+                                    ],
+                                    [
+                                        'is-na' =>'1',
+                                        'title' => 'CH',
+                                        'is-aon' => 0,
+                                        'base' => 1,
+                                        'points' => 1,
+                                        'remarks' => '',
+                                        'deviation-dropdown' => []
+                                    ],
+                                    [
+                                        'is-na' =>'1',
+                                        'title' => 'VT',
+                                        'is-aon' => 0,
+                                        'base' => 1,
+                                        'points' => 1,
+                                        'remarks' => '',
+                                        'deviation-dropdown' => []
+                                    ],
+                                    [
+                                        'is-na' =>'1',
+                                        'title' => 'TR',
+                                        'is-aon' => 0,
+                                        'base' => 1,
+                                        'points' => 1,
+                                        'remarks' => '',
+                                        'deviation-dropdown' => []
+                                    ],
+                                    [
+                                        'is-na' =>'1',
+                                        'title' => 'TI',
+                                        'is-aon' => 0,
+                                        'base' => 1,
+                                        'points' => 1,
+                                        'remarks' => '',
+                                        'deviation-dropdown' => []
+                                    ],
+                                    [
+                                        'is-na' =>'1',
+                                        'title' => 'SSCV',
+                                        'is-aon' => 0,
+                                        'base' => 1,
+                                        'points' => 1,
+                                        'remarks' => '',
+                                        'deviation-dropdown' => []
+                                    ],
+                                    [
+                                        'is-na' =>'1',
+                                        'title' => 'CK',
+                                        'is-aon' => 0,
+                                        'base' => 1,
+                                        'points' => 1,
+                                        'remarks' => '',
+                                        'deviation-dropdown' => []
+                                    ],
+                                    [
+                                        'is-na' =>'1',
+                                        'title' => 'SW',
+                                        'is-aon' => 0,
+                                        'base' => 1,
+                                        'points' => 1,
+                                        'remarks' => '',
+                                        'deviation-dropdown' => []
+                                    ],
+                                    [
+                                        'is-na' =>'1',
+                                        'title' => 'CM',
+                                        'is-aon' => 0,
+                                        'base' => 1,
+                                        'points' => 1,
+                                        'remarks' => '',
+                                        'deviation-dropdown' => []
+                                    ],
+                                    [
+                                        'is-na' =>'1',
+                                        'title' => 'CC',
+                                        'is-aon' => 0,
+                                        'base' => 1,
+                                        'points' => 1,
+                                        'remarks' => '',
+                                        'deviation-dropdown' => []
+                                    ],
+                                    [
+                                        'is-na' =>'1',
+                                        'title' => 'LI',
+                                        'is-aon' => 0,
+                                        'base' => 1,
+                                        'points' => 1,
+                                        'remarks' => '',
+                                        'deviation-dropdown' => []
+                                    ],
+                                    [
+                                        'is-na' =>'1',
+                                        'title' => 'MB',
+                                        'is-aon' => 0,
+                                        'base' => 1,
+                                        'points' => 1,
+                                        'remarks' => '',
+                                        'deviation-dropdown' => []
+                                    ],
+                                    [
+                                        'is-na' =>'1',
+                                        'title' => 'BA',
+                                        'is-aon' => 0,
+                                        'base' => 1,
+                                        'points' => 1,
+                                        'remarks' => '',
+                                        'deviation-dropdown' => []
+                                    ],
+                                    [
+                                        'is-na' =>'1',
+                                        'title' => 'TAS/SS',
+                                        'is-aon' => 0,
+                                        'base' => 1,
+                                        'points' => 1,
+                                        'remarks' => '',
+                                        'deviation-dropdown' => []
+                                    ],
+                                    [
+                                        'is-na' =>'1',
+                                        'title' => 'DCC',
+                                        'is-aon' => 0,
+                                        'base' => 1,
+                                        'points' => 1,
+                                        'remarks' => '',
+                                        'deviation-dropdown' => []
+                                    ],
+                                    [
+                                        'is-na' =>'1',
+                                        'title' => 'TLC',
+                                        'is-aon' => 0,
+                                        'base' => 1,
+                                        'points' => 1,
+                                        'remarks' => '',
+                                        'deviation-dropdown' => []
+                                    ],
+                                    [
+                                        'is-na' =>'1',
+                                        'title' => 'BCFP',
+                                        'is-aon' => 0,
+                                        'base' => 1,
+                                        'points' => 1,
+                                        'remarks' => '',
+                                        'deviation-dropdown' => []
+                                    ]
+
+                                ]
+                            ],
+                            [
+                                'title' => 'Mini',
+                                'total-base' => 15,
+                                'total-points' => 15,
+                                'deviation' => [
+                                    [
+                                        'is-na' =>'1',
+                                        'title' => 'PU',
+                                        'is-aon' => 0,
+                                        'base' => 1,
+                                        'points' => 1,
+                                        'remarks' => '',
+                                        'deviation-dropdown' => []
+                                    ],
+                                    [
+                                        'is-na' =>'1',
+                                        'title' => 'LMS',
+                                        'is-aon' => 0,
+                                        'base' => 1,
+                                        'points' => 1,
+                                        'remarks' => '',
+                                        'deviation-dropdown' => []
+                                    ],
+                                    [
+                                        'is-na' =>'1',
+                                        'title' => 'AP',
+                                        'is-aon' => 0,
+                                        'base' => 1,
+                                        'points' => 1,
+                                        'remarks' => '',
+                                        'deviation-dropdown' => []
+                                    ],
+                                    [
+                                        'is-na' =>'1',
+                                        'title' => 'CH',
+                                        'is-aon' => 0,
+                                        'base' => 1,
+                                        'points' => 1,
+                                        'remarks' => '',
+                                        'deviation-dropdown' => []
+                                    ],
+                                    [
+                                        'is-na' =>'1',
+                                        'title' => 'VT',
+                                        'is-aon' => 0,
+                                        'base' => 1,
+                                        'points' => 1,
+                                        'remarks' => '',
+                                        'deviation-dropdown' => []
+                                    ],
+                                    [
+                                        'is-na' =>'1',
+                                        'title' => 'TR',
+                                        'is-aon' => 0,
+                                        'base' => 1,
+                                        'points' => 1,
+                                        'remarks' => '',
+                                        'deviation-dropdown' => []
+                                    ],
+                                    [
+                                        'is-na' =>'1',
+                                        'title' => 'TI',
+                                        'is-aon' => 0,
+                                        'base' => 1,
+                                        'points' => 1,
+                                        'remarks' => '',
+                                        'deviation-dropdown' => []
+                                    ],
+                                    [
+                                        'is-na' =>'1',
+                                        'title' => 'SSCV',
+                                        'is-aon' => 0,
+                                        'base' => 1,
+                                        'points' => 1,
+                                        'remarks' => '',
+                                        'deviation-dropdown' => []
+                                    ],[
+                                        'is-na' =>'1',
+                                        'title' => 'CK',
+                                        'is-aon' => 0,
+                                        'base' => 1,
+                                        'points' => 1,
+                                        'remarks' => '',
+                                        'deviation-dropdown' => []
+                                    ],[
+                                        'is-na' =>'1',
+                                        'title' => 'SW',
+                                        'is-aon' => 0,
+                                        'base' => 1,
+                                        'points' => 1,
+                                        'remarks' => '',
+                                        'deviation-dropdown' => []
+                                    ],[
+                                        'is-na' =>'1',
+                                        'title' => 'CM',
+                                        'is-aon' => 0,
+                                        'base' => 1,
+                                        'points' => 1,
+                                        'remarks' => '',
+                                        'deviation-dropdown' => []
+                                    ],[
+                                        'is-na' =>'1',
+                                        'title' => 'CC',
+                                        'is-aon' => 0,
+                                        'base' => 1,
+                                        'points' => 1,
+                                        'remarks' => '',
+                                        'deviation-dropdown' => []
+                                    ],[
+                                        'is-na' =>'1',
+                                        'title' => 'LI',
+                                        'is-aon' => 0,
+                                        'base' => 1,
+                                        'points' => 1,
+                                        'remarks' => '',
+                                        'deviation-dropdown' => []
+                                    ],[
+                                        'is-na' =>'1',
+                                        'title' => 'MB',
+                                        'is-aon' => 0,
+                                        'base' => 1,
+                                        'points' => 1,
+                                        'remarks' => '',
+                                        'deviation-dropdown' => []
+                                    ],[
+                                        'is-na' =>'1',
+                                        'title' => 'TAS/SS',
+                                        'is-aon' => 0,
+                                        'base' => 1,
+                                        'points' => 1,
+                                        'remarks' => '',
+                                        'deviation-dropdown' => []
+                                    ],
+                                ]
+                            ],
+                        ]
+                    ],
+                ]
+            ],
+            ['category' =>'Production Process'],
+            ['category' =>'Service'],
+            ['category' =>'Cleanliness & Condition'],
+            ['category' =>'Document'],
+            ['category' =>'People'],
+        ];
+    }
+ 
 }
