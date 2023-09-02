@@ -23,7 +23,7 @@ class AuditForm extends Component
                 [
                     'title' => 'Ensaymada',
                     'total-base' => 15,
-                    'total-points' => 15,
+                    'total-points' => 10,
                     'percent' => 20,
                     'deviation' => [
                         [
@@ -81,7 +81,7 @@ class AuditForm extends Component
                             'title' => 'Apperance / No SD',
                             'is-aon' => 1,
                             'base' => 5,
-                            'points' => 5,
+                            'points' => 0,
                             'remarks' => '',
                             'critical-deviation' => '',
                             'deviation-dropdown' => [
@@ -2273,536 +2273,357 @@ class AuditForm extends Component
             ]
         ],
         [
-            'category' =>'Cleanliness & Condition',
-            'total-base' => 104,
-            'total-points' => 104,
-            'percent' => 0,
+            'category' =>'Cleanliness',
+            'total-base' => 139,
+            'total-points' => 139,
+            'percent' => 100,
             'sub-category' =>[
                 [
                     'title' => 'Customer Area',
-                    'cln-total-base' => 83,
-                    'cln-total-points' => 83,
-                    'con-total-base' => 90,
-                    'con-total-points' => 90,
+                    'total-base' => 40,
+                    'total-points' => 40,
                     'percent' => 100,
                     'deviation' => [
                         [
                             'title' => 'Building And Grounds',
-                            'cln-total-base' => 14,
-                            'cln-total-points' => 14,
-                            'con-total-base' => 18,
-                            'con-total-points' => 18,
+                            'total-base' => 14,
+                            'total-points' => 14,
                             'deviation' => [
                                 [
+                                    'is-na' =>1,
                                     'title' => 'Signages',
-                                    'cln-is-na' => 1,
-                                    'cln-is-aon' => 0,
-                                    'cln-base' => 2,
-                                    'cln-points' => 2,
-                                    'cln-remarks' => '',
-                                    'con-is-na' => 1,
-                                    'con-is-aon' => 1,
-                                    'con-base' => 5,
-                                    'con-points' => 5,
-                                    'con-remarks' => '',
+                                    'is-aon' => 0,
+                                    'base' => 2,
+                                    'points' => 2,
+                                    'remarks' => '',
                                     'critical-deviation' => '',
-'deviation-dropdown' => []
+                                    'deviation-dropdown' => []
                                 ],
                                 [
+                                    'is-na' =>1,
                                     'title' => 'Parking/Landscaping/Plants/Lamp Posts/PWD Ramp',
-                                    'cln-is-na' => 1,
-                                    'cln-is-aon' => 0,
-                                    'cln-base' => 2,
-                                    'cln-points' => 2,
-                                    'cln-remarks' => '',
-                                    'con-is-na' => 1,
-                                    'con-is-aon' => 0,
-                                    'con-base' => 2,
-                                    'con-points' => 2,
-                                    'con-remarks' => '',
+                                    'is-aon' => 0,
+                                    'base' => 2,
+                                    'points' => 2,
+                                    'remarks' => '',
                                     'critical-deviation' => '',
-'deviation-dropdown' => []
+                                    'deviation-dropdown' => []
                                 ],
                                 [
+                                    'is-na' =>1,
                                     'title' => 'Glass panels/Blinds/Door/Window Shutter/Roll Up Door/Backlighted Column',
-                                    'cln-is-na' => 1,
-                                    'cln-is-aon' => 0,
-                                    'cln-base' => 2,
-                                    'cln-points' => 2,
-                                    'cln-remarks' => '',
-                                    'con-is-na' => 1,
-                                    'con-is-aon' => 1,
-                                    'con-base' => 3,
-                                    'con-points' => 3,
-                                    'con-remarks' => '',
+                                    'is-aon' => 0,
+                                    'base' => 2,
+                                    'points' => 2,
+                                    'remarks' => '',
                                     'critical-deviation' => '',
-'deviation-dropdown' => []
+                                    'deviation-dropdown' => []
                                 ],
                                 [
-                                    'title' => 'Canopy / Roof / Air Curtain',
-                                    'cln-is-na' => 1,
-                                    'cln-is-aon' => 0,
-                                    'cln-base' => 2,
-                                    'cln-points' => 2,
-                                    'cln-remarks' => '',
-                                    'con-is-na' => 1,
-                                    'con-is-aon' => 1,
-                                    'con-base' => 2,
-                                    'con-points' => 2,
-                                    'con-remarks' => '',
+                                    'is-na' =>1,
+                                    'title' => 'Floor / Stair (Exterior Area, Dining Area, Function Room',
+                                    'is-aon' => 0,
+                                    'base' => 2,
+                                    'points' => 2,
+                                    'remarks' => '',
                                     'critical-deviation' => '',
-'deviation-dropdown' => []
+                                    'deviation-dropdown' => []
                                 ],
                                 [
-                                    'title' => 'Floor / Stairs',
-                                    'is-na' => 1,
-                                    'total-base' => 1,
-                                    'total-points' => 1,
-                                    'deviation' => [
-                                        [
-                                            'title' => ' a. Exterior Area / Dining Area / Function Room ',
-                                            'cln-is-na' => 1,
-                                            'cln-is-aon' => 0,
-                                            'cln-base' => 2,
-                                            'cln-points' => 2,
-                                            'cln-remarks' => '',
-                                            'con-is-na' => 1,
-                                            'con-is-aon' => 1,
-                                            'con-base' => 2,
-                                            'con-points' => 2,
-                                            'con-remarks' => '',
-                                            'critical-deviation' => '',
-'deviation-dropdown' => []
-                                        ],
-                                    ]
+                                    'is-na' =>1,
+                                    'title' => 'Walls / Mural (Exterior Area, Dining Area, Function Room)',
+                                    'is-aon' => 0,
+                                    'base' => 2,
+                                    'points' => 2,
+                                    'remarks' => '',
+                                    'critical-deviation' => '',
+                                    'deviation-dropdown' => []
                                 ],
                                 [
-                                    'title' => 'Walls / Mural',
-                                    'is-na' => 1,
-                                    'total-base' => 1,
-                                    'total-points' => 1,
-                                    'deviation' => [
-                                        [
-                                            'title' => ' a. Exterior Area / Dining Area / Function Room ',
-                                            'cln-is-na' => 1,
-                                            'cln-is-aon' => 0,
-                                            'cln-base' => 2,
-                                            'cln-points' => 2,
-                                            'cln-remarks' => '',
-                                            'con-is-na' => 1,
-                                            'con-is-aon' => 1,
-                                            'con-base' => 2,
-                                            'con-points' => 2,
-                                            'con-remarks' => '',
-                                            'critical-deviation' => '',
-'deviation-dropdown' => []
-                                        ],
-                                    ]
+                                    'is-na' =>1,
+                                    'title' => 'Ceiling / Lights and Fixtures (Alfresco, Dining Area, Function)',
+                                    'is-aon' => 0,
+                                    'base' => 2,
+                                    'points' => 2,
+                                    'remarks' => '',
+                                    'critical-deviation' => '',
+                                    'deviation-dropdown' => []
                                 ],
                                 [
-                                    'title' => 'Ceiling / Lights and Fixtures',
-                                    'is-na' => 1,
-                                    'total-base' => 1,
-                                    'total-points' => 1,
-                                    'deviation' => [
-                                        [
-                                            'title' => 'a. Alfresco / Dining Area / Function Room',
-                                            'cln-is-na' => 1,
-                                            'cln-is-aon' => 0,
-                                            'cln-base' => 2,
-                                            'cln-points' => 2,
-                                            'cln-remarks' => '',
-                                            'con-is-na' => 1,
-                                            'con-is-aon' => 1,
-                                            'con-base' => 2,
-                                            'con-points' => 2,
-                                            'con-remarks' => '',
-                                            'critical-deviation' => '',
-'deviation-dropdown' => []
-                                        ],
-                                    ]
-                                ],
+                                    'is-na' =>1,
+                                    'title' => 'Canopy/ Roof/ Air Curtain',
+                                    'is-aon' => 0,
+                                    'base' => 2,
+                                    'points' => 2,
+                                    'remarks' => '',
+                                    'critical-deviation' => '',
+                                    'deviation-dropdown' => []
+                                ]
                             ]
                         ],
                         [
-                            'title' => 'Ambiance Specificts',
-                            'cln-total-base' => 23,
-                            'cln-total-points' => 23,
-                            'con-total-base' => 17,
-                            'con-total-points' => 17,
+                            'title' => 'Ambiance Specifics',
+                            'total-base' => 23,
+                            'total-points' => 23,
                             'deviation' => [
                                 [
-                                    'title' => 'Flowers/ Letters / Laminated table signages*',
-                                    'cln-is-na' => 1,
-                                    'cln-is-aon' => 0,
-                                    'cln-base' => 5,
-                                    'cln-points' => 5,
-                                    'cln-remarks' => '',
-                                    'con-is-na' => 1,
-                                    'con-is-aon' => 0,
-                                    'con-base' => 3,
-                                    'con-points' => 3,
-                                    'con-remarks' => '',
+                                    'is-na' =>1,
+                                    'title' => 'Flowers/ Letters / Laminated table signages',
+                                    'is-aon' => 0,
+                                    'base' => 5,
+                                    'points' => 5,
+                                    'remarks' => '',
                                     'critical-deviation' => '',
-'deviation-dropdown' => []
-                                ], 
-                                [
-                                    'title' => 'Mechanical Birds/ Mechanical dragon fly**',
-                                    'cln-is-na' => 1,
-                                    'cln-is-aon' => 0,
-                                    'cln-base' => 3,
-                                    'cln-points' => 3,
-                                    'cln-remarks' => '',
-                                    'con-is-na' => 1,
-                                    'con-is-aon' => 0,
-                                    'con-base' => 3,
-                                    'con-points' => 3,
-                                    'con-remarks' => '',
-                                    'critical-deviation' => '',
-'deviation-dropdown' => []
+                                    'deviation-dropdown' => []
                                 ],
                                 [
+                                    'is-na' =>1,
+                                    'title' => 'Mechanical Birds/ Mechanical dragon fly',
+                                    'is-aon' => 0,
+                                    'base' => 3,
+                                    'points' => 3,
+                                    'remarks' => '',
+                                    'critical-deviation' => '',
+                                    'deviation-dropdown' => []
+                                ],
+                                [
+                                    'is-na' =>1,
                                     'title' => 'Christmas light/ Lamps/ Special Bulbs',
-                                    'cln-is-na' => 1,
-                                    'cln-is-aon' => 0,
-                                    'cln-base' => 5,
-                                    'cln-points' => 5,
-                                    'cln-remarks' => '',
-                                    'con-is-na' => 1,
-                                    'con-is-aon' => 0,
-                                    'con-base' => 3,
-                                    'con-points' => 3,
-                                    'con-remarks' => '',
+                                    'is-aon' => 0,
+                                    'base' => 5,
+                                    'points' => 5,
+                                    'remarks' => '',
                                     'critical-deviation' => '',
-'deviation-dropdown' => []
+                                    'deviation-dropdown' => []
                                 ],
                                 [
+                                    'is-na' =>1,
                                     'title' => 'Fresh Plants/ Artificial Plants',
-                                    'cln-is-na' => 1,
-                                    'cln-is-aon' => 0,
-                                    'cln-base' => 5,
-                                    'cln-points' => 5,
-                                    'cln-remarks' => '',
-                                    'con-is-na' => 1,
-                                    'con-is-aon' => 0,
-                                    'con-base' => 3,
-                                    'con-points' => 3,
-                                    'con-remarks' => '',
+                                    'is-aon' => 0,
+                                    'base' => 5,
+                                    'points' => 5,
+                                    'remarks' => '',
                                     'critical-deviation' => '',
-'deviation-dropdown' => []
+                                    'deviation-dropdown' => []
                                 ],
                                 [
+                                    'is-na' =>1,
                                     'title' => 'Jars/ water/ faucet',
-                                    'cln-is-na' => 1,
-                                    'cln-is-aon' => 0,
-                                    'cln-base' => 5,
-                                    'cln-points' => 5,
-                                    'cln-remarks' => '',
-                                    'con-is-na' => 1,
-                                    'con-is-aon' => 0,
-                                    'con-base' => 5,
-                                    'con-points' => 5,
-                                    'con-remarks' => '',
+                                    'is-aon' => 0,
+                                    'base' => 5,
+                                    'points' => 5,
+                                    'remarks' => '',
                                     'critical-deviation' => '',
-'deviation-dropdown' => []
+                                    'deviation-dropdown' => []
                                 ],
+                                
+                                
                             ]
                         ],
                         [
                             'title' => 'Facilities, Equipment , T/U',
-                            'cln-total-base' => 21,
-                            'cln-total-points' => 21,
-                            'con-total-base' => 26,
-                            'con-total-points' => 26,
+                            'total-base' => 21,
+                            'total-points' => 21,
                             'deviation' => [
                                 [
+                                    'is-na' =>1,
                                     'title' => 'ACU / Ceiling Fans / Exhaust Vents / Air Vents',
-                                    'cln-is-na' => 1,
-                                    'cln-is-aon' => 1,
-                                    'cln-base' => 3,
-                                    'cln-points' => 3,
-                                    'cln-remarks' => '',
-                                    'con-is-na' => 1,
-                                    'con-is-aon' => 1,
-                                    'con-base' => 5,
-                                    'con-points' => 5,
-                                    'con-remarks' => '',
+                                    'is-aon' => 1,
+                                    'base' => 3,
+                                    'points' => 3,
+                                    'remarks' => '',
                                     'critical-deviation' => '',
-'deviation-dropdown' => []
-                                ], 
+                                    'deviation-dropdown' => []
+                                ],
                                 [
+                                    'is-na' =>1,
                                     'title' => 'Tray / Wares/ Carafe',
-                                    'cln-is-na' => 1,
-                                    'cln-is-aon' => 0,
-                                    'cln-base' => 3,
-                                    'cln-points' => 3,
-                                    'cln-remarks' => '',
-                                    'con-is-na' => 1,
-                                    'con-is-aon' => 0,
-                                    'con-base' => 3,
-                                    'con-points' => 3,
-                                    'con-remarks' => '',
+                                    'is-aon' => 0,
+                                    'base' => 3,
+                                    'points' => 3,
+                                    'remarks' => '',
                                     'critical-deviation' => '',
-'deviation-dropdown' => []
+                                    'deviation-dropdown' => []
                                 ],
                                 [
+                                    'is-na' =>1,
                                     'title' => ' Tables / Chairs/ Couches /  High Chair / Bag Hanger',
-                                    'cln-is-na' => 1,
-                                    'cln-is-aon' => 0,
-                                    'cln-base' => 3,
-                                    'cln-points' => 3,
-                                    'cln-remarks' => '',
-                                    'con-is-na' => 1,
-                                    'con-is-aon' => 1,
-                                    'con-base' => 3,
-                                    'con-points' => 3,
-                                    'con-remarks' => '',
+                                    'is-aon' => 0,
+                                    'base' => 3,
+                                    'points' => 3,
+                                    'remarks' => '',
                                     'critical-deviation' => '',
-'deviation-dropdown' => []
+                                    'deviation-dropdown' => []
                                 ],
                                 [
+                                    'is-na' =>1,
                                     'title' => 'POS / Card Terminal / Counter top / Optima Display / Server Station',
-                                    'cln-is-na' => 1,
-                                    'cln-is-aon' => 1,
-                                    'cln-base' => 5,
-                                    'cln-points' => 5,
-                                    'cln-remarks' => '',
-                                    'con-is-na' => 1,
-                                    'con-is-aon' => 1,
-                                    'con-base' => 5,
-                                    'con-points' => 5,
-                                    'con-remarks' => '',
+                                    'is-aon' => 1,
+                                    'base' => 5,
+                                    'points' => 5,
+                                    'remarks' => '',
                                     'critical-deviation' => '',
-'deviation-dropdown' => []
+                                    'deviation-dropdown' => []
                                 ],
                                 [
+                                    'is-na' =>1,
                                     'title' => 'Kids Corner/ Toys/ Magazines',
-                                    'cln-is-na' => 1,
-                                    'cln-is-aon' => 0,
-                                    'cln-base' => 2,
-                                    'cln-points' => 2,
-                                    'cln-remarks' => '',
-                                    'con-is-na' => 1,
-                                    'con-is-aon' => 1,
-                                    'con-base' => 5,
-                                    'con-points' => 5,
-                                    'con-remarks' => '',
+                                    'is-aon' => 0,
+                                    'base' => 2,
+                                    'points' => 2,
+                                    'remarks' => '',
                                     'critical-deviation' => '',
-'deviation-dropdown' => []
+                                    'deviation-dropdown' => []
                                 ],
                                 [
+                                    'is-na' =>1,
                                     'title' => 'Standing Chiller/ Freezer /DisplayShowcase',
-                                    'cln-is-na' => 1,
-                                    'cln-is-aon' => 1,
-                                    'cln-base' => 5,
-                                    'cln-points' => 5,
-                                    'cln-remarks' => '',
-                                    'con-is-na' => 1,
-                                    'con-is-aon' => 1,
-                                    'con-base' => 5,
-                                    'con-points' => 5,
-                                    'con-remarks' => '',
+                                    'is-aon' => 1,
+                                    'base' => 5,
+                                    'points' => 5,
+                                    'remarks' => '',
                                     'critical-deviation' => '',
-'deviation-dropdown' => []
+                                    'deviation-dropdown' => []
                                 ],
+                                
+                                
                             ]
                         ],
                         [
                             'title' => 'Sanitary Facilities',
-                            'cln-total-base' => 16,
-                            'cln-total-points' => 16,
-                            'con-total-base' => 19,
-                            'con-total-points' => 19,
+                            'total-base' => 16,
+                            'total-points' => 16,
                             'deviation' => [
                                 [
+                                    'is-na' =>1,
                                     'title' => 'Floor',
-                                    'cln-is-na' => 1,
-                                    'cln-is-aon' => 0,
-                                    'cln-base' => 2,
-                                    'cln-points' => 2,
-                                    'cln-remarks' => '',
-                                    'con-is-na' => 1,
-                                    'con-is-aon' => 0,
-                                    'con-base' => 2,
-                                    'con-points' => 2,
-                                    'con-remarks' => '',
+                                    'is-aon' => 0,
+                                    'base' => 2,
+                                    'points' => 2,
+                                    'remarks' => '',
                                     'critical-deviation' => '',
-'deviation-dropdown' => []
-                                ], 
-                                [
-                                    'title' => 'Walls / Doors / Wall Partition / Mirror / Bag Hanger',
-                                    'cln-is-na' => 1,
-                                    'cln-is-aon' => 0,
-                                    'cln-base' => 2,
-                                    'cln-points' => 2,
-                                    'cln-remarks' => '',
-                                    'con-is-na' => 1,
-                                    'con-is-aon' => 0,
-                                    'con-base' => 2,
-                                    'con-points' => 2,
-                                    'con-remarks' => '',
-                                    'critical-deviation' => '',
-'deviation-dropdown' => []
+                                    'deviation-dropdown' => []
                                 ],
                                 [
-                                    'title' => ' Ceiling / Lights and Fixtures',
-                                    'cln-is-na' => 1,
-                                    'cln-is-aon' => 0,
-                                    'cln-base' => 2,
-                                    'cln-points' => 2,
-                                    'cln-remarks' => '',
-                                    'con-is-na' => 1,
-                                    'con-is-aon' => 0,
-                                    'con-base' => 2,
-                                    'con-points' => 2,
-                                    'con-remarks' => '',
+                                    'is-na' =>1,
+                                    'title' => 'Walls / Doors / Wall Partition / Mirror / Bag Hanger ',
+                                    'is-aon' => 0,
+                                    'base' => 2,
+                                    'points' => 2,
+                                    'remarks' => '',
                                     'critical-deviation' => '',
-'deviation-dropdown' => []
+                                    'deviation-dropdown' => []
                                 ],
                                 [
+                                    'is-na' =>1,
+                                    'title' => 'Ceiling / Lights and Fixtures',
+                                    'is-aon' => 0,
+                                    'base' => 2,
+                                    'points' => 2,
+                                    'remarks' => '',
+                                    'critical-deviation' => '',
+                                    'deviation-dropdown' => []
+                                ],
+                                [
+                                    'is-na' =>1,
                                     'title' => 'Exhaust System / Air vents',
-                                    'cln-is-na' => 1,
-                                    'cln-is-aon' => 0,
-                                    'cln-base' => 2,
-                                    'cln-points' => 2,
-                                    'cln-remarks' => '',
-                                    'con-is-na' => 1,
-                                    'con-is-aon' => 0,
-                                    'con-base' => 2,
-                                    'con-points' => 2,
-                                    'con-remarks' => '',
+                                    'is-aon' => 0,
+                                    'base' => 2,
+                                    'points' => 2,
+                                    'remarks' => '',
                                     'critical-deviation' => '',
-'deviation-dropdown' => []
+                                    'deviation-dropdown' => []
                                 ],
                                 [
+                                    'is-na' =>1,
                                     'title' => 'Toilet / Urinal / Wash sink and Fixtures',
-                                    'cln-is-na' => 1,
-                                    'cln-is-aon' => 0,
-                                    'cln-base' => 2,
-                                    'cln-points' => 2,
-                                    'cln-remarks' => '',
-                                    'con-is-na' => 1,
-                                    'con-is-aon' => 0,
-                                    'con-base' => 2,
-                                    'con-points' => 2,
-                                    'con-remarks' => '',
+                                    'is-aon' => 0,
+                                    'base' => 2,
+                                    'points' => 2,
+                                    'remarks' => '',
                                     'critical-deviation' => '',
-'deviation-dropdown' => []
+                                    'deviation-dropdown' => []
                                 ],
                                 [
+                                    'is-na' =>1,
                                     'title' => 'Tissue/Handsoap/Tissue Holder/ Soap and sanitizer dispenser/ Hand dryer / Diaper changer',
-                                    'cln-is-na' => 1,
-                                    'cln-is-aon' => 0,
-                                    'cln-base' => 2,
-                                    'cln-points' => 2,
-                                    'cln-remarks' => '',
-                                    'con-is-na' => 1,
-                                    'con-is-aon' => 0,
-                                    'con-base' => 2,
-                                    'con-points' => 2,
-                                    'con-remarks' => '',
+                                    'is-aon' => 0,
+                                    'base' => 2,
+                                    'points' => 2,
+                                    'remarks' => '',
                                     'critical-deviation' => '',
-'deviation-dropdown' => []
+                                    'deviation-dropdown' => []
                                 ],
                                 [
+                                    'is-na' =>1,
                                     'title' => 'Total dÃ©cor',
-                                    'cln-is-na' => 1,
-                                    'cln-is-aon' => 0,
-                                    'cln-base' => 2,
-                                    'cln-points' => 2,
-                                    'cln-remarks' => '',
-                                    'con-is-na' => 1,
-                                    'con-is-aon' => 0,
-                                    'con-base' => 2,
-                                    'con-points' => 2,
-                                    'con-remarks' => '',
+                                    'is-aon' => 0,
+                                    'base' => 2,
+                                    'points' => 2,
+                                    'remarks' => '',
                                     'critical-deviation' => '',
-'deviation-dropdown' => []
+                                    'deviation-dropdown' => []
                                 ],
                                 [
+                                    'is-na' =>1,
                                     'title' => 'Service Station / Garbage Bins',
-                                    'cln-is-na' => 1,
-                                    'cln-is-aon' => 0,
-                                    'cln-base' => 2,
-                                    'cln-points' => 2,
-                                    'cln-remarks' => '',
-                                    'con-is-na' => 1,
-                                    'con-is-aon' => 0,
-                                    'con-base' => 2,
-                                    'con-points' => 2,
-                                    'con-remarks' => '',
+                                    'is-aon' => 0,
+                                    'base' => 2,
+                                    'points' => 2,
+                                    'remarks' => '',
                                     'critical-deviation' => '',
-'deviation-dropdown' => []
+                                    'deviation-dropdown' => []
                                 ],
+                                
+                                
+                                
                             ]
                         ],
                         [
                             'title' => 'Merchandising Materials',
-                            'cln-total-base' => 21,
-                            'cln-total-points' => 21,
-                            'con-total-base' => 26,
-                            'con-total-points' => 26,
+                            'total-base' => 14,
+                            'total-points' => 14,
                             'deviation' => [
                                 [
-                                    'title' => 'Frames Tripod and Sintra Board/ Shelves',
-                                    'cln-is-na' => 1,
-                                    'cln-is-aon' => 1,
-                                    'cln-base' => 3,
-                                    'cln-points' => 3,
-                                    'cln-remarks' => '',
-                                    'con-is-na' => 1,
-                                    'con-is-aon' => 0,
-                                    'con-base' => 3,
-                                    'con-points' => 3,
-                                    'con-remarks' => '',
+                                    'is-na' =>1,
+                                    'title' => 'Frames Tripod and Sintra Board/ Shelves/',
+                                    'is-aon' => 1,
+                                    'base' => 3,
+                                    'points' => 3,
+                                    'remarks' => '',
                                     'critical-deviation' => '',
-'deviation-dropdown' => []
-                                ], 
+                                    'deviation-dropdown' => []
+                                ],
                                 [
+                                    'is-na' =>1,
                                     'title' => 'Optima Display',
-                                    'cln-is-na' => 1,
-                                    'cln-is-aon' => 1,
-                                    'cln-base' => 3,
-                                    'cln-points' => 3,
-                                    'cln-remarks' => '',
-                                    'con-is-na' => 1,
-                                    'con-is-aon' => 0,
-                                    'con-base' => 3,
-                                    'con-points' => 3,
-                                    'con-remarks' => '',
+                                    'is-aon' => 1,
+                                    'base' => 3,
+                                    'points' => 3,
+                                    'remarks' => '',
                                     'critical-deviation' => '',
-'deviation-dropdown' => []
-                                ], 
+                                    'deviation-dropdown' => []
+                                ],
                                 [
+                                    'is-na' =>1,
                                     'title' => 'Digital Display',
-                                    'cln-is-na' => 1,
-                                    'cln-is-aon' => 1,
-                                    'cln-base' => 3,
-                                    'cln-points' => 3,
-                                    'cln-remarks' => '',
-                                    'con-is-na' => 1,
-                                    'con-is-aon' => 0,
-                                    'con-base' => 3,
-                                    'con-points' => 3,
-                                    'con-remarks' => '',
+                                    'is-aon' => 1,
+                                    'base' => 3,
+                                    'points' => 3,
+                                    'remarks' => '',
                                     'critical-deviation' => '',
-'deviation-dropdown' => []
-                                ], 
+                                    'deviation-dropdown' => []
+                                ],
                                 [
+                                    'is-na' =>1,
                                     'title' => 'Menu Book/ QR Code',
-                                    'cln-is-na' => 1,
-                                    'cln-is-aon' => 0,
-                                    'cln-base' => 5,
-                                    'cln-points' => 5,
-                                    'cln-remarks' => '',
-                                    'con-is-na' => 1,
-                                    'con-is-aon' => 0,
-                                    'con-base' => 3,
-                                    'con-points' => 3,
-                                    'con-remarks' => '',
+                                    'is-aon' => 0,
+                                    'base' => 5,
+                                    'points' => 5,
+                                    'remarks' => '',
                                     'critical-deviation' => '',
-'deviation-dropdown' => []
-                                ], 
+                                    'deviation-dropdown' => []
+                                ],
                                 
                             ]
                         ],
@@ -2810,456 +2631,863 @@ class AuditForm extends Component
                 ],
                 [
                     'title' => 'Non-Customer Area',
-                    'cln-total-base' => 53,
-                    'cln-total-points' => 53,
-                    'con-total-base' => 53,
-                    'con-total-points' => 53,
+                    'total-base' => 51,
+                    'total-points' => 51,
+                    'percent' => 100,
+                    'deviation' => [
+                        [
+                            'title' => 'Floor / Stairs',
+                            'total-base' => 6,
+                            'total-points' => 6,
+                            'deviation' => [
+                                [
+                                    'is-na' =>1,
+                                    'title' => 'Kitchen',
+                                    'is-aon' => 0,
+                                    'base' => 2,
+                                    'points' => 2,
+                                    'remarks' => '',
+                                    'critical-deviation' => '',
+                                    'deviation-dropdown' => []
+                                ],
+                                [
+                                    'is-na' =>1,
+                                    'title' => 'Bar',
+                                    'is-aon' => 0,
+                                    'base' => 2,
+                                    'points' => 2,
+                                    'remarks' => '',
+                                    'critical-deviation' => '',
+                                    'deviation-dropdown' => []
+                                ],
+                                [
+                                    'is-na' =>1,
+                                    'title' => 'Storage Cabinets / Other Rooms',
+                                    'is-aon' => 0,
+                                    'base' => 2,
+                                    'points' => 2,
+                                    'remarks' => '',
+                                    'critical-deviation' => '',
+                                    'deviation-dropdown' => []
+                                ],
+                               
+                            ]
+                        ],
+                        [
+                            'title' => 'Wall / Door',
+                            'total-base' => 6,
+                            'total-points' => 6,
+                            'deviation' => [
+                                [
+                                    'is-na' =>1,
+                                    'title' => 'Kitchen',
+                                    'is-aon' => 0,
+                                    'base' => 2,
+                                    'points' => 2,
+                                    'remarks' => '',
+                                    'critical-deviation' => '',
+                                    'deviation-dropdown' => []
+                                ],
+                                [
+                                    'is-na' =>1,
+                                    'title' => 'Bar',
+                                    'is-aon' => 0,
+                                    'base' => 2,
+                                    'points' => 2,
+                                    'remarks' => '',
+                                    'critical-deviation' => '',
+                                    'deviation-dropdown' => []
+                                ],
+                                [
+                                    'is-na' =>1,
+                                    'title' => 'Storage Cabinets / Other Rooms',
+                                    'is-aon' => 0,
+                                    'base' => 2,
+                                    'points' => 2,
+                                    'remarks' => '',
+                                    'critical-deviation' => '',
+                                    'deviation-dropdown' => []
+                                ],
+                                
+                              
+                                
+                                
+                            ]
+                        ],
+                        [
+                            'title' => 'Ceiling, Lights and Fixtures',
+                            'total-base' => 6,
+                            'total-points' => 6,
+                            'deviation' =>  [
+                                [
+                                    'is-na' =>1,
+                                    'title' => 'Kitchen',
+                                    'is-aon' => 0,
+                                    'base' => 2,
+                                    'points' => 2,
+                                    'remarks' => '',
+                                    'critical-deviation' => '',
+                                    'deviation-dropdown' => []
+                                ],
+                                [
+                                    'is-na' =>1,
+                                    'title' => 'Bar',
+                                    'is-aon' => 0,
+                                    'base' => 2,
+                                    'points' => 2,
+                                    'remarks' => '',
+                                    'critical-deviation' => '',
+                                    'deviation-dropdown' => []
+                                ],
+                                [
+                                    'is-na' =>1,
+                                    'title' => 'Storage Cabinets / Other Rooms',
+                                    'is-aon' => 0,
+                                    'base' => 2,
+                                    'points' => 2,
+                                    'remarks' => '',
+                                    'critical-deviation' => '',
+                                    'deviation-dropdown' => []
+                                ],
+                                
+                              
+                                
+                                
+                            ]
+                        ],
+                        [
+                            'title' => 'Facilities, Equipment, T/Us',
+                            'total-base' => 33,
+                            'total-points' => 33,
+                            'deviation' => [
+                                [
+                                    'is-na' =>1,
+                                    'title' => 'Wares / All SS facilities / Counter Water Faucet / Work Tables / Shelves / Push Cart',
+                                    'is-aon' => 0,
+                                    'base' => 5,
+                                    'points' => 5,
+                                    'remarks' => '',
+                                    'critical-deviation' => '',
+                                    'deviation-dropdown' => []
+                                ],
+                                [
+                                    'is-na' =>1,
+                                    'title' => 'Exhaust & Ventilation System / Air Curtain / Electrical Panel Board',
+                                    'is-aon' => 1,
+                                    'base' => 5,
+                                    'points' => 5,
+                                    'remarks' => '',
+                                    'critical-deviation' => '',
+                                    'deviation-dropdown' => []
+                                ],
+                                [
+                                    'is-na' =>1,
+                                    'title' => 'Water Filter',
+                                    'is-aon' => 1,
+                                    'base' => 5,
+                                    'points' => 5,
+                                    'remarks' => '',
+                                    'critical-deviation' => '',
+                                    'deviation-dropdown' => []
+                                ],
+                                [
+                                    'is-na' =>1,
+                                    'title' => 'Dishwashing Machine',
+                                    'is-aon' => 1,
+                                    'base' => 3,
+                                    'points' => 3,
+                                    'remarks' => '',
+                                    'critical-deviation' => '',
+                                    'deviation-dropdown' => []
+                                ],
+                                [
+                                    'is-na' =>1,
+                                    'title' => 'Freezers',
+                                    'is-aon' => 1,
+                                    'base' => 5,
+                                    'points' => 5,
+                                    'remarks' => '',
+                                    'critical-deviation' => '',
+                                    'deviation-dropdown' => []
+                                ],
+                                [
+                                    'is-na' =>1,
+                                    'title' => 'Chillers',
+                                    'is-aon' => 1,
+                                    'base' => 5,
+                                    'points' => 5,
+                                    'remarks' => '',
+                                    'critical-deviation' => '',
+                                    'deviation-dropdown' => []
+                                ],
+                                [
+                                    'is-na' =>1,
+                                    'title' => 'Ice machine / Blender/Espresso Machine / Microwave Oven / Oven Toaster /CCTV',
+                                    'is-aon' => 1,
+                                    'base' => 5,
+                                    'points' => 5,
+                                    'remarks' => '',
+                                    'critical-deviation' => '',
+                                    'deviation-dropdown' => []
+                                ],
+                            ]
+                        ],
+                    ]
+                ],
+            ]
+        ],
+        [
+            'category' =>'Condition',
+            'total-base' => 175,
+            'total-points' => 175,
+            'percent' => 100,
+            'sub-category' =>[
+                [
+                    'title' => 'Customer Area',
+                    'total-base' => 40,
+                    'total-points' => 40,
                     'percent' => 100,
                     'deviation' => [
                         [
                             'title' => 'Building And Grounds',
-                            'cln-total-base' => 18,
-                            'cln-total-points' => 18,
-                            'con-total-base' => 18,
-                            'con-total-points' => 18,
+                            'total-base' => 14,
+                            'total-points' => 14,
                             'deviation' => [
                                 [
-                                    'title' => 'Floor / Stairs',
-                                    'is-na' => 1,
-                                    'total-base' => 6,
-                                    'total-points' => 6,
-                                    'deviation' => [
-                                        [
-                                            'title' => ' a. Kitchen',
-                                            'cln-is-na' => 1,
-                                            'cln-is-aon' => 0,
-                                            'cln-base' => 2,
-                                            'cln-points' => 2,
-                                            'cln-remarks' => '',
-                                            'con-is-na' => 1,
-                                            'con-is-aon' => 0,
-                                            'con-base' => 2,
-                                            'con-points' => 2,
-                                            'con-remarks' => '',
-                                            'critical-deviation' => '',
-'deviation-dropdown' => []
-                                        ],
-                                        [
-                                            'title' => ' b. Bar',
-                                            'cln-is-na' => 1,
-                                            'cln-is-aon' => 0,
-                                            'cln-base' => 2,
-                                            'cln-points' => 2,
-                                            'cln-remarks' => '',
-                                            'con-is-na' => 1,
-                                            'con-is-aon' => 0,
-                                            'con-base' => 2,
-                                            'con-points' => 2,
-                                            'con-remarks' => '',
-                                            'critical-deviation' => '',
-'deviation-dropdown' => []
-                                        ],
-                                        [
-                                            'title' => 'c. Storage Cabinets / Other Rooms',
-                                            'cln-is-na' => 1,
-                                            'cln-is-aon' => 0,
-                                            'cln-base' => 2,
-                                            'cln-points' => 2,
-                                            'cln-remarks' => '',
-                                            'con-is-na' => 1,
-                                            'con-is-aon' => 0,
-                                            'con-base' => 2,
-                                            'con-points' => 2,
-                                            'con-remarks' => '',
-                                            'critical-deviation' => '',
-'deviation-dropdown' => []
-                                        ],
-                                    ]
+                                    'is-na' =>1,
+                                    'title' => 'Signages',
+                                    'is-aon' => 1,
+                                    'base' => 5,
+                                    'points' => 5,
+                                    'remarks' => '',
+                                    'critical-deviation' => '',
+                                    'deviation-dropdown' => []
                                 ],
                                 [
-                                    'title' => 'Wall / Door',
-                                    'is-na' => 1,
-                                    'total-base' => 6,
-                                    'total-points' => 6,
-                                    'deviation' => [
-                                        [
-                                            'title' => ' a. Kitchen',
-                                            'cln-is-na' => 1,
-                                            'cln-is-aon' => 0,
-                                            'cln-base' => 2,
-                                            'cln-points' => 2,
-                                            'cln-remarks' => '',
-                                            'con-is-na' => 1,
-                                            'con-is-aon' => 0,
-                                            'con-base' => 2,
-                                            'con-points' => 2,
-                                            'con-remarks' => '',
-                                            'critical-deviation' => '',
-'deviation-dropdown' => []
-                                        ],
-                                        [
-                                            'title' => ' b. Bar',
-                                            'cln-is-na' => 1,
-                                            'cln-is-aon' => 0,
-                                            'cln-base' => 2,
-                                            'cln-points' => 2,
-                                            'cln-remarks' => '',
-                                            'con-is-na' => 1,
-                                            'con-is-aon' => 0,
-                                            'con-base' => 2,
-                                            'con-points' => 2,
-                                            'con-remarks' => '',
-                                            'critical-deviation' => '',
-'deviation-dropdown' => []
-                                        ],
-                                        [
-                                            'title' => 'c. Storage Cabinets / Other Rooms',
-                                            'cln-is-na' => 1,
-                                            'cln-is-aon' => 0,
-                                            'cln-base' => 2,
-                                            'cln-points' => 2,
-                                            'cln-remarks' => '',
-                                            'con-is-na' => 1,
-                                            'con-is-aon' => 0,
-                                            'con-base' => 2,
-                                            'con-points' => 2,
-                                            'con-remarks' => '',
-                                            'critical-deviation' => '',
-'deviation-dropdown' => []
-                                        ],
-                                    ]
+                                    'is-na' =>1,
+                                    'title' => 'Parking/Landscaping/Plants/Lamp Posts/PWD Ramp',
+                                    'is-aon' => 0,
+                                    'base' => 2,
+                                    'points' => 2,
+                                    'remarks' => '',
+                                    'critical-deviation' => '',
+                                    'deviation-dropdown' => []
                                 ],
                                 [
-                                    'title' => 'Ceiling, Lights and Fixtures',
-                                    'is-na' => 1,
-                                    'total-base' => 6,
-                                    'total-points' => 6,
-                                    'deviation' => [
-                                        [
-                                            'title' => ' a. Kitchen',
-                                            'cln-is-na' => 1,
-                                            'cln-is-aon' => 0,
-                                            'cln-base' => 2,
-                                            'cln-points' => 2,
-                                            'cln-remarks' => '',
-                                            'con-is-na' => 1,
-                                            'con-is-aon' => 0,
-                                            'con-base' => 2,
-                                            'con-points' => 2,
-                                            'con-remarks' => '',
-                                            'critical-deviation' => '',
-'deviation-dropdown' => []
-                                        ],
-                                        [
-                                            'title' => ' b. Bar',
-                                            'cln-is-na' => 1,
-                                            'cln-is-aon' => 0,
-                                            'cln-base' => 2,
-                                            'cln-points' => 2,
-                                            'cln-remarks' => '',
-                                            'con-is-na' => 1,
-                                            'con-is-aon' => 0,
-                                            'con-base' => 2,
-                                            'con-points' => 2,
-                                            'con-remarks' => '',
-                                            'critical-deviation' => '',
-'deviation-dropdown' => []
-                                        ],
-                                        [
-                                            'title' => 'c. Storage Cabinets / Other Rooms',
-                                            'cln-is-na' => 1,
-                                            'cln-is-aon' => 0,
-                                            'cln-base' => 2,
-                                            'cln-points' => 2,
-                                            'cln-remarks' => '',
-                                            'con-is-na' => 1,
-                                            'con-is-aon' => 0,
-                                            'con-base' => 2,
-                                            'con-points' => 2,
-                                            'con-remarks' => '',
-                                            'critical-deviation' => '',
-'deviation-dropdown' => []
-                                        ],
-                                    ]
+                                    'is-na' =>1,
+                                    'title' => 'Glass panels/Blinds/Door/Window Shutter/Roll Up Door/Backlighted Column',
+                                    'is-aon' => 1,
+                                    'base' => 3,
+                                    'points' => 3,
+                                    'remarks' => '',
+                                    'critical-deviation' => '',
+                                    'deviation-dropdown' => []
                                 ],
-                              
+                                [
+                                    'is-na' =>1,
+                                    'title' => 'Floor / Stair (Exterior Area, Dining Area, Function Room',
+                                    'is-aon' => 1,
+                                    'base' => 2,
+                                    'points' => 2,
+                                    'remarks' => '',
+                                    'critical-deviation' => '',
+                                    'deviation-dropdown' => []
+                                ],
+                                [
+                                    'is-na' =>1,
+                                    'title' => 'Walls / Mural (Exterior Area, Dining Area, Function Room)',
+                                    'is-aon' => 1,
+                                    'base' => 2,
+                                    'points' => 2,
+                                    'remarks' => '',
+                                    'critical-deviation' => '',
+                                    'deviation-dropdown' => []
+                                ],
+                                [
+                                    'is-na' =>1,
+                                    'title' => 'Ceiling / Lights and Fixtures (Alfresco, Dining Area, Function)',
+                                    'is-aon' => 1,
+                                    'base' => 2,
+                                    'points' => 2,
+                                    'remarks' => '',
+                                    'critical-deviation' => '',
+                                    'deviation-dropdown' => []
+                                ],
+                                [
+                                    'is-na' =>1,
+                                    'title' => 'Canopy/ Roof/ Air Curtain',
+                                    'is-aon' => 1,
+                                    'base' => 2,
+                                    'points' => 2,
+                                    'remarks' => '',
+                                    'critical-deviation' => '',
+                                    'deviation-dropdown' => []
+                                ]
                             ]
                         ],
                         [
-                            'title' => 'Facilities, Equipment , T/Us',
-                            'cln-total-base' => 33,
-                            'cln-total-points' => 33,
-                            'con-total-base' => 35,
-                            'con-total-points' => 35,
+                            'title' => 'Ambiance Specifics',
+                            'total-base' => 23,
+                            'total-points' => 23,
                             'deviation' => [
                                 [
-                                    'title' => 'Wares / All SS facilities / Counter Water Faucet / Work Tables / Shelves / Push Cart',
-                                    'cln-is-na' => 1,
-                                    'cln-is-aon' => 0,
-                                    'cln-base' => 5,
-                                    'cln-points' => 5,
-                                    'cln-remarks' => '',
-                                    'con-is-na' => 1,
-                                    'con-is-aon' => 1,
-                                    'con-base' => 5,
-                                    'con-points' => 5,
-                                    'con-remarks' => '',
+                                    'is-na' =>1,
+                                    'title' => 'Flowers/ Letters / Laminated table signages',
+                                    'is-aon' => 0,
+                                    'base' => 3,
+                                    'points' => 3,
+                                    'remarks' => '',
                                     'critical-deviation' => '',
-'deviation-dropdown' => []
-                                ], 
-                                [
-                                    'title' => 'Exhaust & Ventilation System / Air Curtain / Electrical Panel Board',
-                                    'cln-is-na' => 1,
-                                    'cln-is-aon' => 1,
-                                    'cln-base' => 5,
-                                    'cln-points' => 5,
-                                    'cln-remarks' => '',
-                                    'con-is-na' => 1,
-                                    'con-is-aon' => 1,
-                                    'con-base' => 5,
-                                    'con-points' => 5,
-                                    'con-remarks' => '',
-                                    'critical-deviation' => '',
-'deviation-dropdown' => []
+                                    'deviation-dropdown' => []
                                 ],
                                 [
-                                    'title' => 'Water Filter',
-                                    'cln-is-na' => 1,
-                                    'cln-is-aon' => 1,
-                                    'cln-base' => 5,
-                                    'cln-points' => 5,
-                                    'cln-remarks' => '',
-                                    'con-is-na' => 1,
-                                    'con-is-aon' => 1,
-                                    'con-base' => 5,
-                                    'con-points' => 5,
-                                    'con-remarks' => '',
+                                    'is-na' =>1,
+                                    'title' => 'Mechanical Birds/ Mechanical dragon fly',
+                                    'is-aon' => 0,
+                                    'base' => 3,
+                                    'points' => 3,
+                                    'remarks' => '',
                                     'critical-deviation' => '',
-'deviation-dropdown' => []
+                                    'deviation-dropdown' => []
                                 ],
                                 [
-                                    'title' => 'Dishwashing Machine',
-                                    'cln-is-na' => 1,
-                                    'cln-is-aon' => 1,
-                                    'cln-base' => 3,
-                                    'cln-points' => 3,
-                                    'cln-remarks' => '',
-                                    'con-is-na' => 1,
-                                    'con-is-aon' => 1,
-                                    'con-base' => 5,
-                                    'con-points' => 5,
-                                    'con-remarks' => '',
+                                    'is-na' =>1,
+                                    'title' => 'Christmas light/ Lamps/ Special Bulbs',
+                                    'is-aon' => 0,
+                                    'base' => 3,
+                                    'points' => 3,
+                                    'remarks' => '',
                                     'critical-deviation' => '',
-'deviation-dropdown' => []
+                                    'deviation-dropdown' => []
                                 ],
                                 [
-                                    'title' => 'Freezers',
-                                    'cln-is-na' => 1,
-                                    'cln-is-aon' => 1,
-                                    'cln-base' => 5,
-                                    'cln-points' => 5,
-                                    'cln-remarks' => '',
-                                    'con-is-na' => 1,
-                                    'con-is-aon' => 1,
-                                    'con-base' => 5,
-                                    'con-points' => 5,
-                                    'con-remarks' => '',
+                                    'is-na' =>1,
+                                    'title' => 'Fresh Plants/ Artificial Plants',
+                                    'is-aon' => 0,
+                                    'base' => 3,
+                                    'points' => 3,
+                                    'remarks' => '',
                                     'critical-deviation' => '',
-'deviation-dropdown' => []
+                                    'deviation-dropdown' => []
                                 ],
                                 [
-                                    'title' => 'Chillers',
-                                    'cln-is-na' => 1,
-                                    'cln-is-aon' => 1,
-                                    'cln-base' => 5,
-                                    'cln-points' => 5,
-                                    'cln-remarks' => '',
-                                    'con-is-na' => 1,
-                                    'con-is-aon' => 1,
-                                    'con-base' => 5,
-                                    'con-points' => 5,
-                                    'con-remarks' => '',
+                                    'is-na' =>1,
+                                    'title' => 'Jars/ water/ faucet',
+                                    'is-aon' => 0,
+                                    'base' => 5,
+                                    'points' => 5,
+                                    'remarks' => '',
                                     'critical-deviation' => '',
-'deviation-dropdown' => []
+                                    'deviation-dropdown' => []
+                                ],
+                            ]
+                        ],
+                        [
+                            'title' => 'Facilities, Equipment , T/U',
+                            'total-base' => 21,
+                            'total-points' => 21,
+                            'deviation' => [
+                                [
+                                    'is-na' =>1,
+                                    'title' => 'ACU / Ceiling Fans / Exhaust Vents / Air Vents',
+                                    'is-aon' => 1,
+                                    'base' => 5,
+                                    'points' => 5,
+                                    'remarks' => '',
+                                    'critical-deviation' => '',
+                                    'deviation-dropdown' => []
                                 ],
                                 [
-                                    'title' => ' Ice machine / Blender/Espresso Machine / Microwave Oven / Oven Toaster /CCTV',
-                                    'cln-is-na' => 1,
-                                    'cln-is-aon' => 1,
-                                    'cln-base' => 5,
-                                    'cln-points' => 5,
-                                    'cln-remarks' => '',
-                                    'con-is-na' => 1,
-                                    'con-is-aon' => 1,
-                                    'con-base' => 5,
-                                    'con-points' => 5,
-                                    'con-remarks' => '',
+                                    'is-na' =>1,
+                                    'title' => 'Tray / Wares/ Carafe',
+                                    'is-aon' => 0,
+                                    'base' => 3,
+                                    'points' => 3,
+                                    'remarks' => '',
                                     'critical-deviation' => '',
-'deviation-dropdown' => []
+                                    'deviation-dropdown' => []
+                                ],
+                                [
+                                    'is-na' =>1,
+                                    'title' => ' Tables / Chairs/ Couches /  High Chair / Bag Hanger',
+                                    'is-aon' => 1,
+                                    'base' => 3,
+                                    'points' => 3,
+                                    'remarks' => '',
+                                    'critical-deviation' => '',
+                                    'deviation-dropdown' => []
+                                ],
+                                [
+                                    'is-na' =>1,
+                                    'title' => 'POS / Card Terminal / Counter top / Optima Display / Server Station',
+                                    'is-aon' => 1,
+                                    'base' => 5,
+                                    'points' => 5,
+                                    'remarks' => '',
+                                    'critical-deviation' => '',
+                                    'deviation-dropdown' => []
+                                ],
+                                [
+                                    'is-na' =>1,
+                                    'title' => 'Kids Corner/ Toys/ Magazines',
+                                    'is-aon' => 1,
+                                    'base' => 5,
+                                    'points' => 5,
+                                    'remarks' => '',
+                                    'critical-deviation' => '',
+                                    'deviation-dropdown' => []
+                                ],
+                                [
+                                    'is-na' =>1,
+                                    'title' => 'Standing Chiller/ Freezer /DisplayShowcase',
+                                    'is-aon' => 1,
+                                    'base' => 5,
+                                    'points' => 5,
+                                    'remarks' => '',
+                                    'critical-deviation' => '',
+                                    'deviation-dropdown' => []
+                                ],
+                            ]
+                        ],
+                        [
+                            'title' => 'Sanitary Facilities',
+                            'total-base' => 16,
+                            'total-points' => 16,
+                            'deviation' => [
+                                [
+                                    'is-na' =>1,
+                                    'title' => 'Floor',
+                                    'is-aon' => 1,
+                                    'base' => 2,
+                                    'points' => 2,
+                                    'remarks' => '',
+                                    'critical-deviation' => '',
+                                    'deviation-dropdown' => []
+                                ],
+                                [
+                                    'is-na' =>1,
+                                    'title' => 'Walls / Doors / Wall Partition / Mirror / Bag Hanger ',
+                                    'is-aon' => 1,
+                                    'base' => 2,
+                                    'points' => 2,
+                                    'remarks' => '',
+                                    'critical-deviation' => '',
+                                    'deviation-dropdown' => []
+                                ],
+                                [
+                                    'is-na' =>1,
+                                    'title' => 'Ceiling / Lights and Fixtures',
+                                    'is-aon' => 1,
+                                    'base' => 2,
+                                    'points' => 2,
+                                    'remarks' => '',
+                                    'critical-deviation' => '',
+                                    'deviation-dropdown' => []
+                                ],
+                                [
+                                    'is-na' =>1,
+                                    'title' => 'Exhaust System / Air vents',
+                                    'is-aon' => 1,
+                                    'base' => 2,
+                                    'points' => 2,
+                                    'remarks' => '',
+                                    'critical-deviation' => '',
+                                    'deviation-dropdown' => []
+                                ],
+                                [
+                                    'is-na' =>1,
+                                    'title' => 'Toilet / Urinal / Wash sink and Fixtures',
+                                    'is-aon' => 1,
+                                    'base' => 2,
+                                    'points' => 2,
+                                    'remarks' => '',
+                                    'critical-deviation' => '',
+                                    'deviation-dropdown' => []
+                                ],
+                                [
+                                    'is-na' =>1,
+                                    'title' => 'Tissue/Handsoap/Tissue Holder/ Soap and sanitizer dispenser/ Hand dryer / Diaper changer',
+                                    'is-aon' => 1,
+                                    'base' => 5,
+                                    'points' => 5,
+                                    'remarks' => '',
+                                    'critical-deviation' => '',
+                                    'deviation-dropdown' => []
+                                ],
+                                [
+                                    'is-na' =>1,
+                                    'title' => 'Total dÃ©cor',
+                                    'is-aon' => 1,
+                                    'base' => 2,
+                                    'points' => 2,
+                                    'remarks' => '',
+                                    'critical-deviation' => '',
+                                    'deviation-dropdown' => []
+                                ],
+                                [
+                                    'is-na' =>1,
+                                    'title' => 'Service Station / Garbage Bins',
+                                    'is-aon' => 1,
+                                    'base' => 2,
+                                    'points' => 2,
+                                    'remarks' => '',
+                                    'critical-deviation' => '',
+                                    'deviation-dropdown' => []
+                                ],
+                            ]
+                        ],
+                        [
+                            'title' => 'Merchandising Materials',
+                            'total-base' => 12,
+                            'total-points' => 12,
+                            'deviation' => [
+                                [
+                                    'is-na' =>1,
+                                    'title' => 'Frames Tripod and Sintra Board/ Shelves/',
+                                    'is-aon' => 0,
+                                    'base' => 3,
+                                    'points' => 3,
+                                    'remarks' => '',
+                                    'critical-deviation' => '',
+                                    'deviation-dropdown' => []
+                                ],
+                                [
+                                    'is-na' =>1,
+                                    'title' => 'Optima Display',
+                                    'is-aon' => 0,
+                                    'base' => 3,
+                                    'points' => 3,
+                                    'remarks' => '',
+                                    'critical-deviation' => '',
+                                    'deviation-dropdown' => []
+                                ],
+                                [
+                                    'is-na' =>1,
+                                    'title' => 'Digital Display',
+                                    'is-aon' => 0,
+                                    'base' => 3,
+                                    'points' => 3,
+                                    'remarks' => '',
+                                    'critical-deviation' => '',
+                                    'deviation-dropdown' => []
+                                ],
+                                [
+                                    'is-na' =>1,
+                                    'title' => 'Menu Book/ QR Code',
+                                    'is-aon' => 0,
+                                    'base' => 3,
+                                    'points' => 3,
+                                    'remarks' => '',
+                                    'critical-deviation' => '',
+                                    'deviation-dropdown' => []
                                 ],
                                 
                             ]
-                        ]
+                        ],
+                    ]
+                ],
+                [
+                    'title' => 'Non-Customer Area',
+                    'total-base' => 51,
+                    'total-points' => 51,
+                    'percent' => 100,
+                    'deviation' => [
+                        [
+                            'title' => 'Floor / Stairs',
+                            'total-base' => 6,
+                            'total-points' => 6,
+                            'deviation' => [
+                                [
+                                    'is-na' =>1,
+                                    'title' => 'Kitchen',
+                                    'is-aon' => 0,
+                                    'base' => 2,
+                                    'points' => 2,
+                                    'remarks' => '',
+                                    'critical-deviation' => '',
+                                    'deviation-dropdown' => []
+                                ],
+                                [
+                                    'is-na' =>1,
+                                    'title' => 'Bar',
+                                    'is-aon' => 0,
+                                    'base' => 2,
+                                    'points' => 2,
+                                    'remarks' => '',
+                                    'critical-deviation' => '',
+                                    'deviation-dropdown' => []
+                                ],
+                                [
+                                    'is-na' =>1,
+                                    'title' => 'Storage Cabinets / Other Rooms',
+                                    'is-aon' => 0,
+                                    'base' => 2,
+                                    'points' => 2,
+                                    'remarks' => '',
+                                    'critical-deviation' => '',
+                                    'deviation-dropdown' => []
+                                ],
+                            ]
+                        ],
+                        [
+                            'title' => 'Wall / Door',
+                            'total-base' => 6,
+                            'total-points' => 6,
+                            'deviation' => [
+                                [
+                                    'is-na' =>1,
+                                    'title' => 'Kitchen',
+                                    'is-aon' => 0,
+                                    'base' => 2,
+                                    'points' => 2,
+                                    'remarks' => '',
+                                    'critical-deviation' => '',
+                                    'deviation-dropdown' => []
+                                ],
+                                [
+                                    'is-na' =>1,
+                                    'title' => 'Bar',
+                                    'is-aon' => 0,
+                                    'base' => 2,
+                                    'points' => 2,
+                                    'remarks' => '',
+                                    'critical-deviation' => '',
+                                    'deviation-dropdown' => []
+                                ],
+                                [
+                                    'is-na' =>1,
+                                    'title' => 'Storage Cabinets / Other Rooms',
+                                    'is-aon' => 0,
+                                    'base' => 2,
+                                    'points' => 2,
+                                    'remarks' => '',
+                                    'critical-deviation' => '',
+                                    'deviation-dropdown' => []
+                                ],
+                            ]
+                        ],
+                        [
+                            'title' => 'Ceiling, Lights and Fixtures',
+                            'total-base' => 6,
+                            'total-points' => 6,
+                            'deviation' =>  [
+                                [
+                                    'is-na' =>1,
+                                    'title' => 'Kitchen',
+                                    'is-aon' => 0,
+                                    'base' => 2,
+                                    'points' => 2,
+                                    'remarks' => '',
+                                    'critical-deviation' => '',
+                                    'deviation-dropdown' => []
+                                ],
+                                [
+                                    'is-na' =>1,
+                                    'title' => 'Bar',
+                                    'is-aon' => 0,
+                                    'base' => 2,
+                                    'points' => 2,
+                                    'remarks' => '',
+                                    'critical-deviation' => '',
+                                    'deviation-dropdown' => []
+                                ],
+                                [
+                                    'is-na' =>1,
+                                    'title' => 'Storage Cabinets / Other Rooms',
+                                    'is-aon' => 0,
+                                    'base' => 2,
+                                    'points' => 2,
+                                    'remarks' => '',
+                                    'critical-deviation' => '',
+                                    'deviation-dropdown' => []
+                                ],
+                            ]
+                        ],
+                        [
+                            'title' => 'Facilities, Equipment, T/Us',
+                            'total-base' => 33,
+                            'total-points' => 33,
+                            'deviation' => [
+                                [
+                                    'is-na' =>1,
+                                    'title' => 'Wares / All SS facilities / Counter Water Faucet / Work Tables / Shelves / Push Cart',
+                                    'is-aon' => 1,
+                                    'base' => 5,
+                                    'points' => 5,
+                                    'remarks' => '',
+                                    'critical-deviation' => '',
+                                    'deviation-dropdown' => []
+                                ],
+                                [
+                                    'is-na' =>1,
+                                    'title' => 'Exhaust & Ventilation System / Air Curtain / Electrical Panel Board',
+                                    'is-aon' => 1,
+                                    'base' => 5,
+                                    'points' => 5,
+                                    'remarks' => '',
+                                    'critical-deviation' => '',
+                                    'deviation-dropdown' => []
+                                ],
+                                [
+                                    'is-na' =>1,
+                                    'title' => 'Water Filter',
+                                    'is-aon' => 1,
+                                    'base' => 5,
+                                    'points' => 5,
+                                    'remarks' => '',
+                                    'critical-deviation' => '',
+                                    'deviation-dropdown' => []
+                                ],
+                                [
+                                    'is-na' =>1,
+                                    'title' => 'Dishwashing Machine',
+                                    'is-aon' => 1,
+                                    'base' => 5,
+                                    'points' => 5,
+                                    'remarks' => '',
+                                    'critical-deviation' => '',
+                                    'deviation-dropdown' => []
+                                ],
+                                [
+                                    'is-na' =>1,
+                                    'title' => 'Freezers',
+                                    'is-aon' => 1,
+                                    'base' => 5,
+                                    'points' => 5,
+                                    'remarks' => '',
+                                    'critical-deviation' => '',
+                                    'deviation-dropdown' => []
+                                ],
+                                [
+                                    'is-na' =>1,
+                                    'title' => 'Chillers',
+                                    'is-aon' => 1,
+                                    'base' => 5,
+                                    'points' => 5,
+                                    'remarks' => '',
+                                    'critical-deviation' => '',
+                                    'deviation-dropdown' => []
+                                ],
+                                [
+                                    'is-na' =>1,
+                                    'title' => 'Ice machine / Blender/Espresso Machine / Microwave Oven / Oven Toaster /CCTV',
+                                    'is-aon' => 1,
+                                    'base' => 5,
+                                    'points' => 5,
+                                    'remarks' => '',
+                                    'critical-deviation' => '',
+                                    'deviation-dropdown' => []
+                                ],
+                            ]
+                        ],
                     ]
                 ],
                 [
                     'title' => 'Safety And Security',
-                    'cln-total-base' => 0,
-                    'cln-total-points' => 0,
-                    'con-total-base' => 30,
-                    'con-total-points' => 30,
+                    'total-base' => 30,
+                    'total-points' => 30,
                     'percent' => 100,
-                    'deviation' => [
+                    'deviation' =>[
                         [
+                            'is-na' =>1,
                             'title' => 'Fire Extinguisher / Emergency Light',
-                            'cln-is-na' => 0,
-                            'cln-is-aon' => 0,
-                            'cln-base' => 0,
-                            'cln-points' => 0,
-                            'cln-remarks' => '',
-                            'con-is-na' => 1,
-                            'con-is-aon' => 1,
-                            'con-base' => 3,
-                            'con-points' => 3,
-                            'con-remarks' => '',
+                            'is-aon' => 1,
+                            'base' => 3,
+                            'points' => 3,
+                            'remarks' => '',
                             'critical-deviation' => '',
                             'deviation-dropdown' => []
                         ],
                         [
+                            'is-na' =>1,
                             'title' => 'Gas Suppression System / Water Sprinkler / Smoke Alarm',
-                            'cln-is-na' => 0,
-                            'cln-is-aon' => 0,
-                            'cln-base' => 0,
-                            'cln-points' => 0,
-                            'cln-remarks' => '',
-                            'con-is-na' => 1,
-                            'con-is-aon' => 1,
-                            'con-base' => 3,
-                            'con-points' => 3,
-                            'con-remarks' => '',
+                            'is-aon' => 1,
+                            'base' => 3,
+                            'points' => 3,
+                            'remarks' => '',
                             'critical-deviation' => '',
                             'deviation-dropdown' => []
                         ],
                         [
+                            'is-na' =>1,
                             'title' => 'First Aid Kit / Emergency Kit',
-                            'cln-is-na' => 0,
-                            'cln-is-aon' => 0,
-                            'cln-base' => 0,
-                            'cln-points' => 0,
-                            'cln-remarks' => '',
-                            'con-is-na' => 1,
-                            'con-is-aon' => 1,
-                            'con-base' => 3,
-                            'con-points' => 3,
-                            'con-remarks' => '',
+                            'is-aon' => 1,
+                            'base' => 3,
+                            'points' => 3,
+                            'remarks' => '',
                             'critical-deviation' => '',
                             'deviation-dropdown' => []
                         ],
                         [
+                            'is-na' =>1,
                             'title' => 'Protective Gears (mask, heat resistant gloves, goggles)',
-                            'cln-is-na' => 0,
-                            'cln-is-aon' => 0,
-                            'cln-base' => 0,
-                            'cln-points' => 0,
-                            'cln-remarks' => '',
-                            'con-is-na' => 1,
-                            'con-is-aon' => 1,
-                            'con-base' => 3,
-                            'con-points' => 3,
-                            'con-remarks' => '',
+                            'is-aon' => 1,
+                            'base' => 3,
+                            'points' => 3,
+                            'remarks' => '',
                             'critical-deviation' => '',
                             'deviation-dropdown' => []
                         ],
                         [
+                            'is-na' =>1,
                             'title' => 'Statutory Sign / Wet Floor Sign /  Convenience Outlet',
-                            'cln-is-na' => 0,
-                            'cln-is-aon' => 0,
-                            'cln-base' => 0,
-                            'cln-points' => 0,
-                            'cln-remarks' => '',
-                            'con-is-na' => 1,
-                            'con-is-aon' => 1,
-                            'con-base' => 3,
-                            'con-points' => 3,
-                            'con-remarks' => '',
+                            'is-aon' => 1,
+                            'base' => 3,
+                            'points' => 3,
+                            'remarks' => '',
                             'critical-deviation' => '',
                             'deviation-dropdown' => []
                         ],
                         [
+                            'is-na' =>1,
                             'title' => 'Evacuation Plan / Emergency Telephone Numbers',
-                            'cln-is-na' => 0,
-                            'cln-is-aon' => 0,
-                            'cln-base' => 0,
-                            'cln-points' => 0,
-                            'cln-remarks' => '',
-                            'con-is-na' => 1,
-                            'con-is-aon' => 1,
-                            'con-base' => 3,
-                            'con-points' => 3,
-                            'con-remarks' => '',
+                            'is-aon' => 1,
+                            'base' => 3,
+                            'points' => 3,
+                            'remarks' => '',
                             'critical-deviation' => '',
                             'deviation-dropdown' => []
                         ],
                         [
+                            'is-na' =>1,
                             'title' => 'Bill Detector / Fire Igniter',
-                            'cln-is-na' => 0,
-                            'cln-is-aon' => 0,
-                            'cln-base' => 0,
-                            'cln-points' => 0,
-                            'cln-remarks' => '',
-                            'con-is-na' => 1,
-                            'con-is-aon' => 1,
-                            'con-base' => 3,
-                            'con-points' => 3,
-                            'con-remarks' => '',
+                            'is-aon' => 1,
+                            'base' => 3,
+                            'points' => 3,
+                            'remarks' => '',
                             'critical-deviation' => '',
                             'deviation-dropdown' => []
                         ],
                         [
+                            'is-na' =>1,
                             'title' => 'Rain Mat / Ladder (Optional)',
-                            'cln-is-na' => 0,
-                            'cln-is-aon' => 0,
-                            'cln-base' => 0,
-                            'cln-points' => 0,
-                            'cln-remarks' => '',
-                            'con-is-na' => 1,
-                            'con-is-aon' => 1,
-                            'con-base' => 3,
-                            'con-points' => 3,
-                            'con-remarks' => '',
+                            'is-aon' => 1,
+                            'base' => 3,
+                            'points' => 3,
+                            'remarks' => '',
                             'critical-deviation' => '',
                             'deviation-dropdown' => []
                         ],
                         [
+                            'is-na' =>1,
                             'title' => 'Availability of MSDS',
-                            'cln-is-na' => 0,
-                            'cln-is-aon' => 0,
-                            'cln-base' => 0,
-                            'cln-points' => 0,
-                            'cln-remarks' => '',
-                            'con-is-na' => 1,
-                            'con-is-aon' => 1,
-                            'con-base' => 3,
-                            'con-points' => 3,
-                            'con-remarks' => '',
+                            'is-aon' => 1,
+                            'base' => 3,
+                            'points' => 3,
+                            'remarks' => '',
                             'critical-deviation' => '',
                             'deviation-dropdown' => []
                         ],
                         [
+                            'is-na' =>1,
                             'title' => 'CCTV installed',
-                            'cln-is-na' => 0,
-                            'cln-is-aon' => 0,
-                            'cln-base' => 0,
-                            'cln-points' => 0,
-                            'cln-remarks' => '',
-                            'con-is-na' => 1,
-                            'con-is-aon' => 1,
-                            'con-base' => 3,
-                            'con-points' => 3,
-                            'con-remarks' => '',
+                            'is-aon' => 1,
+                            'base' => 3,
+                            'points' => 3,
+                            'remarks' => '',
                             'critical-deviation' => '',
                             'deviation-dropdown' => []
-                        ]
+                        ],
                     ]
                 ]
             ]
@@ -3812,7 +4040,7 @@ class AuditForm extends Component
                             'points' => 1,
                             'remarks' => '',
                             'critical-deviation' => '',
-'deviation-dropdown' => []
+                                    'deviation-dropdown' => []
                         ]
                     ]
                 ],
@@ -3830,7 +4058,7 @@ class AuditForm extends Component
                             'points' => 1,
                             'remarks' => '',
                             'critical-deviation' => '',
-'deviation-dropdown' => []
+                                    'deviation-dropdown' => []
                         ],
                         [
                             'is-na' => 1,
@@ -3840,7 +4068,7 @@ class AuditForm extends Component
                             'points' => 1,
                             'remarks' => '',
                             'critical-deviation' => '',
-'deviation-dropdown' => []
+                                    'deviation-dropdown' => []
                         ],
                         [
                             'is-na' => 1,
@@ -3850,7 +4078,7 @@ class AuditForm extends Component
                             'points' => 1,
                             'remarks' => '',
                             'critical-deviation' => '',
-'deviation-dropdown' => []
+                                    'deviation-dropdown' => []
                         ],
                         [
                             'is-na' => 1,
@@ -3860,7 +4088,7 @@ class AuditForm extends Component
                             'points' => 1,
                             'remarks' => '',
                             'critical-deviation' => '',
-'deviation-dropdown' => []
+                                    'deviation-dropdown' => []
                         ],
                         [
                             'is-na' => 1,
@@ -3870,7 +4098,7 @@ class AuditForm extends Component
                             'points' => 1,
                             'remarks' => '',
                             'critical-deviation' => '',
-'deviation-dropdown' => []
+                                    'deviation-dropdown' => []
                         ],
                     ]
                 ],
@@ -3893,7 +4121,7 @@ class AuditForm extends Component
                                     'points' => 1,
                                     'remarks' => '',
                                     'critical-deviation' => '',
-'deviation-dropdown' => []
+                                    'deviation-dropdown' => []
                                 ],
                                 [
                                     'is-na' => 1,
@@ -3903,7 +4131,7 @@ class AuditForm extends Component
                                     'points' => 1,
                                     'remarks' => '',
                                     'critical-deviation' => '',
-'deviation-dropdown' => []
+                                    'deviation-dropdown' => []
                                 ],
                                 [
                                     'is-na' => 1,
@@ -3913,7 +4141,7 @@ class AuditForm extends Component
                                     'points' => 1,
                                     'remarks' => '',
                                     'critical-deviation' => '',
-'deviation-dropdown' => []
+                                    'deviation-dropdown' => []
                                 ]
                             ]
                         ],
@@ -3930,7 +4158,7 @@ class AuditForm extends Component
                                     'points' => 1,
                                     'remarks' => '',
                                     'critical-deviation' => '',
-'deviation-dropdown' => []
+                                    'deviation-dropdown' => []
                                 ],
                                 [
                                     'is-na' => 1,
@@ -3940,7 +4168,7 @@ class AuditForm extends Component
                                     'points' => 1,
                                     'remarks' => '',
                                     'critical-deviation' => '',
-'deviation-dropdown' => []
+                                    'deviation-dropdown' => []
                                 ],
                                 [
                                     'is-na' => 1,
@@ -3950,7 +4178,7 @@ class AuditForm extends Component
                                     'points' => 1,
                                     'remarks' => '',
                                     'critical-deviation' => '',
-'deviation-dropdown' => []
+                                    'deviation-dropdown' => []
                                 ]
                             ]
                         ],
@@ -3959,183 +4187,44 @@ class AuditForm extends Component
             ]
         ],
     ];
-    public $datatest = [
-        [
-            'category' =>'Document',
-            'total-base' => 41,
-            'total-points' => 41,
-            'percent' => 40,
-            'sub-category' =>[
-                [
-                    'title' => 'Primary Systems',
-                    'total-base' => 11,
-                    'total-points' => 11,
-                    'percent' => 100,
-                    'deviation' => [
-                        [
-                            'title' => 'Food',
-                            'total-base' => 4,
-                            'total-points' => 4,
-                            'deviation' => [
-                                [
-                                    'is-na' => 1,
-                                    'title' => 'People Training Calendar (Product Knowledge)',
-                                    'is-aon' => 0,
-                                    'base' => 1,
-                                    'points' => 1,
-                                    'remarks' => '',
-                                    'critical-deviation' => '',
-'deviation-dropdown' => []
-                                ],
-                            ]
-                        ],
-                        [
-                            'title' => 'Service',
-                            'total-base' => 4,
-                            'total-points' => 4,
-                            'deviation' => [
-                                [
-                                    'is-na' => 1,
-                                    'title' => 'Manager Checklist',
-                                    'is-aon' => 0,
-                                    'base' => 1,
-                                    'points' => 1,
-                                    'remarks' => '',
-                                    'critical-deviation' => '',
-'deviation-dropdown' => []
-                                ],
-                                [
-                                    'is-na' => 1,
-                                    'title' => 'Server Checklist',
-                                    'is-aon' => 0,
-                                    'base' => 1,
-                                    'points' => 1,
-                                    'remarks' => '',
-                                    'critical-deviation' => '',
-'deviation-dropdown' => []
-                                ],
-                            ]
-                        ],
-                        [
-                            'title' => 'Ambiance',
-                            'total-base' => 3,
-                            'total-points' => 3,
-                            'deviation' => [
-                                [
-                                    'is-na' => 1,
-                                    'title' => 'PM Checklist/ PM Report for 3months ',
-                                    'is-aon' => 0,
-                                    'base' => 1,
-                                    'points' => 1,
-                                    'remarks' => '',
-                                    'critical-deviation' => '',
-'deviation-dropdown' => []
-                                ],
-                                [
-                                    'is-na' => 1,
-                                    'title' => 'Store with  cushion, Laundry frequency',
-                                    'is-aon' => 0,
-                                    'base' => 1,
-                                    'points' => 1,
-                                    'remarks' => '',
-                                    'critical-deviation' => '',
-'deviation-dropdown' => []
-                                ],
-                            ]
-                        ]
-                    ]
-                ],
-                [
-                    'title' => 'Support Systems',
-                    'total-base' => 14,
-                    'total-points' => 14,
-                    'percent' => 100,
-                    'deviation' => [
-                        [
-                            'title' => 'Food Safety',
-                            'total-base' => 6,
-                            'total-points' => 6,
-                            'deviation' => [
-                                [
-                                    'is-na' => 1,
-                                    'title' => 'Pest Control Report 3months',
-                                    'is-aon' => 0,
-                                    'base' => 1,
-                                    'points' => 1,
-                                    'remarks' => '',
-                                    'critical-deviation' => '',
-'deviation-dropdown' => []
-                                ],
-                            ]
-                        ],
-                        [
-                            'title' => 'Inventory Management',
-                            'total-base' => 3,
-                            'total-points' => 3,
-                            'deviation' => [
-                                [
-                                    'is-na' => 1,
-                                    'title' => 'Stock Report',
-                                    'is-aon' => 0,
-                                    'base' => 1,
-                                    'points' => 1,
-                                    'remarks' => '',
-                                    'critical-deviation' => '',
-'deviation-dropdown' => []
-                                ],
-                            ]
-                        ]
-                    ]
-                ],
-             
-            ]
-        ]
-    ];
+    
     public function setActive($index)
     {
         $this->active_index = $index;
     }
-
     public function mount($id = null)
     {
+        // dd( json_encode($this->form));
+      /*   $saved_data = StoreRecord::first();
+        $this->form = json_decode($saved_data->wave1, true); */
         $this->auditForm = AuditFormModel::find($id);
         // $this->sanitary_list = SanitaryModel::get();
         $this->store = Store::find($this->auditForm->store_id);
     }
     public function render()
     {
-
-        $test = StoreRecord::first();
-        $this->form = json_decode($test->wave1, true);
+        
         return view('livewire.audit.audit-form')->extends('layouts.app');
     }
-    public function updatedDatatest($newValue, $oldValue)
+    public function updatedForm($value,$key)
     {
-        foreach ($this->datatest as &$category) {
-            $totalBase = 0;
-            $totalPoints = 0;
-    
-            foreach ($category['sub-category'] as &$subCategory) {
-                $subTotalBase = 0;
-                $subTotalPoints = 0;
-    
-                foreach ($subCategory['deviation'] as &$deviation) {
-                    // Update sub-total points based on each deviation's points
-                    $subTotalBase += $deviation['base'];
-                    $subTotalPoints += $deviation['points'];
+        dd($key);
+        foreach ($this->form as $categoryIndex => &$category) {
+            foreach ($category['sub-category'] as $subCategoryIndex => &$subCategory) {
+                foreach ($subCategory['deviation'] as $deviationIndex => $deviation) {
+                    $subCategory['total-points'] -= $deviation['points'] ?? 0;
                 }
-    
-                // Update sub-category's total-base and total-points
-                $subCategory['total-base'] = $subTotalBase;
-                $subCategory['total-points'] = $subTotalPoints;
-    
-                // Update category's total-base and total-points
-                $totalBase += $subTotalBase;
-                $totalPoints += $subTotalPoints;
             }
-    
-            $category['total-base'] = $totalBase;
-            $category['total-points'] = $totalPoints;
         }
+    }
+
+    public function onCaculatePoints($category_index , $sub_category_index , $sub_category_deviation_index , $value){
+        // dd($category_index , $sub_category_index , $sub_category_deviation_index , $value);
+        // $this->form[$category_index]['sub-category'][$sub_category_index]['total-points'] -=  $value;
+        // Add an element to an array
+      /*   $new_points = ($this->form[$category_index]['sub-category'][$sub_category_index]['total-points'] -= $value);
+        dd($new_points);
+        $this->form[$category_index]['sub-category'][$sub_category_index]['total-points'] += $value; */
+        // dd($this->form[$category_index]['total-points']);
     }
 }

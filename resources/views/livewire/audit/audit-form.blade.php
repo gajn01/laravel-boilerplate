@@ -37,7 +37,57 @@
             <div class="tab-pane fade show {{ $category_index == $active_index ? 'active' : '' }}" id="cat{{ $category_index }}" role="tabpanel" aria-labelledby="cat{{ $category_index }}-tab">
                 <div class="app-card app-card-orders-table shadow-sm mb-5 bg-none">
                     <div class="app-card-body">
-                        <div class="row mb-2"></div>
+                        <div class="row mb-2">
+                            <div class="col-12  mb-4  {{-- {{ $category->critical_deviation->isNotEmpty() ? 'col-lg-6' : 'col-lg-12' }} --}}">
+                                <div class="app-card app-card-chart  shadow-sm">
+                                    <div class="app-card-header p-3">
+                                        <h4 class="app-card-title">Overall Score</h4>
+                                    </div>
+                                    <div class="app-card-body p-3 p-lg-4">
+                                        <div class="row justify-content-between align-items-center">
+                                            <div class="col-12">
+                                                <table class="table app-table-hover mb-0 text-left ">
+                                                    <thead>
+                                                        <tr>
+                                                            <th class="cell">Category</th>
+                                                            <th class="cell text-center">Base</th>
+                                                            <th class="cell text-center">Score</th>
+                                                            <th class="cell text-center">%</th>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                        @foreach ($category['sub-category'] as $sub_category)
+                                                            <tr>
+                                                                <td class="core_name_total">
+                                                                    <a href="#{{ $sub_category['title'] }}">{{ $sub_category['title'] }}</a>
+                                                                </td>
+                                                                <td class="text-center">{{ $sub_category['total-base'] }}</td>
+                                                                <td class="text-center">{{ $sub_category['total-points'] }}</td>
+                                                                {{-- <td class="text-center"> {{ ($sub_category['total-points'] == 0) ? 0 :  round(($sub_category['total-points']  / $sub_category['total-base']) * $sub_category['percent'] , 0) }}%</td> --}}
+                                                            </tr>
+                                                        @endforeach
+                                                        <tr>
+                                                            <td>
+                                                                <h5 class="app-card-title ">Total</h5>
+                                                            </td>
+                                                            <td class="text-center">
+                                                                {{ $category['total-base'] }}
+                                                            </td>
+                                                            <td class="text-center">
+                                                                {{ $category['total-points'] }}
+                                                            </td>
+                                                            <td class="text-center">
+                                                                {{ $category['percent'] }}%
+                                                            </td>
+                                                        </tr>
+                                                    </tbody>
+                                                </table>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                         <div class="row mb-2">
                             @foreach ($category['sub-category'] as $sub_category_index => $sub_category)
                                 <div class="accordion mb-2" id="accordionCategory">
@@ -48,7 +98,7 @@
                                             </button>
                                         </h2>
                                         <div id="accrod{{ $sub_category['title'] }}"class="accordion-collapse collapse show"  aria-labelledby="accrod{{ $sub_category['title'] }}" data-bs-parent="#accordionCategory">
-                                            <div class="accordion-body">
+                                            <div class="accordion-body pb-0">
                                                 @isset($sub_category['deviation'])
                                                     @foreach ($sub_category['deviation'] as $sub_category_deviation_index => $sub_category_deviation)
                                                         @if(isset($sub_category_deviation['base']))
@@ -84,7 +134,7 @@
                                                                             {{-- @disabled( $store->audit_status == 0 ? true : false) --}}
                                                                             wire:model="form.{{ $category_index }}.sub-category.{{ $sub_category_index }}.deviation.{{ $sub_category_deviation_index }}.is-na"
                                                                             @if($form[$category_index]['sub-category'][$sub_category_index]['deviation'][$sub_category_deviation_index]['is-na'] ?? false) checked @endif >
-                                                                        <label class="form-check-label "  @class(['pt-4' => $sub_category_deviation_index == 0 ]) for="toggle-switch">  {{$sub_category_deviation['title']}}</label>
+                                                                            <label class="form-check-label "  @class(['pt-4' => $sub_category_deviation_index == 0 ]) for="toggle-switch">  {{$sub_category_deviation['title']}}</label>
                                                                     </div>
                                                                 </div>
                                                                 {{-- Deviation bp,points,remarks --}}
@@ -100,6 +150,7 @@
                                                                     min="{{ ($form[$category_index]['sub-category'][$sub_category_index]['deviation'][$sub_category_deviation_index]['is-na'] ?? false) ? ($sub_category_deviation['is-aon'] ? $sub_category_deviation['base'] ?? 0 : 0) : 0 }}" 
                                                                     max="{{ ($form[$category_index]['sub-category'][$sub_category_index]['deviation'][$sub_category_deviation_index]['is-na'] ?? false) ? ($sub_category_deviation['is-aon'] ? 0 : $sub_category_deviation['base'] ?? 0) : 0 }}"
                                                                     wire:model="form.{{ $category_index }}.sub-category.{{ $sub_category_index }}.deviation.{{ $sub_category_deviation_index }}.points"
+                                                                    wire:change="onCaculatePoints({{ $category_index }} , {{ $sub_category_index}} , {{ $sub_category_deviation_index}} , $event.target.value)"
                                                                     >
                                                                 </div>
                                                                 <div class="col-sm-12 col-md-3  mb-2  {{ !empty($sub_category_deviation['deviation-dropdown']) ? 'col-md-3' : 'col-md-5' }}">
@@ -158,6 +209,7 @@
                                                                                     </div>
                                                                                 @endif
                                                                             </div>
+                                                                            
                                                                             <div class="row mb-3">
                                                                                 <div class="col-sm-12 col-md-5 col-lg-5">
                                                                                     <div class="form-check form-switch">
@@ -223,7 +275,7 @@
         @endforelse
     </div>
 
-        @foreach ($form as $item)
+       {{--  @foreach ($form as $item)
             {{$item['category']}}
             <ul>
                 @foreach ($item['sub-category'] as $sub_category)
@@ -260,7 +312,7 @@
                     @endisset
                 @endforeach
             </ul>
-        @endforeach
+        @endforeach --}}
 
         <a href="#">
             <div class="floating-btn">
