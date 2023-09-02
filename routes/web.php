@@ -17,6 +17,7 @@ use App\Http\Livewire\Audit\Summary as AuditSummary;
 use App\Http\Livewire\Audit\Result as AuditResult;
 use App\Http\Livewire\Audit\Schedule as AuditSchedule;
 use App\Http\Livewire\Audit\Details as AuditDetails;
+use App\Http\Livewire\Audit\AuditForm as AuditFormTemplate;
 /* User */
 use App\Http\Livewire\User\User;
 use App\Http\Livewire\User\UserDetails;
@@ -55,6 +56,8 @@ Route::middleware(['auth','verified'])->group(function () {
      /* Audit */
      Route::get('/audit', Audit::class)->name('audit');
      Route::get('/store/details/{store_id?}', AuditDetails::class)->name('audit.details');
+     
+     Route::get('/audit/forms/{id}', AuditFormTemplate::class)->name('audit.forms');
      Route::get('/audit/form/{id}', AuditForm::class)->name('audit.form');
      Route::prefix('result/{form_id?}')->group(function () {
          Route::get('/', AuditResult::class)->name('audit.result');
