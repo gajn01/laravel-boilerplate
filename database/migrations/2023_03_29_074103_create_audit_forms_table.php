@@ -14,10 +14,13 @@ return new class extends Migration
         Schema::create('audit_forms', function (Blueprint $table) {
             $table->id();
             $table->integer('store_id');
-            $table->integer('audit_date_id');
-            $table->timestamp('date_of_visit');
+            $table->date('audit_date');
+            $table->date('date_of_visit');
             $table->string('conducted_by_id');
+            $table->longText('audit_result');
             $table->string('received_by')->nullable();
+            $table->string('strength')->nullable();
+            $table->string('improvement')->nullable();
             $table->time('time_of_audit');
             $table->integer('wave');
             $table->integer('audit_status');

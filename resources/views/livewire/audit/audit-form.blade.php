@@ -10,10 +10,8 @@
     <div class="page-utilities mb-3" >
         <div class="row g-2 justify-content-start justify-content-md-end align-items-center">
             <div class="col-auto mb-3">
-                @if ($auditForm->audit_status == 0)
-                    <a class="btn app-btn-primary" wire:click="onStartAudit"> Start Audit</a>
-                @else
-                    <a class="btn app-btn-primary" href="{{ route('audit.view.result', [$auditForm->id, $summary->id]) }}"> Result</a>
+                @if ($auditForm->audit_status != 0)
+                    <a class="btn app-btn-primary" href="{{ route('audit.view.result', [$auditForm->id]) }}"> Result</a>
                 @endif
             </div>
         </div>
@@ -31,7 +29,6 @@
             <p class="m-0 p-2">No category found!</p>
         @endforelse
     </nav>
-   
     <div class="tab-content" id="audit-form-tab-content">
         @forelse ($form as $category_index => $category)
             <div class="tab-pane fade show {{ $category_index == $active_index ? 'active' : '' }}" id="cat{{ $category_index }}" role="tabpanel" aria-labelledby="cat{{ $category_index }}-tab">
@@ -89,7 +86,15 @@
                                                                         @endif
                                                                     @endforeach
                                                                 @endif
+                                                                @if(isset($category['critical-deviation']))
+                                                                    @foreach ($category['critical-deviation'] as $key => $critical_deviation) 
+                                                                        @php
+                                                                            $cumulativePercentage -= (int)$critical_deviation['score'] 
+                                                                        @endphp
+                                                                    @endforeach
+                                                                @endif
                                                                 {{ $cumulativePercentage }}%
+
                                                             </td>
                                                         </tr>
                                                     </tbody>
@@ -384,12 +389,11 @@
                                                                                     <div class="row">
                                                                                         @if ($sub_sub_category_deviation_index == 0)
                                                                                             <div class="col-12">
-                                                                                                <svg class="icon" wire:click="onAddService({{$category_index}},{{$sub_category_index}},{{ $sub_category_deviation_index }},{{$sub_sub_category_deviation_index}})" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512">
+                                                                                                <svg class="icon" wire:click="onAddCashier({{$category_index}},{{$sub_category_index}},{{ $sub_category_deviation_index }},{{$sub_sub_category_deviation_index}})" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512">
                                                                                                     <path d="M256 80c0-17.7-14.3-32-32-32s-32 14.3-32 32V224H48c-17.7 0-32 14.3-32 32s14.3 32 32 32H192V432c0 17.7 14.3 32 32 32s32-14.3 32-32V288H400c17.7 0 32-14.3 32-32s-14.3-32-32-32H256V80z" />
                                                                                                 </svg>
                                                                                                 {{-- <a class="btn app-btn-primary float-right" wire:ignore role="button" wire:click="setTime(0)">Set</a> --}}
                                                                                             </div>
-
                                                                                         @else
                                                                                             <div class="row">
                                                                                                 <div class="col-12">
@@ -498,10 +502,18 @@
                                                                                 <div class="row">
                                                                                     @if ($sub_sub_category_deviation_index == 0)
                                                                                         <div class="col-12">
-                                                                                            <svg class="icon" wire:click="onAddService({{$category_index}},{{$sub_category_index}},{{ $sub_category_deviation_index }},{{$sub_sub_category_deviation_index}})" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512">
+                                                                                            <svg class="icon" wire:click="onAddServer({{$category_index}},{{$sub_category_index}},{{ $sub_category_deviation_index }},{{$sub_sub_category_deviation_index}})" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512">
                                                                                                 <path d="M256 80c0-17.7-14.3-32-32-32s-32 14.3-32 32V224H48c-17.7 0-32 14.3-32 32s14.3 32 32 32H192V432c0 17.7 14.3 32 32 32s32-14.3 32-32V288H400c17.7 0 32-14.3 32-32s-14.3-32-32-32H256V80z" />
                                                                                             </svg>
                                                                                             {{-- <a class="btn app-btn-primary float-right" wire:ignore role="button" wire:click="setTime(0)">Set</a> --}}
+                                                                                        </div>
+                                                                                    @else
+                                                                                        <div class="row">
+                                                                                            <div class="col-12">
+                                                                                                <svg class="icon float-right" wire:click="onRemoveService({{$category_index}},{{$sub_category_index}},{{ $sub_category_deviation_index }},{{$sub_sub_category_deviation_index}})" xmlns="http://www.w3.org/2000/svg" height="1em" viewBox="0 0 384 512">
+                                                                                                    <path d="M376.6 84.5c11.3-13.6 9.5-33.8-4.1-45.1s-33.8-9.5-45.1 4.1L192 206 56.6 43.5C45.3 29.9 25.1 28.1 11.5 39.4S-3.9 70.9 7.4 84.5L150.3 256 7.4 427.5c-11.3 13.6-9.5 33.8 4.1 45.1s33.8 9.5 45.1-4.1L192 306 327.4 468.5c11.3 13.6 31.5 15.4 45.1 4.1s15.4-31.5 4.1-45.1L233.7 256 376.6 84.5z"/>
+                                                                                                </svg>
+                                                                                            </div>
                                                                                         </div>
                                                                                     @endif
                                                                                     <div class="col-sm-6 col-lg-3 mb-2">
@@ -615,6 +627,7 @@
                                                                                              ></textarea>
                                                                                         </div>
                                                                                     </div>
+                                                                                    <hr>
                                                                                 </div>
                                                                                 @endif
                                                                             @endif
@@ -637,52 +650,12 @@
 
         @endforelse
     </div>
-
-       {{--  @foreach ($form as $item)
-            {{$item['category']}}
-            <ul>
-                @foreach ($item['sub-category'] as $sub_category)
-                    <li>
-                        {{$sub_category['title']}}
-                    </li> 
-                    @isset($sub_category['deviation'])
-                        <ul>
-                            @foreach ($sub_category['deviation'] as $sub_category_deviation)
-                                    <li>
-                                        {{ $sub_category_deviation['is-na'] ?? 'Default Value' }}
-                                        {{$sub_category_deviation['title']}}
-                                        {{ $sub_category_deviation['points'] ?? '' }}
-                                        {{ $sub_category_deviation['remarks'] ?? 'Default Value' }}
-                                        {{ $sub_category_deviation['critical-deviation'] ?? '' }}
-
-                                      
-                                    </li>
-                                        @if (isset($sub_category_deviation['deviation']))
-                                            <ul>
-                                                @foreach ($sub_category_deviation['deviation'] as $sub_sub_category_deviation)
-                                                        <li>
-                                                            {{ $sub_sub_category_deviation['is-na'] ?? '' }}
-                                                            {{ $sub_sub_category_deviation['title']}}
-                                                            {{ $sub_sub_category_deviation['points'] ?? '' }}
-                                                            {{ $sub_sub_category_deviation['remarks'] ?? '' }}
-                                                            {{ $sub_sub_category_deviation['critical-deviation'] ?? '' }}
-                                                        </li>
-                                                @endforeach
-                                            </ul>
-                                        @endif
-                            @endforeach
-                        </ul>
-                    @endisset
-                @endforeach
-            </ul>
-        @endforeach --}}
-
-        <a href="#">
-            <div class="floating-btn">
-                <svg class="icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512">
-                    <path
-                        d="M182.6 137.4c-12.5-12.5-32.8-12.5-45.3 0l-128 128c-9.2 9.2-11.9 22.9-6.9 34.9s16.6 19.8 29.6 19.8H288c12.9 0 24.6-7.8 29.6-19.8s2.2-25.7-6.9-34.9l-128-128z" />
-                </svg>
-            </div>
-        </a>
+    <a href="#">
+        <div class="floating-btn">
+            <svg class="icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512">
+                <path
+                    d="M182.6 137.4c-12.5-12.5-32.8-12.5-45.3 0l-128 128c-9.2 9.2-11.9 22.9-6.9 34.9s16.6 19.8 29.6 19.8H288c12.9 0 24.6-7.8 29.6-19.8s2.2-25.7-6.9-34.9l-128-128z" />
+            </svg>
+        </div>
+    </a>
 </div>

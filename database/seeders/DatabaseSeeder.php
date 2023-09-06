@@ -19,5 +19,6 @@ class DatabaseSeeder extends Seeder
         $this->call([SubCategorySeeder::class]);
         $this->call([SubCategoryLabelSeeder::class]);
         $this->call([StoreSeeder::class]);
+        $this->call([AuditTemplateSeeder::class]);
     }
 }

@@ -78,7 +78,7 @@ class Schedule extends Component
         })->when(Auth::user()->user_type != 0 ,fn($con)=>
             $con->whereHas('auditors', fn($q)=>
                 $q->where('auditor_list.auditor_id',Auth::user()->id))
-            )->orderByRaw('audit_date ASC');
+            );
         if ($this->date_filter == 'weekly') {
             $schedule->whereBetween('audit_date', [Carbon::now()->startOfWeek(), Carbon::now()->endOfWeek()]);
         } elseif ($this->date_filter == 'monthly') {
@@ -184,7 +184,7 @@ class Schedule extends Component
         $this->auditor_id = null;
         if($id){
             $this->auditForm = AuditForm::find($id);
-            $this->auditor_list = AuditorListModel::where('audit_form_id', $id)->get();
+            $this->auditor_list = AuditorListModel::where('audit_date_id', $id)->get();
         }
         $this->resetValidation();
         $this->modalTitle = $id ? 'Update' : 'Add';
