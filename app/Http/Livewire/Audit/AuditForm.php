@@ -5,14 +5,16 @@ namespace App\Http\Livewire\Audit;
 use Livewire\Component;
 use App\Models\AuditForm as AuditFormModel;
 use App\Models\Store;
+use App\Models\SanitaryModel;
 use App\Models\StoreRecord;
-
+use App\Models\AuditTemplate;
 
 class AuditForm extends Component
 {
     public $auditForm;
     public $store;
     public $active_index = 0;
+    public $sanitary_list;
     public $form = [
         [
             'category' => 'Food',
@@ -33,7 +35,7 @@ class AuditForm extends Component
                             'base' => 5,
                             'points' => 5,
                             'remarks' => '',
-                            'critical-deviation' => 'Deformed',
+                            'critical-deviation' => '',
                             'deviation-dropdown' => [
                                 ['title' => 'Deformed'],
                                 ['title' => 'Burnt'],
@@ -638,6 +640,63 @@ class AuditForm extends Component
                         ],
                     ]
                 ],
+            ],
+            'critical-deviation' =>[
+                [
+                    'title'=> 'Critical & Major SD',
+                    'is-sd' => 1,
+                    'is-location' => [
+                        ['title' => 'Food'],
+                        ['title' => 'Packaging'],
+                        ['title' => 'Equipment'],
+                        ['title' => 'Dining Area'],
+                        ['title' => 'Other Rooms']
+                    ],
+                    'is-product' => [],
+                    'is-remarks' => 1,
+                    'is-score' => [
+                        ['title' => 3],
+                        ['title' => 5],
+                        ['title' => 10],
+                        ['title' => 15]
+                    ],
+                    'is-dropdown' => [],
+                    'sd' => '',
+                    'location' => '',
+                    'remarks' => '',
+                    'score' => '',
+                    'dropdown' => '',
+                ],
+                [
+                    'title'=> 'Spoiled/Lapsed product',
+                    'is-sd' => 0,
+                    'is-location' => [],
+                    'is-product' => [
+                        ['title' => 'Baked Goods'],
+                        ['title' => 'Salad'],
+                        ['title' => 'Appetizer'],
+                        ['title' => 'Pasta'],
+                        ['title' => 'Pizza'],
+                        ['title' => 'Rice Meal'],
+                        ['title' => 'Sandwich'],
+                        ['title' => 'Mains'],
+                        ['title' => 'Drinks'],
+                    ],
+                    'is-remarks' => 1,
+                    'is-score' => [
+                        ['title' => 3],
+                        ['title' => 5],
+                        ['title' => 10],
+                        ['title' => 15]
+                    ],
+                    'is-dropdown' => [],
+                    'sd' => '',
+                    'location' => '',
+                    'product' => '',
+                    'remarks' => '',
+                    'score' => '',
+                    'dropdown' => '',
+                ]
             ]
         ],
         [
@@ -1876,6 +1935,63 @@ class AuditForm extends Component
                         ],
                     ]
                 ],
+            ],
+            'critical-deviation' =>[
+                [
+                    'title'=> 'Critical & Major SD',
+                    'is-sd' => 1,
+                    'is-location' => [
+                        ['title' => 'Food'],
+                        ['title' => 'Packaging'],
+                        ['title' => 'Equipment'],
+                        ['title' => 'Dining Area'],
+                        ['title' => 'Other Rooms']
+                    ],
+                    'is-product' => [],
+                    'is-remarks' => 1,
+                    'is-score' => [
+                        ['title' => 3],
+                        ['title' => 5],
+                        ['title' => 10],
+                        ['title' => 15]
+                    ],
+                    'is-dropdown' => [],
+                    'sd' => '',
+                    'location' => '',
+                    'remarks' => '',
+                    'score' => '',
+                    'dropdown' => '',
+                ],
+                [
+                    'title'=> 'Spoiled/Lapsed product',
+                    'is-sd' => 0,
+                    'is-location' => [],
+                    'is-product' => [
+                        ['title' => 'Baked Goods'],
+                        ['title' => 'Salad'],
+                        ['title' => 'Appetizer'],
+                        ['title' => 'Pasta'],
+                        ['title' => 'Pizza'],
+                        ['title' => 'Rice Meal'],
+                        ['title' => 'Sandwich'],
+                        ['title' => 'Mains'],
+                        ['title' => 'Drinks'],
+                    ],
+                    'is-remarks' => 1,
+                    'is-score' => [
+                        ['title' => 3],
+                        ['title' => 5],
+                        ['title' => 10],
+                        ['title' => 15]
+                    ],
+                    'is-dropdown' => [],
+                    'sd' => '',
+                    'location' => '',
+                    'product' => '',
+                    'remarks' => '',
+                    'score' => '',
+                    'dropdown' => '',
+                ]
             ]
         ],
         [
@@ -1894,31 +2010,31 @@ class AuditForm extends Component
                             'title' => 'Cashier TAT',
                             'total-base' => 5,
                             'total-points' => 5,
-                            /*  'deviation' => [
-                                 [
-                                     'cashier_name' => '',
-                                     'product_ordered' => '',
-                                     'ot_time' => '',
-                                     'ot' => '',
-                                     'assembly' => '',
-                                     'base_assembly_point' => 1,
-                                     'assembly_point' => 1,
-                                     'serving_time' => '00:05',
-                                     'tat_time' => '',
-                                     'base_tat_point' => 1,
-                                     'tat_point' => 1,
-                                     'fst_time' => '',
-                                     'base_fst_point' => 3,
-                                     'fst_point' => 3,
-                                     'remarks' => '',
-                                 ]
-                             ] */
+                            'deviation' => [
+                                [
+                                    'cashier_name' => '',
+                                    'product_ordered' => '',
+                                    'ot_time' => '',
+                                    'ot' => '',
+                                    'assembly' => '',
+                                    'base_assembly_point' => 1,
+                                    'assembly_point' => 1,
+                                    'serving_time' => '00:05',
+                                    'tat_time' => '',
+                                    'base_tat_point' => 1,
+                                    'tat_point' => 1,
+                                    'fst_time' => '',
+                                    'base_fst_point' => 3,
+                                    'fst_point' => 3,
+                                    'remarks' => '',
+                                ]
+                            ]
                         ],
                         [
                             'title' => 'Server CAT',
                             'total-base' => 8,
                             'total-points' => 8,
-                            /* 'deviation' => [
+                            'deviation' => [
                                 [
                                     'server_name' => '',
                                     'product_ordered' => '',
@@ -1939,7 +2055,7 @@ class AuditForm extends Component
                                     'att_point' => 1,
                                     'remarks' => '',
                                 ]
-                            ] */
+                            ]
                         ]
                     ]
                 ],
@@ -2302,6 +2418,97 @@ class AuditForm extends Component
                             'deviation-dropdown' => []
                         ]
                     ]
+                ],
+            ],
+            'critical-deviation' =>[
+                [
+                    'title'=> 'Customer Complaint',
+                    'is-sd' => 0,
+                    'is-location' => [],
+                    'is-product' => [],
+                    'is-remarks' => 1,
+                    'is-score' => [
+                        ['title' => 3],
+                        ['title' => 5],
+                        ['title' => 10],
+                        ['title' => 15]
+                    ],
+                    'is-dropdown' => [
+                        ['title' => 'Food Related'],
+                        ['title' => 'Service Related'],
+                        ['title' => 'Ambiance Related'],
+                        ['title' => 'Others'],
+                    ],
+                    'sd' => '',
+                    'location' => '',
+                    'remarks' => '',
+                    'score' => '',
+                    'dropdown' => '',
+                ],
+                [
+                    'title'=> 'Product Availability (Less 3% for non flagship and 5% for flagship/core products)',
+                    'is-sd' => 0,
+                    'is-location' => [],
+                    'is-product' => [],
+                    'is-remarks' => 1,
+                    'is-score' => [
+                        ['title' => 3],
+                        ['title' => 5],
+                        ['title' => 10],
+                        ['title' => 15]
+                    ],
+                    'is-dropdown' => [],
+                    'sd' => '',
+                    'location' => '',
+                    'remarks' => '',
+                    'score' => '',
+                    'dropdown' => '',
+                ],
+                [
+                    'title'=> 'Dining Temperature',
+                    'is-sd' => 0,
+                    'is-location' => [],
+                    'is-product' => [],
+                    'is-remarks' => 1,
+                    'is-score' => [
+                        ['title' => 3],
+                        ['title' => 5],
+                        ['title' => 10],
+                        ['title' => 15]
+                    ],
+                    'is-dropdown' => [
+                        ['title' => '<21°C'],
+                        ['title' => '>25°C'],
+                    ],
+                    'sd' => '',
+                    'location' => '',
+                    'remarks' => '',
+                    'score' => '',
+                    'dropdown' => '',
+                ],
+                [
+                    'title'=> 'Background Music',
+                    'is-sd' => 0,
+                    'is-location' => [],
+                    'is-product' => [],
+                    'is-remarks' => 1,
+                    'is-score' => [
+                        ['title' => 3],
+                        ['title' => 5],
+                        ['title' => 10],
+                        ['title' => 15]
+                    ],
+                    'is-dropdown' => [
+                        ['title' => 'No Music'],
+                        ['title' => 'Too Soft'],
+                        ['title' => 'Too Loud'],
+                        ['title' => 'Unapproved Playlist'],
+                    ],
+                    'sd' => '',
+                    'location' => '',
+                    'remarks' => '',
+                    'score' => '',
+                    'dropdown' => '',
                 ],
             ]
         ],
@@ -2867,6 +3074,27 @@ class AuditForm extends Component
                         ],
                     ]
                 ],
+            ],
+            'critical-deviation' =>[
+                [
+                    'title'=> 'Critical Deviations: Strong Foul Odor',
+                    'is-sd' => 0,
+                    'is-location' => [],
+                    'is-product' => [],
+                    'is-remarks' => 1,
+                    'is-score' => [
+                        ['title' => 3],
+                        ['title' => 5],
+                        ['title' => 10],
+                        ['title' => 15]
+                    ],
+                    'is-dropdown' => [],
+                    'sd' => '',
+                    'location' => '',
+                    'remarks' => '',
+                    'score' => '',
+                    'dropdown' => '',
+                ]
             ]
         ],
         [
@@ -3522,6 +3750,27 @@ class AuditForm extends Component
                             'deviation-dropdown' => []
                         ],
                     ]
+                ]
+            ],
+            'critical-deviation' =>[
+                [
+                    'title'=> 'Critical Deviations: Strong Foul Odor',
+                    'is-sd' => 0,
+                    'is-location' => [],
+                    'is-product' => [],
+                    'is-remarks' => 1,
+                    'is-score' => [
+                        ['title' => 3],
+                        ['title' => 5],
+                        ['title' => 10],
+                        ['title' => 15]
+                    ],
+                    'is-dropdown' => [],
+                    'sd' => '',
+                    'location' => '',
+                    'remarks' => '',
+                    'score' => '',
+                    'dropdown' => '',
                 ]
             ]
         ],
@@ -4218,7 +4467,7 @@ class AuditForm extends Component
                     ],
                 ],
             ]
-        ],
+        ]
     ];
     public function setActive($index)
     {
@@ -4226,26 +4475,22 @@ class AuditForm extends Component
     }
     public function mount($id = null)
     {
-        // dd( json_encode($this->form));
-       
-        $this->auditForm = AuditFormModel::find($id);
-        // $this->sanitary_list = SanitaryModel::get();
-        $this->store = Store::find($this->auditForm->store_id);
+    //    dd( json_encode($this->form));
+     /*   $saved_data = AuditTemplate::where('type', 1)->first();
+       $this->form = json_decode($saved_data->template, true); */
+       $this->auditForm = AuditFormModel::find($id);
+       $this->sanitary_list = SanitaryModel::get();
+       $this->onCaculatePoints();
+       $this->store = Store::find($this->auditForm->store_id);
     }
     public function render()
     {
-        $saved_data = StoreRecord::find(1);
-        $this->form = json_decode($saved_data->wave1, true);
-        $this->onCaculatePoints();
+       $this->onCaculatePoints();
         return view('livewire.audit.audit-form')->extends('layouts.app');
     }
     public function updatedForm($value, $key)
     {
-        StoreRecord::find(1)->update(['wave1' => $this->form]);
-
-    }
-    public function onSave()
-    {
+        // dd($this->form);
         StoreRecord::find(1)->update(['wave1' => $this->form]);
     }
     public function onCaculatePoints()
@@ -4259,30 +4504,61 @@ class AuditForm extends Component
                 foreach ($subCategory['deviation'] as $deviationIndex => &$deviation) {
                     if(isset($deviation['deviation'])){
                         foreach ($deviation['deviation'] as $key => $subCategoryDeviation) {
-                            $subCategory['total-base'] += $subCategoryDeviation['base'] ?? 0;
-                            $subCategory['total-points'] += $subCategoryDeviation['points'] ?? 0;
+                            if (isset($subCategoryDeviation['is-na']) && $subCategoryDeviation['is-na'] == 1) {
+                                $subCategory['total-base'] += $subCategoryDeviation['base'] ?? 0;
+                                $subCategory['total-points'] += $subCategoryDeviation['points'] ?? 0;
+                            } 
                         }
                     }else{
-                        $subCategory['total-base'] += $deviation['base'] ?? 0;
-                        $subCategory['total-points'] += $deviation['points'] ?? 0;
+                        if (isset($deviation['is-na']) && $deviation['is-na'] == 1) {
+                            $subCategory['total-base'] += $deviation['base'] ?? 0;
+                            $subCategory['total-points'] += $deviation['points'] ?? 0;
+                        } 
                     }
                 }
                 $category['total-base'] += $subCategory['total-base'] ?? 0;
                 $category['total-points'] += $subCategory['total-points'] ?? 0;
             }
-        }
-    }
-    /* public function onCaculatePoints($category_index, $sub_category_index, $sub_category_deviation_index, $newValue, $oldValue)
-    {
-        foreach ($this->form as $categoryIndex => &$category) {
-            foreach ($category['sub-category'] as $subCategoryIndex => &$subCategory) {
-                $category['total-points'] += $subCategory['points'] ?? 0;
-                foreach ($subCategory['deviation'] as $deviationIndex => $deviation) {
-                    $subCategory['total-points'] += $deviation['points'] ?? 0;
+            if(isset($category['critical-deviation'])){
+                // $category['percent'] = 0;
+                foreach ($category['critical-deviation'] as $key => $critical_deviation) {
+                    $category['percent'] -= (int)$critical_deviation['score'];
                 }
             }
         }
-    } */
-
-
+    }
+    public function onRemoveService($category_index, $sub_category_index, $sub_sub_category_index, $sub_sub_sub_category_index)
+    {
+        // Check if the service index is valid
+        if (isset($this->form[$category_index]['sub-category'][$sub_category_index]['deviation'][$sub_sub_category_index]['deviation'][$sub_sub_sub_category_index])) {
+            array_splice(
+                $this->form[$category_index]['sub-category'][$sub_category_index]['deviation'][$sub_sub_category_index]['deviation'],
+                $sub_sub_sub_category_index,
+                1
+            );
+        }
+    }
+    public function onAddService($category_index, $sub_category_index, $sub_sub_category_index)
+    {
+        $newService = [
+            'cashier_name' => '',
+            'product_ordered' => '',
+            'ot_time' => '',
+            'ot' => '',
+            'assembly' => '',
+            'base_assembly_point' => 1,
+            'assembly_point' => 1,
+            'serving_time' => '00:05',
+            'tat_time' => '',
+            'base_tat_point' => 1,
+            'tat_point' => 1,
+            'fst_time' => '',
+            'base_fst_point' => 3,
+            'fst_point' => 3,
+            'remarks' => '',
+        ];
+        $this->form[$category_index]['sub-category'][$sub_category_index]['deviation'][$sub_sub_category_index]['deviation'][] = $newService;
+        // dd($this->form);
+    }
+    
 }
