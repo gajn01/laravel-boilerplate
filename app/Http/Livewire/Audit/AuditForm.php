@@ -11,23 +11,23 @@ use App\Models\StoreRecord;
 class AuditForm extends Component
 {
     public $auditForm;
-    public  $store;
+    public $store;
     public $active_index = 0;
-    public $form =  [
+    public $form = [
         [
-            'category' =>'Food',
+            'category' => 'Food',
             'total-base' => 94,
-            'total-points' => 94,
+            'total-points' => 0,
             'percent' => 0,
-            'sub-category' =>[
+            'sub-category' => [
                 [
                     'title' => 'Ensaymada',
                     'total-base' => 15,
-                    'total-points' => 10,
+                    'total-points' => 0,
                     'percent' => 20,
                     'deviation' => [
                         [
-                            'is-na' =>1,
+                            'is-na' => 1,
                             'title' => 'Apperance / No SD',
                             'is-aon' => 1,
                             'base' => 5,
@@ -42,7 +42,7 @@ class AuditForm extends Component
                             ]
                         ],
                         [
-                            'is-na' =>1,
+                            'is-na' => 1,
                             'title' => 'Texture',
                             'is-aon' => 1,
                             'base' => 5,
@@ -55,7 +55,7 @@ class AuditForm extends Component
                             ],
                         ],
                         [
-                            'is-na' =>1,
+                            'is-na' => 1,
                             'title' => 'Taste / Mouthfeel',
                             'is-aon' => 1,
                             'base' => 5,
@@ -73,15 +73,15 @@ class AuditForm extends Component
                 [
                     'title' => 'Cheese Roll',
                     'total-base' => 15,
-                    'total-points' => 15,
+                    'total-points' => 0,
                     'percent' => 20,
                     'deviation' => [
                         [
-                            'is-na' =>1,
+                            'is-na' => 1,
                             'title' => 'Apperance / No SD',
                             'is-aon' => 1,
                             'base' => 5,
-                            'points' => 0,
+                            'points' => 5,
                             'remarks' => '',
                             'critical-deviation' => '',
                             'deviation-dropdown' => [
@@ -92,7 +92,7 @@ class AuditForm extends Component
                             ]
                         ],
                         [
-                            'is-na' =>1,
+                            'is-na' => 1,
                             'title' => 'Texture',
                             'is-aon' => 1,
                             'base' => 5,
@@ -105,7 +105,7 @@ class AuditForm extends Component
                             ],
                         ],
                         [
-                            'is-na' =>1,
+                            'is-na' => 1,
                             'title' => 'Taste / Mouthfeel',
                             'is-aon' => 1,
                             'base' => 5,
@@ -123,11 +123,11 @@ class AuditForm extends Component
                 [
                     'title' => 'Espresso',
                     'total-base' => 14,
-                    'total-points' => 14,
+                    'total-points' => 0,
                     'percent' => 30,
                     'deviation' => [
                         [
-                            'is-na' =>1,
+                            'is-na' => 1,
                             'title' => 'Serving Temperature',
                             'is-aon' => 1,
                             'base' => 3,
@@ -140,7 +140,7 @@ class AuditForm extends Component
                             ]
                         ],
                         [
-                            'is-na' =>1,
+                            'is-na' => 1,
                             'title' => 'Appearance/ Portioning/ No SD',
                             'is-aon' => 1,
                             'base' => 3,
@@ -155,7 +155,7 @@ class AuditForm extends Component
                             ],
                         ],
                         [
-                            'is-na' =>1,
+                            'is-na' => 1,
                             'title' => 'Creama Foam',
                             'is-aon' => 1,
                             'base' => 3,
@@ -170,7 +170,7 @@ class AuditForm extends Component
                             ],
                         ],
                         [
-                            'is-na' =>1,
+                            'is-na' => 1,
                             'title' => 'Taste',
                             'is-aon' => 1,
                             'base' => 5,
@@ -188,12 +188,12 @@ class AuditForm extends Component
                 [
                     'title' => 'Infused Water',
                     'total-base' => 10,
-                    'total-points' => 10,
+                    'total-points' => 0,
                     'percent' => 10,
                     'deviation' => [
                         [
                             'id' => 1,
-                            'is-na' =>1,
+                            'is-na' => 1,
                             'title' => 'Apperance / No SD',
                             'is-aon' => 1,
                             'base' => 5,
@@ -204,7 +204,7 @@ class AuditForm extends Component
                         ],
                         [
                             'id' => 2,
-                            'is-na' =>1,
+                            'is-na' => 1,
                             'title' => 'Taste',
                             'is-aon' => 1,
                             'base' => 5,
@@ -227,7 +227,7 @@ class AuditForm extends Component
                             'total-points' => 25,
                             'deviation' => [
                                 [
-                                    'is-na' =>1,
+                                    'is-na' => 1,
                                     'title' => 'EQ',
                                     'is-aon' => 0,
                                     'base' => 1,
@@ -237,244 +237,244 @@ class AuditForm extends Component
                                     'deviation-dropdown' => []
                                 ],
                                 [
-                                    'is-na' =>1,
+                                    'is-na' => 1,
                                     'title' => 'CR',
                                     'is-aon' => 0,
                                     'base' => 1,
                                     'points' => 1,
                                     'remarks' => '',
                                     'critical-deviation' => '',
-                            'deviation-dropdown' => []
+                                    'deviation-dropdown' => []
                                 ],
                                 [
-                                    'is-na' =>1,
+                                    'is-na' => 1,
                                     'title' => 'PU',
                                     'is-aon' => 0,
                                     'base' => 1,
                                     'points' => 1,
                                     'remarks' => '',
                                     'critical-deviation' => '',
-                            'deviation-dropdown' => []
+                                    'deviation-dropdown' => []
                                 ],
                                 [
-                                    'is-na' =>1,
+                                    'is-na' => 1,
                                     'title' => 'MM',
                                     'is-aon' => 0,
                                     'base' => 1,
                                     'points' => 1,
                                     'remarks' => '',
                                     'critical-deviation' => '',
-                            'deviation-dropdown' => []
+                                    'deviation-dropdown' => []
                                 ],
                                 [
-                                    'is-na' =>1,
+                                    'is-na' => 1,
                                     'title' => 'BR',
                                     'is-aon' => 0,
                                     'base' => 1,
                                     'points' => 1,
                                     'remarks' => '',
                                     'critical-deviation' => '',
-                            'deviation-dropdown' => []
+                                    'deviation-dropdown' => []
                                 ],
                                 [
-                                    'is-na' =>1,
+                                    'is-na' => 1,
                                     'title' => 'FG',
                                     'is-aon' => 0,
                                     'base' => 1,
                                     'points' => 1,
                                     'remarks' => '',
                                     'critical-deviation' => '',
-                            'deviation-dropdown' => []
+                                    'deviation-dropdown' => []
                                 ],
                                 [
-                                    'is-na' =>1,
+                                    'is-na' => 1,
                                     'title' => 'LMS',
                                     'is-aon' => 0,
                                     'base' => 1,
                                     'points' => 1,
                                     'remarks' => '',
                                     'critical-deviation' => '',
-                            'deviation-dropdown' => []
+                                    'deviation-dropdown' => []
                                 ],
                                 [
-                                    'is-na' =>1,
+                                    'is-na' => 1,
                                     'title' => 'BB',
                                     'is-aon' => 0,
                                     'base' => 1,
                                     'points' => 1,
                                     'remarks' => '',
                                     'critical-deviation' => '',
-                            'deviation-dropdown' => []
+                                    'deviation-dropdown' => []
                                 ],
                                 [
-                                    'is-na' =>1,
+                                    'is-na' => 1,
                                     'title' => 'AP',
                                     'is-aon' => 0,
                                     'base' => 1,
                                     'points' => 1,
                                     'remarks' => '',
                                     'critical-deviation' => '',
-                            'deviation-dropdown' => []
+                                    'deviation-dropdown' => []
                                 ],
                                 [
-                                    'is-na' =>1,
+                                    'is-na' => 1,
                                     'title' => 'CH',
                                     'is-aon' => 0,
                                     'base' => 1,
                                     'points' => 1,
                                     'remarks' => '',
                                     'critical-deviation' => '',
-                            'deviation-dropdown' => []
+                                    'deviation-dropdown' => []
                                 ],
                                 [
-                                    'is-na' =>1,
+                                    'is-na' => 1,
                                     'title' => 'VT',
                                     'is-aon' => 0,
                                     'base' => 1,
                                     'points' => 1,
                                     'remarks' => '',
                                     'critical-deviation' => '',
-                            'deviation-dropdown' => []
+                                    'deviation-dropdown' => []
                                 ],
                                 [
-                                    'is-na' =>1,
+                                    'is-na' => 1,
                                     'title' => 'TR',
                                     'is-aon' => 0,
                                     'base' => 1,
                                     'points' => 1,
                                     'remarks' => '',
                                     'critical-deviation' => '',
-                            'deviation-dropdown' => []
+                                    'deviation-dropdown' => []
                                 ],
                                 [
-                                    'is-na' =>1,
+                                    'is-na' => 1,
                                     'title' => 'TI',
                                     'is-aon' => 0,
                                     'base' => 1,
                                     'points' => 1,
                                     'remarks' => '',
                                     'critical-deviation' => '',
-                            'deviation-dropdown' => []
+                                    'deviation-dropdown' => []
                                 ],
                                 [
-                                    'is-na' =>1,
+                                    'is-na' => 1,
                                     'title' => 'SSCV',
                                     'is-aon' => 0,
                                     'base' => 1,
                                     'points' => 1,
                                     'remarks' => '',
                                     'critical-deviation' => '',
-                            'deviation-dropdown' => []
+                                    'deviation-dropdown' => []
                                 ],
                                 [
-                                    'is-na' =>1,
+                                    'is-na' => 1,
                                     'title' => 'CK',
                                     'is-aon' => 0,
                                     'base' => 1,
                                     'points' => 1,
                                     'remarks' => '',
                                     'critical-deviation' => '',
-                            'deviation-dropdown' => []
+                                    'deviation-dropdown' => []
                                 ],
                                 [
-                                    'is-na' =>1,
+                                    'is-na' => 1,
                                     'title' => 'SW',
                                     'is-aon' => 0,
                                     'base' => 1,
                                     'points' => 1,
                                     'remarks' => '',
                                     'critical-deviation' => '',
-                            'deviation-dropdown' => []
+                                    'deviation-dropdown' => []
                                 ],
                                 [
-                                    'is-na' =>1,
+                                    'is-na' => 1,
                                     'title' => 'CM',
                                     'is-aon' => 0,
                                     'base' => 1,
                                     'points' => 1,
                                     'remarks' => '',
                                     'critical-deviation' => '',
-                            'deviation-dropdown' => []
+                                    'deviation-dropdown' => []
                                 ],
                                 [
-                                    'is-na' =>1,
+                                    'is-na' => 1,
                                     'title' => 'CC',
                                     'is-aon' => 0,
                                     'base' => 1,
                                     'points' => 1,
                                     'remarks' => '',
                                     'critical-deviation' => '',
-                            'deviation-dropdown' => []
+                                    'deviation-dropdown' => []
                                 ],
                                 [
-                                    'is-na' =>1,
+                                    'is-na' => 1,
                                     'title' => 'LI',
                                     'is-aon' => 0,
                                     'base' => 1,
                                     'points' => 1,
                                     'remarks' => '',
                                     'critical-deviation' => '',
-                            'deviation-dropdown' => []
+                                    'deviation-dropdown' => []
                                 ],
                                 [
-                                    'is-na' =>1,
+                                    'is-na' => 1,
                                     'title' => 'MB',
                                     'is-aon' => 0,
                                     'base' => 1,
                                     'points' => 1,
                                     'remarks' => '',
                                     'critical-deviation' => '',
-                            'deviation-dropdown' => []
+                                    'deviation-dropdown' => []
                                 ],
                                 [
-                                    'is-na' =>1,
+                                    'is-na' => 1,
                                     'title' => 'BA',
                                     'is-aon' => 0,
                                     'base' => 1,
                                     'points' => 1,
                                     'remarks' => '',
                                     'critical-deviation' => '',
-                            'deviation-dropdown' => []
+                                    'deviation-dropdown' => []
                                 ],
                                 [
-                                    'is-na' =>1,
+                                    'is-na' => 1,
                                     'title' => 'TAS/SS',
                                     'is-aon' => 0,
                                     'base' => 1,
                                     'points' => 1,
                                     'remarks' => '',
                                     'critical-deviation' => '',
-                            'deviation-dropdown' => []
+                                    'deviation-dropdown' => []
                                 ],
                                 [
-                                    'is-na' =>1,
+                                    'is-na' => 1,
                                     'title' => 'DCC',
                                     'is-aon' => 0,
                                     'base' => 1,
                                     'points' => 1,
                                     'remarks' => '',
                                     'critical-deviation' => '',
-                            'deviation-dropdown' => []
+                                    'deviation-dropdown' => []
                                 ],
                                 [
-                                    'is-na' =>1,
+                                    'is-na' => 1,
                                     'title' => 'TLC',
                                     'is-aon' => 0,
                                     'base' => 1,
                                     'points' => 1,
                                     'remarks' => '',
                                     'critical-deviation' => '',
-                            'deviation-dropdown' => []
+                                    'deviation-dropdown' => []
                                 ],
                                 [
-                                    'is-na' =>1,
+                                    'is-na' => 1,
                                     'title' => 'BCFP',
                                     'is-aon' => 0,
                                     'base' => 1,
                                     'points' => 1,
                                     'remarks' => '',
                                     'critical-deviation' => '',
-                            'deviation-dropdown' => []
+                                    'deviation-dropdown' => []
                                 ]
 
                             ]
@@ -485,147 +485,154 @@ class AuditForm extends Component
                             'total-points' => 15,
                             'deviation' => [
                                 [
-                                    'is-na' =>1,
+                                    'is-na' => 1,
                                     'title' => 'PU',
                                     'is-aon' => 0,
                                     'base' => 1,
                                     'points' => 1,
                                     'remarks' => '',
                                     'critical-deviation' => '',
-                            'deviation-dropdown' => []
+                                    'deviation-dropdown' => []
                                 ],
                                 [
-                                    'is-na' =>1,
+                                    'is-na' => 1,
                                     'title' => 'LMS',
                                     'is-aon' => 0,
                                     'base' => 1,
                                     'points' => 1,
                                     'remarks' => '',
                                     'critical-deviation' => '',
-                            'deviation-dropdown' => []
+                                    'deviation-dropdown' => []
                                 ],
                                 [
-                                    'is-na' =>1,
+                                    'is-na' => 1,
                                     'title' => 'AP',
                                     'is-aon' => 0,
                                     'base' => 1,
                                     'points' => 1,
                                     'remarks' => '',
                                     'critical-deviation' => '',
-                            'deviation-dropdown' => []
+                                    'deviation-dropdown' => []
                                 ],
                                 [
-                                    'is-na' =>1,
+                                    'is-na' => 1,
                                     'title' => 'CH',
                                     'is-aon' => 0,
                                     'base' => 1,
                                     'points' => 1,
                                     'remarks' => '',
                                     'critical-deviation' => '',
-                            'deviation-dropdown' => []
+                                    'deviation-dropdown' => []
                                 ],
                                 [
-                                    'is-na' =>1,
+                                    'is-na' => 1,
                                     'title' => 'VT',
                                     'is-aon' => 0,
                                     'base' => 1,
                                     'points' => 1,
                                     'remarks' => '',
                                     'critical-deviation' => '',
-                            'deviation-dropdown' => []
+                                    'deviation-dropdown' => []
                                 ],
                                 [
-                                    'is-na' =>1,
+                                    'is-na' => 1,
                                     'title' => 'TR',
                                     'is-aon' => 0,
                                     'base' => 1,
                                     'points' => 1,
                                     'remarks' => '',
                                     'critical-deviation' => '',
-                            'deviation-dropdown' => []
+                                    'deviation-dropdown' => []
                                 ],
                                 [
-                                    'is-na' =>1,
+                                    'is-na' => 1,
                                     'title' => 'TI',
                                     'is-aon' => 0,
                                     'base' => 1,
                                     'points' => 1,
                                     'remarks' => '',
                                     'critical-deviation' => '',
-                            'deviation-dropdown' => []
+                                    'deviation-dropdown' => []
                                 ],
                                 [
-                                    'is-na' =>1,
+                                    'is-na' => 1,
                                     'title' => 'SSCV',
                                     'is-aon' => 0,
                                     'base' => 1,
                                     'points' => 1,
                                     'remarks' => '',
                                     'critical-deviation' => '',
-                            'deviation-dropdown' => []
-                                ],[
-                                    'is-na' =>1,
+                                    'deviation-dropdown' => []
+                                ],
+                                [
+                                    'is-na' => 1,
                                     'title' => 'CK',
                                     'is-aon' => 0,
                                     'base' => 1,
                                     'points' => 1,
                                     'remarks' => '',
                                     'critical-deviation' => '',
-                            'deviation-dropdown' => []
-                                ],[
-                                    'is-na' =>1,
+                                    'deviation-dropdown' => []
+                                ],
+                                [
+                                    'is-na' => 1,
                                     'title' => 'SW',
                                     'is-aon' => 0,
                                     'base' => 1,
                                     'points' => 1,
                                     'remarks' => '',
                                     'critical-deviation' => '',
-                            'deviation-dropdown' => []
-                                ],[
-                                    'is-na' =>1,
+                                    'deviation-dropdown' => []
+                                ],
+                                [
+                                    'is-na' => 1,
                                     'title' => 'CM',
                                     'is-aon' => 0,
                                     'base' => 1,
                                     'points' => 1,
                                     'remarks' => '',
                                     'critical-deviation' => '',
-                            'deviation-dropdown' => []
-                                ],[
-                                    'is-na' =>1,
+                                    'deviation-dropdown' => []
+                                ],
+                                [
+                                    'is-na' => 1,
                                     'title' => 'CC',
                                     'is-aon' => 0,
                                     'base' => 1,
                                     'points' => 1,
                                     'remarks' => '',
                                     'critical-deviation' => '',
-                            'deviation-dropdown' => []
-                                ],[
-                                    'is-na' =>1,
+                                    'deviation-dropdown' => []
+                                ],
+                                [
+                                    'is-na' => 1,
                                     'title' => 'LI',
                                     'is-aon' => 0,
                                     'base' => 1,
                                     'points' => 1,
                                     'remarks' => '',
                                     'critical-deviation' => '',
-                            'deviation-dropdown' => []
-                                ],[
-                                    'is-na' =>1,
+                                    'deviation-dropdown' => []
+                                ],
+                                [
+                                    'is-na' => 1,
                                     'title' => 'MB',
                                     'is-aon' => 0,
                                     'base' => 1,
                                     'points' => 1,
                                     'remarks' => '',
                                     'critical-deviation' => '',
-                            'deviation-dropdown' => []
-                                ],[
-                                    'is-na' =>1,
+                                    'deviation-dropdown' => []
+                                ],
+                                [
+                                    'is-na' => 1,
                                     'title' => 'TAS/SS',
                                     'is-aon' => 0,
                                     'base' => 1,
                                     'points' => 1,
                                     'remarks' => '',
                                     'critical-deviation' => '',
-                            'deviation-dropdown' => []
+                                    'deviation-dropdown' => []
                                 ],
                             ]
                         ],
@@ -634,11 +641,11 @@ class AuditForm extends Component
             ]
         ],
         [
-            'category' =>'Production Process',
+            'category' => 'Production Process',
             'total-base' => 213,
             'total-points' => 213,
-            'percent' => 0,
-            'sub-category' =>[
+            'percent' => 100,
+            'sub-category' => [
                 [
                     'title' => 'TOOL & UTENSILS',
                     'total-base' => 39,
@@ -658,7 +665,7 @@ class AuditForm extends Component
                                     'points' => 5,
                                     'remarks' => '',
                                     'critical-deviation' => '',
-                            'deviation-dropdown' => [
+                                    'deviation-dropdown' => [
                                         ['title' => 'Not Available'],
                                         ['title' => 'Not Calibrated'],
                                         ['title' => 'Not in Use'],
@@ -679,12 +686,13 @@ class AuditForm extends Component
                                     'points' => 2,
                                     'remarks' => '',
                                     'critical-deviation' => '',
-                            'deviation-dropdown' => [
+                                    'deviation-dropdown' => [
                                         ['title' => 'Not Available'],
                                         ['title' => 'Not Calibrated'],
                                         ['title' => 'Not in Use'],
                                     ]
-                                ],[
+                                ],
+                                [
                                     'is-na' => 1,
                                     'title' => 'Tamping Mat',
                                     'is-aon' => 1,
@@ -692,12 +700,13 @@ class AuditForm extends Component
                                     'points' => 2,
                                     'remarks' => '',
                                     'critical-deviation' => '',
-                            'deviation-dropdown' => [
+                                    'deviation-dropdown' => [
                                         ['title' => 'Not Available'],
                                         ['title' => 'Not Calibrated'],
                                         ['title' => 'Not in Use'],
                                     ]
-                                ],[
+                                ],
+                                [
                                     'is-na' => 1,
                                     'title' => 'Porta Filter',
                                     'is-aon' => 1,
@@ -705,12 +714,13 @@ class AuditForm extends Component
                                     'points' => 3,
                                     'remarks' => '',
                                     'critical-deviation' => '',
-                            'deviation-dropdown' => [
+                                    'deviation-dropdown' => [
                                         ['title' => 'Not Available'],
                                         ['title' => 'Not Calibrated'],
                                         ['title' => 'Not in Use'],
                                     ]
-                                ],[
+                                ],
+                                [
                                     'is-na' => 1,
                                     'title' => 'Steaming Pitcher',
                                     'is-aon' => 1,
@@ -718,12 +728,13 @@ class AuditForm extends Component
                                     'points' => 2,
                                     'remarks' => '',
                                     'critical-deviation' => '',
-                            'deviation-dropdown' => [
+                                    'deviation-dropdown' => [
                                         ['title' => 'Not Available'],
                                         ['title' => 'Not Calibrated'],
                                         ['title' => 'Not in Use'],
                                     ]
-                                ],[
+                                ],
+                                [
                                     'is-na' => 1,
                                     'title' => 'Thermometer',
                                     'is-aon' => 1,
@@ -731,12 +742,13 @@ class AuditForm extends Component
                                     'points' => 3,
                                     'remarks' => '',
                                     'critical-deviation' => '',
-                            'deviation-dropdown' => [
+                                    'deviation-dropdown' => [
                                         ['title' => 'Not Available'],
                                         ['title' => 'Not Calibrated'],
                                         ['title' => 'Not in Use'],
                                     ]
-                                ],[
+                                ],
+                                [
                                     'is-na' => 1,
                                     'title' => 'Distributor',
                                     'is-aon' => 1,
@@ -744,12 +756,13 @@ class AuditForm extends Component
                                     'points' => 3,
                                     'remarks' => '',
                                     'critical-deviation' => '',
-                            'deviation-dropdown' => [
+                                    'deviation-dropdown' => [
                                         ['title' => 'Not Available'],
                                         ['title' => 'Not Calibrated'],
                                         ['title' => 'Not in Use'],
                                     ]
-                                ],[
+                                ],
+                                [
                                     'is-na' => 1,
                                     'title' => 'Tamper',
                                     'is-aon' => 1,
@@ -757,12 +770,13 @@ class AuditForm extends Component
                                     'points' => 3,
                                     'remarks' => '',
                                     'critical-deviation' => '',
-                            'deviation-dropdown' => [
+                                    'deviation-dropdown' => [
                                         ['title' => 'Not Available'],
                                         ['title' => 'Not Calibrated'],
                                         ['title' => 'Not in Use'],
                                     ]
-                                ],[
+                                ],
+                                [
                                     'is-na' => 1,
                                     'title' => 'Knock Box',
                                     'is-aon' => 1,
@@ -770,12 +784,13 @@ class AuditForm extends Component
                                     'points' => 2,
                                     'remarks' => '',
                                     'critical-deviation' => '',
-                            'deviation-dropdown' => [
+                                    'deviation-dropdown' => [
                                         ['title' => 'Not Available'],
                                         ['title' => 'Not Calibrated'],
                                         ['title' => 'Not in Use'],
                                     ]
-                                ],[
+                                ],
+                                [
                                     'is-na' => 1,
                                     'title' => 'Bucket and Stand',
                                     'is-aon' => 1,
@@ -783,12 +798,13 @@ class AuditForm extends Component
                                     'points' => 2,
                                     'remarks' => '',
                                     'critical-deviation' => '',
-                            'deviation-dropdown' => [
+                                    'deviation-dropdown' => [
                                         ['title' => 'Not Available'],
                                         ['title' => 'Not Calibrated'],
                                         ['title' => 'Not in Use'],
                                     ]
-                                ],[
+                                ],
+                                [
                                     'is-na' => 1,
                                     'title' => 'Wine Service Cloth',
                                     'is-aon' => 1,
@@ -796,12 +812,13 @@ class AuditForm extends Component
                                     'points' => 2,
                                     'remarks' => '',
                                     'critical-deviation' => '',
-                            'deviation-dropdown' => [
+                                    'deviation-dropdown' => [
                                         ['title' => 'Not Available'],
                                         ['title' => 'Not Calibrated'],
                                         ['title' => 'Not in Use'],
                                     ]
-                                ],[
+                                ],
+                                [
                                     'is-na' => 1,
                                     'title' => 'Cake Shovel',
                                     'is-aon' => 1,
@@ -809,12 +826,13 @@ class AuditForm extends Component
                                     'points' => 2,
                                     'remarks' => '',
                                     'critical-deviation' => '',
-                            'deviation-dropdown' => [
+                                    'deviation-dropdown' => [
                                         ['title' => 'Not Available'],
                                         ['title' => 'Not Calibrated'],
                                         ['title' => 'Not in Use'],
                                     ]
-                                ],[
+                                ],
+                                [
                                     'is-na' => 1,
                                     'title' => 'Serrated Knife',
                                     'is-aon' => 1,
@@ -822,12 +840,13 @@ class AuditForm extends Component
                                     'points' => 2,
                                     'remarks' => '',
                                     'critical-deviation' => '',
-                            'deviation-dropdown' => [
+                                    'deviation-dropdown' => [
                                         ['title' => 'Not Available'],
                                         ['title' => 'Not Calibrated'],
                                         ['title' => 'Not in Use'],
                                     ]
-                                ],[
+                                ],
+                                [
                                     'is-na' => 1,
                                     'title' => 'Chef`s Knife',
                                     'is-aon' => 1,
@@ -835,12 +854,13 @@ class AuditForm extends Component
                                     'points' => 2,
                                     'remarks' => '',
                                     'critical-deviation' => '',
-                            'deviation-dropdown' => [
+                                    'deviation-dropdown' => [
                                         ['title' => 'Not Available'],
                                         ['title' => 'Not Calibrated'],
                                         ['title' => 'Not in Use'],
                                     ]
-                                ],[
+                                ],
+                                [
                                     'is-na' => 1,
                                     'title' => 'Food Grade Plastic Pitcher',
                                     'is-aon' => 1,
@@ -848,12 +868,13 @@ class AuditForm extends Component
                                     'points' => 2,
                                     'remarks' => '',
                                     'critical-deviation' => '',
-                            'deviation-dropdown' => [
+                                    'deviation-dropdown' => [
                                         ['title' => 'Not Available'],
                                         ['title' => 'Not Calibrated'],
                                         ['title' => 'Not in Use'],
                                     ]
-                                ],[
+                                ],
+                                [
                                     'is-na' => 1,
                                     'title' => 'Acetate',
                                     'is-aon' => 1,
@@ -861,7 +882,7 @@ class AuditForm extends Component
                                     'points' => 2,
                                     'remarks' => '',
                                     'critical-deviation' => '',
-                            'deviation-dropdown' => [
+                                    'deviation-dropdown' => [
                                         ['title' => 'Not Available'],
                                         ['title' => 'Not Calibrated'],
                                         ['title' => 'Not in Use'],
@@ -890,38 +911,41 @@ class AuditForm extends Component
                                     'points' => 3,
                                     'remarks' => '',
                                     'critical-deviation' => '',
-                            'deviation-dropdown' => [
+                                    'deviation-dropdown' => [
                                         ['title' => 'Not Available'],
                                         ['title' => 'Not Calibrated'],
                                         ['title' => 'Not in Use'],
                                     ]
-                                ],[
-                                        'is-na' => 1,
-                                        'title' => 'Standing Display Chiller',
-                                        'is-aon' => 1,
-                                        'base' => 3,
-                                        'points' => 3,
-                                        'remarks' => '',
-                                        'critical-deviation' => '',
-                            'deviation-dropdown' => [
-                                            ['title' => 'Not Available'],
-                                            ['title' => 'Not Calibrated'],
-                                            ['title' => 'Not in Use'],
-                                        ]
-                                ],[
-                                        'is-na' => 1,
-                                        'title' => 'Combi Display',
-                                        'is-aon' => 1,
-                                        'base' => 5,
-                                        'points' => 5,
-                                        'remarks' => '',
-                                        'critical-deviation' => '',
-                            'deviation-dropdown' => [
-                                            ['title' => 'Not Available'],
-                                            ['title' => 'Not Calibrated'],
-                                            ['title' => 'Not in Use'],
-                                        ]
-                                ],[
+                                ],
+                                [
+                                    'is-na' => 1,
+                                    'title' => 'Standing Display Chiller',
+                                    'is-aon' => 1,
+                                    'base' => 3,
+                                    'points' => 3,
+                                    'remarks' => '',
+                                    'critical-deviation' => '',
+                                    'deviation-dropdown' => [
+                                        ['title' => 'Not Available'],
+                                        ['title' => 'Not Calibrated'],
+                                        ['title' => 'Not in Use'],
+                                    ]
+                                ],
+                                [
+                                    'is-na' => 1,
+                                    'title' => 'Combi Display',
+                                    'is-aon' => 1,
+                                    'base' => 5,
+                                    'points' => 5,
+                                    'remarks' => '',
+                                    'critical-deviation' => '',
+                                    'deviation-dropdown' => [
+                                        ['title' => 'Not Available'],
+                                        ['title' => 'Not Calibrated'],
+                                        ['title' => 'Not in Use'],
+                                    ]
+                                ],
+                                [
                                     'is-na' => 1,
                                     'title' => 'Combi Back up',
                                     'is-aon' => 1,
@@ -929,12 +953,13 @@ class AuditForm extends Component
                                     'points' => 2,
                                     'remarks' => '',
                                     'critical-deviation' => '',
-                            'deviation-dropdown' => [
+                                    'deviation-dropdown' => [
                                         ['title' => 'Not Available'],
                                         ['title' => 'Not Calibrated'],
                                         ['title' => 'Not in Use'],
                                     ]
-                                ],[
+                                ],
+                                [
                                     'is-na' => 1,
                                     'title' => 'Bar Chiller',
                                     'is-aon' => 1,
@@ -942,12 +967,13 @@ class AuditForm extends Component
                                     'points' => 2,
                                     'remarks' => '',
                                     'critical-deviation' => '',
-                            'deviation-dropdown' => [
+                                    'deviation-dropdown' => [
                                         ['title' => 'Not Available'],
                                         ['title' => 'Not Calibrated'],
                                         ['title' => 'Not in Use'],
                                     ]
-                                ],[
+                                ],
+                                [
                                     'is-na' => 1,
                                     'title' => 'Back Up Freezer',
                                     'is-aon' => 1,
@@ -955,12 +981,13 @@ class AuditForm extends Component
                                     'points' => 2,
                                     'remarks' => '',
                                     'critical-deviation' => '',
-                            'deviation-dropdown' => [
+                                    'deviation-dropdown' => [
                                         ['title' => 'Not Available'],
                                         ['title' => 'Not Calibrated'],
                                         ['title' => 'Not in Use'],
                                     ]
-                                ],[
+                                ],
+                                [
                                     'is-na' => 1,
                                     'title' => 'Wine Chiller',
                                     'is-aon' => 1,
@@ -968,12 +995,13 @@ class AuditForm extends Component
                                     'points' => 2,
                                     'remarks' => '',
                                     'critical-deviation' => '',
-                            'deviation-dropdown' => [
+                                    'deviation-dropdown' => [
                                         ['title' => 'Not Available'],
                                         ['title' => 'Not Calibrated'],
                                         ['title' => 'Not in Use'],
                                     ]
-                                ]   ,[
+                                ],
+                                [
                                     'is-na' => 1,
                                     'title' => 'Back Up Chiller',
                                     'is-aon' => 1,
@@ -981,12 +1009,12 @@ class AuditForm extends Component
                                     'points' => 2,
                                     'remarks' => '',
                                     'critical-deviation' => '',
-                            'deviation-dropdown' => [
+                                    'deviation-dropdown' => [
                                         ['title' => 'Not Available'],
                                         ['title' => 'Not Calibrated'],
                                         ['title' => 'Not in Use'],
                                     ]
-                                ]      
+                                ]
                             ]
                         ],
                         [
@@ -1002,38 +1030,41 @@ class AuditForm extends Component
                                     'points' => 5,
                                     'remarks' => '',
                                     'critical-deviation' => '',
-                            'deviation-dropdown' => [
+                                    'deviation-dropdown' => [
                                         ['title' => 'Not Available'],
                                         ['title' => 'Not Calibrated'],
                                         ['title' => 'Not in Use'],
                                     ]
-                                ],[
-                                        'is-na' => 1,
-                                        'title' => 'Ice Machine',
-                                        'is-aon' => 1,
-                                        'base' => 5,
-                                        'points' => 5,
-                                        'remarks' => '',
-                                        'critical-deviation' => '',
-                            'deviation-dropdown' => [
-                                            ['title' => 'Not Available'],
-                                            ['title' => 'Not Calibrated'],
-                                            ['title' => 'Not in Use'],
-                                        ]
-                                ],[
-                                        'is-na' => 1,
-                                        'title' => 'Microwave Oven',
-                                        'is-aon' => 1,
-                                        'base' => 5,
-                                        'points' => 5,
-                                        'remarks' => '',
-                                        'critical-deviation' => '',
-                            'deviation-dropdown' => [
-                                            ['title' => 'Not Available'],
-                                            ['title' => 'Not Calibrated'],
-                                            ['title' => 'Not in Use'],
-                                        ]
-                                ],[
+                                ],
+                                [
+                                    'is-na' => 1,
+                                    'title' => 'Ice Machine',
+                                    'is-aon' => 1,
+                                    'base' => 5,
+                                    'points' => 5,
+                                    'remarks' => '',
+                                    'critical-deviation' => '',
+                                    'deviation-dropdown' => [
+                                        ['title' => 'Not Available'],
+                                        ['title' => 'Not Calibrated'],
+                                        ['title' => 'Not in Use'],
+                                    ]
+                                ],
+                                [
+                                    'is-na' => 1,
+                                    'title' => 'Microwave Oven',
+                                    'is-aon' => 1,
+                                    'base' => 5,
+                                    'points' => 5,
+                                    'remarks' => '',
+                                    'critical-deviation' => '',
+                                    'deviation-dropdown' => [
+                                        ['title' => 'Not Available'],
+                                        ['title' => 'Not Calibrated'],
+                                        ['title' => 'Not in Use'],
+                                    ]
+                                ],
+                                [
                                     'is-na' => 1,
                                     'title' => 'Blender',
                                     'is-aon' => 1,
@@ -1041,12 +1072,13 @@ class AuditForm extends Component
                                     'points' => 5,
                                     'remarks' => '',
                                     'critical-deviation' => '',
-                            'deviation-dropdown' => [
+                                    'deviation-dropdown' => [
                                         ['title' => 'Not Available'],
                                         ['title' => 'Not Calibrated'],
                                         ['title' => 'Not in Use'],
                                     ]
-                                ],[
+                                ],
+                                [
                                     'is-na' => 1,
                                     'title' => 'Coffee Grinder',
                                     'is-aon' => 1,
@@ -1054,12 +1086,12 @@ class AuditForm extends Component
                                     'points' => 5,
                                     'remarks' => '',
                                     'critical-deviation' => '',
-                            'deviation-dropdown' => [
+                                    'deviation-dropdown' => [
                                         ['title' => 'Not Available'],
                                         ['title' => 'Not Calibrated'],
                                         ['title' => 'Not in Use'],
                                     ]
-                                ]   
+                                ]
                             ]
                         ],
                     ]
@@ -1083,7 +1115,7 @@ class AuditForm extends Component
                                     'points' => 3,
                                     'remarks' => '',
                                     'critical-deviation' => '',
-                            'deviation-dropdown' => []
+                                    'deviation-dropdown' => []
                                 ],
                                 [
                                     'is-na' => 1,
@@ -1093,7 +1125,7 @@ class AuditForm extends Component
                                     'points' => 3,
                                     'remarks' => '',
                                     'critical-deviation' => '',
-                            'deviation-dropdown' => []
+                                    'deviation-dropdown' => []
                                 ],
                                 [
                                     'is-na' => 1,
@@ -1103,10 +1135,11 @@ class AuditForm extends Component
                                     'points' => 3,
                                     'remarks' => '',
                                     'critical-deviation' => '',
-                            'deviation-dropdown' => []
-                                ]   
+                                    'deviation-dropdown' => []
+                                ]
                             ]
-                        ],[
+                        ],
+                        [
                             'title' => 'Correct Receiving & Handling Procedures',
                             'total-base' => 5,
                             'total-points' => 5,
@@ -1119,8 +1152,8 @@ class AuditForm extends Component
                                     'points' => 5,
                                     'remarks' => '',
                                     'critical-deviation' => '',
-                            'deviation-dropdown' => []
-                                ] 
+                                    'deviation-dropdown' => []
+                                ]
                             ]
                         ],
                     ]
@@ -1144,7 +1177,7 @@ class AuditForm extends Component
                                     'points' => 3,
                                     'remarks' => '',
                                     'critical-deviation' => '',
-                            'deviation-dropdown' => []
+                                    'deviation-dropdown' => []
                                 ],
                                 [
                                     'is-na' => 1,
@@ -1154,7 +1187,7 @@ class AuditForm extends Component
                                     'points' => 3,
                                     'remarks' => '',
                                     'critical-deviation' => '',
-                            'deviation-dropdown' => []
+                                    'deviation-dropdown' => []
                                 ],
                                 [
                                     'is-na' => 1,
@@ -1164,8 +1197,8 @@ class AuditForm extends Component
                                     'points' => 3,
                                     'remarks' => '',
                                     'critical-deviation' => '',
-                            'deviation-dropdown' => []
-                                ]   
+                                    'deviation-dropdown' => []
+                                ]
                             ]
                         ],
                         [
@@ -1181,7 +1214,7 @@ class AuditForm extends Component
                                     'points' => 3,
                                     'remarks' => '',
                                     'critical-deviation' => '',
-                            'deviation-dropdown' => []
+                                    'deviation-dropdown' => []
                                 ],
                                 [
                                     'is-na' => 1,
@@ -1191,7 +1224,7 @@ class AuditForm extends Component
                                     'points' => 3,
                                     'remarks' => '',
                                     'critical-deviation' => '',
-                            'deviation-dropdown' => []
+                                    'deviation-dropdown' => []
                                 ],
                                 [
                                     'is-na' => 1,
@@ -1201,13 +1234,13 @@ class AuditForm extends Component
                                     'points' => 3,
                                     'remarks' => '',
                                     'critical-deviation' => '',
-                            'deviation-dropdown' => [
+                                    'deviation-dropdown' => [
                                         ['title' => 'Too Coarse'],
                                         ['title' => 'Too Fine'],
                                     ]
                                 ],
                             ]
-                        ], 
+                        ],
                         [
                             'title' => 'Brewing (Barista Skills)',
                             'total-base' => 9,
@@ -1221,7 +1254,7 @@ class AuditForm extends Component
                                     'points' => 3,
                                     'remarks' => '',
                                     'critical-deviation' => '',
-                            'deviation-dropdown' => []
+                                    'deviation-dropdown' => []
                                 ],
                                 [
                                     'is-na' => 1,
@@ -1231,7 +1264,7 @@ class AuditForm extends Component
                                     'points' => 3,
                                     'remarks' => '',
                                     'critical-deviation' => '',
-                            'deviation-dropdown' => []
+                                    'deviation-dropdown' => []
                                 ],
                                 [
                                     'is-na' => 1,
@@ -1241,7 +1274,7 @@ class AuditForm extends Component
                                     'points' => 3,
                                     'remarks' => '',
                                     'critical-deviation' => '',
-                            'deviation-dropdown' => [
+                                    'deviation-dropdown' => [
                                         ['title' => 'Under Extracted'],
                                         ['title' => 'Over Extracted'],
                                     ]
@@ -1261,7 +1294,7 @@ class AuditForm extends Component
                                     'points' => 2,
                                     'remarks' => '',
                                     'critical-deviation' => '',
-                            'deviation-dropdown' => [
+                                    'deviation-dropdown' => [
                                         ['title' => 'Incorrect Heating Procedure/Time/Temperature'],
                                         ['title' => 'Underportioned'],
                                         ['title' => 'Overportioned'],
@@ -1275,7 +1308,7 @@ class AuditForm extends Component
                                     'points' => 3,
                                     'remarks' => '',
                                     'critical-deviation' => '',
-                            'deviation-dropdown' => [
+                                    'deviation-dropdown' => [
                                         ['title' => 'Incorrect Heating Procedure/Time/Temperature'],
                                         ['title' => 'Underportioned'],
                                         ['title' => 'Overportioned'],
@@ -1289,7 +1322,7 @@ class AuditForm extends Component
                                     'points' => 2,
                                     'remarks' => '',
                                     'critical-deviation' => '',
-                            'deviation-dropdown' => [
+                                    'deviation-dropdown' => [
                                         ['title' => 'Incorrect Heating Procedure/Time/Temperature'],
                                         ['title' => 'Underportioned'],
                                         ['title' => 'Overportioned'],
@@ -1310,7 +1343,7 @@ class AuditForm extends Component
                                     'points' => 1,
                                     'remarks' => '',
                                     'critical-deviation' => '',
-                            'deviation-dropdown' => [
+                                    'deviation-dropdown' => [
                                         ['title' => 'Incorrect Heating Procedure/Time/Temperature'],
                                         ['title' => 'Underportioned'],
                                         ['title' => 'Overportioned'],
@@ -1324,7 +1357,7 @@ class AuditForm extends Component
                                     'points' => 1,
                                     'remarks' => '',
                                     'critical-deviation' => '',
-                            'deviation-dropdown' => [
+                                    'deviation-dropdown' => [
                                         ['title' => 'Incorrect Heating Procedure/Time/Temperature'],
                                         ['title' => 'Underportioned'],
                                         ['title' => 'Overportioned'],
@@ -1338,7 +1371,7 @@ class AuditForm extends Component
                                     'points' => 1,
                                     'remarks' => '',
                                     'critical-deviation' => '',
-                            'deviation-dropdown' => [
+                                    'deviation-dropdown' => [
                                         ['title' => 'Incorrect Heating Procedure/Time/Temperature'],
                                         ['title' => 'Underportioned'],
                                         ['title' => 'Overportioned'],
@@ -1352,7 +1385,7 @@ class AuditForm extends Component
                                     'points' => 1,
                                     'remarks' => '',
                                     'critical-deviation' => '',
-                            'deviation-dropdown' => [
+                                    'deviation-dropdown' => [
                                         ['title' => 'Incorrect Heating Procedure/Time/Temperature'],
                                         ['title' => 'Underportioned'],
                                         ['title' => 'Overportioned'],
@@ -1373,7 +1406,7 @@ class AuditForm extends Component
                                     'points' => 1,
                                     'remarks' => '',
                                     'critical-deviation' => '',
-                            'deviation-dropdown' => [
+                                    'deviation-dropdown' => [
                                         ['title' => 'No Label/Tag'],
                                         ['title' => 'Improper Label/Tag'],
                                         ['title' => 'Beyond Secondary Shelf-Life'],
@@ -1387,7 +1420,7 @@ class AuditForm extends Component
                                     'points' => 1,
                                     'remarks' => '',
                                     'critical-deviation' => '',
-                            'deviation-dropdown' => [
+                                    'deviation-dropdown' => [
                                         ['title' => 'No Label/Tag'],
                                         ['title' => 'Improper Label/Tag'],
                                         ['title' => 'Beyond Secondary Shelf-Life'],
@@ -1401,7 +1434,7 @@ class AuditForm extends Component
                                     'points' => 1,
                                     'remarks' => '',
                                     'critical-deviation' => '',
-                            'deviation-dropdown' => [
+                                    'deviation-dropdown' => [
                                         ['title' => 'No Label/Tag'],
                                         ['title' => 'Improper Label/Tag'],
                                         ['title' => 'Beyond Secondary Shelf-Life'],
@@ -1415,7 +1448,7 @@ class AuditForm extends Component
                                     'points' => 1,
                                     'remarks' => '',
                                     'critical-deviation' => '',
-                            'deviation-dropdown' => [
+                                    'deviation-dropdown' => [
                                         ['title' => 'No Label/Tag'],
                                         ['title' => 'Improper Label/Tag'],
                                         ['title' => 'Beyond Secondary Shelf-Life'],
@@ -1429,7 +1462,7 @@ class AuditForm extends Component
                                     'points' => 1,
                                     'remarks' => '',
                                     'critical-deviation' => '',
-                            'deviation-dropdown' => [
+                                    'deviation-dropdown' => [
                                         ['title' => 'No Label/Tag'],
                                         ['title' => 'Improper Label/Tag'],
                                         ['title' => 'Beyond Secondary Shelf-Life'],
@@ -1443,7 +1476,7 @@ class AuditForm extends Component
                                     'points' => 1,
                                     'remarks' => '',
                                     'critical-deviation' => '',
-                            'deviation-dropdown' => [
+                                    'deviation-dropdown' => [
                                         ['title' => 'No Label/Tag'],
                                         ['title' => 'Improper Label/Tag'],
                                         ['title' => 'Beyond Secondary Shelf-Life'],
@@ -1457,7 +1490,7 @@ class AuditForm extends Component
                                     'points' => 3,
                                     'remarks' => '',
                                     'critical-deviation' => '',
-                            'deviation-dropdown' => [
+                                    'deviation-dropdown' => [
                                         ['title' => 'No Label/Tag'],
                                         ['title' => 'Improper Label/Tag'],
                                         ['title' => 'Beyond Secondary Shelf-Life'],
@@ -1471,7 +1504,7 @@ class AuditForm extends Component
                                     'points' => 3,
                                     'remarks' => '',
                                     'critical-deviation' => '',
-                            'deviation-dropdown' => [
+                                    'deviation-dropdown' => [
                                         ['title' => 'No Label/Tag'],
                                         ['title' => 'Improper Label/Tag'],
                                         ['title' => 'Beyond Secondary Shelf-Life'],
@@ -1485,7 +1518,7 @@ class AuditForm extends Component
                                     'points' => 3,
                                     'remarks' => '',
                                     'critical-deviation' => '',
-                            'deviation-dropdown' => [
+                                    'deviation-dropdown' => [
                                         ['title' => 'No Label/Tag'],
                                         ['title' => 'Improper Label/Tag'],
                                         ['title' => 'Beyond Secondary Shelf-Life'],
@@ -1499,7 +1532,7 @@ class AuditForm extends Component
                                     'points' => 3,
                                     'remarks' => '',
                                     'critical-deviation' => '',
-                            'deviation-dropdown' => [
+                                    'deviation-dropdown' => [
                                         ['title' => 'No Label/Tag'],
                                         ['title' => 'Improper Label/Tag'],
                                         ['title' => 'Beyond Secondary Shelf-Life'],
@@ -1513,7 +1546,7 @@ class AuditForm extends Component
                                     'points' => 1,
                                     'remarks' => '',
                                     'critical-deviation' => '',
-                            'deviation-dropdown' => []
+                                    'deviation-dropdown' => []
                                 ],
                                 [
                                     'is-na' => 1,
@@ -1523,7 +1556,7 @@ class AuditForm extends Component
                                     'points' => 1,
                                     'remarks' => '',
                                     'critical-deviation' => '',
-                            'deviation-dropdown' => []
+                                    'deviation-dropdown' => []
                                 ],
                             ]
                         ],
@@ -1540,7 +1573,7 @@ class AuditForm extends Component
                                     'points' => 3,
                                     'remarks' => '',
                                     'critical-deviation' => '',
-                            'deviation-dropdown' => []
+                                    'deviation-dropdown' => []
                                 ],
                                 [
                                     'is-na' => 1,
@@ -1550,7 +1583,7 @@ class AuditForm extends Component
                                     'points' => 3,
                                     'remarks' => '',
                                     'critical-deviation' => '',
-                            'deviation-dropdown' => []
+                                    'deviation-dropdown' => []
                                 ]
                             ]
                         ],
@@ -1567,7 +1600,7 @@ class AuditForm extends Component
                                     'points' => 3,
                                     'remarks' => '',
                                     'critical-deviation' => '',
-                            'deviation-dropdown' => []
+                                    'deviation-dropdown' => []
                                 ],
                                 [
                                     'is-na' => 1,
@@ -1577,7 +1610,7 @@ class AuditForm extends Component
                                     'points' => 3,
                                     'remarks' => '',
                                     'critical-deviation' => '',
-                            'deviation-dropdown' => [
+                                    'deviation-dropdown' => [
                                         ['title' => 'Underportioned'],
                                         ['title' => 'Overportioned'],
                                         ['title' => 'Incorrect Ingredients'],
@@ -1593,7 +1626,7 @@ class AuditForm extends Component
                                     'points' => 3,
                                     'remarks' => '',
                                     'critical-deviation' => '',
-                            'deviation-dropdown' => [
+                                    'deviation-dropdown' => [
                                         ['title' => 'Underportioned'],
                                         ['title' => 'Overportioned'],
                                         ['title' => 'Incorrect Ingredients'],
@@ -1609,7 +1642,7 @@ class AuditForm extends Component
                                     'points' => 3,
                                     'remarks' => '',
                                     'critical-deviation' => '',
-                            'deviation-dropdown' => [
+                                    'deviation-dropdown' => [
                                         ['title' => 'Underportioned'],
                                         ['title' => 'Overportioned'],
                                         ['title' => 'Incorrect Ingredients'],
@@ -1625,7 +1658,7 @@ class AuditForm extends Component
                                     'points' => 3,
                                     'remarks' => '',
                                     'critical-deviation' => '',
-                            'deviation-dropdown' => [
+                                    'deviation-dropdown' => [
                                         ['title' => 'Underportioned'],
                                         ['title' => 'Overportioned'],
                                         ['title' => 'Incorrect Ingredients'],
@@ -1641,7 +1674,7 @@ class AuditForm extends Component
                                     'points' => 3,
                                     'remarks' => '',
                                     'critical-deviation' => '',
-                            'deviation-dropdown' => [
+                                    'deviation-dropdown' => [
                                         ['title' => 'Underportioned'],
                                         ['title' => 'Overportioned'],
                                         ['title' => 'Incorrect Ingredients'],
@@ -1657,7 +1690,7 @@ class AuditForm extends Component
                                     'points' => 3,
                                     'remarks' => '',
                                     'critical-deviation' => '',
-                            'deviation-dropdown' => [
+                                    'deviation-dropdown' => [
                                         ['title' => 'Underportioned'],
                                         ['title' => 'Overportioned'],
                                         ['title' => 'Incorrect Ingredients'],
@@ -1673,7 +1706,7 @@ class AuditForm extends Component
                                     'points' => 3,
                                     'remarks' => '',
                                     'critical-deviation' => '',
-                            'deviation-dropdown' => [
+                                    'deviation-dropdown' => [
                                         ['title' => 'Underportioned'],
                                         ['title' => 'Overportioned'],
                                         ['title' => 'Incorrect Ingredients'],
@@ -1689,7 +1722,7 @@ class AuditForm extends Component
                                     'points' => 3,
                                     'remarks' => '',
                                     'critical-deviation' => '',
-                            'deviation-dropdown' => [
+                                    'deviation-dropdown' => [
                                         ['title' => 'Underportioned'],
                                         ['title' => 'Overportioned'],
                                         ['title' => 'Incorrect Ingredients'],
@@ -1705,7 +1738,7 @@ class AuditForm extends Component
                                     'points' => 3,
                                     'remarks' => '',
                                     'critical-deviation' => '',
-                            'deviation-dropdown' => [
+                                    'deviation-dropdown' => [
                                         ['title' => 'Underportioned'],
                                         ['title' => 'Overportioned'],
                                         ['title' => 'Incorrect Ingredients'],
@@ -1736,7 +1769,7 @@ class AuditForm extends Component
                                     'points' => 2,
                                     'remarks' => '',
                                     'critical-deviation' => '',
-                            'deviation-dropdown' => []
+                                    'deviation-dropdown' => []
                                 ],
                                 [
                                     'is-na' => 1,
@@ -1746,7 +1779,7 @@ class AuditForm extends Component
                                     'points' => 2,
                                     'remarks' => '',
                                     'critical-deviation' => '',
-                            'deviation-dropdown' => []
+                                    'deviation-dropdown' => []
                                 ],
                                 [
                                     'is-na' => 1,
@@ -1756,7 +1789,7 @@ class AuditForm extends Component
                                     'points' => 2,
                                     'remarks' => '',
                                     'critical-deviation' => '',
-                            'deviation-dropdown' => []
+                                    'deviation-dropdown' => []
                                 ],
                                 [
                                     'is-na' => 1,
@@ -1766,8 +1799,8 @@ class AuditForm extends Component
                                     'points' => 2,
                                     'remarks' => '',
                                     'critical-deviation' => '',
-                            'deviation-dropdown' => []
-                                ]     
+                                    'deviation-dropdown' => []
+                                ]
                             ]
                         ],
                         [
@@ -1783,8 +1816,8 @@ class AuditForm extends Component
                                     'points' => 4,
                                     'remarks' => '',
                                     'critical-deviation' => '',
-                            'deviation-dropdown' => []
-                                ] 
+                                    'deviation-dropdown' => []
+                                ]
                             ]
                         ],
                         [
@@ -1800,7 +1833,7 @@ class AuditForm extends Component
                                     'points' => 2,
                                     'remarks' => '',
                                     'critical-deviation' => '',
-                            'deviation-dropdown' => []
+                                    'deviation-dropdown' => []
                                 ],
                                 [
                                     'is-na' => 1,
@@ -1810,8 +1843,8 @@ class AuditForm extends Component
                                     'points' => 2,
                                     'remarks' => '',
                                     'critical-deviation' => '',
-                            'deviation-dropdown' => []
-                                ] 
+                                    'deviation-dropdown' => []
+                                ]
                             ]
                         ],
                         [
@@ -1827,7 +1860,7 @@ class AuditForm extends Component
                                     'points' => 2,
                                     'remarks' => '',
                                     'critical-deviation' => '',
-                            'deviation-dropdown' => []
+                                    'deviation-dropdown' => []
                                 ],
                                 [
                                     'is-na' => 1,
@@ -1837,8 +1870,8 @@ class AuditForm extends Component
                                     'points' => 2,
                                     'remarks' => '',
                                     'critical-deviation' => '',
-                            'deviation-dropdown' => []
-                                ] 
+                                    'deviation-dropdown' => []
+                                ]
                             ]
                         ],
                     ]
@@ -1846,11 +1879,11 @@ class AuditForm extends Component
             ]
         ],
         [
-            'category' =>'Service',
+            'category' => 'Service',
             'total-base' => 104,
             'total-points' => 104,
-            'percent' => 0,
-            'sub-category' =>[
+            'percent' => 100,
+            'sub-category' => [
                 [
                     'title' => 'Speed And Accuracy',
                     'total-base' => 0,
@@ -1861,25 +1894,25 @@ class AuditForm extends Component
                             'title' => 'Cashier TAT',
                             'total-base' => 5,
                             'total-points' => 5,
-                           /*  'deviation' => [
-                                [
-                                    'cashier_name' => '',
-                                    'product_ordered' => '',
-                                    'ot_time' => '',
-                                    'ot' => '',
-                                    'assembly' => '',
-                                    'base_assembly_point' => 1,
-                                    'assembly_point' => 1,
-                                    'serving_time' => '00:05',
-                                    'tat_time' => '',
-                                    'base_tat_point' => 1,
-                                    'tat_point' => 1,
-                                    'fst_time' => '',
-                                    'base_fst_point' => 3,
-                                    'fst_point' => 3,
-                                    'remarks' => '',
-                                ]
-                            ] */
+                            /*  'deviation' => [
+                                 [
+                                     'cashier_name' => '',
+                                     'product_ordered' => '',
+                                     'ot_time' => '',
+                                     'ot' => '',
+                                     'assembly' => '',
+                                     'base_assembly_point' => 1,
+                                     'assembly_point' => 1,
+                                     'serving_time' => '00:05',
+                                     'tat_time' => '',
+                                     'base_tat_point' => 1,
+                                     'tat_point' => 1,
+                                     'fst_time' => '',
+                                     'base_fst_point' => 3,
+                                     'fst_point' => 3,
+                                     'remarks' => '',
+                                 ]
+                             ] */
                         ],
                         [
                             'title' => 'Server CAT',
@@ -1917,7 +1950,7 @@ class AuditForm extends Component
                     'percent' => 100,
                     'deviation' => [
                         [
-                            'is-na' =>1,
+                            'is-na' => 1,
                             'title' => 'Personnel with personalized greetings/with welcome to the brand',
                             'is-aon' => 1,
                             'base' => 3,
@@ -1927,7 +1960,7 @@ class AuditForm extends Component
                             'deviation-dropdown' => []
                         ],
                         [
-                            'is-na' =>1,
+                            'is-na' => 1,
                             'title' => 'Counter crew suggests appropriately',
                             'is-aon' => 0,
                             'base' => 3,
@@ -1937,7 +1970,7 @@ class AuditForm extends Component
                             'deviation-dropdown' => []
                         ],
                         [
-                            'is-na' =>1,
+                            'is-na' => 1,
                             'title' => 'Customer is informed of amount of bill/bill received & change',
                             'is-aon' => 0,
                             'base' => 3,
@@ -1947,7 +1980,7 @@ class AuditForm extends Component
                             'deviation-dropdown' => []
                         ],
                         [
-                            'is-na' =>1,
+                            'is-na' => 1,
                             'title' => 'Change is given on the palm of the customer/receipt given directly to customer',
                             'is-aon' => 0,
                             'base' => 3,
@@ -1957,7 +1990,7 @@ class AuditForm extends Component
                             'deviation-dropdown' => []
                         ],
                         [
-                            'is-na' =>1,
+                            'is-na' => 1,
                             'title' => 'Products are properly and neatly presented (3 eye system)',
                             'is-aon' => 0,
                             'base' => 3,
@@ -1967,7 +2000,7 @@ class AuditForm extends Component
                             'deviation-dropdown' => []
                         ],
                         [
-                            'is-na' =>1,
+                            'is-na' => 1,
                             'title' => 'Coins and Bills availability',
                             'is-aon' => 0,
                             'base' => 3,
@@ -1985,7 +2018,7 @@ class AuditForm extends Component
                     'percent' => 100,
                     'deviation' => [
                         [
-                            'is-na' =>1,
+                            'is-na' => 1,
                             'title' => 'With correct and appropriate crew positioning and manning',
                             'is-aon' => 1,
                             'base' => 5,
@@ -1995,7 +2028,7 @@ class AuditForm extends Component
                             'deviation-dropdown' => []
                         ],
                         [
-                            'is-na' =>1,
+                            'is-na' => 1,
                             'title' => 'Guest are seatted and handed the Menu',
                             'is-aon' => 0,
                             'base' => 3,
@@ -2005,7 +2038,7 @@ class AuditForm extends Component
                             'deviation-dropdown' => []
                         ],
                         [
-                            'is-na' =>1,
+                            'is-na' => 1,
                             'title' => 'Server with full attention during order-taking',
                             'is-aon' => 0,
                             'base' => 3,
@@ -2015,7 +2048,7 @@ class AuditForm extends Component
                             'deviation-dropdown' => []
                         ],
                         [
-                            'is-na' =>1,
+                            'is-na' => 1,
                             'title' => 'Temporary Receipt and Order List is placed on customer table.',
                             'is-aon' => 1,
                             'base' => 3,
@@ -2025,7 +2058,7 @@ class AuditForm extends Component
                             'deviation-dropdown' => []
                         ],
                         [
-                            'is-na' =>1,
+                            'is-na' => 1,
                             'title' => 'Correct Utensils is set to customer table and placed in glassine or EQ plate',
                             'is-aon' => 0,
                             'base' => 3,
@@ -2035,7 +2068,7 @@ class AuditForm extends Component
                             'deviation-dropdown' => []
                         ],
                         [
-                            'is-na' =>1,
+                            'is-na' => 1,
                             'title' => 'Customer is updated on status of orders',
                             'is-aon' => 1,
                             'base' => 3,
@@ -2045,7 +2078,7 @@ class AuditForm extends Component
                             'deviation-dropdown' => []
                         ],
                         [
-                            'is-na' =>1,
+                            'is-na' => 1,
                             'title' => 'There is a sequential delivery, assembly and dispatch of orders',
                             'is-aon' => 1,
                             'base' => 5,
@@ -2055,7 +2088,7 @@ class AuditForm extends Component
                             'deviation-dropdown' => []
                         ],
                         [
-                            'is-na' =>1,
+                            'is-na' => 1,
                             'title' => 'There is a person assigned to support and ease speed',
                             'is-aon' => 1,
                             'base' => 3,
@@ -2103,7 +2136,7 @@ class AuditForm extends Component
                     'percent' => 100,
                     'deviation' => [
                         [
-                            'is-na' =>1,
+                            'is-na' => 1,
                             'title' => 'Product is presented upon serving of orders',
                             'is-aon' => 0,
                             'base' => 3,
@@ -2113,7 +2146,7 @@ class AuditForm extends Component
                             'deviation-dropdown' => []
                         ],
                         [
-                            'is-na' =>1,
+                            'is-na' => 1,
                             'title' => 'Dining task is prioritized according to need',
                             'is-aon' => 0,
                             'base' => 3,
@@ -2123,7 +2156,7 @@ class AuditForm extends Component
                             'deviation-dropdown' => []
                         ],
                         [
-                            'is-na' =>1,
+                            'is-na' => 1,
                             'title' => 'Pre-bussing and bussing standard (using correct chemicals and cleaning tools)',
                             'is-aon' => 0,
                             'base' => 3,
@@ -2133,7 +2166,7 @@ class AuditForm extends Component
                             'deviation-dropdown' => []
                         ],
                         [
-                            'is-na' =>1,
+                            'is-na' => 1,
                             'title' => 'Spot mopping/cleaning is done as needed',
                             'is-aon' => 0,
                             'base' => 3,
@@ -2151,7 +2184,7 @@ class AuditForm extends Component
                     'percent' => 100,
                     'deviation' => [
                         [
-                            'is-na' =>1,
+                            'is-na' => 1,
                             'title' => 'Personnel greet customer in a friendly & sincere manner upon entry & exit',
                             'is-aon' => 1,
                             'base' => 3,
@@ -2161,7 +2194,7 @@ class AuditForm extends Component
                             'deviation-dropdown' => []
                         ],
                         [
-                            'is-na' =>1,
+                            'is-na' => 1,
                             'title' => 'Personnel are friendly, warm & with personalized greetings												',
                             'is-aon' => 0,
                             'base' => 3,
@@ -2171,34 +2204,34 @@ class AuditForm extends Component
                             'deviation-dropdown' => []
                         ],
                         [
-                            'is-na' =>1,
+                            'is-na' => 1,
                             'title' => 'Personnel are courteous, accommodating and flexible',
                             'is-aon' => 0,
                             'base' => 3,
                             'points' => 3,
                             'remarks' => '',
                             'critical-deviation' => '',
-'deviation-dropdown' => []
+                            'deviation-dropdown' => []
                         ],
                         [
-                            'is-na' =>1,
+                            'is-na' => 1,
                             'title' => 'Cafe personnel are attentive and ready to assist',
                             'is-aon' => 0,
                             'base' => 3,
                             'points' => 3,
                             'remarks' => '',
                             'critical-deviation' => '',
-'deviation-dropdown' => []
+                            'deviation-dropdown' => []
                         ],
                         [
-                            'is-na' =>1,
+                            'is-na' => 1,
                             'title' => 'Manager is helpful, ready to assist and visible in Dining Area',
                             'is-aon' => 1,
                             'base' => 5,
                             'points' => 5,
                             'remarks' => '',
                             'critical-deviation' => '',
-'deviation-dropdown' => []
+                            'deviation-dropdown' => []
                         ]
                     ]
                 ],
@@ -2209,79 +2242,79 @@ class AuditForm extends Component
                     'percent' => 100,
                     'deviation' => [
                         [
-                            'is-na' =>1,
+                            'is-na' => 1,
                             'title' => 'Store personnel are in complete/correct uniform, well-groomed & neat in appearance',
                             'is-aon' => 0,
                             'base' => 5,
                             'points' => 5,
                             'remarks' => '',
                             'critical-deviation' => '',
-'deviation-dropdown' => []
+                            'deviation-dropdown' => []
                         ],
                         [
-                            'is-na' =>1,
+                            'is-na' => 1,
                             'title' => 'Store personnel practice good hygiene',
                             'is-aon' => 0,
                             'base' => 3,
                             'points' => 3,
                             'remarks' => '',
                             'critical-deviation' => '',
-'deviation-dropdown' => []
+                            'deviation-dropdown' => []
                         ],
                         [
-                            'is-na' =>1,
+                            'is-na' => 1,
                             'title' => 'Store personnel know their products and services offered',
                             'is-aon' => 0,
                             'base' => 3,
                             'points' => 3,
                             'remarks' => '',
                             'critical-deviation' => '',
-'deviation-dropdown' => []
+                            'deviation-dropdown' => []
                         ],
                         [
-                            'is-na' =>1,
+                            'is-na' => 1,
                             'title' => 'Store personnel with good  command of communication',
                             'is-aon' => 0,
                             'base' => 3,
                             'points' => 3,
                             'remarks' => '',
                             'critical-deviation' => '',
-'deviation-dropdown' => []
+                            'deviation-dropdown' => []
                         ],
                         [
-                            'is-na' =>1,
+                            'is-na' => 1,
                             'title' => 'Managers & crew with good and refined manners',
                             'is-aon' => 1,
                             'base' => 3,
                             'points' => 3,
                             'remarks' => '',
                             'critical-deviation' => '',
-'deviation-dropdown' => []
+                            'deviation-dropdown' => []
                         ],
                         [
-                            'is-na' =>1,
+                            'is-na' => 1,
                             'title' => 'Customer inquries and complaints are effectively attended',
                             'is-aon' => 1,
                             'base' => 3,
                             'points' => 3,
                             'remarks' => '',
                             'critical-deviation' => '',
-'deviation-dropdown' => []
+                            'deviation-dropdown' => []
                         ]
                     ]
                 ],
             ]
         ],
         [
-            'category' =>'Cleanliness',
+            'category' => 'Cleanliness',
             'total-base' => 139,
             'total-points' => 139,
             'percent' => 100,
-            'sub-category' =>[
+            'sub-category' => [
                 [
                     'title' => 'Customer Area',
-                    'total-base' => 40,
-                    'total-points' => 40,
+                    'total-base' => 88,
+                    'total-points' => 88,
                     'percent' => 100,
                     'deviation' => [
                         [
@@ -2290,7 +2323,7 @@ class AuditForm extends Component
                             'total-points' => 14,
                             'deviation' => [
                                 [
-                                    'is-na' =>1,
+                                    'is-na' => 1,
                                     'title' => 'Signages',
                                     'is-aon' => 0,
                                     'base' => 2,
@@ -2300,7 +2333,7 @@ class AuditForm extends Component
                                     'deviation-dropdown' => []
                                 ],
                                 [
-                                    'is-na' =>1,
+                                    'is-na' => 1,
                                     'title' => 'Parking/Landscaping/Plants/Lamp Posts/PWD Ramp',
                                     'is-aon' => 0,
                                     'base' => 2,
@@ -2310,7 +2343,7 @@ class AuditForm extends Component
                                     'deviation-dropdown' => []
                                 ],
                                 [
-                                    'is-na' =>1,
+                                    'is-na' => 1,
                                     'title' => 'Glass panels/Blinds/Door/Window Shutter/Roll Up Door/Backlighted Column',
                                     'is-aon' => 0,
                                     'base' => 2,
@@ -2320,7 +2353,7 @@ class AuditForm extends Component
                                     'deviation-dropdown' => []
                                 ],
                                 [
-                                    'is-na' =>1,
+                                    'is-na' => 1,
                                     'title' => 'Floor / Stair (Exterior Area, Dining Area, Function Room',
                                     'is-aon' => 0,
                                     'base' => 2,
@@ -2330,7 +2363,7 @@ class AuditForm extends Component
                                     'deviation-dropdown' => []
                                 ],
                                 [
-                                    'is-na' =>1,
+                                    'is-na' => 1,
                                     'title' => 'Walls / Mural (Exterior Area, Dining Area, Function Room)',
                                     'is-aon' => 0,
                                     'base' => 2,
@@ -2340,7 +2373,7 @@ class AuditForm extends Component
                                     'deviation-dropdown' => []
                                 ],
                                 [
-                                    'is-na' =>1,
+                                    'is-na' => 1,
                                     'title' => 'Ceiling / Lights and Fixtures (Alfresco, Dining Area, Function)',
                                     'is-aon' => 0,
                                     'base' => 2,
@@ -2350,7 +2383,7 @@ class AuditForm extends Component
                                     'deviation-dropdown' => []
                                 ],
                                 [
-                                    'is-na' =>1,
+                                    'is-na' => 1,
                                     'title' => 'Canopy/ Roof/ Air Curtain',
                                     'is-aon' => 0,
                                     'base' => 2,
@@ -2367,7 +2400,7 @@ class AuditForm extends Component
                             'total-points' => 23,
                             'deviation' => [
                                 [
-                                    'is-na' =>1,
+                                    'is-na' => 1,
                                     'title' => 'Flowers/ Letters / Laminated table signages',
                                     'is-aon' => 0,
                                     'base' => 5,
@@ -2377,7 +2410,7 @@ class AuditForm extends Component
                                     'deviation-dropdown' => []
                                 ],
                                 [
-                                    'is-na' =>1,
+                                    'is-na' => 1,
                                     'title' => 'Mechanical Birds/ Mechanical dragon fly',
                                     'is-aon' => 0,
                                     'base' => 3,
@@ -2387,7 +2420,7 @@ class AuditForm extends Component
                                     'deviation-dropdown' => []
                                 ],
                                 [
-                                    'is-na' =>1,
+                                    'is-na' => 1,
                                     'title' => 'Christmas light/ Lamps/ Special Bulbs',
                                     'is-aon' => 0,
                                     'base' => 5,
@@ -2397,7 +2430,7 @@ class AuditForm extends Component
                                     'deviation-dropdown' => []
                                 ],
                                 [
-                                    'is-na' =>1,
+                                    'is-na' => 1,
                                     'title' => 'Fresh Plants/ Artificial Plants',
                                     'is-aon' => 0,
                                     'base' => 5,
@@ -2407,7 +2440,7 @@ class AuditForm extends Component
                                     'deviation-dropdown' => []
                                 ],
                                 [
-                                    'is-na' =>1,
+                                    'is-na' => 1,
                                     'title' => 'Jars/ water/ faucet',
                                     'is-aon' => 0,
                                     'base' => 5,
@@ -2416,8 +2449,8 @@ class AuditForm extends Component
                                     'critical-deviation' => '',
                                     'deviation-dropdown' => []
                                 ],
-                                
-                                
+
+
                             ]
                         ],
                         [
@@ -2426,7 +2459,7 @@ class AuditForm extends Component
                             'total-points' => 21,
                             'deviation' => [
                                 [
-                                    'is-na' =>1,
+                                    'is-na' => 1,
                                     'title' => 'ACU / Ceiling Fans / Exhaust Vents / Air Vents',
                                     'is-aon' => 1,
                                     'base' => 3,
@@ -2436,7 +2469,7 @@ class AuditForm extends Component
                                     'deviation-dropdown' => []
                                 ],
                                 [
-                                    'is-na' =>1,
+                                    'is-na' => 1,
                                     'title' => 'Tray / Wares/ Carafe',
                                     'is-aon' => 0,
                                     'base' => 3,
@@ -2446,7 +2479,7 @@ class AuditForm extends Component
                                     'deviation-dropdown' => []
                                 ],
                                 [
-                                    'is-na' =>1,
+                                    'is-na' => 1,
                                     'title' => ' Tables / Chairs/ Couches /  High Chair / Bag Hanger',
                                     'is-aon' => 0,
                                     'base' => 3,
@@ -2456,7 +2489,7 @@ class AuditForm extends Component
                                     'deviation-dropdown' => []
                                 ],
                                 [
-                                    'is-na' =>1,
+                                    'is-na' => 1,
                                     'title' => 'POS / Card Terminal / Counter top / Optima Display / Server Station',
                                     'is-aon' => 1,
                                     'base' => 5,
@@ -2466,7 +2499,7 @@ class AuditForm extends Component
                                     'deviation-dropdown' => []
                                 ],
                                 [
-                                    'is-na' =>1,
+                                    'is-na' => 1,
                                     'title' => 'Kids Corner/ Toys/ Magazines',
                                     'is-aon' => 0,
                                     'base' => 2,
@@ -2476,7 +2509,7 @@ class AuditForm extends Component
                                     'deviation-dropdown' => []
                                 ],
                                 [
-                                    'is-na' =>1,
+                                    'is-na' => 1,
                                     'title' => 'Standing Chiller/ Freezer /DisplayShowcase',
                                     'is-aon' => 1,
                                     'base' => 5,
@@ -2485,8 +2518,8 @@ class AuditForm extends Component
                                     'critical-deviation' => '',
                                     'deviation-dropdown' => []
                                 ],
-                                
-                                
+
+
                             ]
                         ],
                         [
@@ -2495,7 +2528,7 @@ class AuditForm extends Component
                             'total-points' => 16,
                             'deviation' => [
                                 [
-                                    'is-na' =>1,
+                                    'is-na' => 1,
                                     'title' => 'Floor',
                                     'is-aon' => 0,
                                     'base' => 2,
@@ -2505,7 +2538,7 @@ class AuditForm extends Component
                                     'deviation-dropdown' => []
                                 ],
                                 [
-                                    'is-na' =>1,
+                                    'is-na' => 1,
                                     'title' => 'Walls / Doors / Wall Partition / Mirror / Bag Hanger ',
                                     'is-aon' => 0,
                                     'base' => 2,
@@ -2515,7 +2548,7 @@ class AuditForm extends Component
                                     'deviation-dropdown' => []
                                 ],
                                 [
-                                    'is-na' =>1,
+                                    'is-na' => 1,
                                     'title' => 'Ceiling / Lights and Fixtures',
                                     'is-aon' => 0,
                                     'base' => 2,
@@ -2525,7 +2558,7 @@ class AuditForm extends Component
                                     'deviation-dropdown' => []
                                 ],
                                 [
-                                    'is-na' =>1,
+                                    'is-na' => 1,
                                     'title' => 'Exhaust System / Air vents',
                                     'is-aon' => 0,
                                     'base' => 2,
@@ -2535,7 +2568,7 @@ class AuditForm extends Component
                                     'deviation-dropdown' => []
                                 ],
                                 [
-                                    'is-na' =>1,
+                                    'is-na' => 1,
                                     'title' => 'Toilet / Urinal / Wash sink and Fixtures',
                                     'is-aon' => 0,
                                     'base' => 2,
@@ -2545,7 +2578,7 @@ class AuditForm extends Component
                                     'deviation-dropdown' => []
                                 ],
                                 [
-                                    'is-na' =>1,
+                                    'is-na' => 1,
                                     'title' => 'Tissue/Handsoap/Tissue Holder/ Soap and sanitizer dispenser/ Hand dryer / Diaper changer',
                                     'is-aon' => 0,
                                     'base' => 2,
@@ -2555,7 +2588,7 @@ class AuditForm extends Component
                                     'deviation-dropdown' => []
                                 ],
                                 [
-                                    'is-na' =>1,
+                                    'is-na' => 1,
                                     'title' => 'Total dÃ©cor',
                                     'is-aon' => 0,
                                     'base' => 2,
@@ -2565,7 +2598,7 @@ class AuditForm extends Component
                                     'deviation-dropdown' => []
                                 ],
                                 [
-                                    'is-na' =>1,
+                                    'is-na' => 1,
                                     'title' => 'Service Station / Garbage Bins',
                                     'is-aon' => 0,
                                     'base' => 2,
@@ -2574,9 +2607,9 @@ class AuditForm extends Component
                                     'critical-deviation' => '',
                                     'deviation-dropdown' => []
                                 ],
-                                
-                                
-                                
+
+
+
                             ]
                         ],
                         [
@@ -2585,7 +2618,7 @@ class AuditForm extends Component
                             'total-points' => 14,
                             'deviation' => [
                                 [
-                                    'is-na' =>1,
+                                    'is-na' => 1,
                                     'title' => 'Frames Tripod and Sintra Board/ Shelves/',
                                     'is-aon' => 1,
                                     'base' => 3,
@@ -2595,7 +2628,7 @@ class AuditForm extends Component
                                     'deviation-dropdown' => []
                                 ],
                                 [
-                                    'is-na' =>1,
+                                    'is-na' => 1,
                                     'title' => 'Optima Display',
                                     'is-aon' => 1,
                                     'base' => 3,
@@ -2605,7 +2638,7 @@ class AuditForm extends Component
                                     'deviation-dropdown' => []
                                 ],
                                 [
-                                    'is-na' =>1,
+                                    'is-na' => 1,
                                     'title' => 'Digital Display',
                                     'is-aon' => 1,
                                     'base' => 3,
@@ -2615,7 +2648,7 @@ class AuditForm extends Component
                                     'deviation-dropdown' => []
                                 ],
                                 [
-                                    'is-na' =>1,
+                                    'is-na' => 1,
                                     'title' => 'Menu Book/ QR Code',
                                     'is-aon' => 0,
                                     'base' => 5,
@@ -2624,7 +2657,7 @@ class AuditForm extends Component
                                     'critical-deviation' => '',
                                     'deviation-dropdown' => []
                                 ],
-                                
+
                             ]
                         ],
                     ]
@@ -2641,7 +2674,7 @@ class AuditForm extends Component
                             'total-points' => 6,
                             'deviation' => [
                                 [
-                                    'is-na' =>1,
+                                    'is-na' => 1,
                                     'title' => 'Kitchen',
                                     'is-aon' => 0,
                                     'base' => 2,
@@ -2651,7 +2684,7 @@ class AuditForm extends Component
                                     'deviation-dropdown' => []
                                 ],
                                 [
-                                    'is-na' =>1,
+                                    'is-na' => 1,
                                     'title' => 'Bar',
                                     'is-aon' => 0,
                                     'base' => 2,
@@ -2661,7 +2694,7 @@ class AuditForm extends Component
                                     'deviation-dropdown' => []
                                 ],
                                 [
-                                    'is-na' =>1,
+                                    'is-na' => 1,
                                     'title' => 'Storage Cabinets / Other Rooms',
                                     'is-aon' => 0,
                                     'base' => 2,
@@ -2670,7 +2703,7 @@ class AuditForm extends Component
                                     'critical-deviation' => '',
                                     'deviation-dropdown' => []
                                 ],
-                               
+
                             ]
                         ],
                         [
@@ -2679,7 +2712,7 @@ class AuditForm extends Component
                             'total-points' => 6,
                             'deviation' => [
                                 [
-                                    'is-na' =>1,
+                                    'is-na' => 1,
                                     'title' => 'Kitchen',
                                     'is-aon' => 0,
                                     'base' => 2,
@@ -2689,7 +2722,7 @@ class AuditForm extends Component
                                     'deviation-dropdown' => []
                                 ],
                                 [
-                                    'is-na' =>1,
+                                    'is-na' => 1,
                                     'title' => 'Bar',
                                     'is-aon' => 0,
                                     'base' => 2,
@@ -2699,7 +2732,7 @@ class AuditForm extends Component
                                     'deviation-dropdown' => []
                                 ],
                                 [
-                                    'is-na' =>1,
+                                    'is-na' => 1,
                                     'title' => 'Storage Cabinets / Other Rooms',
                                     'is-aon' => 0,
                                     'base' => 2,
@@ -2708,19 +2741,19 @@ class AuditForm extends Component
                                     'critical-deviation' => '',
                                     'deviation-dropdown' => []
                                 ],
-                                
-                              
-                                
-                                
+
+
+
+
                             ]
                         ],
                         [
                             'title' => 'Ceiling, Lights and Fixtures',
                             'total-base' => 6,
                             'total-points' => 6,
-                            'deviation' =>  [
+                            'deviation' => [
                                 [
-                                    'is-na' =>1,
+                                    'is-na' => 1,
                                     'title' => 'Kitchen',
                                     'is-aon' => 0,
                                     'base' => 2,
@@ -2730,7 +2763,7 @@ class AuditForm extends Component
                                     'deviation-dropdown' => []
                                 ],
                                 [
-                                    'is-na' =>1,
+                                    'is-na' => 1,
                                     'title' => 'Bar',
                                     'is-aon' => 0,
                                     'base' => 2,
@@ -2740,7 +2773,7 @@ class AuditForm extends Component
                                     'deviation-dropdown' => []
                                 ],
                                 [
-                                    'is-na' =>1,
+                                    'is-na' => 1,
                                     'title' => 'Storage Cabinets / Other Rooms',
                                     'is-aon' => 0,
                                     'base' => 2,
@@ -2749,10 +2782,10 @@ class AuditForm extends Component
                                     'critical-deviation' => '',
                                     'deviation-dropdown' => []
                                 ],
-                                
-                              
-                                
-                                
+
+
+
+
                             ]
                         ],
                         [
@@ -2761,7 +2794,7 @@ class AuditForm extends Component
                             'total-points' => 33,
                             'deviation' => [
                                 [
-                                    'is-na' =>1,
+                                    'is-na' => 1,
                                     'title' => 'Wares / All SS facilities / Counter Water Faucet / Work Tables / Shelves / Push Cart',
                                     'is-aon' => 0,
                                     'base' => 5,
@@ -2771,7 +2804,7 @@ class AuditForm extends Component
                                     'deviation-dropdown' => []
                                 ],
                                 [
-                                    'is-na' =>1,
+                                    'is-na' => 1,
                                     'title' => 'Exhaust & Ventilation System / Air Curtain / Electrical Panel Board',
                                     'is-aon' => 1,
                                     'base' => 5,
@@ -2781,7 +2814,7 @@ class AuditForm extends Component
                                     'deviation-dropdown' => []
                                 ],
                                 [
-                                    'is-na' =>1,
+                                    'is-na' => 1,
                                     'title' => 'Water Filter',
                                     'is-aon' => 1,
                                     'base' => 5,
@@ -2791,7 +2824,7 @@ class AuditForm extends Component
                                     'deviation-dropdown' => []
                                 ],
                                 [
-                                    'is-na' =>1,
+                                    'is-na' => 1,
                                     'title' => 'Dishwashing Machine',
                                     'is-aon' => 1,
                                     'base' => 3,
@@ -2801,7 +2834,7 @@ class AuditForm extends Component
                                     'deviation-dropdown' => []
                                 ],
                                 [
-                                    'is-na' =>1,
+                                    'is-na' => 1,
                                     'title' => 'Freezers',
                                     'is-aon' => 1,
                                     'base' => 5,
@@ -2811,7 +2844,7 @@ class AuditForm extends Component
                                     'deviation-dropdown' => []
                                 ],
                                 [
-                                    'is-na' =>1,
+                                    'is-na' => 1,
                                     'title' => 'Chillers',
                                     'is-aon' => 1,
                                     'base' => 5,
@@ -2821,7 +2854,7 @@ class AuditForm extends Component
                                     'deviation-dropdown' => []
                                 ],
                                 [
-                                    'is-na' =>1,
+                                    'is-na' => 1,
                                     'title' => 'Ice machine / Blender/Espresso Machine / Microwave Oven / Oven Toaster /CCTV',
                                     'is-aon' => 1,
                                     'base' => 5,
@@ -2837,15 +2870,15 @@ class AuditForm extends Component
             ]
         ],
         [
-            'category' =>'Condition',
+            'category' => 'Condition',
             'total-base' => 175,
             'total-points' => 175,
             'percent' => 100,
-            'sub-category' =>[
+            'sub-category' => [
                 [
                     'title' => 'Customer Area',
-                    'total-base' => 40,
-                    'total-points' => 40,
+                    'total-base' => 92,
+                    'total-points' => 92,
                     'percent' => 100,
                     'deviation' => [
                         [
@@ -2854,7 +2887,7 @@ class AuditForm extends Component
                             'total-points' => 14,
                             'deviation' => [
                                 [
-                                    'is-na' =>1,
+                                    'is-na' => 1,
                                     'title' => 'Signages',
                                     'is-aon' => 1,
                                     'base' => 5,
@@ -2864,7 +2897,7 @@ class AuditForm extends Component
                                     'deviation-dropdown' => []
                                 ],
                                 [
-                                    'is-na' =>1,
+                                    'is-na' => 1,
                                     'title' => 'Parking/Landscaping/Plants/Lamp Posts/PWD Ramp',
                                     'is-aon' => 0,
                                     'base' => 2,
@@ -2874,7 +2907,7 @@ class AuditForm extends Component
                                     'deviation-dropdown' => []
                                 ],
                                 [
-                                    'is-na' =>1,
+                                    'is-na' => 1,
                                     'title' => 'Glass panels/Blinds/Door/Window Shutter/Roll Up Door/Backlighted Column',
                                     'is-aon' => 1,
                                     'base' => 3,
@@ -2884,7 +2917,7 @@ class AuditForm extends Component
                                     'deviation-dropdown' => []
                                 ],
                                 [
-                                    'is-na' =>1,
+                                    'is-na' => 1,
                                     'title' => 'Floor / Stair (Exterior Area, Dining Area, Function Room',
                                     'is-aon' => 1,
                                     'base' => 2,
@@ -2894,7 +2927,7 @@ class AuditForm extends Component
                                     'deviation-dropdown' => []
                                 ],
                                 [
-                                    'is-na' =>1,
+                                    'is-na' => 1,
                                     'title' => 'Walls / Mural (Exterior Area, Dining Area, Function Room)',
                                     'is-aon' => 1,
                                     'base' => 2,
@@ -2904,7 +2937,7 @@ class AuditForm extends Component
                                     'deviation-dropdown' => []
                                 ],
                                 [
-                                    'is-na' =>1,
+                                    'is-na' => 1,
                                     'title' => 'Ceiling / Lights and Fixtures (Alfresco, Dining Area, Function)',
                                     'is-aon' => 1,
                                     'base' => 2,
@@ -2914,7 +2947,7 @@ class AuditForm extends Component
                                     'deviation-dropdown' => []
                                 ],
                                 [
-                                    'is-na' =>1,
+                                    'is-na' => 1,
                                     'title' => 'Canopy/ Roof/ Air Curtain',
                                     'is-aon' => 1,
                                     'base' => 2,
@@ -2931,7 +2964,7 @@ class AuditForm extends Component
                             'total-points' => 23,
                             'deviation' => [
                                 [
-                                    'is-na' =>1,
+                                    'is-na' => 1,
                                     'title' => 'Flowers/ Letters / Laminated table signages',
                                     'is-aon' => 0,
                                     'base' => 3,
@@ -2941,7 +2974,7 @@ class AuditForm extends Component
                                     'deviation-dropdown' => []
                                 ],
                                 [
-                                    'is-na' =>1,
+                                    'is-na' => 1,
                                     'title' => 'Mechanical Birds/ Mechanical dragon fly',
                                     'is-aon' => 0,
                                     'base' => 3,
@@ -2951,7 +2984,7 @@ class AuditForm extends Component
                                     'deviation-dropdown' => []
                                 ],
                                 [
-                                    'is-na' =>1,
+                                    'is-na' => 1,
                                     'title' => 'Christmas light/ Lamps/ Special Bulbs',
                                     'is-aon' => 0,
                                     'base' => 3,
@@ -2961,7 +2994,7 @@ class AuditForm extends Component
                                     'deviation-dropdown' => []
                                 ],
                                 [
-                                    'is-na' =>1,
+                                    'is-na' => 1,
                                     'title' => 'Fresh Plants/ Artificial Plants',
                                     'is-aon' => 0,
                                     'base' => 3,
@@ -2971,7 +3004,7 @@ class AuditForm extends Component
                                     'deviation-dropdown' => []
                                 ],
                                 [
-                                    'is-na' =>1,
+                                    'is-na' => 1,
                                     'title' => 'Jars/ water/ faucet',
                                     'is-aon' => 0,
                                     'base' => 5,
@@ -2988,7 +3021,7 @@ class AuditForm extends Component
                             'total-points' => 21,
                             'deviation' => [
                                 [
-                                    'is-na' =>1,
+                                    'is-na' => 1,
                                     'title' => 'ACU / Ceiling Fans / Exhaust Vents / Air Vents',
                                     'is-aon' => 1,
                                     'base' => 5,
@@ -2998,7 +3031,7 @@ class AuditForm extends Component
                                     'deviation-dropdown' => []
                                 ],
                                 [
-                                    'is-na' =>1,
+                                    'is-na' => 1,
                                     'title' => 'Tray / Wares/ Carafe',
                                     'is-aon' => 0,
                                     'base' => 3,
@@ -3008,7 +3041,7 @@ class AuditForm extends Component
                                     'deviation-dropdown' => []
                                 ],
                                 [
-                                    'is-na' =>1,
+                                    'is-na' => 1,
                                     'title' => ' Tables / Chairs/ Couches /  High Chair / Bag Hanger',
                                     'is-aon' => 1,
                                     'base' => 3,
@@ -3018,7 +3051,7 @@ class AuditForm extends Component
                                     'deviation-dropdown' => []
                                 ],
                                 [
-                                    'is-na' =>1,
+                                    'is-na' => 1,
                                     'title' => 'POS / Card Terminal / Counter top / Optima Display / Server Station',
                                     'is-aon' => 1,
                                     'base' => 5,
@@ -3028,7 +3061,7 @@ class AuditForm extends Component
                                     'deviation-dropdown' => []
                                 ],
                                 [
-                                    'is-na' =>1,
+                                    'is-na' => 1,
                                     'title' => 'Kids Corner/ Toys/ Magazines',
                                     'is-aon' => 1,
                                     'base' => 5,
@@ -3038,7 +3071,7 @@ class AuditForm extends Component
                                     'deviation-dropdown' => []
                                 ],
                                 [
-                                    'is-na' =>1,
+                                    'is-na' => 1,
                                     'title' => 'Standing Chiller/ Freezer /DisplayShowcase',
                                     'is-aon' => 1,
                                     'base' => 5,
@@ -3055,7 +3088,7 @@ class AuditForm extends Component
                             'total-points' => 16,
                             'deviation' => [
                                 [
-                                    'is-na' =>1,
+                                    'is-na' => 1,
                                     'title' => 'Floor',
                                     'is-aon' => 1,
                                     'base' => 2,
@@ -3065,7 +3098,7 @@ class AuditForm extends Component
                                     'deviation-dropdown' => []
                                 ],
                                 [
-                                    'is-na' =>1,
+                                    'is-na' => 1,
                                     'title' => 'Walls / Doors / Wall Partition / Mirror / Bag Hanger ',
                                     'is-aon' => 1,
                                     'base' => 2,
@@ -3075,7 +3108,7 @@ class AuditForm extends Component
                                     'deviation-dropdown' => []
                                 ],
                                 [
-                                    'is-na' =>1,
+                                    'is-na' => 1,
                                     'title' => 'Ceiling / Lights and Fixtures',
                                     'is-aon' => 1,
                                     'base' => 2,
@@ -3085,7 +3118,7 @@ class AuditForm extends Component
                                     'deviation-dropdown' => []
                                 ],
                                 [
-                                    'is-na' =>1,
+                                    'is-na' => 1,
                                     'title' => 'Exhaust System / Air vents',
                                     'is-aon' => 1,
                                     'base' => 2,
@@ -3095,7 +3128,7 @@ class AuditForm extends Component
                                     'deviation-dropdown' => []
                                 ],
                                 [
-                                    'is-na' =>1,
+                                    'is-na' => 1,
                                     'title' => 'Toilet / Urinal / Wash sink and Fixtures',
                                     'is-aon' => 1,
                                     'base' => 2,
@@ -3105,7 +3138,7 @@ class AuditForm extends Component
                                     'deviation-dropdown' => []
                                 ],
                                 [
-                                    'is-na' =>1,
+                                    'is-na' => 1,
                                     'title' => 'Tissue/Handsoap/Tissue Holder/ Soap and sanitizer dispenser/ Hand dryer / Diaper changer',
                                     'is-aon' => 1,
                                     'base' => 5,
@@ -3115,7 +3148,7 @@ class AuditForm extends Component
                                     'deviation-dropdown' => []
                                 ],
                                 [
-                                    'is-na' =>1,
+                                    'is-na' => 1,
                                     'title' => 'Total dÃ©cor',
                                     'is-aon' => 1,
                                     'base' => 2,
@@ -3125,7 +3158,7 @@ class AuditForm extends Component
                                     'deviation-dropdown' => []
                                 ],
                                 [
-                                    'is-na' =>1,
+                                    'is-na' => 1,
                                     'title' => 'Service Station / Garbage Bins',
                                     'is-aon' => 1,
                                     'base' => 2,
@@ -3142,7 +3175,7 @@ class AuditForm extends Component
                             'total-points' => 12,
                             'deviation' => [
                                 [
-                                    'is-na' =>1,
+                                    'is-na' => 1,
                                     'title' => 'Frames Tripod and Sintra Board/ Shelves/',
                                     'is-aon' => 0,
                                     'base' => 3,
@@ -3152,7 +3185,7 @@ class AuditForm extends Component
                                     'deviation-dropdown' => []
                                 ],
                                 [
-                                    'is-na' =>1,
+                                    'is-na' => 1,
                                     'title' => 'Optima Display',
                                     'is-aon' => 0,
                                     'base' => 3,
@@ -3162,7 +3195,7 @@ class AuditForm extends Component
                                     'deviation-dropdown' => []
                                 ],
                                 [
-                                    'is-na' =>1,
+                                    'is-na' => 1,
                                     'title' => 'Digital Display',
                                     'is-aon' => 0,
                                     'base' => 3,
@@ -3172,7 +3205,7 @@ class AuditForm extends Component
                                     'deviation-dropdown' => []
                                 ],
                                 [
-                                    'is-na' =>1,
+                                    'is-na' => 1,
                                     'title' => 'Menu Book/ QR Code',
                                     'is-aon' => 0,
                                     'base' => 3,
@@ -3181,7 +3214,7 @@ class AuditForm extends Component
                                     'critical-deviation' => '',
                                     'deviation-dropdown' => []
                                 ],
-                                
+
                             ]
                         ],
                     ]
@@ -3198,7 +3231,7 @@ class AuditForm extends Component
                             'total-points' => 6,
                             'deviation' => [
                                 [
-                                    'is-na' =>1,
+                                    'is-na' => 1,
                                     'title' => 'Kitchen',
                                     'is-aon' => 0,
                                     'base' => 2,
@@ -3208,7 +3241,7 @@ class AuditForm extends Component
                                     'deviation-dropdown' => []
                                 ],
                                 [
-                                    'is-na' =>1,
+                                    'is-na' => 1,
                                     'title' => 'Bar',
                                     'is-aon' => 0,
                                     'base' => 2,
@@ -3218,7 +3251,7 @@ class AuditForm extends Component
                                     'deviation-dropdown' => []
                                 ],
                                 [
-                                    'is-na' =>1,
+                                    'is-na' => 1,
                                     'title' => 'Storage Cabinets / Other Rooms',
                                     'is-aon' => 0,
                                     'base' => 2,
@@ -3235,7 +3268,7 @@ class AuditForm extends Component
                             'total-points' => 6,
                             'deviation' => [
                                 [
-                                    'is-na' =>1,
+                                    'is-na' => 1,
                                     'title' => 'Kitchen',
                                     'is-aon' => 0,
                                     'base' => 2,
@@ -3245,7 +3278,7 @@ class AuditForm extends Component
                                     'deviation-dropdown' => []
                                 ],
                                 [
-                                    'is-na' =>1,
+                                    'is-na' => 1,
                                     'title' => 'Bar',
                                     'is-aon' => 0,
                                     'base' => 2,
@@ -3255,7 +3288,7 @@ class AuditForm extends Component
                                     'deviation-dropdown' => []
                                 ],
                                 [
-                                    'is-na' =>1,
+                                    'is-na' => 1,
                                     'title' => 'Storage Cabinets / Other Rooms',
                                     'is-aon' => 0,
                                     'base' => 2,
@@ -3270,9 +3303,9 @@ class AuditForm extends Component
                             'title' => 'Ceiling, Lights and Fixtures',
                             'total-base' => 6,
                             'total-points' => 6,
-                            'deviation' =>  [
+                            'deviation' => [
                                 [
-                                    'is-na' =>1,
+                                    'is-na' => 1,
                                     'title' => 'Kitchen',
                                     'is-aon' => 0,
                                     'base' => 2,
@@ -3282,7 +3315,7 @@ class AuditForm extends Component
                                     'deviation-dropdown' => []
                                 ],
                                 [
-                                    'is-na' =>1,
+                                    'is-na' => 1,
                                     'title' => 'Bar',
                                     'is-aon' => 0,
                                     'base' => 2,
@@ -3292,7 +3325,7 @@ class AuditForm extends Component
                                     'deviation-dropdown' => []
                                 ],
                                 [
-                                    'is-na' =>1,
+                                    'is-na' => 1,
                                     'title' => 'Storage Cabinets / Other Rooms',
                                     'is-aon' => 0,
                                     'base' => 2,
@@ -3309,7 +3342,7 @@ class AuditForm extends Component
                             'total-points' => 33,
                             'deviation' => [
                                 [
-                                    'is-na' =>1,
+                                    'is-na' => 1,
                                     'title' => 'Wares / All SS facilities / Counter Water Faucet / Work Tables / Shelves / Push Cart',
                                     'is-aon' => 1,
                                     'base' => 5,
@@ -3319,7 +3352,7 @@ class AuditForm extends Component
                                     'deviation-dropdown' => []
                                 ],
                                 [
-                                    'is-na' =>1,
+                                    'is-na' => 1,
                                     'title' => 'Exhaust & Ventilation System / Air Curtain / Electrical Panel Board',
                                     'is-aon' => 1,
                                     'base' => 5,
@@ -3329,7 +3362,7 @@ class AuditForm extends Component
                                     'deviation-dropdown' => []
                                 ],
                                 [
-                                    'is-na' =>1,
+                                    'is-na' => 1,
                                     'title' => 'Water Filter',
                                     'is-aon' => 1,
                                     'base' => 5,
@@ -3339,7 +3372,7 @@ class AuditForm extends Component
                                     'deviation-dropdown' => []
                                 ],
                                 [
-                                    'is-na' =>1,
+                                    'is-na' => 1,
                                     'title' => 'Dishwashing Machine',
                                     'is-aon' => 1,
                                     'base' => 5,
@@ -3349,7 +3382,7 @@ class AuditForm extends Component
                                     'deviation-dropdown' => []
                                 ],
                                 [
-                                    'is-na' =>1,
+                                    'is-na' => 1,
                                     'title' => 'Freezers',
                                     'is-aon' => 1,
                                     'base' => 5,
@@ -3359,7 +3392,7 @@ class AuditForm extends Component
                                     'deviation-dropdown' => []
                                 ],
                                 [
-                                    'is-na' =>1,
+                                    'is-na' => 1,
                                     'title' => 'Chillers',
                                     'is-aon' => 1,
                                     'base' => 5,
@@ -3369,7 +3402,7 @@ class AuditForm extends Component
                                     'deviation-dropdown' => []
                                 ],
                                 [
-                                    'is-na' =>1,
+                                    'is-na' => 1,
                                     'title' => 'Ice machine / Blender/Espresso Machine / Microwave Oven / Oven Toaster /CCTV',
                                     'is-aon' => 1,
                                     'base' => 5,
@@ -3387,9 +3420,9 @@ class AuditForm extends Component
                     'total-base' => 30,
                     'total-points' => 30,
                     'percent' => 100,
-                    'deviation' =>[
+                    'deviation' => [
                         [
-                            'is-na' =>1,
+                            'is-na' => 1,
                             'title' => 'Fire Extinguisher / Emergency Light',
                             'is-aon' => 1,
                             'base' => 3,
@@ -3399,7 +3432,7 @@ class AuditForm extends Component
                             'deviation-dropdown' => []
                         ],
                         [
-                            'is-na' =>1,
+                            'is-na' => 1,
                             'title' => 'Gas Suppression System / Water Sprinkler / Smoke Alarm',
                             'is-aon' => 1,
                             'base' => 3,
@@ -3409,7 +3442,7 @@ class AuditForm extends Component
                             'deviation-dropdown' => []
                         ],
                         [
-                            'is-na' =>1,
+                            'is-na' => 1,
                             'title' => 'First Aid Kit / Emergency Kit',
                             'is-aon' => 1,
                             'base' => 3,
@@ -3419,7 +3452,7 @@ class AuditForm extends Component
                             'deviation-dropdown' => []
                         ],
                         [
-                            'is-na' =>1,
+                            'is-na' => 1,
                             'title' => 'Protective Gears (mask, heat resistant gloves, goggles)',
                             'is-aon' => 1,
                             'base' => 3,
@@ -3429,7 +3462,7 @@ class AuditForm extends Component
                             'deviation-dropdown' => []
                         ],
                         [
-                            'is-na' =>1,
+                            'is-na' => 1,
                             'title' => 'Statutory Sign / Wet Floor Sign /  Convenience Outlet',
                             'is-aon' => 1,
                             'base' => 3,
@@ -3439,7 +3472,7 @@ class AuditForm extends Component
                             'deviation-dropdown' => []
                         ],
                         [
-                            'is-na' =>1,
+                            'is-na' => 1,
                             'title' => 'Evacuation Plan / Emergency Telephone Numbers',
                             'is-aon' => 1,
                             'base' => 3,
@@ -3449,7 +3482,7 @@ class AuditForm extends Component
                             'deviation-dropdown' => []
                         ],
                         [
-                            'is-na' =>1,
+                            'is-na' => 1,
                             'title' => 'Bill Detector / Fire Igniter',
                             'is-aon' => 1,
                             'base' => 3,
@@ -3459,7 +3492,7 @@ class AuditForm extends Component
                             'deviation-dropdown' => []
                         ],
                         [
-                            'is-na' =>1,
+                            'is-na' => 1,
                             'title' => 'Rain Mat / Ladder (Optional)',
                             'is-aon' => 1,
                             'base' => 3,
@@ -3469,7 +3502,7 @@ class AuditForm extends Component
                             'deviation-dropdown' => []
                         ],
                         [
-                            'is-na' =>1,
+                            'is-na' => 1,
                             'title' => 'Availability of MSDS',
                             'is-aon' => 1,
                             'base' => 3,
@@ -3479,7 +3512,7 @@ class AuditForm extends Component
                             'deviation-dropdown' => []
                         ],
                         [
-                            'is-na' =>1,
+                            'is-na' => 1,
                             'title' => 'CCTV installed',
                             'is-aon' => 1,
                             'base' => 3,
@@ -3493,11 +3526,11 @@ class AuditForm extends Component
             ]
         ],
         [
-            'category' =>'Document',
+            'category' => 'Document',
             'total-base' => 41,
             'total-points' => 41,
             'percent' => 40,
-            'sub-category' =>[
+            'sub-category' => [
                 [
                     'title' => 'Primary Systems',
                     'total-base' => 11,
@@ -3517,7 +3550,7 @@ class AuditForm extends Component
                                     'points' => 1,
                                     'remarks' => '',
                                     'critical-deviation' => '',
-                            'deviation-dropdown' => []
+                                    'deviation-dropdown' => []
                                 ],
                                 [
                                     'is-na' => 1,
@@ -3527,7 +3560,7 @@ class AuditForm extends Component
                                     'points' => 1,
                                     'remarks' => '',
                                     'critical-deviation' => '',
-'deviation-dropdown' => []
+                                    'deviation-dropdown' => []
                                 ],
                                 [
                                     'is-na' => 1,
@@ -3537,7 +3570,7 @@ class AuditForm extends Component
                                     'points' => 1,
                                     'remarks' => '',
                                     'critical-deviation' => '',
-'deviation-dropdown' => []
+                                    'deviation-dropdown' => []
                                 ],
                                 [
                                     'is-na' => 1,
@@ -3547,7 +3580,7 @@ class AuditForm extends Component
                                     'points' => 1,
                                     'remarks' => '',
                                     'critical-deviation' => '',
-'deviation-dropdown' => []
+                                    'deviation-dropdown' => []
                                 ],
                             ]
                         ],
@@ -3564,7 +3597,7 @@ class AuditForm extends Component
                                     'points' => 1,
                                     'remarks' => '',
                                     'critical-deviation' => '',
-'deviation-dropdown' => []
+                                    'deviation-dropdown' => []
                                 ],
                                 [
                                     'is-na' => 1,
@@ -3574,7 +3607,7 @@ class AuditForm extends Component
                                     'points' => 1,
                                     'remarks' => '',
                                     'critical-deviation' => '',
-'deviation-dropdown' => []
+                                    'deviation-dropdown' => []
                                 ],
                                 [
                                     'is-na' => 1,
@@ -3584,7 +3617,7 @@ class AuditForm extends Component
                                     'points' => 1,
                                     'remarks' => '',
                                     'critical-deviation' => '',
-'deviation-dropdown' => []
+                                    'deviation-dropdown' => []
                                 ],
                                 [
                                     'is-na' => 1,
@@ -3594,7 +3627,7 @@ class AuditForm extends Component
                                     'points' => 1,
                                     'remarks' => '',
                                     'critical-deviation' => '',
-'deviation-dropdown' => []
+                                    'deviation-dropdown' => []
                                 ],
                             ]
                         ],
@@ -3611,7 +3644,7 @@ class AuditForm extends Component
                                     'points' => 1,
                                     'remarks' => '',
                                     'critical-deviation' => '',
-'deviation-dropdown' => []
+                                    'deviation-dropdown' => []
                                 ],
                                 [
                                     'is-na' => 1,
@@ -3621,7 +3654,7 @@ class AuditForm extends Component
                                     'points' => 1,
                                     'remarks' => '',
                                     'critical-deviation' => '',
-'deviation-dropdown' => []
+                                    'deviation-dropdown' => []
                                 ],
                                 [
                                     'is-na' => 1,
@@ -3631,7 +3664,7 @@ class AuditForm extends Component
                                     'points' => 1,
                                     'remarks' => '',
                                     'critical-deviation' => '',
-'deviation-dropdown' => []
+                                    'deviation-dropdown' => []
                                 ],
                             ]
                         ]
@@ -3656,7 +3689,7 @@ class AuditForm extends Component
                                     'points' => 1,
                                     'remarks' => '',
                                     'critical-deviation' => '',
-'deviation-dropdown' => []
+                                    'deviation-dropdown' => []
                                 ],
                                 [
                                     'is-na' => 1,
@@ -3666,7 +3699,7 @@ class AuditForm extends Component
                                     'points' => 1,
                                     'remarks' => '',
                                     'critical-deviation' => '',
-'deviation-dropdown' => []
+                                    'deviation-dropdown' => []
                                 ],
                                 [
                                     'is-na' => 1,
@@ -3676,7 +3709,7 @@ class AuditForm extends Component
                                     'points' => 1,
                                     'remarks' => '',
                                     'critical-deviation' => '',
-'deviation-dropdown' => []
+                                    'deviation-dropdown' => []
                                 ],
                                 [
                                     'is-na' => 1,
@@ -3686,7 +3719,7 @@ class AuditForm extends Component
                                     'points' => 1,
                                     'remarks' => '',
                                     'critical-deviation' => '',
-'deviation-dropdown' => []
+                                    'deviation-dropdown' => []
                                 ],
                                 [
                                     'is-na' => 1,
@@ -3696,7 +3729,7 @@ class AuditForm extends Component
                                     'points' => 1,
                                     'remarks' => '',
                                     'critical-deviation' => '',
-'deviation-dropdown' => []
+                                    'deviation-dropdown' => []
                                 ],
                                 [
                                     'is-na' => 1,
@@ -3706,7 +3739,7 @@ class AuditForm extends Component
                                     'points' => 1,
                                     'remarks' => '',
                                     'critical-deviation' => '',
-'deviation-dropdown' => []
+                                    'deviation-dropdown' => []
                                 ],
                             ]
                         ],
@@ -3723,7 +3756,7 @@ class AuditForm extends Component
                                     'points' => 1,
                                     'remarks' => '',
                                     'critical-deviation' => '',
-'deviation-dropdown' => []
+                                    'deviation-dropdown' => []
                                 ],
                                 [
                                     'is-na' => 1,
@@ -3733,7 +3766,7 @@ class AuditForm extends Component
                                     'points' => 1,
                                     'remarks' => '',
                                     'critical-deviation' => '',
-'deviation-dropdown' => []
+                                    'deviation-dropdown' => []
                                 ],
                                 [
                                     'is-na' => 1,
@@ -3743,7 +3776,7 @@ class AuditForm extends Component
                                     'points' => 1,
                                     'remarks' => '',
                                     'critical-deviation' => '',
-'deviation-dropdown' => []
+                                    'deviation-dropdown' => []
                                 ]
                             ]
                         ],
@@ -3760,7 +3793,7 @@ class AuditForm extends Component
                                     'points' => 1,
                                     'remarks' => '',
                                     'critical-deviation' => '',
-'deviation-dropdown' => []
+                                    'deviation-dropdown' => []
                                 ],
                                 [
                                     'is-na' => 1,
@@ -3770,7 +3803,7 @@ class AuditForm extends Component
                                     'points' => 1,
                                     'remarks' => '',
                                     'critical-deviation' => '',
-'deviation-dropdown' => []
+                                    'deviation-dropdown' => []
                                 ],
                                 [
                                     'is-na' => 1,
@@ -3780,7 +3813,7 @@ class AuditForm extends Component
                                     'points' => 1,
                                     'remarks' => '',
                                     'critical-deviation' => '',
-'deviation-dropdown' => []
+                                    'deviation-dropdown' => []
                                 ],
                             ]
                         ],
@@ -3797,7 +3830,7 @@ class AuditForm extends Component
                                     'points' => 1,
                                     'remarks' => '',
                                     'critical-deviation' => '',
-'deviation-dropdown' => []
+                                    'deviation-dropdown' => []
                                 ],
                                 [
                                     'is-na' => 1,
@@ -3807,7 +3840,7 @@ class AuditForm extends Component
                                     'points' => 1,
                                     'remarks' => '',
                                     'critical-deviation' => '',
-'deviation-dropdown' => []
+                                    'deviation-dropdown' => []
                                 ]
                             ]
                         ]
@@ -3832,7 +3865,7 @@ class AuditForm extends Component
                                     'points' => 1,
                                     'remarks' => '',
                                     'critical-deviation' => '',
-'deviation-dropdown' => []
+                                    'deviation-dropdown' => []
                                 ]
                             ]
                         ],
@@ -3849,7 +3882,7 @@ class AuditForm extends Component
                                     'points' => 1,
                                     'remarks' => '',
                                     'critical-deviation' => '',
-'deviation-dropdown' => []
+                                    'deviation-dropdown' => []
                                 ],
                                 [
                                     'is-na' => 1,
@@ -3859,7 +3892,7 @@ class AuditForm extends Component
                                     'points' => 1,
                                     'remarks' => '',
                                     'critical-deviation' => '',
-'deviation-dropdown' => []
+                                    'deviation-dropdown' => []
                                 ]
                             ]
                         ],
@@ -3884,7 +3917,7 @@ class AuditForm extends Component
                                     'points' => 1,
                                     'remarks' => '',
                                     'critical-deviation' => '',
-'deviation-dropdown' => []
+                                    'deviation-dropdown' => []
                                 ],
                                 [
                                     'is-na' => 1,
@@ -3894,7 +3927,7 @@ class AuditForm extends Component
                                     'points' => 1,
                                     'remarks' => '',
                                     'critical-deviation' => '',
-'deviation-dropdown' => []
+                                    'deviation-dropdown' => []
                                 ],
                                 [
                                     'is-na' => 1,
@@ -3904,7 +3937,7 @@ class AuditForm extends Component
                                     'points' => 1,
                                     'remarks' => '',
                                     'critical-deviation' => '',
-'deviation-dropdown' => []
+                                    'deviation-dropdown' => []
                                 ],
                                 [
                                     'is-na' => 1,
@@ -3914,7 +3947,7 @@ class AuditForm extends Component
                                     'points' => 1,
                                     'remarks' => '',
                                     'critical-deviation' => '',
-'deviation-dropdown' => []
+                                    'deviation-dropdown' => []
                                 ],
                                 [
                                     'is-na' => 1,
@@ -3924,7 +3957,7 @@ class AuditForm extends Component
                                     'points' => 1,
                                     'remarks' => '',
                                     'critical-deviation' => '',
-'deviation-dropdown' => []
+                                    'deviation-dropdown' => []
                                 ],
                                 [
                                     'is-na' => 1,
@@ -3934,7 +3967,7 @@ class AuditForm extends Component
                                     'points' => 1,
                                     'remarks' => '',
                                     'critical-deviation' => '',
-'deviation-dropdown' => []
+                                    'deviation-dropdown' => []
                                 ],
                                 [
                                     'is-na' => 1,
@@ -3944,7 +3977,7 @@ class AuditForm extends Component
                                     'points' => 1,
                                     'remarks' => '',
                                     'critical-deviation' => '',
-'deviation-dropdown' => []
+                                    'deviation-dropdown' => []
                                 ],
                                 [
                                     'is-na' => 1,
@@ -3954,9 +3987,9 @@ class AuditForm extends Component
                                     'points' => 1,
                                     'remarks' => '',
                                     'critical-deviation' => '',
-'deviation-dropdown' => []
+                                    'deviation-dropdown' => []
                                 ],
-                                
+
                             ]
                         ],
                         [
@@ -3972,7 +4005,7 @@ class AuditForm extends Component
                                     'points' => 1,
                                     'remarks' => '',
                                     'critical-deviation' => '',
-'deviation-dropdown' => []
+                                    'deviation-dropdown' => []
                                 ],
                                 [
                                     'is-na' => 1,
@@ -3982,7 +4015,7 @@ class AuditForm extends Component
                                     'points' => 1,
                                     'remarks' => '',
                                     'critical-deviation' => '',
-'deviation-dropdown' => []
+                                    'deviation-dropdown' => []
                                 ],
                                 [
                                     'is-na' => 1,
@@ -3992,7 +4025,7 @@ class AuditForm extends Component
                                     'points' => 1,
                                     'remarks' => '',
                                     'critical-deviation' => '',
-'deviation-dropdown' => []
+                                    'deviation-dropdown' => []
                                 ],
                                 [
                                     'is-na' => 1,
@@ -4002,7 +4035,7 @@ class AuditForm extends Component
                                     'points' => 1,
                                     'remarks' => '',
                                     'critical-deviation' => '',
-'deviation-dropdown' => []
+                                    'deviation-dropdown' => []
                                 ],
                                 [
                                     'is-na' => 1,
@@ -4012,7 +4045,7 @@ class AuditForm extends Component
                                     'points' => 1,
                                     'remarks' => '',
                                     'critical-deviation' => '',
-'deviation-dropdown' => []
+                                    'deviation-dropdown' => []
                                 ],
                             ]
                         ],
@@ -4021,11 +4054,11 @@ class AuditForm extends Component
             ]
         ],
         [
-            'category' =>'People',
+            'category' => 'People',
             'total-base' => 12,
             'total-points' => 12,
             'percent' => 60,
-            'sub-category' =>[
+            'sub-category' => [
                 [
                     'title' => 'Manpower Completion',
                     'total-base' => 1,
@@ -4040,7 +4073,7 @@ class AuditForm extends Component
                             'points' => 1,
                             'remarks' => '',
                             'critical-deviation' => '',
-                                    'deviation-dropdown' => []
+                            'deviation-dropdown' => []
                         ]
                     ]
                 ],
@@ -4058,7 +4091,7 @@ class AuditForm extends Component
                             'points' => 1,
                             'remarks' => '',
                             'critical-deviation' => '',
-                                    'deviation-dropdown' => []
+                            'deviation-dropdown' => []
                         ],
                         [
                             'is-na' => 1,
@@ -4068,7 +4101,7 @@ class AuditForm extends Component
                             'points' => 1,
                             'remarks' => '',
                             'critical-deviation' => '',
-                                    'deviation-dropdown' => []
+                            'deviation-dropdown' => []
                         ],
                         [
                             'is-na' => 1,
@@ -4078,7 +4111,7 @@ class AuditForm extends Component
                             'points' => 1,
                             'remarks' => '',
                             'critical-deviation' => '',
-                                    'deviation-dropdown' => []
+                            'deviation-dropdown' => []
                         ],
                         [
                             'is-na' => 1,
@@ -4088,7 +4121,7 @@ class AuditForm extends Component
                             'points' => 1,
                             'remarks' => '',
                             'critical-deviation' => '',
-                                    'deviation-dropdown' => []
+                            'deviation-dropdown' => []
                         ],
                         [
                             'is-na' => 1,
@@ -4098,7 +4131,7 @@ class AuditForm extends Component
                             'points' => 1,
                             'remarks' => '',
                             'critical-deviation' => '',
-                                    'deviation-dropdown' => []
+                            'deviation-dropdown' => []
                         ],
                     ]
                 ],
@@ -4187,7 +4220,6 @@ class AuditForm extends Component
             ]
         ],
     ];
-    
     public function setActive($index)
     {
         $this->active_index = $index;
@@ -4195,36 +4227,62 @@ class AuditForm extends Component
     public function mount($id = null)
     {
         // dd( json_encode($this->form));
-      /*   $saved_data = StoreRecord::first();
-        $this->form = json_decode($saved_data->wave1, true); */
+       
         $this->auditForm = AuditFormModel::find($id);
         // $this->sanitary_list = SanitaryModel::get();
         $this->store = Store::find($this->auditForm->store_id);
     }
     public function render()
     {
-        
+        $saved_data = StoreRecord::find(1);
+        $this->form = json_decode($saved_data->wave1, true);
+        $this->onCaculatePoints();
         return view('livewire.audit.audit-form')->extends('layouts.app');
     }
-    public function updatedForm($value,$key)
+    public function updatedForm($value, $key)
     {
-        dd($key);
+        StoreRecord::find(1)->update(['wave1' => $this->form]);
+
+    }
+    public function onSave()
+    {
+        StoreRecord::find(1)->update(['wave1' => $this->form]);
+    }
+    public function onCaculatePoints()
+    {
         foreach ($this->form as $categoryIndex => &$category) {
+            $category['total-base'] = 0;
+            $category['total-points'] = 0;
             foreach ($category['sub-category'] as $subCategoryIndex => &$subCategory) {
-                foreach ($subCategory['deviation'] as $deviationIndex => $deviation) {
-                    $subCategory['total-points'] -= $deviation['points'] ?? 0;
+                $subCategory['total-base'] = 0;
+                $subCategory['total-points'] = 0;
+                foreach ($subCategory['deviation'] as $deviationIndex => &$deviation) {
+                    if(isset($deviation['deviation'])){
+                        foreach ($deviation['deviation'] as $key => $subCategoryDeviation) {
+                            $subCategory['total-base'] += $subCategoryDeviation['base'] ?? 0;
+                            $subCategory['total-points'] += $subCategoryDeviation['points'] ?? 0;
+                        }
+                    }else{
+                        $subCategory['total-base'] += $deviation['base'] ?? 0;
+                        $subCategory['total-points'] += $deviation['points'] ?? 0;
+                    }
                 }
+                $category['total-base'] += $subCategory['total-base'] ?? 0;
+                $category['total-points'] += $subCategory['total-points'] ?? 0;
             }
         }
     }
+    /* public function onCaculatePoints($category_index, $sub_category_index, $sub_category_deviation_index, $newValue, $oldValue)
+    {
+        foreach ($this->form as $categoryIndex => &$category) {
+            foreach ($category['sub-category'] as $subCategoryIndex => &$subCategory) {
+                $category['total-points'] += $subCategory['points'] ?? 0;
+                foreach ($subCategory['deviation'] as $deviationIndex => $deviation) {
+                    $subCategory['total-points'] += $deviation['points'] ?? 0;
+                }
+            }
+        }
+    } */
 
-    public function onCaculatePoints($category_index , $sub_category_index , $sub_category_deviation_index , $value){
-        // dd($category_index , $sub_category_index , $sub_category_deviation_index , $value);
-        // $this->form[$category_index]['sub-category'][$sub_category_index]['total-points'] -=  $value;
-        // Add an element to an array
-      /*   $new_points = ($this->form[$category_index]['sub-category'][$sub_category_index]['total-points'] -= $value);
-        dd($new_points);
-        $this->form[$category_index]['sub-category'][$sub_category_index]['total-points'] += $value; */
-        // dd($this->form[$category_index]['total-points']);
-    }
+
 }

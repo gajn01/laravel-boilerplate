@@ -63,7 +63,7 @@
                                                                 </td>
                                                                 <td class="text-center">{{ $sub_category['total-base'] }}</td>
                                                                 <td class="text-center">{{ $sub_category['total-points'] }}</td>
-                                                                {{-- <td class="text-center"> {{ ($sub_category['total-points'] == 0) ? 0 :  round(($sub_category['total-points']  / $sub_category['total-base']) * $sub_category['percent'] , 0) }}%</td> --}}
+                                                                <td class="text-center"> {{ ($sub_category['total-points'] == 0) ? 0 :  round(($sub_category['total-points']  / $sub_category['total-base']) * $sub_category['percent'] , 0) }}%</td>
                                                             </tr>
                                                         @endforeach
                                                         <tr>
@@ -77,7 +77,19 @@
                                                                 {{ $category['total-points'] }}
                                                             </td>
                                                             <td class="text-center">
-                                                                {{ $category['percent'] }}%
+                                                                @php
+                                                                    $cumulativePercentage = ($category['total-points'] == 0) ? 0 : round(($category['total-points'] / $category['total-base']) *  $category['percent'], 0);
+                                                                @endphp
+                                                                @if ($category['category'] == 'Food')
+                                                                    @foreach ($category['sub-category'] as $item)
+                                                                        @if ($item['total-base'] > 0)
+                                                                            @php
+                                                                                $cumulativePercentage += round(($item['total-points'] / $item['total-base']) * $item['percent'], 0);
+                                                                            @endphp
+                                                                        @endif
+                                                                    @endforeach
+                                                                @endif
+                                                                {{ $cumulativePercentage }}%
                                                             </td>
                                                         </tr>
                                                     </tbody>
@@ -149,8 +161,8 @@
                                                                     {{ !($form[$category_index]['sub-category'][$sub_category_index]['deviation'][$sub_category_deviation_index]['is-na'] ?? false) ? 'disabled' : '' }}
                                                                     min="{{ ($form[$category_index]['sub-category'][$sub_category_index]['deviation'][$sub_category_deviation_index]['is-na'] ?? false) ? ($sub_category_deviation['is-aon'] ? $sub_category_deviation['base'] ?? 0 : 0) : 0 }}" 
                                                                     max="{{ ($form[$category_index]['sub-category'][$sub_category_index]['deviation'][$sub_category_deviation_index]['is-na'] ?? false) ? ($sub_category_deviation['is-aon'] ? 0 : $sub_category_deviation['base'] ?? 0) : 0 }}"
-                                                                    wire:model="form.{{ $category_index }}.sub-category.{{ $sub_category_index }}.deviation.{{ $sub_category_deviation_index }}.points"
-                                                                    wire:change="onCaculatePoints({{ $category_index }} , {{ $sub_category_index}} , {{ $sub_category_deviation_index}} , $event.target.value)"
+                                                                    wire:model.lazy="form.{{ $category_index }}.sub-category.{{ $sub_category_index }}.deviation.{{ $sub_category_deviation_index }}.points"
+                                                                    wire:change="onCaculatePoints({{ $category_index }}, {{ $sub_category_index }}, {{ $sub_category_deviation_index }}, $event.target.value, $event)"
                                                                     >
                                                                 </div>
                                                                 <div class="col-sm-12 col-md-3  mb-2  {{ !empty($sub_category_deviation['deviation-dropdown']) ? 'col-md-3' : 'col-md-5' }}">
