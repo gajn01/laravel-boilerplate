@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::create('auditor_list', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('audit_date_id');
+            $table->unsignedBigInteger('audit_form_id');
             $table->unsignedBigInteger('auditor_id');
             $table->string('auditor_name');
             $table->timestamps();

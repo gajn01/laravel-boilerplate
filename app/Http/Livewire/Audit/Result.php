@@ -23,9 +23,13 @@ class Result extends Component
     public function mount($form_id = null)
     {
         $this->auditForm = AuditForm::find($form_id);
-        $this->form = json_decode($this->auditForm->audit_result, true);
         $this->store = Store::find($this->auditForm->store_id);
-        $this->onCaculatePoints();
+        if($this->auditForm->audit_result){
+            $this->form = json_decode($this->auditForm->audit_result, true);
+            $this->onCaculatePoints();
+        }else{
+            redirect()->route('audit.forms', ['id' => $this->auditForm->id]);  
+        }
     }
     public function render()
     {
