@@ -35,6 +35,7 @@ class AuditForm extends Component
             $this->form = json_decode($saved_data->template, true);
         }
         $this->onCaculatePoints();
+        $this->onInitialSave();
     }
     public function render()
     {
@@ -164,5 +165,82 @@ class AuditForm extends Component
         ];
         $this->form[$category_index]['sub-category'][$sub_category_index]['deviation'][$sub_sub_category_index]['deviation'][] = $newService;
         // dd($this->form);
+    }
+    public function onInitialSave(){
+        $auditResults = collect($this->form)->flatMap(function ($data) {
+
+            $result = [
+                'category' => 'Food',
+                'total-base' => 94,
+                'total-points' => 94,
+                'percent' => 100,
+                'total-percent' => 100.0
+            ];
+            // dd($result);
+            return collect($data['sub-category'])->flatMap(function ($sub) use ($data) {
+                return collect($sub['deviation'])->map(function ($child) use ($data, $sub) {
+                     $result = [
+                        'category' => $data['category'],
+                        'total-base' =>$data['total-base'],
+                        'total-points' => $data['total-points'],
+                        'percent' => $data['percent'],
+                        'total-percent' => 0,
+                        'sub-category' => $sub['title'],
+                        'sub-total-base' =>$sub['total-base'],
+                        'sub-total-points' => $sub['total-points'],
+                        'sub-percent' => $sub['percent'],
+                        'deviation' => $child['title'],
+                        'is-na' => $child['is-na'] ?? 0,
+                        'is-aon' => $child['is-aon'] ?? 0,
+                        'base' => $child['base'] ?? 0,
+                        'points' => $child['points'] ?? 0,
+                        'remarks' => $child['remarks'] ?? '',
+                        'critical-deviation' => $child['critical-deviation'] ?? '',
+                        'deviation-dropdown' => json_encode($child['deviation-dropdown'] ?? []) ,
+                    ];
+                    return[$result];
+                });
+            });
+        })->flatten(1);
+
+       /*  $auditResults = collect($this->form)->flatMap(function ($data) {
+            return collect($data->sub_category)->flatMap(function ($sub) use ($data) {
+                return collect($sub['sub_sub_category'])->map(function ($child) use ($data, $sub) {
+                    $result = [
+                        'form_id' => $this->auditForm->id,
+                        'category_id' => $data->id,
+                        'category_name' => $data->name,
+                        'sub_category_id' => $sub['id'],
+                        'sub_name' => $sub['name'],
+                        'sub_sub_category_id' => $child['id'],
+                        'sub_sub_name' => $child['name'],
+                        'sub_sub_base_point' => $child['bp'] ?? null,
+                        'sub_sub_point' => $child['bp'] ?? null,
+                        'sub_sub_remarks' =>  null,
+                        'sub_sub_deviation' =>  null,
+                        'sub_sub_file' => $child['tag'] ?? null,
+                        'is_na' => '0'
+                    ];
+                    if (isset($child['sub_sub_sub_category'])) {
+                        return collect($child['sub_sub_sub_category'])->map(function ($label) use ($result) {
+                            return array_merge($result, [
+                                'label_id' => $label['id'],
+                                'label_name' => $label['name'],
+                                'label_base_point' => $label['bp'] ?? null,
+                                'label_point' => $label['bp'] ?? null,
+                                'label_remarks' =>  null,
+                                'label_deviation' =>  null,
+                                'label_file' =>  null,
+                            ]);
+                        });
+                    } else {
+                        return [$result];
+                    }
+                });
+            });
+        })->flatten(1); */
+    
+        dd($auditResults);
+     
     }
 }
