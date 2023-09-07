@@ -5,16 +5,16 @@
            
             @if ($auditForm->audit_status != 2 )
                 <li class="breadcrumb-item"><a href="{{ route('audit') }}">Audit</a></li>
-                <li class="breadcrumb-item"><a href="{{ route('audit.form', [$auditForm->id]) }}">{{ $store->name }}</a>
-                <li class="breadcrumb-item"><a href="{{ route('audit.view.result', [$auditForm->id, $summary->id]) }}">Result</a>
+                <li class="breadcrumb-item"><a href="{{ route('audit.forms', [$auditForm->id]) }}">{{ $store->name }}</a>
+                <li class="breadcrumb-item"><a href="{{ route('audit.result', [$auditForm->id]) }}">Result</a>
             @else
                 <li class="breadcrumb-item"><a href="{{ route('audit.details', [$store->id]) }}">{{ $store->name }}</a>
-                <li class="breadcrumb-item"><a href="{{ route('audit.view.result', [$auditForm->id, $summary->id]) }}">Result</a>
+                <li class="breadcrumb-item"><a href="{{ route('audit.result', [$auditForm->id]) }}">Result</a>
             @endif
             <li class="breadcrumb-item active" aria-current="page">Executive Summary</li>
         </ol>
     </nav>
-    <div class="card mb-3 ">
+    <div class="card mb-2 ">
         <div class="card-body">
             <div class="row">
                 <div class="col-sm-12 col-md-6">
@@ -60,7 +60,7 @@
                                         <label class="form-label">Conducted by:</label>
                                     </td>
                                     <td class="pl-3">
-                                        <input type="text" wire:model="summary.conducted_by" class="form-control" @disabled($store->audit_status ? false :true)>
+                                        <input type="text" value="{{$auditForm->user->name}}"   class="form-control" @disabled($auditForm->audit_status ? false :true)>
                                     </td>
                                 </tr>
                                 <tr class="v-align-items-baseline">
@@ -69,7 +69,7 @@
                                                 class="text-danger">*</span></label>
                                     </td>
                                     <td class="pl-3">
-                                        <input type="text" wire:model="summary.received_by" class="form-control" @disabled($store->audit_status ? false :true)>
+                                        <input type="text" wire:model="summary.received_by" class="form-control" @disabled($auditForm->audit_status ? false :true)>
                                         @error('summary.received_by')
                                             <span class="text-danger mt-1 ">{{ $message }}</span>
                                         @enderror
@@ -81,7 +81,7 @@
                                         <label class="form-label">Date of visit:</label>
                                     </td>
                                     <td class="pl-3">
-                                        <input type="date" wire:model="summary.date_of_visit" class="form-control" @disabled($store->audit_status ? false :true)>
+                                        <input type="date" value="{{$auditForm->date_of_visit}}"  class="form-control" @disabled($auditForm->audit_status ? false :true)>
 
                                     </td>
                                 </tr>
@@ -93,7 +93,7 @@
             </div>
         </div>
     </div>
-    <div class="row g-4 mb-4">
+    <div class="row g-4 mb-2">
         <div class="col-12 col-lg-6">
             <div class="app-card app-card-chart  shadow-sm">
                 <div class="app-card-header p-3">
@@ -101,7 +101,7 @@
                 </div>
                 <div class="app-card-body p-3 p-lg-4">
                     <div class="row justify-content-between align-items-center">
-                        <div class="col-12">
+                        <div class="col-12 mb-3">
                             <table class="table app-table-hover mb-0 text-left ">
                                 <thead>
                                     <tr>
@@ -112,47 +112,41 @@
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    @forelse ($summaryList as $key => $data)
+                                    @forelse ($form as $key => $data)
+                                        @if ($key < 4 )
                                         <tr>
                                             <td class="core_name_total"><a
-                                                    href="#{{ $data['category_name'] }}">{{ $data['category_name'] }}</a>
+                                                    href="#{{ $data['category'] }}">{{ $data['category'] }}</a>
                                             </td>
-                                            <td class="text-center"> {{$data['percent']}} %</td>
-                                            <td class="text-center {{ $data['percentage'] < 80 ? 'text-danger' : '' }}">
-                                                {{ $data['percentage'] }}%</td>
-                                            @php
-                                                $overallScore = $data['percentage'];
-                                            @endphp
-
+                                            <td class="text-center">{{ $data['percent'] }}%</td>
+                                            <td class="text-center">{{ $data['total-percent'] }}%</td>
+                                         
                                             @switch(true)
-                                                @case($overallScore >= 90)
+                                                @case($data['total-percent']>= 90)
                                                     <td class="text-center">A</td>
                                                 @break
 
-                                                @case($overallScore >= 80 && $overallScore <= 89)
+                                                @case($data['total-percent']>= 80 && $data['total-percent']<= 89)
                                                     <td class="text-center">B</td>
                                                 @break
 
-                                                @case($overallScore >= 70 && $overallScore <= 79)
+                                                @case($data['total-percent']>= 70 && $data['total-percent']<= 79)
                                                     <td class="text-center text-danger">C</td>
                                                 @break
 
-                                                @case($overallScore >= 60 && $overallScore <= 69)
+                                                @case($data['total-percent']>= 60 && $data['total-percent']<= 69)
                                                     <td class="text-center text-danger">D</td>
                                                 @break
-
                                                 @default
                                                     <td class="text-center text-danger">E</td>
-                                            @endswitch
+                                                @break
+                                             @endswitch 
                                         </tr>
+                                        @endif
                                     @endforeach
                                 </tbody>
                             </table>
                         </div>
-                    </div>
-                </div>
-                <div class="app-card-body p-3 p-lg-4">
-                    <div class="row justify-content-between align-items-center">
                         <div class="col-12">
                             <table class="table app-table-hover mb-0 text-left ">
                                 <thead>
@@ -164,44 +158,55 @@
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    @forelse ($documentAndPeopleList as $key => $data)
+                                    @php
+                                        $total_base = 0;
+                                        $total_score = 0;
+                                    @endphp
+                                    @forelse ($form as $key => $data)
+                                        @if ($key > 4 )
+
+                                        @php
+                                            $total_base += $data['percent'] ;
+                                            $total_score += $data['total-percent'] ;
+                                        @endphp
                                         <tr>
-                                            <td class="core_name_total"><a href="#{{ $data['category_name'] }}">{{ $data['category_name'] }}</a></td>
-                                            <td class="text-center ">{{ $data['percent'] }}%</td>
-                                            <td class="text-center "> {{ $data['percentage'] }}%</td>
+                                            <td class="core_name_total"><a
+                                                    href="#{{ $data['category'] }}">{{ $data['category'] }}</a>
+                                            </td>
+                                            <td class="text-center">{{ $data['percent'] }}%</td>
+                                            <td class="text-center">{{ $data['total-percent'] }}%</td>
                                             <td></td>
-                                      
                                         </tr>
+                                        @endif
                                     @endforeach
                                     <tr>
-                                        <td class="text-center fw-bold" colspan="2">Total</td>
-                                        <td class="text-center ">{{ collect($documentAndPeopleList)->sum('percentage') }}%</td>
-                                        @php
-                                            $overallScore = collect($documentAndPeopleList)->sum('percentage');
-                                        @endphp
+                                        <td class="text-center fw-bold">Total</td>
+                                        <td class="text-center">{{ $total_base }}%</td>
+                                        <td class="text-center">{{ $total_score }}%</td>
                                         @switch(true)
-                                            @case($overallScore >= 90)
-                                                <td class="text-center">A</td>
-                                            @break
+                                        @case($total_score >= 90)
+                                            <td class="text-center">A</td>
+                                        @break
 
-                                            @case($overallScore >= 80 && $overallScore <= 89)
-                                                <td class="text-center">B</td>
-                                            @break
+                                        @case($total_score >= 80 && $total_score <= 89)
+                                            <td class="text-center">B</td>
+                                        @break
 
-                                            @case($overallScore >= 70 && $overallScore <= 79)
-                                                <td class="text-center text-danger">C</td>
-                                            @break
+                                        @case($total_score >= 70 && $total_score <= 79)
+                                            <td class="text-center text-danger">C</td>
+                                        @break
 
-                                            @case($overallScore >= 60 && $overallScore <= 69)
-                                                <td class="text-center text-danger">D</td>
-                                            @break
-
-                                            @default
-                                                <td class="text-center text-danger">E</td>
-                                        @endswitch
+                                        @case($total_score >= 60 && $total_score <= 69)
+                                            <td class="text-center text-danger">D</td>
+                                        @break
+                                        @default
+                                            <td class="text-center text-danger">E</td>
+                                        @break
+                                     @endswitch 
                                     </tr>
                                 </tbody>
                             </table>
+                            
                         </div>
                     </div>
                 </div>
@@ -251,7 +256,7 @@
             </div>
         </div>
 
-        <div class="col-12">
+  {{--       <div class="col-12">
             <div class="app-card app-card-chart h-100 shadow-sm">
                 <div class="app-card-header p-3">
                     <div class="row justify-content-between align-items-center">
@@ -289,35 +294,37 @@
             </div>
         </div>
     </div>
-    @if ($store->audit_status)
-        <div class="row g-4 mb-4">
-            <div class="col-12">
-                <div class="app-card app-card-chart  shadow-sm">
-                    <div class="app-card-header p-3">
-                        <h4 class="app-card-title">Auditor`s Overall Assessment</h4>
-                    </div>
-                    <div class="app-card-body p-3 p-lg-4">
-                        <div class="row justify-content-between align-items-center">
-                            <div class="col-12 ">
-                                <div class="3">
-                                    <label for="" class="form-label">Areas of Strength</label>
-                                    <textarea class="form-control" wire:model="summary.strength" rows="3"></textarea>
-                                </div>
-                                <div class="mb-3">
-                                    <label for="" class="form-label">Areas for Improvement</label>
-                                    <textarea class="form-control" wire:model="summary.improvement" rows="3"></textarea>
-                                </div>
+
+    --}}
+    @if ($auditForm->audit_status)
+    <div class="row g-4 mb-2">
+        <div class="col-12">
+            <div class="app-card app-card-chart  shadow-sm">
+                <div class="app-card-header p-3">
+                    <h4 class="app-card-title">Auditor`s Overall Assessment</h4>
+                </div>
+                <div class="app-card-body p-3 p-lg-4">
+                    <div class="row justify-content-between align-items-center">
+                        <div class="col-12 ">
+                            <div class="3">
+                                <label for="" class="form-label">Areas of Strength</label>
+                                <textarea class="form-control" wire:model="summary.strength" rows="3"></textarea>
+                            </div>
+                            <div class="mb-3">
+                                <label for="" class="form-label">Areas for Improvement</label>
+                                <textarea class="form-control" wire:model="summary.improvement" rows="3"></textarea>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
-        <div class="row g-2 justify-content-start justify-content-md-end align-items-center">
-            <div class="col-auto mb-3">
-                <a class="btn app-btn-primary"
-                    wire:click="onStartAndComplete(true,'Are you sure?','warning')">Complete</a>
-            </div>
+    </div>
+    <div class="row g-2 justify-content-start justify-content-md-end align-items-center">
+        <div class="col-auto mb-3">
+            <a class="btn app-btn-primary"
+                wire:click="onStartAndComplete(true,'Are you sure?','warning')">Complete</a>
         </div>
+    </div>
     @endif
 </div>

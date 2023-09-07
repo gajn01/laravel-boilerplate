@@ -11,7 +11,7 @@
         <div class="row g-2 justify-content-start justify-content-md-end align-items-center">
             <div class="col-auto mb-3">
                 @if ($auditForm->audit_status != 0)
-                    <a class="btn app-btn-primary" href="{{ route('audit.view.result', [$auditForm->id]) }}"> Result</a>
+                    <a class="btn app-btn-primary" href="{{ route('audit.result', [$auditForm->id]) }}"> Result</a>
                 @endif
             </div>
         </div>
@@ -74,27 +74,7 @@
                                                                 {{ $category['total-points'] }}
                                                             </td>
                                                             <td class="text-center">
-                                                                @php
-                                                                    $cumulativePercentage = ($category['total-points'] == 0) ? 0 : round(($category['total-points'] / $category['total-base']) *  $category['percent'], 0);
-                                                                @endphp
-                                                                @if ($category['category'] == 'Food')
-                                                                    @foreach ($category['sub-category'] as $item)
-                                                                        @if ($item['total-base'] > 0)
-                                                                            @php
-                                                                                $cumulativePercentage += round(($item['total-points'] / $item['total-base']) * $item['percent'], 0);
-                                                                            @endphp
-                                                                        @endif
-                                                                    @endforeach
-                                                                @endif
-                                                                @if(isset($category['critical-deviation']))
-                                                                    @foreach ($category['critical-deviation'] as $key => $critical_deviation) 
-                                                                        @php
-                                                                            $cumulativePercentage -= (int)$critical_deviation['score'] 
-                                                                        @endphp
-                                                                    @endforeach
-                                                                @endif
-                                                                {{ $cumulativePercentage }}%
-
+                                                                {{ $category['total-percent'] }} %
                                                             </td>
                                                         </tr>
                                                     </tbody>
