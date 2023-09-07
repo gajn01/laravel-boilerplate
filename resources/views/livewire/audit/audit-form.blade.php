@@ -435,7 +435,7 @@
                                                                                                 <div class="col-6 mb-2">
                                                                                                     <label>Assembly </label>
                                                                                                     <input type="text" class="form-control"
-                                                                                                    >
+                                                                                                    wire:model="form.{{ $category_index }}.sub-category.{{ $sub_category_index }}.deviation.{{ $sub_category_deviation_index }}.deviation.{{$sub_sub_category_deviation_index}}.assembly">
                                                                                                 </div>
                                                                                                 <div class="col-6 mb-2">
                                                                                                     <label>Point</label>
@@ -548,7 +548,8 @@
                                                                                             <div class="col-6 mb-2">
                                                                                                 <label>Assembly </label>
                                                                                                 <input type="text" class="form-control"
-                                                                                                >
+                                                                                                wire:model="form.{{ $category_index }}.sub-category.{{ $sub_category_index }}.deviation.{{ $sub_category_deviation_index }}.deviation.{{$sub_sub_category_deviation_index}}.assembly">
+
                                                                                             </div>
                                                                                             <div class="col-6 mb-2">
                                                                                                 <label>Point</label>

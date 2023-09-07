@@ -6,7 +6,6 @@ use Livewire\Component;
 use App\Models\AuditForm as AuditFormModel;
 use App\Models\Store;
 use App\Models\SanitaryModel;
-use App\Models\StoreRecord;
 use App\Models\AuditTemplate;
 
 class AuditForm extends Component
@@ -27,7 +26,7 @@ class AuditForm extends Component
         $this->sanitary_list = SanitaryModel::get();
         $this->form_id = $id;   
         $this->auditForm = AuditFormModel::find($id);
-        $this->store = Store::find($this->auditForm->store_id)->first();
+        $this->store = Store::find($this->auditForm->store_id);
         if($this->auditForm->audit_result){
             $this->form = json_decode($this->auditForm->audit_result, true);
         }else{
@@ -44,7 +43,6 @@ class AuditForm extends Component
     public function updatedForm($value, $key)
     {
         AuditFormModel::find($this->form_id)->update(['audit_status' => 1,'audit_result' => $this->form]);
-
     }
     public function onCaculatePoints()
     {
