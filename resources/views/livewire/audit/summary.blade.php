@@ -60,7 +60,7 @@
                                         <label class="form-label">Conducted by:</label>
                                     </td>
                                     <td class="pl-3">
-                                        <input type="text" value="{{$auditForm->user->name}}"   class="form-control" @disabled($auditForm->audit_status ? false :true)>
+                                        <input type="text" value="{{$auditForm->user->name}}"   class="form-control" @disabled($auditForm->audit_status != 2 ? false :true)>
                                     </td>
                                 </tr>
                                 <tr class="v-align-items-baseline">
@@ -69,8 +69,8 @@
                                                 class="text-danger">*</span></label>
                                     </td>
                                     <td class="pl-3">
-                                        <input type="text" wire:model="summary.received_by" class="form-control" @disabled($auditForm->audit_status ? false :true)>
-                                        @error('summary.received_by')
+                                        <input type="text" wire:model="auditForm.received_by" class="form-control" @disabled($auditForm->audit_status != 2 ? false :true)>
+                                        @error('auditForm.received_by')
                                             <span class="text-danger mt-1 ">{{ $message }}</span>
                                         @enderror
                                     </td>
@@ -81,8 +81,7 @@
                                         <label class="form-label">Date of visit:</label>
                                     </td>
                                     <td class="pl-3">
-                                        <input type="date" value="{{$auditForm->date_of_visit}}"  class="form-control" @disabled($auditForm->audit_status ? false :true)>
-
+                                        <input type="date" value="{{$auditForm->date_of_visit}}"  class="form-control" @disabled($auditForm->audit_status != 2 ? false :true)>
                                     </td>
                                 </tr>
 
@@ -255,8 +254,7 @@
                 </div>
             </div>
         </div>
-
-  {{--       <div class="col-12">
+        <div class="col-12">
             <div class="app-card app-card-chart h-100 shadow-sm">
                 <div class="app-card-header p-3">
                     <div class="row justify-content-between align-items-center">
@@ -276,13 +274,47 @@
                             </tr>
                         </thead>
                         <tbody>
-                            @forelse ($criticalDeviationResultList as $deviation)
-                                <tr>
-                                    <td>{{ $deviation->category->name }}</td>
-                                    <td>{{ $deviation->CriticalDeviationMenu->label }}</td>
-                                    <td>{{ $deviation->remarks }}</td>
-                                    <td>{{ $deviation->score }}</td>
-                                </tr>
+                            @forelse ($form as $category)
+                                @if (isset($category['critical-deviation']))
+                                    @foreach ($category['critical-deviation'] as $critical_deviation)
+                                        @if ( $critical_deviation['sd'])
+                                            <tr>
+                                                <td>{{ $category['category'] }}</td>
+                                                <td>{{ $critical_deviation['title'] }}</td>
+                                                <td>{{ $critical_deviation['remarks'] }}</td>
+                                                <td>{{ $critical_deviation['score'] }}</td>
+                                            </tr>
+                                        @elseif( $critical_deviation['location'])
+                                            <tr>
+                                                <td>{{ $category['category'] }}</td>
+                                                <td>{{ $critical_deviation['title'] }}</td>
+                                                <td>{{ $critical_deviation['remarks'] }}</td>
+                                                <td>{{ $critical_deviation['score'] }}</td>
+                                            </tr>
+                                        @elseif( isset($critical_deviation['product'])  && $critical_deviation['product'] )
+                                            <tr>
+                                                <td>{{ $category['category'] }}</td>
+                                                <td>{{ $critical_deviation['title'] }}</td>
+                                                <td>{{ $critical_deviation['remarks'] }}</td>
+                                                <td>{{ $critical_deviation['score'] }}</td>
+                                            </tr>
+                                        @elseif( $critical_deviation['remarks'])
+                                            <tr>
+                                                <td>{{ $category['category'] }}</td>
+                                                <td>{{ $critical_deviation['title'] }}</td>
+                                                <td>{{ $critical_deviation['remarks'] }}</td>
+                                                <td>{{ $critical_deviation['score'] }}</td>
+                                            </tr>
+                                        @elseif( $critical_deviation['dropdown'])
+                                            <tr>
+                                                <td>{{ $category['category'] }}</td>
+                                                <td>{{ $critical_deviation['title'] }}</td>
+                                                <td>{{ $critical_deviation['remarks'] }}</td>
+                                                <td>{{ $critical_deviation['score'] }}</td>
+                                            </tr>
+                                        @endif
+                                    @endforeach
+                                @endif
                             @empty
                                 <tr>
                                     <td class="text-danger text-center" colspan="4">No Critical Deviation</td>
@@ -294,8 +326,7 @@
             </div>
         </div>
     </div>
-
-    --}}
+   
     @if ($auditForm->audit_status)
     <div class="row g-4 mb-2">
         <div class="col-12">
@@ -308,11 +339,11 @@
                         <div class="col-12 ">
                             <div class="3">
                                 <label for="" class="form-label">Areas of Strength</label>
-                                <textarea class="form-control" wire:model="summary.strength" rows="3"></textarea>
+                                <textarea class="form-control" wire:model="auditForm.strength" @disabled($auditForm->audit_status != 2 ? false :true) rows="3"></textarea>
                             </div>
                             <div class="mb-3">
                                 <label for="" class="form-label">Areas for Improvement</label>
-                                <textarea class="form-control" wire:model="summary.improvement" rows="3"></textarea>
+                                <textarea class="form-control" wire:model="auditForm.improvement" @disabled($auditForm->audit_status != 2 ? false :true) rows="3"></textarea>
                             </div>
                         </div>
                     </div>
@@ -320,11 +351,13 @@
             </div>
         </div>
     </div>
-    <div class="row g-2 justify-content-start justify-content-md-end align-items-center">
-        <div class="col-auto mb-3">
-            <a class="btn app-btn-primary"
-                wire:click="onStartAndComplete(true,'Are you sure?','warning')">Complete</a>
-        </div>
-    </div>
+        @if ($auditForm->audit_status != 2 )
+            <div class="row g-2 justify-content-start justify-content-md-end align-items-center">
+                <div class="col-auto mb-3">
+                    <a class="btn app-btn-primary"
+                        wire:click="onStartAndComplete(true,'Are you sure?','warning')">Complete</a>
+                </div>
+            </div>
+        @endif
     @endif
 </div>

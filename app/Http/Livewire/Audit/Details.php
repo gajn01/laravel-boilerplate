@@ -7,6 +7,7 @@ use App\Models\Store as StoreModel;
 use App\Models\AuditDate as AuditDateModel;
 use App\Models\User as UserModel;
 use App\Models\Summary as SummaryModel;
+use App\Models\AuditForm;
 use App\Helpers\CustomHelper;
 use Livewire\WithPagination;
 use Illuminate\Support\Facades\DB;
@@ -19,6 +20,7 @@ class Details extends Component
     use WithPagination;
     protected $paginationTheme = 'bootstrap';
     protected $listeners = ['alert-sent' => 'onDelete'];
+    public $auditForm;
     public $store_id;
     public $store;
     public $auditor_name;
@@ -44,11 +46,12 @@ class Details extends Component
     }
     public function render()
     {
-        $summary = SummaryModel::where('store_id', $this->store_id)->get();
+
+        $audit_record = AuditForm::where('store_id', $this->store_id)->get();
         $data = UserModel::all('*')
             ->where('user_level', '!=', '0');
         $this->store = StoreModel::find($this->store_id);
-        return view('livewire.audit.details', ['user_list' => $data, 'summary_list' => $summary])->extends('layouts.app');
+        return view('livewire.audit.details', ['user_list' => $data, 'summary_list' => $audit_record])->extends('layouts.app');
     }
     public function onUpdate($boolean)
     {

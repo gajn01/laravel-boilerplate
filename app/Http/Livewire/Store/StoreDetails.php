@@ -48,34 +48,10 @@ class StoreDetails extends Component
             ->where('user_level', '!=', '0');
         $startDate = null;
         $endDate = null;
-      /*   if ($this->date_filter == 'weekly') {
-            $startDate = Carbon::now()->startOfWeek();
-            $endDate = Carbon::now()->endOfWeek();
-        } elseif ($this->date_filter == 'monthly') {
-            $startDate = Carbon::now()->startOfMonth();
-            $endDate = Carbon::now()->endOfMonth();
-        }
-        if ($startDate && $endDate) {
-            $schedule = DB::table('audit_date')
-                ->join('user', 'audit_date.auditor', '=', 'user.id')
-                ->join('stores', 'audit_date.store', '=', 'stores.id')
-                ->select('audit_date.*', 'stores.name as store_name','user.name as auditor_name')
-                ->where('audit_date.store', $this->store_id)
-                ->whereBetween('audit_date.audit_date', [$startDate, $endDate])
-                ->orderBy('audit_date', 'asc')
-                ->paginate($this->limit);
-        } else {
-            $schedule = DB::table('audit_date')
-            ->join('user', 'audit_date.auditor', '=', 'user.id')
-            ->join('stores', 'audit_date.store', '=', 'stores.id')
-                ->select('audit_date.*', 'stores.name as store_name', 'user.name as auditor_name')
-                ->where('audit_date.store', $this->store_id)
-                ->where('audit_date.audit_date', $this->date_filter)
-                ->orderBy('audit_date', 'asc')
-                ->paginate($this->limit);
-        } */
+      
         $this->store = StoreModel::find($this->store_id);
-        return view('livewire.store.store-details', ['user_list' => $data, 'summary_list' => $summary])->extends('layouts.app');
+        dd($this->store)
+;        return view('livewire.store.store-details', ['user_list' => $data, 'summary_list' => $summary])->extends('layouts.app');
     }
     public function onUpdate($boolean)
     {

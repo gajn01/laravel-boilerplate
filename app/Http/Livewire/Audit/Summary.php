@@ -26,6 +26,14 @@ class Summary extends Component
     public $form;
     public $store;
     public  $auditForm;
+    protected function rules()
+    {
+        return [
+            'auditForm.received_by' => 'required',
+            'auditForm.strength' => 'nullable',
+            'auditForm.improvement' => 'nullable',
+        ];
+    }
     public function __construct()
     {
         $this->timezone = new DateTimeZone('Asia/Manila');
@@ -35,7 +43,6 @@ class Summary extends Component
   
     public function render()
     {
-      
         return view('livewire.audit.summary')->extends('layouts.app');
     }
     public function mount($form_id = null)
@@ -44,9 +51,7 @@ class Summary extends Component
         $this->form = json_decode($this->auditForm->audit_result, true);
         $this->store = Store::find($this->auditForm->store_id);
         $this->onCaculatePoints();
-        // dd($this->form);
     }
-
     public function onCaculatePoints()
     {
         foreach ($this->form as $categoryIndex => &$category) {
@@ -116,6 +121,11 @@ class Summary extends Component
     }
     public function onComplete()
     {
+        $this->auditForm->audit_status = 2;
+        $this->auditForm->save();
+        $this->reset();
+        $this->onAlert(false, 'Success', 'Audit record saved successfully!', 'success');
+        redirect()->route('audit.details', ['store_id' => $this->store->id]);  
         // $this->validate();
        /*  $this->summary->save();
         $this->store->audit_status = 0;
