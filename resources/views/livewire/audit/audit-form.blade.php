@@ -11,6 +11,8 @@
         <div class="row g-2 justify-content-start justify-content-md-end align-items-center">
             <div class="col-auto mb-3">
                 @if ($auditForm->audit_status != 0)
+                    {{-- <a class="btn app-btn-primary" wire:click="onSave"> Save</a> --}}
+
                     <a class="btn app-btn-primary" href="{{ route('audit.result', [$auditForm->id]) }}"> Result</a>
                 @endif
             </div>
@@ -74,7 +76,7 @@
                                                                 {{ $category['total-points'] }}
                                                             </td>
                                                             <td class="text-center">
-                                                                {{ $category['total-percent'] }} %
+                                                                {{ $category['total-percent'] }}%
                                                             </td>
                                                         </tr>
                                                     </tbody>

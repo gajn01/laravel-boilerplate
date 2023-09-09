@@ -35,17 +35,21 @@ class AuditForm extends Component
             $this->form = json_decode($saved_data->template, true);
         }
         $this->onCaculatePoints();
-        $this->onInitialSave();
     }
     public function render()
     {
-       $this->onCaculatePoints();
         return view('livewire.audit.audit-form')->extends('layouts.app');
     }
     public function updatedForm($value, $key)
     {
+        $this->onCaculatePoints();
         AuditFormModel::find($this->form_id)->update(['audit_status' => 1,'audit_result' => $this->form]);
-        // dd($this->form);
+    }
+    public function onSave(){
+        session_start();
+        if(isset($_SESSION['form'])){
+            AuditFormModel::find($this->form_id)->update(['audit_status' => 1,'audit_result' => $this->form]);
+        }
     }
     public function onCaculatePoints()
     {
@@ -118,6 +122,7 @@ class AuditForm extends Component
                 1
             );
         }
+        $this->onCaculatePoints();
     }
     public function onAddCashier($category_index, $sub_category_index, $sub_sub_category_index)
     {
@@ -139,6 +144,8 @@ class AuditForm extends Component
             'remarks' => '',
         ];
         $this->form[$category_index]['sub-category'][$sub_category_index]['deviation'][$sub_sub_category_index]['deviation'][] = $newService;
+        $this->onCaculatePoints();
+
         // dd($this->form);
     }
     public function onAddServer($category_index, $sub_category_index, $sub_sub_category_index)
@@ -164,11 +171,10 @@ class AuditForm extends Component
             'remarks' => '',
         ];
         $this->form[$category_index]['sub-category'][$sub_category_index]['deviation'][$sub_sub_category_index]['deviation'][] = $newService;
-        // dd($this->form);
+        $this->onCaculatePoints();
     }
     public function onInitialSave(){
-        $auditResults = collect($this->form)->flatMap(function ($data) {
-
+       return  $auditResults = collect($this->form)->flatMap(function ($data) {
             $result = [
                 'category' => 'Food',
                 'total-base' => 94,
@@ -201,7 +207,7 @@ class AuditForm extends Component
                     return[$result];
                 });
             });
-        })->flatten(1);
+        });
 
        /*  $auditResults = collect($this->form)->flatMap(function ($data) {
             return collect($data->sub_category)->flatMap(function ($sub) use ($data) {
@@ -240,7 +246,6 @@ class AuditForm extends Component
             });
         })->flatten(1); */
     
-        dd($auditResults);
      
     }
 }

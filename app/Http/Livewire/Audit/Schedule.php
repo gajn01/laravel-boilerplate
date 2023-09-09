@@ -184,7 +184,7 @@ class Schedule extends Component
         $this->auditor_id = null;
         if($id){
             $this->auditForm = AuditForm::find($id);
-            $this->auditor_list = AuditorListModel::where('audit_date_id', $id)->get();
+            $this->auditor_list = AuditorListModel::where('audit_form_id', $id)->get();
         }
         $this->resetValidation();
         $this->modalTitle = $id ? 'Update' : 'Add';
