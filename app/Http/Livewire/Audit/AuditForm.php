@@ -37,7 +37,18 @@ class AuditForm extends Component
         $this->onCaculatePoints();
     }
     public function render()
-    {
+    { 
+    
+        $this->auditForm = AuditFormModel::find($this->form_id);
+        $this->store = Store::find($this->auditForm->store_id);
+        if($this->auditForm->audit_result){
+            $this->form = json_decode($this->auditForm->audit_result, true);
+            // dd($this->form);
+        }else{
+            $saved_data = AuditTemplate::where('type', $this->store->type)->first();
+            $this->form = json_decode($saved_data->template, true);
+        }
+        $this->onCaculatePoints();
         return view('livewire.audit.audit-form')->extends('layouts.app');
     }
     public function updatedForm($value, $key)
@@ -65,7 +76,7 @@ class AuditForm extends Component
                         foreach ($deviation['deviation'] as $key => $subCategoryDeviation) {
                             if (isset($subCategoryDeviation['is-na']) && $subCategoryDeviation['is-na'] == 1) {
                                 $subCategory['total-base'] += $subCategoryDeviation['base'] ?? 0;
-                                $subCategory['total-points'] += $subCategoryDeviation['points'] ?? 0;
+                                $subCategory['total-points'] += (int)$subCategoryDeviation['points'] ?? 0;
                             } else {
                                 $subCategory['total-base'] += $subCategoryDeviation['base_assembly_point'] ?? 0;
                                 $subCategory['total-base'] += $subCategoryDeviation['base_tat_point'] ?? 0;
@@ -123,6 +134,8 @@ class AuditForm extends Component
             );
         }
         $this->onCaculatePoints();
+        AuditFormModel::find($this->form_id)->update(['audit_status' => 1,'audit_result' => $this->form]);
+
     }
     public function onAddCashier($category_index, $sub_category_index, $sub_sub_category_index)
     {
@@ -145,6 +158,7 @@ class AuditForm extends Component
         ];
         $this->form[$category_index]['sub-category'][$sub_category_index]['deviation'][$sub_sub_category_index]['deviation'][] = $newService;
         $this->onCaculatePoints();
+        AuditFormModel::find($this->form_id)->update(['audit_status' => 1,'audit_result' => $this->form]);
 
         // dd($this->form);
     }
@@ -171,7 +185,9 @@ class AuditForm extends Component
             'remarks' => '',
         ];
         $this->form[$category_index]['sub-category'][$sub_category_index]['deviation'][$sub_sub_category_index]['deviation'][] = $newService;
-        $this->onCaculatePoints();
+        $this->onCaculatePoints(); 
+        AuditFormModel::find($this->form_id)->update(['audit_status' => 1,'audit_result' => $this->form]);
+
     }
     public function onInitialSave(){
        return  $auditResults = collect($this->form)->flatMap(function ($data) {

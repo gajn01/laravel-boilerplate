@@ -13,6 +13,7 @@
                 @if ($auditForm->audit_status != 0)
                     {{-- <a class="btn app-btn-primary" wire:click="onSave"> Save</a> --}}
 
+                
                     <a class="btn app-btn-primary" href="{{ route('audit.result', [$auditForm->id]) }}"> Result</a>
                 @endif
             </div>
@@ -31,7 +32,7 @@
             <p class="m-0 p-2">No category found!</p>
         @endforelse
     </nav>
-    <div class="tab-content" id="audit-form-tab-content">
+    <div class="tab-content" id="audit-form-tab-content" wire:poll.1s>
         @forelse ($form as $category_index => $category)
             <div class="tab-pane fade show {{ $category_index == $active_index ? 'active' : '' }}" id="cat{{ $category_index }}" role="tabpanel" aria-labelledby="cat{{ $category_index }}-tab">
                 <div class="app-card app-card-orders-table shadow-sm mb-5 bg-none">
@@ -245,7 +246,11 @@
                                                                             {{-- @disabled( $store->audit_status == 0 ? true : false) --}}
                                                                             wire:model="form.{{ $category_index }}.sub-category.{{ $sub_category_index }}.deviation.{{ $sub_category_deviation_index }}.is-na"
                                                                             @if($form[$category_index]['sub-category'][$sub_category_index]['deviation'][$sub_category_deviation_index]['is-na'] ?? false) checked @endif >
-                                                                            <label class="form-check-label "  @class(['pt-4' => $sub_category_deviation_index == 0 ]) for="toggle-switch">  {{$sub_category_deviation['title']}}</label>
+                                                                            <label class="form-check-label "  @class(['pt-4' => $sub_category_deviation_index == 0 ]) for="toggle-switch">  {{$sub_category_deviation['title']}}
+                                                                                @if ( $form[$category_index]['sub-category'][$sub_category_index]['deviation'][$sub_category_deviation_index]['is-aon'] ?? false)
+                                                                                    <span class="text-warning fw-bold text-lg"> *</span> 
+                                                                                @endif
+                                                                            </label>
                                                                     </div>
                                                                 </div>
                                                                 {{-- Deviation bp,points,remarks --}}
@@ -320,7 +325,6 @@
                                                                                         </div>
                                                                                     @endif
                                                                                 </div>
-                                                                        
                                                                                 <div class="row mb-3">
                                                                                     <div class="col-sm-12 col-md-5 col-lg-5">
                                                                                         <div class="form-check form-switch">
@@ -328,7 +332,13 @@
                                                                                                 {{-- @disabled( $store->audit_status == 0 ? true : false) --}}
                                                                                                 wire:model="form.{{ $category_index }}.sub-category.{{ $sub_category_index }}.deviation.{{ $sub_category_deviation_index }}.deviation.{{$sub_sub_category_deviation_index}}.is-na"
                                                                                                 @if($form[$category_index]['sub-category'][$sub_category_index]['deviation'][$sub_category_deviation_index]['deviation'][$sub_sub_category_deviation_index]['is-na'] ?? false) checked @endif >
-                                                                                                <label class="form-check-label "  @class(['pt-4' => $sub_sub_category_deviation_index == 0 ]) for="toggle-switch">  {{$sub_sub_category_deviation['title']}}</label>
+                                                                                                <label class="form-check-label "  @class(['pt-4' => $sub_sub_category_deviation_index == 0 ]) for="toggle-switch">  {{$sub_sub_category_deviation['title']}}
+                                                                                                    @if ($sub_sub_category_deviation['is-aon'] )
+                                                                                                        <span class="text-warning fw-bold text-lg"> *</span> 
+                                                                                                    @endif
+                                                                                                </label>
+                                                                                                @if ($form[$category_index]['sub-category'][$sub_category_index]['deviation'][$sub_category_deviation_index]['deviation'][$sub_sub_category_deviation_index]['is-aon'] ?? false)
+                                                                                                @endif
                                                                                         </div>
                                                                                     </div>
                                                                                     <div class="col-sm-12 col-md-1">

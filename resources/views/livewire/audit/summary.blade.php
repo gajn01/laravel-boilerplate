@@ -112,7 +112,7 @@
                                 </thead>
                                 <tbody>
                                     @forelse ($form as $key => $data)
-                                        @if ($key < 4 )
+                                        @if ($key < 5 )
                                         <tr>
                                             <td class="core_name_total"><a
                                                     href="#{{ $data['category'] }}">{{ $data['category'] }}</a>
