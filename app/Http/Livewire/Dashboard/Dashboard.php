@@ -9,6 +9,7 @@ use DateTimeZone;
 use App\Models\Store as StoreModel;
 use App\Models\Summary as SummaryModel;
 use App\Models\AuditDate;
+use App\Models\AuditForm;
 class Dashboard extends Component
 {
     private $timezone,$time,$year;
@@ -38,6 +39,6 @@ class Dashboard extends Component
     }
 
     public function getSchedule(){
-        return AuditDate::where('audit_date',$this->date_today)->paginate(5);
+        return AuditForm::where('audit_date',$this->date_today)->paginate(5);
     }
 }

@@ -6,8 +6,6 @@ use Illuminate\Support\Facades\Gate;
 use App\Models\User;
 use App\Models\AuditDate as AuditDateModel;
 use App\Models\AuditorList as AuditorListModel;
-
-
 use App\Helpers\CustomHelper;
 use Illuminate\Support\Facades\Auth;
 use Livewire\WithPagination;

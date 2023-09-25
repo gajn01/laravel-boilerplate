@@ -108,9 +108,9 @@
                                     <tbody>
                                         @forelse ($schedule as $item)
                                             <tr>
-                                                <td class="cell">{{ $item->store->name }}</td>
-                                                <td class="cell">{{ $item->store->TypeString }}</td>
-                                                <td class="cell">{{ $item->store->area }}</td>
+                                                <td class="cell">{{ $item->stores->name }}</td>
+                                                <td class="cell">{{ $item->stores->TypeString }}</td>
+                                                <td class="cell">{{ $item->stores->area }}</td>
                                                 <td class="cell">
                                                     @foreach ($item->auditors as $name)
                                                         {{ $name->auditor_name }}
