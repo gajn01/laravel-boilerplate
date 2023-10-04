@@ -51,17 +51,15 @@ Route::middleware(['auth','verified'])->group(function () {
     Route::get('/store/details/{store_id?}', StoreDetails::class)->name('store-details');
     Route::get('/store/records', StoreRecordList::class)->name('store-records');
     Route::get('/store/capa', Capa::class)->name('capa');
-    Route::get('/store/capa/result/{id}', Capa::class)->name('capa-result');
-
+    Route::get('/store/capa/result/{id}', CapaResult::class)->name('capa-result');
      /* Audit */
      Route::get('/audit', Audit::class)->name('audit');
      Route::get('/store/details/{store_id?}', AuditDetails::class)->name('audit.details');
-     
      Route::get('/audit/forms/{id}', AuditFormTemplate::class)->name('audit.forms');
      Route::get('/audit/form/{id}', AuditForm::class)->name('audit.form');
      Route::prefix('result/{form_id?}')->group(function () {
-         Route::get('/', AuditResult::class)->name('audit.result');
-         Route::get('/summary', AuditSummary::class)->name('audit.summary');
+        Route::get('/', AuditResult::class)->name('audit.result');
+        Route::get('/summary', AuditSummary::class)->name('audit.summary');
      });
     /* Settings */
     Route::get('/settings/category', Category::class)->name('category');

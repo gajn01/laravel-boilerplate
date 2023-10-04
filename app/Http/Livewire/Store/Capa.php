@@ -6,38 +6,22 @@ use Livewire\Component;
 use League\Csv\Reader;
 use Illuminate\Http\Request;
 use App\Models\Store;
-use App\Models\SubCategory;
-use App\Models\SubCategoryLabel;
-use App\Models\SubSubCategoryLabel;
-
+use Illuminate\Support\Facades\Gate;
+use App\Models\Capa as CapaModel;
 class Capa extends Component
 {
-    use WithFileUploads;
-    public $file;
+   
+    public $displayPage = 10;
     public function render()
     {
-        return view('livewire.store.capa')->extends('layouts.app');
+        $capaList = $this->getDataList();
+        return view('livewire.store.capa',['capaList' => $capaList])->extends('layouts.app');
     }
-    public function onImportFile(Request $request)
+    public function mount()
     {
-        $this->validate([
-            'file' => 'required|file|mimes:csv,txt',
-        ]);
-        $csv = Reader::createFromPath($this->file->path(), 'r');
-        $csv->setHeaderOffset(0);
-        $headers = $csv->getHeader();
-        $rows = $csv->getRecords();
-
-        $dataToInsert = [];
-        foreach ($rows as $row) {
-            $dataToInsert[] = array_combine($headers, $row); // Add each row as an associative array to the data array
-        }
-        SubSubCategoryLabel::insert($dataToInsert);
-        /* if (!empty($dataToInsert)) {
-            $existingIds = Store::pluck('id')->toArray();
-            $dataToInsert = array_filter($dataToInsert, function ($item) use ($existingIds) {
-                return !in_array($item['id'], $existingIds);
-            });
-        } */
+     
+    }
+    public function getDataList(){
+        return CapaModel::paginate($this->displayPage);
     }
 }

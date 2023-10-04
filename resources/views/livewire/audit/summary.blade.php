@@ -2,7 +2,6 @@
 <div class="">
     <nav aria-label="breadcrumb">
         <ol class="breadcrumb">
-           
             @if ($auditForm->audit_status != 2 )
                 <li class="breadcrumb-item"><a href="{{ route('audit') }}">Audit</a></li>
                 <li class="breadcrumb-item"><a href="{{ route('audit.forms', [$auditForm->id]) }}">{{ $store->name }}</a>
@@ -14,6 +13,16 @@
             <li class="breadcrumb-item active" aria-current="page">Executive Summary</li>
         </ol>
     </nav>
+    <div class="page-utilities mb-2" >
+        <div class="row g-2 justify-content-start justify-content-md-end align-items-center">
+            <div class="col-auto mb-3">
+                @if ($auditForm->audit_status == 2)
+                    {{-- <a class="btn app-btn-primary" wire:click="onSave"> Save</a> --}}
+                    <a class="btn app-btn-primary" href="{{ route('audit.result', [$auditForm->id]) }}"> Start CAPA</a>
+                @endif
+            </div>
+        </div>
+    </div>
     <div class="card mb-2 ">
         <div class="card-body">
             <div class="row">
@@ -53,14 +62,19 @@
                 <div class="col-sm-12 col-md-6">
                     <div class="table-responsive webkit-right">
                         <table class="">
+                            @php
+                                $isDisabled = true;
+                                if($auditForm->audit_status != 2 && auth()->user()->user_type <= 1 ){
+                                    $isDisabled = false;
+                                }
+                            @endphp
                             <tbody>
-
                                 <tr class="v-align-items-baseline">
                                     <td>
                                         <label class="form-label">Conducted by:</label>
                                     </td>
                                     <td class="pl-3">
-                                        <input type="text" value="{{$auditForm->user->name}}"   class="form-control" @disabled($auditForm->audit_status != 2 ? false :true)>
+                                        <input type="text" value="{{$auditForm->user->name}}"   class="form-control"  @disabled($isDisabled)>
                                     </td>
                                 </tr>
                                 <tr class="v-align-items-baseline">
@@ -69,22 +83,20 @@
                                                 class="text-danger">*</span></label>
                                     </td>
                                     <td class="pl-3">
-                                        <input type="text" wire:model="auditForm.received_by" class="form-control" @disabled($auditForm->audit_status != 2 ? false :true)>
+                                        <input type="text" wire:model="auditForm.received_by" class="form-control" @disabled($isDisabled)>
                                         @error('auditForm.received_by')
                                             <span class="text-danger mt-1 ">{{ $message }}</span>
                                         @enderror
                                     </td>
-
                                 </tr>
                                 <tr class="v-align-items-baseline">
                                     <td>
                                         <label class="form-label">Date of visit:</label>
                                     </td>
                                     <td class="pl-3">
-                                        <input type="date" value="{{$auditForm->date_of_visit}}"  class="form-control" @disabled($auditForm->audit_status != 2 ? false :true)>
+                                        <input type="date" value="{{$auditForm->date_of_visit}}"  class="form-control" @disabled($isDisabled)>
                                     </td>
                                 </tr>
-
                             </tbody>
                         </table>
                     </div>
@@ -339,11 +351,11 @@
                         <div class="col-12 ">
                             <div class="3">
                                 <label for="" class="form-label">Areas of Strength</label>
-                                <textarea class="form-control" wire:model="auditForm.strength" @disabled($auditForm->audit_status != 2 ? false :true) rows="3"></textarea>
+                                <textarea class="form-control" wire:model="auditForm.strength" @disabled($isDisabled) rows="3"></textarea>
                             </div>
                             <div class="mb-3">
                                 <label for="" class="form-label">Areas for Improvement</label>
-                                <textarea class="form-control" wire:model="auditForm.improvement" @disabled($auditForm->audit_status != 2 ? false :true) rows="3"></textarea>
+                                <textarea class="form-control" wire:model="auditForm.improvement" @disabled($isDisabled) rows="3"></textarea>
                             </div>
                         </div>
                     </div>
@@ -351,7 +363,7 @@
             </div>
         </div>
     </div>
-        @if ($auditForm->audit_status != 2 )
+        @if ($auditForm->audit_status != 2 && auth()->user()->user_type <= 1 )
             <div class="row g-2 justify-content-start justify-content-md-end align-items-center">
                 <div class="col-auto mb-3">
                     <a class="btn app-btn-primary"

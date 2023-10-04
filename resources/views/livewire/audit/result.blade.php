@@ -1,14 +1,14 @@
 @section('title', 'Audit Result')
-<div class="">
+<div>
     <nav aria-label="breadcrumb">
         <ol class="breadcrumb">
-            @if ($auditForm->audit_status != 2 )
+            @if ($auditForm->audit_status != 2  )
                 <li class="breadcrumb-item"><a href="{{ route('audit') }}">Audit</a></li>
                 <li class="breadcrumb-item"><a href="{{ route('audit.forms', [$auditForm->id]) }}">{{ $store->name }}</a>
             @else
                 <li class="breadcrumb-item"><a href="{{ route('audit.details', [$store->id]) }}">{{ $store->name }}</a>
             @endif
-            <li class="breadcrumb-item active" aria-current="page">Result</li>
+            <li class="breadcrumb-item active " aria-current="page">Result</li>
         </ol>
     </nav>
     <div class="page-utilities mb-3">
@@ -18,7 +18,7 @@
             </div>
         </div>
     </div>
-    <nav wire:ignore id="audit-form-tab"class="audit-form-tab app-nav-tabs nav shadow-sm flex-column flex-sm-row mb-4 justify-content-center nav-sticky">
+    <nav wire:ignore id="audit-form-tab" class="audit-form-tab app-nav-tabs nav shadow-sm flex-column flex-sm-row mb-4 justify-content-center nav-sticky">
         @forelse ($form as $key => $data)
             <a @class(['flex-sm-fill','text-sm-center','nav-link','active' => $key == $active_index,
             ]) id="cat{{ $key}}-tab" data-bs-toggle="tab"

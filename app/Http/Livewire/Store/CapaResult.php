@@ -8,6 +8,6 @@ class CapaResult extends Component
 {
     public function render()
     {
-        return view('livewire.store.capa-result');
+        return view('livewire.store.capa-result')->extends('layouts.app');
     }
 }

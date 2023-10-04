@@ -23,7 +23,6 @@ class AuditForm extends Component
     }
     public function mount($id = null)
     {
-        //    dd( json_encode($this->form));
         $this->sanitary_list = SanitaryModel::get();
         $this->form_id = $id;
         $this->auditForm = AuditFormModel::find($id);
@@ -134,7 +133,6 @@ class AuditForm extends Component
         } catch (QueryException $e) {
             $this->onAlert(false, 'Error', $e->getMessage(), 'error');
         }
-
     }
     public function onRemoveService($category_index, $sub_category_index, $sub_sub_category_index, $sub_sub_sub_category_index)
     {

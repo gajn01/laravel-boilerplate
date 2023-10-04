@@ -15,6 +15,7 @@
                 <table class="table app-table-hover mb-0 text-left">
                     <thead>
                         <tr>
+                            <th class="cell">Audit ID </th>
                             <th class="cell">Date </th>
                             <th class="cell">Conducted by</th>
                             <th class="cell">Recieved by</th>
@@ -26,6 +27,7 @@
                     <tbody>
                         @forelse ($summary_list as $item)
                         <tr>
+                            <td class="cell">{{ $item->id }}</td>
                             <td class="cell">{{ \Carbon\Carbon::parse($item->date_of_visit)->format('F d Y') }}</td>
                             <td class="cell">{{ $item->user->name }}</td>
                             <td class="cell">{{ $item->received_by ? $item->received_by : 'N/A'  }}</td>

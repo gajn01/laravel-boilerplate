@@ -3,14 +3,13 @@
     <div class="sidepanel-inner d-flex flex-column">
         <a href="#" id="sidepanel-close" class="sidepanel-close d-xl-none">&times;</a>
         <div class="app-branding">
-            <a class="app-logo" href="{{ url('dashboard') }}"><img class="logo-icon me-2" src="{{ url('asset/img/logo.png') }}"
-                    alt="logo"><span class="logo-text"></span></a>
+            <a class="app-logo" href="{{ url('dashboard') }}"><img class="logo-icon me-2"
+                    src="{{ url('asset/img/logo.png') }}" alt="logo"><span class="logo-text"></span></a>
         </div>
         <!--//app-branding-->
-
         <nav id="app-nav-main" class="app-nav app-nav-main flex-grow-1">
             <ul class="app-menu list-unstyled accordion" id="menu-accordion">
-
+                @if (auth()->user()->user_type != 3)
                     <li class="nav-item">
                         <a class="nav-link {{ Request::routeIs('dashboard') ? 'active' : '' }}"
                             href="{{ url('dashboard') }}">
@@ -26,6 +25,7 @@
                             <span class="nav-link-text">Dashboard</span>
                         </a>
                     </li>
+                @endif
                 @if (Gate::allows('allow-view', 'module-schedule-management'))
                     <li class="nav-item">
                         <a class="nav-link {{ Request::is('schedule') || Request::is('schedule/form*') || Request::is('schedule/details*') ? 'active' : '' }}"
@@ -48,9 +48,8 @@
                         <a class="nav-link {{ Request::is('audit') || Request::is('audit/form*') || Request::is('result*') || Request::is('result/summary*') ? 'active' : '' }}"
                             href="{{ url('audit') }}">
                             <span class="nav-icon">
-
-                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
-                                    class="bi bi-card-list" viewBox="0 0 16 16">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
+                                    fill="currentColor" class="bi bi-card-list" viewBox="0 0 16 16">
                                     <path
                                         d="M14.5 3a.5.5 0 0 1 .5.5v9a.5.5 0 0 1-.5.5h-13a.5.5 0 0 1-.5-.5v-9a.5.5 0 0 1 .5-.5h13zm-13-1A1.5 1.5 0 0 0 0 3.5v9A1.5 1.5 0 0 0 1.5 14h13a1.5 1.5 0 0 0 1.5-1.5v-9A1.5 1.5 0 0 0 14.5 2h-13z" />
                                     <path
@@ -61,7 +60,7 @@
                         </a>
                     </li>
                 @endif
-                @if (Gate::allows('allow-view', 'module-store-management') )
+                @if (Gate::allows('allow-view', 'module-store-management'))
                     <li class="nav-item">
                         <a class="nav-link {{ Request::is('store') || Request::is('store/details*') ? 'active' : '' }}"
                             href="{{ url('store') }}">
@@ -78,8 +77,8 @@
                 @endif
                 @if (Gate::allows('allow-view', 'module-insight'))
                     <li class="nav-item has-submenu">
-                        <a class="nav-link submenu-toggle {{ Request::routeIs('insight') ? 'active' : '' }}" href="#"
-                            data-bs-toggle="collapse" data-bs-target="#submenu-3" aria-expanded="false"
+                        <a class="nav-link submenu-toggle {{ Request::routeIs('insight') ? 'active' : '' }}"
+                            href="#" data-bs-toggle="collapse" data-bs-target="#submenu-3" aria-expanded="false"
                             aria-controls="submenu-3">
                             <span class="nav-icon">
                                 <svg viewBox="0 0 16 16" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
@@ -112,22 +111,26 @@
                             </ul>
                         </div>
                     </li>
-                    @endif
-                    @if (auth()->user()->user_type == 0 || auth()->user()->user_type == 1)
-                        <li class="nav-item">
-                            <a class="nav-link {{ Request::is('activity-log')  ? 'active' : '' }}"
-                                href="{{ url('activity-log') }}">
-                                <span class="nav-icon">
-                                    <svg xmlns="http://www.w3.org/2000/svg" height="1em" viewBox="0 0 384 512"><!--! Font Awesome Free 6.4.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2023 Fonticons, Inc. --><path d="M64 464c-8.8 0-16-7.2-16-16V64c0-8.8 7.2-16 16-16H224v80c0 17.7 14.3 32 32 32h80V448c0 8.8-7.2 16-16 16H64zM64 0C28.7 0 0 28.7 0 64V448c0 35.3 28.7 64 64 64H320c35.3 0 64-28.7 64-64V154.5c0-17-6.7-33.3-18.7-45.3L274.7 18.7C262.7 6.7 246.5 0 229.5 0H64zm56 256c-13.3 0-24 10.7-24 24s10.7 24 24 24H264c13.3 0 24-10.7 24-24s-10.7-24-24-24H120zm0 96c-13.3 0-24 10.7-24 24s10.7 24 24 24H264c13.3 0 24-10.7 24-24s-10.7-24-24-24H120z"/></svg>
-                                </span>
-                                <span class="nav-link-text">Activity Logs</span>
-                            </a>
-                        </li>
-                    @endif
-                    @if (auth()->user()->user_type == 3 )
+                @endif
+                @if (auth()->user()->user_type == 0 || auth()->user()->user_type == 1)
                     <li class="nav-item">
-                        <a class="nav-link {{ Request::is('store/records')  ? 'active' : '' }}"
-                            href="{{ url('store/records') }}">
+                        <a class="nav-link {{ Request::is('activity-log') ? 'active' : '' }}"
+                            href="{{ url('activity-log') }}">
+                            <span class="nav-icon">
+                                <svg xmlns="http://www.w3.org/2000/svg" height="1em"
+                                    viewBox="0 0 384 512"><!--! Font Awesome Free 6.4.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2023 Fonticons, Inc. -->
+                                    <path
+                                        d="M64 464c-8.8 0-16-7.2-16-16V64c0-8.8 7.2-16 16-16H224v80c0 17.7 14.3 32 32 32h80V448c0 8.8-7.2 16-16 16H64zM64 0C28.7 0 0 28.7 0 64V448c0 35.3 28.7 64 64 64H320c35.3 0 64-28.7 64-64V154.5c0-17-6.7-33.3-18.7-45.3L274.7 18.7C262.7 6.7 246.5 0 229.5 0H64zm56 256c-13.3 0-24 10.7-24 24s10.7 24 24 24H264c13.3 0 24-10.7 24-24s-10.7-24-24-24H120zm0 96c-13.3 0-24 10.7-24 24s10.7 24 24 24H264c13.3 0 24-10.7 24-24s-10.7-24-24-24H120z" />
+                                </svg>
+                            </span>
+                            <span class="nav-link-text">Activity Logs</span>
+                        </a>
+                    </li>
+                @endif
+                @if (auth()->user()->user_type == 3)
+                    <li class="nav-item">
+                        <a class="nav-link {{ Request::route()->named('audit.details') || Request::route()->named('audit.result*') || Request::route()->named('audit.summary*') ? 'active' : '' }}"
+                            href="{{ route('audit.details', ['store_id' => auth()->user()->name]) }}">
                             <span class="nav-icon">
                                 <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
                                     fill="currentColor" class="bi bi-shop" viewBox="0 0 16 16">
@@ -139,18 +142,21 @@
                         </a>
                     </li>
                 @endif
-                    {{-- @if (auth()->user()->user_type == 3 || auth()->user()->user_type == 0)
-                        <li class="nav-item">
-                            <a class="nav-link {{ Request::is('store/capa')  ? 'active' : '' }}"
-                                href="{{ route('capa') }}">
-                                <span class="nav-icon">
-                                    <svg xmlns="http://www.w3.org/2000/svg" height="1em" viewBox="0 0 384 512"><!--! Font Awesome Free 6.4.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2023 Fonticons, Inc. --><path d="M64 464c-8.8 0-16-7.2-16-16V64c0-8.8 7.2-16 16-16H224v80c0 17.7 14.3 32 32 32h80V448c0 8.8-7.2 16-16 16H64zM64 0C28.7 0 0 28.7 0 64V448c0 35.3 28.7 64 64 64H320c35.3 0 64-28.7 64-64V154.5c0-17-6.7-33.3-18.7-45.3L274.7 18.7C262.7 6.7 246.5 0 229.5 0H64zm56 256c-13.3 0-24 10.7-24 24s10.7 24 24 24H264c13.3 0 24-10.7 24-24s-10.7-24-24-24H120zm0 96c-13.3 0-24 10.7-24 24s10.7 24 24 24H264c13.3 0 24-10.7 24-24s-10.7-24-24-24H120z"/></svg>
-                                </span>
-                                <span class="nav-link-text">CAPA</span>
-                            </a>
-                        </li>
-                    @endif --}}
-          
+             {{--    @if (auth()->user()->user_type == 3 || auth()->user()->user_type == 0)
+                    <li class="nav-item">
+                        <a class="nav-link {{ Request::is('store/capa') ? 'active' : '' }}"
+                            href="{{ route('capa') }}">
+                            <span class="nav-icon">
+                                <svg xmlns="http://www.w3.org/2000/svg" height="1em"
+                                    viewBox="0 0 384 512"><!--! Font Awesome Free 6.4.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2023 Fonticons, Inc. -->
+                                    <path
+                                        d="M64 464c-8.8 0-16-7.2-16-16V64c0-8.8 7.2-16 16-16H224v80c0 17.7 14.3 32 32 32h80V448c0 8.8-7.2 16-16 16H64zM64 0C28.7 0 0 28.7 0 64V448c0 35.3 28.7 64 64 64H320c35.3 0 64-28.7 64-64V154.5c0-17-6.7-33.3-18.7-45.3L274.7 18.7C262.7 6.7 246.5 0 229.5 0H64zm56 256c-13.3 0-24 10.7-24 24s10.7 24 24 24H264c13.3 0 24-10.7 24-24s-10.7-24-24-24H120zm0 96c-13.3 0-24 10.7-24 24s10.7 24 24 24H264c13.3 0 24-10.7 24-24s-10.7-24-24-24H120z" />
+                                </svg>
+                            </span>
+                            <span class="nav-link-text">CAPA</span>
+                        </a>
+                    </li>
+                @endif --}}
             </ul>
         </nav>
         <div class="app-sidepanel-footer">
@@ -191,24 +197,38 @@
                         ]) data-bs-parent="#menu-accordion">
                             <ul class="submenu-list list-unstyled">
                                 @if (Gate::allows('allow-view', 'module-user-management'))
-                                    <li class="submenu-item "><a @class(['submenu-link', 'active' => Request::routeIs('user-management')]) href="{{ url('user-management') }}">Account Management</a></li>
+                                    <li class="submenu-item "><a @class([
+                                        'submenu-link',
+                                        'active' => Request::routeIs('user-management'),
+                                    ])
+                                            href="{{ url('user-management') }}">Account Management</a></li>
                                 @endif
                                 @if (Gate::allows('allow-view', 'module-category-management'))
-                                    <li class="submenu-item "><a @class(['submenu-link', 'active' => Request::routeIs('category')])  href="{{ url('settings/category') }}">Category</a></li>
+                                    <li class="submenu-item "><a @class(['submenu-link', 'active' => Request::routeIs('category')])
+                                            href="{{ url('settings/category') }}">Category</a></li>
                                 @endif
                                 @if (Gate::allows('allow-view', 'module-critical-deviation-management'))
-                                    <li class="submenu-item"><a @class(['submenu-link','active' => Request::routeIs('critical-deviation'),])href="{{ url('settings/critical-deviation') }}">Critical Deviation</a></li>
+                                    <li class="submenu-item"><a
+                                            @class([
+                                                'submenu-link',
+                                                'active' => Request::routeIs('critical-deviation'),
+                                            ])href="{{ url('settings/critical-deviation') }}">Critical
+                                            Deviation</a></li>
                                 @endif
                                 @if (Gate::allows('allow-view', 'module-sanitation-defect-management'))
-                                    <li class="submenu-item"><a class="submenu-link {{ Request::routeIs('sanitary') ? 'active' : '' }}"href="{{ url('settings/sanitary') }}">Sanitation Defect</a></li>
+                                    <li class="submenu-item"><a
+                                            class="submenu-link {{ Request::routeIs('sanitary') ? 'active' : '' }}"href="{{ url('settings/sanitary') }}">Sanitation
+                                            Defect</a></li>
                                 @endif
                                 @if (Gate::allows('allow-view', 'module-dropdown-management'))
-                                    <li class="submenu-item"><a class="submenu-link {{ Request::routeIs('dropdown') || Request::is('dropdown/menu*') ? 'active' : '' }}"href="{{ url('settings/dropdown') }}">Dropdown</a></li>
+                                    <li class="submenu-item"><a
+                                            class="submenu-link {{ Request::routeIs('dropdown') || Request::is('dropdown/menu*') ? 'active' : '' }}"href="{{ url('settings/dropdown') }}">Dropdown</a>
+                                    </li>
                                 @endif
                             </ul>
                         </div>
                     </li>
-                  {{--   <li class="nav-item">
+                    {{--   <li class="nav-item">
                         <a class="nav-link" href="help.html">
                             <span class="nav-icon">
                                 <svg viewBox="0 0 16 16" class="bi bi-question-circle" fill="currentColor"

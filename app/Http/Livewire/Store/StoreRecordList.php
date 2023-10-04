@@ -16,9 +16,6 @@ class StoreRecordList extends Component
 
     public function getStoreRecordList()
     {
-        return Summary::where('store_id', auth()->user()->name)
-            ->whereHas('audit_form', function ($query) {
-                $query->whereNot('audit_status', 0);
-            })->get();
+        return AuditForm::where('store_id', auth()->user()->name)->get();
     }
 }
